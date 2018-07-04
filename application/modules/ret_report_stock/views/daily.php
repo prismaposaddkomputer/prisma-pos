@@ -5,6 +5,8 @@
   <div class="row">
     <div class="col-md-12">
       <div class="table-responsive">
+        <a class="btn btn-primary" href="<?=base_url()?>ret_report_stock/daily_pdf/<?=$date?>" target="_blank"><i class="fa fa-print"></i> Download PDF</a>
+        <br><br>
         <table class="table table-striped table-bordered table-condensed">
           <thead>
             <tr>
