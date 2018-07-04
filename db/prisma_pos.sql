@@ -1,7 +1,7 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
--- Server version:               10.1.32-MariaDB - Source distribution
--- Server OS:                    Linux
+-- Server version:               10.1.32-MariaDB - mariadb.org binary distribution
+-- Server OS:                    Win32
 -- HeidiSQL Version:             9.5.0.5196
 -- --------------------------------------------------------
 
@@ -10,6 +10,12 @@
 /*!50503 SET NAMES utf8mb4 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+
+
+-- Dumping database structure for prisma_pos
+DROP DATABASE IF EXISTS `prisma_pos`;
+CREATE DATABASE IF NOT EXISTS `prisma_pos` /*!40100 DEFAULT CHARACTER SET latin1 */;
+USE `prisma_pos`;
 
 -- Dumping structure for table prisma_pos.app_install
 DROP TABLE IF EXISTS `app_install`;
@@ -30,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `app_install` (
 DELETE FROM `app_install`;
 /*!40000 ALTER TABLE `app_install` DISABLE KEYS */;
 INSERT INTO `app_install` (`install_id`, `type_id`, `install_status`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
-	(1, 2, 1, '2018-04-18 12:14:03', 'System', '2018-06-29 03:37:08', 'System', 1, 0);
+	(1, 1, 1, '2018-04-18 12:14:03', 'System', '2018-07-03 09:40:41', 'System', 1, 0);
 /*!40000 ALTER TABLE `app_install` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.app_type
@@ -77,16 +83,17 @@ CREATE TABLE IF NOT EXISTS `hot_booking` (
   `updated_by` varchar(32) NOT NULL DEFAULT 'System',
   `is_active` tinyint(1) NOT NULL DEFAULT '1',
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `opsi_hari` int(155) DEFAULT '0',
   PRIMARY KEY (`booking_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- Dumping data for table prisma_pos.hot_booking: ~3 rows (approximately)
 DELETE FROM `hot_booking`;
 /*!40000 ALTER TABLE `hot_booking` DISABLE KEYS */;
-INSERT INTO `hot_booking` (`booking_id`, `booking_code`, `guest_id`, `service_id`, `number_of_days`, `room_id`, `date_booking`, `date_booking_from`, `date_booking_to`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
-	(24, '2073', 7, 6, 3, 9, '2018-06-10', '2018-06-10', '2018-06-13', '2018-06-10 08:01:24', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0),
-	(25, '2097', 7, 6, 0, 6, '0000-00-00', '0000-00-00', '0000-00-00', '2018-06-10 08:01:34', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0),
-	(26, '2115', 7, 6, 3, 8, '2018-06-10', '2018-06-10', '2018-06-13', '2018-06-10 08:01:44', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `hot_booking` (`booking_id`, `booking_code`, `guest_id`, `service_id`, `number_of_days`, `room_id`, `date_booking`, `date_booking_from`, `date_booking_to`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`, `opsi_hari`) VALUES
+	(24, '2073', 7, 6, 3, 9, '2018-06-10', '2018-06-10', '2018-06-13', '2018-06-10 08:01:24', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0, NULL),
+	(25, '2097', 7, 6, 0, 6, '0000-00-00', '0000-00-00', '0000-00-00', '2018-06-10 08:01:34', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0, NULL),
+	(26, '2115', 7, 6, 3, 8, '2018-06-10', '2018-06-10', '2018-06-13', '2018-06-10 08:01:44', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0, NULL);
 /*!40000 ALTER TABLE `hot_booking` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_booking_diskon
@@ -293,7 +300,7 @@ CREATE TABLE IF NOT EXISTS `hot_log` (
   `log_date` date NOT NULL,
   `log_time` time NOT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- Dumping data for table prisma_pos.hot_log: ~4 rows (approximately)
 DELETE FROM `hot_log`;
@@ -302,7 +309,8 @@ INSERT INTO `hot_log` (`log_id`, `user_id`, `user_realname`, `log_type`, `log_da
 	(12, 1, 'Super Hotel', 'Sign In', '2018-06-10', '03:59:45'),
 	(13, 1, 'Super Hotel', 'Sign In', '2018-06-10', '06:49:17'),
 	(14, 1, 'Super Hotel', 'Sign In', '2018-06-21', '11:39:16'),
-	(15, 1, 'Super Hotel', 'Sign Out', '2018-06-21', '11:40:17');
+	(15, 1, 'Super Hotel', 'Sign Out', '2018-06-21', '11:40:17'),
+	(16, 1, 'Super Hotel', 'Sign In', '2018-07-02', '16:20:35');
 /*!40000 ALTER TABLE `hot_log` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_module
@@ -581,7 +589,7 @@ DELETE FROM `kar_billing`;
 INSERT INTO `kar_billing` (`tx_id`, `tx_receipt_no`, `user_id`, `user_realname`, `member_id`, `member_name`, `room_id`, `room_name`, `tx_room_price`, `tx_duration`, `tx_room_price_total`, `tx_date`, `tx_time_start`, `tx_time_end`, `payment_type_id`, `tx_payment`, `tx_status`, `tx_cancel_notes`, `bank_id`, `bank_card_no`, `tx_total_tax`, `tx_total_discount`, `tx_total_before_tax`, `tx_total_after_tax`, `tx_total_grand`, `tx_change`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
 	(1, '0', 1, 'Super Karaoke', 1, 'Surya', 2, 'D01', 50000.00, 1, 50000.00, '2018-06-08', '10:38:31', '11:38:31', 1, 100000.00, 2, NULL, 0, '', 0.00, 0.00, 50000.00, 0.00, 50000.00, 50000.00, '2018-06-08 10:38:31', 'Super Karaoke', '0000-00-00 00:00:00', 'System', 1, 0),
 	(2, '180626000001', 1, 'Super Karaoke', 1, 'Surya', 1, 'E01', 20000.00, 2, 40000.00, '2018-06-26', '11:28:11', '13:28:11', 0, 0.00, 0, NULL, 0, '', 0.00, 0.00, 40000.00, 0.00, 40000.00, 0.00, '2018-06-26 11:28:11', 'Super Karaoke', '0000-00-00 00:00:00', 'System', 1, 0),
-	(3, '180626000002', 1, 'Super Karaoke', 1, 'Surya', 2, 'D01', 50000.00, 2, 40000.00, '2018-06-26', '11:28:26', '13:28:26', 0, 0.00, 0, NULL, 0, '', 0.00, 0.00, 40000.00, 0.00, 40000.00, 0.00, '2018-06-26 11:28:26', 'Super Karaoke', '0000-00-00 00:00:00', 'System', 1, 0);
+	(3, '180626000002', 1, 'Super Karaoke', 1, 'Surya', 2, 'D01', 50000.00, 2, 40000.00, '2018-06-26', '11:28:26', '13:28:26', 1, 50000.00, 2, NULL, 0, '', 0.00, 0.00, 40000.00, 0.00, 40000.00, 10000.00, '2018-06-26 11:28:26', 'Super Karaoke', '0000-00-00 00:00:00', 'System', 1, 0);
 /*!40000 ALTER TABLE `kar_billing` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.kar_billing_service_charge
@@ -658,9 +666,9 @@ CREATE TABLE IF NOT EXISTS `kar_log` (
   `log_date` date NOT NULL,
   `log_time` time NOT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
--- Dumping data for table prisma_pos.kar_log: ~17 rows (approximately)
+-- Dumping data for table prisma_pos.kar_log: ~32 rows (approximately)
 DELETE FROM `kar_log`;
 /*!40000 ALTER TABLE `kar_log` DISABLE KEYS */;
 INSERT INTO `kar_log` (`log_id`, `user_id`, `user_realname`, `log_type`, `log_date`, `log_time`) VALUES
@@ -690,7 +698,13 @@ INSERT INTO `kar_log` (`log_id`, `user_id`, `user_realname`, `log_type`, `log_da
 	(24, 1, 'Super Karaoke', 'Sign In', '2018-06-26', '09:52:21'),
 	(25, 1, 'Super Karaoke', 'Sign Out', '2018-06-26', '10:00:35'),
 	(26, 1, 'Super Karaoke', 'Sign In', '2018-06-26', '11:19:02'),
-	(27, 1, 'Super Karaoke', 'Sign Out', '2018-06-26', '11:29:17');
+	(27, 1, 'Super Karaoke', 'Sign Out', '2018-06-26', '11:29:17'),
+	(28, 1, 'Super Karaoke', 'Sign In', '2018-07-02', '11:47:55'),
+	(29, 1, 'Super Karaoke', 'Sign Out', '2018-07-02', '11:48:04'),
+	(30, 1, 'Super Karaoke', 'Sign In', '2018-07-03', '08:38:01'),
+	(31, 1, 'Super Karaoke', 'Sign Out', '2018-07-03', '08:41:17'),
+	(32, 1, 'Super Karaoke', 'Sign In', '2018-07-03', '08:44:19'),
+	(33, 1, 'Super Karaoke', 'Sign Out', '2018-07-03', '09:40:31');
 /*!40000 ALTER TABLE `kar_log` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.kar_member
@@ -760,7 +774,7 @@ CREATE TABLE IF NOT EXISTS `kar_module` (
   PRIMARY KEY (`module_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.kar_module: ~22 rows (approximately)
+-- Dumping data for table prisma_pos.kar_module: ~24 rows (approximately)
 DELETE FROM `kar_module`;
 /*!40000 ALTER TABLE `kar_module` DISABLE KEYS */;
 INSERT INTO `kar_module` (`module_id`, `module_parent`, `module_name`, `module_folder`, `module_controller`, `module_url`, `module_icon`, `created`, `created_by`, `updated`, `updated_by`, `is_actived`, `is_deleted`) VALUES
@@ -878,7 +892,7 @@ CREATE TABLE IF NOT EXISTS `kar_receipt` (
   PRIMARY KEY (`receipt_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
--- Dumping data for table prisma_pos.kar_receipt: ~1 rows (approximately)
+-- Dumping data for table prisma_pos.kar_receipt: ~0 rows (approximately)
 DELETE FROM `kar_receipt`;
 /*!40000 ALTER TABLE `kar_receipt` DISABLE KEYS */;
 INSERT INTO `kar_receipt` (`receipt_id`, `receipt_name`, `receipt_street`, `receipt_district`, `receipt_city`, `receipt_province`, `receipt_npwp`, `receipt_footer`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
@@ -1133,13 +1147,27 @@ CREATE TABLE IF NOT EXISTS `par_billing` (
   `is_active` tinyint(1) NOT NULL DEFAULT '1',
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`billing_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.par_billing: ~0 rows (approximately)
+-- Dumping data for table prisma_pos.par_billing: ~15 rows (approximately)
 DELETE FROM `par_billing`;
 /*!40000 ALTER TABLE `par_billing` DISABLE KEYS */;
 INSERT INTO `par_billing` (`billing_id`, `receipt_no`, `user_id_in`, `user_realname_in`, `user_id_out`, `user_realname_out`, `brand_id`, `brand_name`, `category_id`, `category_name`, `category_rate`, `category_is_flat`, `category_per_hour`, `billing_tnkb`, `billing_status_in`, `billing_status_out`, `billing_date_in`, `billing_time_in`, `billing_date_out`, `billing_time_out`, `billing_duration`, `billing_total`, `billing_payment`, `billing_change`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
-	(1, '180626000001', 1, 'Super Parking', 1, 'Super Parking', 2, 'Nissan', 4, 'Sepeda Motor', 2000.00, 1, 1000.00, 'AA123AA', 1, 1, '2018-06-26', '10:55:00', '2018-06-26', '11:12:33', 1, 2000.00, 5000.00, 3.00, '2018-06-26 10:55:00', 'Super Parking', '2018-06-26 11:12:37', 'Super Parking', 1, 0);
+	(1, '180626000001', 1, 'Super Parking', 1, 'Super Parking', 2, 'Nissan', 4, 'Sepeda Motor', 2000.00, 1, 1000.00, 'AA123AA', 1, 1, '2018-06-26', '10:55:00', '2018-06-26', '11:12:33', 1, 2000.00, 5000.00, 3.00, '2018-06-26 10:55:00', 'Super Parking', '2018-06-26 11:12:37', 'Super Parking', 1, 0),
+	(2, '180702000001', 1, 'Super Parking', NULL, NULL, 2, 'Nissan', 4, 'Sepeda Motor', 2000.00, 1, 1000.00, 'A', 1, 0, '2018-07-02', '11:52:29', '0000-00-00', '00:00:00', 0, 0.00, 0.00, 0.00, '2018-07-02 11:52:29', 'Super Parking', '0000-00-00 00:00:00', 'System', 1, 0),
+	(3, '180702000002', 1, 'Super Parking', NULL, NULL, 2, 'Nissan', 4, 'Sepeda Motor', 2000.00, 1, 1000.00, '1', 1, 0, '2018-07-02', '11:52:39', '0000-00-00', '00:00:00', 0, 0.00, 0.00, 0.00, '2018-07-02 11:52:39', 'Super Parking', '0000-00-00 00:00:00', 'System', 1, 0),
+	(4, '180702000003', 1, 'Super Parking', NULL, NULL, 2, 'Nissan', 4, 'Sepeda Motor', 2000.00, 1, 1000.00, '2', 1, 0, '2018-07-02', '11:53:04', '0000-00-00', '00:00:00', 0, 0.00, 0.00, 0.00, '2018-07-02 11:53:04', 'Super Parking', '0000-00-00 00:00:00', 'System', 1, 0),
+	(5, '180702000004', 1, 'Super Parking', NULL, NULL, 2, 'Nissan', 4, 'Sepeda Motor', 2000.00, 1, 1000.00, '2', 1, 0, '2018-07-02', '11:53:36', '0000-00-00', '00:00:00', 0, 0.00, 0.00, 0.00, '2018-07-02 11:53:36', 'Super Parking', '0000-00-00 00:00:00', 'System', 1, 0),
+	(6, '180702000005', 1, 'Super Parking', NULL, NULL, 2, 'Nissan', 4, 'Sepeda Motor', 2000.00, 1, 1000.00, '123', 1, 0, '2018-07-02', '11:54:51', '0000-00-00', '00:00:00', 0, 0.00, 0.00, 0.00, '2018-07-02 11:54:51', 'Super Parking', '0000-00-00 00:00:00', 'System', 1, 0),
+	(7, '180702000006', 1, 'Super Parking', NULL, NULL, 2, 'Nissan', 4, 'Sepeda Motor', 2000.00, 1, 1000.00, '123', 1, 0, '2018-07-02', '11:55:24', '0000-00-00', '00:00:00', 0, 0.00, 0.00, 0.00, '2018-07-02 11:55:24', 'Super Parking', '0000-00-00 00:00:00', 'System', 1, 0),
+	(8, '180702000007', 1, 'Super Parking', NULL, NULL, 2, 'Nissan', 4, 'Sepeda Motor', 2000.00, 1, 1000.00, '1234', 1, 0, '2018-07-02', '11:57:14', '0000-00-00', '00:00:00', 0, 0.00, 0.00, 0.00, '2018-07-02 11:57:14', 'Super Parking', '0000-00-00 00:00:00', 'System', 1, 0),
+	(9, '180702000008', 1, 'Super Parking', NULL, NULL, 2, 'Nissan', 4, 'Sepeda Motor', 2000.00, 1, 1000.00, 'AA123CS', 1, 0, '2018-07-02', '11:59:12', '0000-00-00', '00:00:00', 0, 0.00, 0.00, 0.00, '2018-07-02 11:59:12', 'Super Parking', '0000-00-00 00:00:00', 'System', 1, 0),
+	(10, '180702000009', 1, 'Super Parking', NULL, NULL, 2, 'Nissan', 4, 'Sepeda Motor', 2000.00, 1, 1000.00, 'AA123CC', 1, 0, '2018-07-02', '11:59:33', '0000-00-00', '00:00:00', 0, 0.00, 0.00, 0.00, '2018-07-02 11:59:33', 'Super Parking', '0000-00-00 00:00:00', 'System', 1, 0),
+	(11, '180702000010', 1, 'Super Parking', NULL, NULL, 2, 'Nissan', 4, 'Sepeda Motor', 2000.00, 1, 1000.00, 'ZZ1231AC', 1, 0, '2018-07-02', '11:59:54', '0000-00-00', '00:00:00', 0, 0.00, 0.00, 0.00, '2018-07-02 11:59:54', 'Super Parking', '0000-00-00 00:00:00', 'System', 1, 0),
+	(12, '180702000011', 1, 'Super Parking', NULL, NULL, 2, 'Nissan', 4, 'Sepeda Motor', 2000.00, 1, 1000.00, 'AA1AA', 1, 0, '2018-07-02', '12:00:35', '0000-00-00', '00:00:00', 0, 0.00, 0.00, 0.00, '2018-07-02 12:00:35', 'Super Parking', '0000-00-00 00:00:00', 'System', 1, 0),
+	(13, '180702000012', 1, 'Super Parking', NULL, NULL, 2, 'Nissan', 4, 'Sepeda Motor', 2000.00, 1, 1000.00, 'DD6661UP', 1, 0, '2018-07-02', '12:02:38', '0000-00-00', '00:00:00', 0, 0.00, 0.00, 0.00, '2018-07-02 12:02:38', 'Super Parking', '0000-00-00 00:00:00', 'System', 1, 0),
+	(14, '180702000013', 1, 'Super Parking', NULL, NULL, 2, 'Nissan', 4, 'Sepeda Motor', 2000.00, 1, 1000.00, 'AA1234VC', 1, 0, '2018-07-02', '12:03:07', '0000-00-00', '00:00:00', 0, 0.00, 0.00, 0.00, '2018-07-02 12:03:07', 'Super Parking', '0000-00-00 00:00:00', 'System', 1, 0),
+	(15, '180702000014', 1, 'Super Parking', NULL, NULL, 2, 'Nissan', 4, 'Sepeda Motor', 2000.00, 1, 1000.00, 'AA8888DCS', 1, 0, '2018-07-02', '12:09:22', '0000-00-00', '00:00:00', 0, 0.00, 0.00, 0.00, '2018-07-02 12:09:22', 'Super Parking', '0000-00-00 00:00:00', 'System', 1, 0);
 /*!40000 ALTER TABLE `par_billing` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.par_brand
@@ -1237,9 +1265,9 @@ CREATE TABLE IF NOT EXISTS `par_log` (
   `log_date` date NOT NULL,
   `log_time` time NOT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
--- Dumping data for table prisma_pos.par_log: ~17 rows (approximately)
+-- Dumping data for table prisma_pos.par_log: ~27 rows (approximately)
 DELETE FROM `par_log`;
 /*!40000 ALTER TABLE `par_log` DISABLE KEYS */;
 INSERT INTO `par_log` (`log_id`, `user_id`, `user_realname`, `log_type`, `log_date`, `log_time`) VALUES
@@ -1269,7 +1297,9 @@ INSERT INTO `par_log` (`log_id`, `user_id`, `user_realname`, `log_type`, `log_da
 	(24, 1, 'Super Parking', 'Sign In', '2018-06-08', '10:53:37'),
 	(25, 1, 'Super Parking', 'Sign Out', '2018-06-08', '11:36:27'),
 	(26, 1, 'Super Parking', 'Sign In', '2018-06-26', '10:00:51'),
-	(27, 1, 'Super Parking', 'Sign Out', '2018-06-26', '11:18:23');
+	(27, 1, 'Super Parking', 'Sign Out', '2018-06-26', '11:18:23'),
+	(28, 1, 'Super Parking', 'Sign In', '2018-07-02', '11:48:08'),
+	(29, 1, 'Super Parking', 'Sign Out', '2018-07-02', '12:48:34');
 /*!40000 ALTER TABLE `par_log` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.par_module
@@ -1291,7 +1321,7 @@ CREATE TABLE IF NOT EXISTS `par_module` (
   PRIMARY KEY (`module_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.par_module: ~21 rows (approximately)
+-- Dumping data for table prisma_pos.par_module: ~20 rows (approximately)
 DELETE FROM `par_module`;
 /*!40000 ALTER TABLE `par_module` DISABLE KEYS */;
 INSERT INTO `par_module` (`module_id`, `module_parent`, `module_name`, `module_folder`, `module_controller`, `module_url`, `module_icon`, `created`, `created_by`, `updated`, `updated_by`, `is_actived`, `is_deleted`) VALUES
@@ -1578,7 +1608,7 @@ CREATE TABLE IF NOT EXISTS `res_billing` (
   PRIMARY KEY (`tx_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.res_billing: ~6 rows (approximately)
+-- Dumping data for table prisma_pos.res_billing: ~3 rows (approximately)
 DELETE FROM `res_billing`;
 /*!40000 ALTER TABLE `res_billing` DISABLE KEYS */;
 INSERT INTO `res_billing` (`tx_id`, `tx_receipt_no`, `user_id`, `user_realname`, `customer_id`, `customer_name`, `tx_type`, `tx_date`, `tx_time`, `tx_notes`, `payment_type_id`, `tx_payment`, `tx_status`, `tx_cancel_notes`, `bank_id`, `bank_card_no`, `bank_reference_no`, `tx_total_buy_average`, `tx_total_tax`, `tx_total_discount`, `tx_total_before_tax`, `tx_total_after_tax`, `tx_total_grand`, `tx_change`, `tx_total_profit_before_tax`, `tx_total_profit_after_tax`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
@@ -1656,7 +1686,7 @@ CREATE TABLE IF NOT EXISTS `res_billing_buyitem` (
   PRIMARY KEY (`billing_buyitem_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.res_billing_buyitem: ~11 rows (approximately)
+-- Dumping data for table prisma_pos.res_billing_buyitem: ~0 rows (approximately)
 DELETE FROM `res_billing_buyitem`;
 /*!40000 ALTER TABLE `res_billing_buyitem` DISABLE KEYS */;
 /*!40000 ALTER TABLE `res_billing_buyitem` ENABLE KEYS */;
@@ -1689,7 +1719,7 @@ CREATE TABLE IF NOT EXISTS `res_billing_detail` (
   PRIMARY KEY (`billing_detail_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
--- Dumping data for table prisma_pos.res_billing_detail: ~6 rows (approximately)
+-- Dumping data for table prisma_pos.res_billing_detail: ~3 rows (approximately)
 DELETE FROM `res_billing_detail`;
 /*!40000 ALTER TABLE `res_billing_detail` DISABLE KEYS */;
 INSERT INTO `res_billing_detail` (`billing_detail_id`, `tx_id`, `tx_type`, `item_id`, `item_name`, `item_price_before_tax`, `item_price_after_tax`, `item_price_buy_average`, `tx_amount`, `tx_subtotal_tax`, `tx_subtotal_discount`, `tx_subtotal_buy_average`, `tx_subtotal_before_tax`, `tx_subtotal_after_tax`, `tx_subtotal_profit_before_tax`, `tx_subtotal_profit_after_tax`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
@@ -1748,7 +1778,7 @@ CREATE TABLE IF NOT EXISTS `res_category` (
   PRIMARY KEY (`category_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.res_category: ~4 rows (approximately)
+-- Dumping data for table prisma_pos.res_category: ~14 rows (approximately)
 DELETE FROM `res_category`;
 /*!40000 ALTER TABLE `res_category` DISABLE KEYS */;
 INSERT INTO `res_category` (`category_id`, `category_name`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
@@ -1824,7 +1854,7 @@ CREATE TABLE IF NOT EXISTS `res_customer` (
   PRIMARY KEY (`customer_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.res_customer: ~3 rows (approximately)
+-- Dumping data for table prisma_pos.res_customer: ~8 rows (approximately)
 DELETE FROM `res_customer`;
 /*!40000 ALTER TABLE `res_customer` DISABLE KEYS */;
 INSERT INTO `res_customer` (`customer_id`, `customer_name`, `customer_phone`, `customer_fax`, `customer_email`, `customer_address`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
@@ -1859,7 +1889,7 @@ CREATE TABLE IF NOT EXISTS `res_item` (
   PRIMARY KEY (`item_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.res_item: ~4 rows (approximately)
+-- Dumping data for table prisma_pos.res_item: ~3 rows (approximately)
 DELETE FROM `res_item`;
 /*!40000 ALTER TABLE `res_item` DISABLE KEYS */;
 INSERT INTO `res_item` (`item_id`, `category_id`, `unit_id`, `tax_id`, `item_name`, `item_barcode`, `item_desc`, `item_price_before_tax`, `is_package`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
@@ -1884,7 +1914,7 @@ CREATE TABLE IF NOT EXISTS `res_item_package` (
   PRIMARY KEY (`item_package_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.res_item_package: ~3 rows (approximately)
+-- Dumping data for table prisma_pos.res_item_package: ~0 rows (approximately)
 DELETE FROM `res_item_package`;
 /*!40000 ALTER TABLE `res_item_package` DISABLE KEYS */;
 /*!40000 ALTER TABLE `res_item_package` ENABLE KEYS */;
@@ -1922,9 +1952,9 @@ CREATE TABLE IF NOT EXISTS `res_log` (
   `log_date` date NOT NULL,
   `log_time` time NOT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
--- Dumping data for table prisma_pos.res_log: ~14 rows (approximately)
+-- Dumping data for table prisma_pos.res_log: ~54 rows (approximately)
 DELETE FROM `res_log`;
 /*!40000 ALTER TABLE `res_log` DISABLE KEYS */;
 INSERT INTO `res_log` (`log_id`, `user_id`, `user_realname`, `log_type`, `log_date`, `log_time`) VALUES
@@ -1981,7 +2011,9 @@ INSERT INTO `res_log` (`log_id`, `user_id`, `user_realname`, `log_type`, `log_da
 	(50, 1, 'Super Restaurant', 'Sign In', '2018-06-28', '11:32:13'),
 	(51, 1, 'Super Restaurant', 'Sign In', '2018-06-28', '11:41:20'),
 	(52, 1, 'Super Restaurant', 'Sign In', '2018-06-29', '03:36:31'),
-	(53, 1, 'Super Restaurant', 'Sign Out', '2018-06-29', '03:36:39');
+	(53, 1, 'Super Restaurant', 'Sign Out', '2018-06-29', '03:36:39'),
+	(54, 1, 'Super Restaurant', 'Sign In', '2018-07-02', '11:05:35'),
+	(55, 1, 'Super Restaurant', 'Sign Out', '2018-07-02', '11:08:26');
 /*!40000 ALTER TABLE `res_log` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_module
@@ -2044,8 +2076,7 @@ INSERT INTO `res_module` (`module_id`, `module_parent`, `module_name`, `module_f
 	('99.02', '99', 'Role', 'res_role', 'res_role', 'index', 'users', '2018-04-04 09:46:50', 'Super Administrator', '2018-04-19 10:40:40', 'Super Administrator', 1, 0),
 	('99.03', '99', 'Pengguna', 'res_user', 'res_user', 'index', '', '2018-04-04 10:37:41', 'Super Administrator', '2018-04-19 10:40:49', 'Super Administrator', 1, 0),
 	('99.04', '99', 'Hak Akses', 'res_permission', 'res_permission', 'index', 'list', '2018-04-05 08:20:56', 'Super Administrator', '2018-04-19 10:40:56', '', 1, 0),
-	('99.05', '99', 'Client', 'res_client', 'res_client', 'index', 'th-large', '2018-04-05 17:31:04', 'Super Administrator', '2018-04-20 08:15:47', 'Super Administrator', 1, 0),
-	('99.06', '99', 'Struk', 'res_receipt', 'res_receipt', 'index', 'print', '2018-06-06 10:58:40', 'Super Restaurant', '2018-06-06 11:04:56', 'Super Restaurant', 1, 0);
+	('99.05', '99', 'Client', 'res_client', 'res_client', 'index', 'th-large', '2018-04-05 17:31:04', 'Super Administrator', '2018-04-20 08:15:47', 'Super Administrator', 1, 0);
 /*!40000 ALTER TABLE `res_module` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_payment_type
@@ -2185,7 +2216,7 @@ CREATE TABLE IF NOT EXISTS `res_po` (
   PRIMARY KEY (`tx_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.res_po: ~0 rows (approximately)
+-- Dumping data for table prisma_pos.res_po: ~2 rows (approximately)
 DELETE FROM `res_po`;
 /*!40000 ALTER TABLE `res_po` DISABLE KEYS */;
 INSERT INTO `res_po` (`tx_id`, `tx_receipt_no`, `supplier_id`, `tx_type`, `tx_date`, `tx_po_no`, `tx_po_receiver`, `tx_notes`, `tx_status`, `created`, `created_by`) VALUES
@@ -2211,7 +2242,7 @@ CREATE TABLE IF NOT EXISTS `res_po_detail` (
   PRIMARY KEY (`stock_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.res_po_detail: ~0 rows (approximately)
+-- Dumping data for table prisma_pos.res_po_detail: ~2 rows (approximately)
 DELETE FROM `res_po_detail`;
 /*!40000 ALTER TABLE `res_po_detail` DISABLE KEYS */;
 INSERT INTO `res_po_detail` (`stock_id`, `tx_id`, `tx_type`, `tx_date`, `item_id`, `stock_demand`, `stock_receive`, `stock_price`, `created`, `created_by`, `updated`, `updated_by`) VALUES
@@ -2245,7 +2276,7 @@ CREATE TABLE IF NOT EXISTS `res_promo` (
   PRIMARY KEY (`promo_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.res_promo: ~5 rows (approximately)
+-- Dumping data for table prisma_pos.res_promo: ~4 rows (approximately)
 DELETE FROM `res_promo`;
 /*!40000 ALTER TABLE `res_promo` DISABLE KEYS */;
 INSERT INTO `res_promo` (`promo_id`, `promo_type_id`, `promo_name`, `promo_date_start`, `promo_date_end`, `promo_time_start`, `promo_time_end`, `promo_sunday`, `promo_monday`, `promo_tuesday`, `promo_wednesday`, `promo_thursday`, `promo_friday`, `promo_saturday`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
@@ -2321,7 +2352,7 @@ CREATE TABLE IF NOT EXISTS `res_promo_buyitem` (
   PRIMARY KEY (`promo_buyitem_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.res_promo_buyitem: ~2 rows (approximately)
+-- Dumping data for table prisma_pos.res_promo_buyitem: ~0 rows (approximately)
 DELETE FROM `res_promo_buyitem`;
 /*!40000 ALTER TABLE `res_promo_buyitem` DISABLE KEYS */;
 INSERT INTO `res_promo_buyitem` (`promo_buyitem_id`, `promo_id`, `buy_item_id`, `buy_amount`, `get_discount`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
@@ -2351,33 +2382,6 @@ INSERT INTO `res_promo_type` (`promo_type_id`, `promo_type_code`, `promo_type_na
 	(2, 'PRI', 'Promo Buy Item', '2018-05-08 14:09:30', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
 	(3, 'PRA', 'Promo Buy All\r\n', '2018-05-08 14:09:49', 'System', '0000-00-00 00:00:00', 'System', 1, 0);
 /*!40000 ALTER TABLE `res_promo_type` ENABLE KEYS */;
-
--- Dumping structure for table prisma_pos.res_receipt
-DROP TABLE IF EXISTS `res_receipt`;
-CREATE TABLE IF NOT EXISTS `res_receipt` (
-  `receipt_id` tinyint(1) NOT NULL AUTO_INCREMENT,
-  `receipt_name` tinyint(1) NOT NULL DEFAULT '1',
-  `receipt_street` tinyint(1) NOT NULL DEFAULT '1',
-  `receipt_district` tinyint(1) NOT NULL DEFAULT '1',
-  `receipt_city` tinyint(1) NOT NULL DEFAULT '1',
-  `receipt_province` tinyint(1) NOT NULL DEFAULT '1',
-  `receipt_npwp` tinyint(1) NOT NULL DEFAULT '1',
-  `receipt_footer` varchar(255) NOT NULL,
-  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `created_by` varchar(32) NOT NULL DEFAULT 'System',
-  `updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `updated_by` varchar(32) NOT NULL DEFAULT 'System',
-  `is_active` tinyint(1) NOT NULL DEFAULT '1',
-  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`receipt_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
-
--- Dumping data for table prisma_pos.res_receipt: ~1 rows (approximately)
-DELETE FROM `res_receipt`;
-/*!40000 ALTER TABLE `res_receipt` DISABLE KEYS */;
-INSERT INTO `res_receipt` (`receipt_id`, `receipt_name`, `receipt_street`, `receipt_district`, `receipt_city`, `receipt_province`, `receipt_npwp`, `receipt_footer`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
-	(1, 1, 0, 0, 0, 1, 1, 'Terimakasih atas kedatangan anda.', '2018-05-08 10:26:03', 'System', '2018-06-06 10:55:53', 'Super Restaurant', 1, 0);
-/*!40000 ALTER TABLE `res_receipt` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_return
 DROP TABLE IF EXISTS `res_return`;
@@ -2510,7 +2514,7 @@ CREATE TABLE IF NOT EXISTS `res_shift` (
   PRIMARY KEY (`shift_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
--- Dumping data for table prisma_pos.res_shift: ~4 rows (approximately)
+-- Dumping data for table prisma_pos.res_shift: ~5 rows (approximately)
 DELETE FROM `res_shift`;
 /*!40000 ALTER TABLE `res_shift` DISABLE KEYS */;
 INSERT INTO `res_shift` (`shift_id`, `user_id`, `user_realname`, `shift_in_status`, `shift_out_status`, `shift_in_date`, `shift_in_time`, `shift_out_date`, `shift_out_time`, `money_in_100k`, `money_in_50k`, `money_in_20k`, `money_in_10k`, `money_in_5k`, `money_in_2k`, `money_in_1k`, `money_in_total`, `coin_in_1k`, `coin_in_500`, `coin_in_200`, `coin_in_100`, `coin_in_50`, `coin_in_25`, `coin_in_total`, `total_in`, `money_out_100k`, `money_out_50k`, `money_out_20k`, `money_out_10k`, `money_out_5k`, `money_out_2k`, `money_out_1k`, `money_out_total`, `coin_out_1k`, `coin_out_500`, `coin_out_200`, `coin_out_100`, `coin_out_50`, `coin_out_25`, `coin_out_total`, `total_out`, `created`, `created_by`, `updated`, `updated_by`) VALUES
@@ -2538,7 +2542,7 @@ CREATE TABLE IF NOT EXISTS `res_stock` (
   PRIMARY KEY (`stock_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.res_stock: ~11 rows (approximately)
+-- Dumping data for table prisma_pos.res_stock: ~4 rows (approximately)
 DELETE FROM `res_stock`;
 /*!40000 ALTER TABLE `res_stock` DISABLE KEYS */;
 INSERT INTO `res_stock` (`stock_id`, `tx_id`, `tx_type`, `tx_date`, `item_id`, `stock_in`, `stock_out`, `stock_adjustment`, `stock_price`, `created`, `created_by`) VALUES
@@ -2561,7 +2565,7 @@ CREATE TABLE IF NOT EXISTS `res_stock_in` (
   PRIMARY KEY (`tx_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.res_stock_in: ~2 rows (approximately)
+-- Dumping data for table prisma_pos.res_stock_in: ~0 rows (approximately)
 DELETE FROM `res_stock_in`;
 /*!40000 ALTER TABLE `res_stock_in` DISABLE KEYS */;
 /*!40000 ALTER TABLE `res_stock_in` ENABLE KEYS */;
@@ -2580,7 +2584,7 @@ CREATE TABLE IF NOT EXISTS `res_stock_opname` (
   PRIMARY KEY (`tx_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.res_stock_opname: ~1 rows (approximately)
+-- Dumping data for table prisma_pos.res_stock_opname: ~0 rows (approximately)
 DELETE FROM `res_stock_opname`;
 /*!40000 ALTER TABLE `res_stock_opname` DISABLE KEYS */;
 /*!40000 ALTER TABLE `res_stock_opname` ENABLE KEYS */;
@@ -2602,7 +2606,7 @@ CREATE TABLE IF NOT EXISTS `res_stock_opname_detail` (
   PRIMARY KEY (`stock_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.res_stock_opname_detail: ~4 rows (approximately)
+-- Dumping data for table prisma_pos.res_stock_opname_detail: ~0 rows (approximately)
 DELETE FROM `res_stock_opname_detail`;
 /*!40000 ALTER TABLE `res_stock_opname_detail` DISABLE KEYS */;
 /*!40000 ALTER TABLE `res_stock_opname_detail` ENABLE KEYS */;
@@ -2620,7 +2624,7 @@ CREATE TABLE IF NOT EXISTS `res_stock_out` (
   PRIMARY KEY (`tx_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.res_stock_out: ~1 rows (approximately)
+-- Dumping data for table prisma_pos.res_stock_out: ~0 rows (approximately)
 DELETE FROM `res_stock_out`;
 /*!40000 ALTER TABLE `res_stock_out` DISABLE KEYS */;
 /*!40000 ALTER TABLE `res_stock_out` ENABLE KEYS */;
@@ -2643,7 +2647,7 @@ CREATE TABLE IF NOT EXISTS `res_supplier` (
   PRIMARY KEY (`supplier_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.res_supplier: ~4 rows (approximately)
+-- Dumping data for table prisma_pos.res_supplier: ~5 rows (approximately)
 DELETE FROM `res_supplier`;
 /*!40000 ALTER TABLE `res_supplier` DISABLE KEYS */;
 INSERT INTO `res_supplier` (`supplier_id`, `supplier_name`, `supplier_phone`, `supplier_fax`, `supplier_email`, `supplier_address`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
@@ -2670,7 +2674,7 @@ CREATE TABLE IF NOT EXISTS `res_tax` (
   PRIMARY KEY (`tax_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.res_tax: ~2 rows (approximately)
+-- Dumping data for table prisma_pos.res_tax: ~0 rows (approximately)
 DELETE FROM `res_tax`;
 /*!40000 ALTER TABLE `res_tax` DISABLE KEYS */;
 INSERT INTO `res_tax` (`tax_id`, `tax_code`, `tax_name`, `tax_ratio`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
@@ -2716,7 +2720,7 @@ CREATE TABLE IF NOT EXISTS `res_unit` (
   PRIMARY KEY (`unit_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.res_unit: ~4 rows (approximately)
+-- Dumping data for table prisma_pos.res_unit: ~7 rows (approximately)
 DELETE FROM `res_unit`;
 /*!40000 ALTER TABLE `res_unit` DISABLE KEYS */;
 INSERT INTO `res_unit` (`unit_id`, `unit_code`, `unit_name`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
@@ -2778,7 +2782,7 @@ CREATE TABLE IF NOT EXISTS `res_void` (
   PRIMARY KEY (`tx_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
--- Dumping data for table prisma_pos.res_void: ~0 rows (approximately)
+-- Dumping data for table prisma_pos.res_void: ~5 rows (approximately)
 DELETE FROM `res_void`;
 /*!40000 ALTER TABLE `res_void` DISABLE KEYS */;
 INSERT INTO `res_void` (`tx_id`, `tx_receipt_no`, `tx_id_source`, `tx_type`, `user_id`, `user_realname`, `customer_id`, `customer_name`, `tx_date`, `tx_time`, `void_notes`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
@@ -2809,7 +2813,7 @@ CREATE TABLE IF NOT EXISTS `res_void_detail` (
   PRIMARY KEY (`void_detail_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
--- Dumping data for table prisma_pos.res_void_detail: ~0 rows (approximately)
+-- Dumping data for table prisma_pos.res_void_detail: ~5 rows (approximately)
 DELETE FROM `res_void_detail`;
 /*!40000 ALTER TABLE `res_void_detail` DISABLE KEYS */;
 INSERT INTO `res_void_detail` (`void_detail_id`, `tx_id`, `tx_type`, `item_id`, `item_name`, `item_price_after_tax`, `tx_amount`, `void_amount`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
@@ -2879,14 +2883,51 @@ CREATE TABLE IF NOT EXISTS `ret_billing` (
   `is_active` tinyint(1) NOT NULL DEFAULT '1',
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`tx_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.ret_billing: ~2 rows (approximately)
+-- Dumping data for table prisma_pos.ret_billing: ~37 rows (approximately)
 DELETE FROM `ret_billing`;
 /*!40000 ALTER TABLE `ret_billing` DISABLE KEYS */;
 INSERT INTO `ret_billing` (`tx_id`, `tx_receipt_no`, `user_id`, `user_realname`, `customer_id`, `customer_name`, `tx_type`, `tx_date`, `tx_time`, `tx_notes`, `payment_type_id`, `tx_payment`, `tx_status`, `tx_cancel_notes`, `bank_id`, `bank_card_no`, `bank_reference_no`, `tx_total_buy_average`, `tx_total_tax`, `tx_total_discount`, `tx_total_before_tax`, `tx_total_after_tax`, `tx_total_grand`, `tx_change`, `tx_total_profit_before_tax`, `tx_total_profit_after_tax`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
 	(1, '180628000001', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-06-28', '11:42:18', '', 1, 5000.00, 1, NULL, 0, '', '', 0.00, 400.00, 0.00, 4000.00, 4400.00, 4400.00, 600.00, 4000.00, 3600.00, '2018-06-28 11:42:23', 'Super Retail', '2018-06-28 11:43:19', 'System', 1, 0),
-	(2, '180628000002', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-06-28', '13:44:46', '', 0, 0.00, -1, NULL, 0, '', '', 0.00, 4000.00, 0.00, 40000.00, 44000.00, 44000.00, 0.00, 40000.00, 36000.00, '2018-06-28 13:44:51', 'Super Retail', '2018-06-28 13:44:54', 'System', 1, 0);
+	(2, '180628000002', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-06-28', '13:44:46', '', 0, 0.00, -2, NULL, 0, '', '', 0.00, 4000.00, 0.00, 40000.00, 44000.00, 44000.00, 0.00, 40000.00, 36000.00, '2018-06-28 13:44:51', 'Super Retail', '2018-07-02 09:18:59', 'System', 1, 0),
+	(3, '180702000001', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-02', '09:28:48', '', 1, 10000.00, 1, NULL, 0, '', '', 0.00, 400.00, 0.00, 4000.00, 4400.00, 4400.00, 5600.00, 4000.00, 3600.00, '2018-07-02 09:28:51', 'Super Retail', '2018-07-02 09:28:57', 'System', 1, 0),
+	(4, '180702000002', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-02', '09:30:45', '', 1, 2000.00, 1, NULL, 0, '', '', 0.00, 180.00, 0.00, 1800.00, 1980.00, 1980.00, 20.00, 1800.00, 1620.00, '2018-07-02 09:30:47', 'Super Retail', '2018-07-02 09:30:51', 'System', 1, 0),
+	(5, '180702000003', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-02', '09:31:00', '', 1, 10000.00, 1, NULL, 0, '', '', 0.00, 540.00, 0.00, 5400.00, 5940.00, 5940.00, 4060.00, 5400.00, 4860.00, '2018-07-02 09:31:05', 'Super Retail', '2018-07-02 09:31:09', 'System', 1, 0),
+	(6, '180702000004', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-02', '09:31:47', '', 1, 50000.00, 1, NULL, 0, '', '', 0.00, 720.00, 0.00, 7200.00, 7920.00, 7920.00, 42080.00, 7200.00, 6480.00, '2018-07-02 09:31:49', 'Super Retail', '2018-07-02 09:31:54', 'System', 1, 0),
+	(7, '180702000005', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-02', '10:29:16', '', 1, 50000.00, 1, NULL, 0, '', '', 0.00, 1380.00, 0.00, 13800.00, 15180.00, 15180.00, 34820.00, 13800.00, 12420.00, '2018-07-02 10:29:18', 'Super Retail', '2018-07-02 10:29:26', 'Super Retail', 1, 0),
+	(8, '180702000006', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-02', '10:32:43', '', 1, 100000.00, 1, NULL, 0, '', '', 0.00, 4400.00, 0.00, 44000.00, 48400.00, 48400.00, 51600.00, 44000.00, 39600.00, '2018-07-02 10:32:48', 'Super Retail', '2018-07-02 10:33:00', 'System', 1, 0),
+	(9, '180702000007', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-02', '10:33:00', '', 1, 20000.00, 1, NULL, 0, '', '', 0.00, 180.00, 0.00, 1800.00, 1980.00, 1980.00, 18020.00, 1800.00, 1620.00, '2018-07-02 10:34:10', 'Super Retail', '2018-07-02 10:38:33', 'System', 1, 0),
+	(10, '180702000008', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-02', '10:38:43', '', 1, 2000.00, 1, NULL, 0, '', '', 0.00, 180.00, 0.00, 1800.00, 1980.00, 1980.00, 20.00, 1800.00, 1620.00, '2018-07-02 10:38:45', 'Super Retail', '2018-07-02 10:38:51', 'System', 1, 0),
+	(11, '180702000009', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-02', '10:49:45', '', 1, 100000.00, 1, NULL, 0, '', '', 0.00, 2000.00, 0.00, 20000.00, 22000.00, 22000.00, 78000.00, 20000.00, 18000.00, '2018-07-02 10:49:51', 'Super Retail', '2018-07-02 10:49:58', 'System', 1, 0),
+	(12, '180702000010', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-02', '10:49:59', '', 1, 50000.00, 1, NULL, 0, '', '', 0.00, 2000.00, 0.00, 20000.00, 22000.00, 22000.00, 28000.00, 20000.00, 18000.00, '2018-07-02 10:50:36', 'Super Retail', '2018-07-02 10:50:41', 'System', 1, 0),
+	(13, '180702000011', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-02', '10:51:07', '', 1, 50000.00, 1, NULL, 0, '', '', 0.00, 2400.00, 0.00, 24000.00, 26400.00, 26400.00, 23600.00, 24000.00, 21600.00, '2018-07-02 10:51:11', 'Super Retail', '2018-07-02 10:51:17', 'System', 1, 0),
+	(14, '180702000012', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-02', '10:51:28', '', 1, 50000.00, 1, NULL, 0, '', '', 0.00, 2400.00, 0.00, 24000.00, 26400.00, 26400.00, 23600.00, 24000.00, 21600.00, '2018-07-02 10:51:31', 'Super Retail', '2018-07-02 10:51:35', 'System', 1, 0),
+	(15, '180702000013', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-02', '10:53:04', '', 1, 50000.00, 1, NULL, 0, '', '', 0.00, 360.00, 0.00, 3600.00, 3960.00, 3960.00, 46040.00, 3600.00, 3240.00, '2018-07-02 10:53:06', 'Super Retail', '2018-07-02 10:53:10', 'System', 1, 0),
+	(16, '180702000014', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-02', '10:53:23', '', 1, 100000.00, 1, NULL, 0, '', '', 0.00, 1080.00, 0.00, 10800.00, 11880.00, 11880.00, 88120.00, 10800.00, 9720.00, '2018-07-02 10:53:27', 'Super Retail', '2018-07-02 10:53:34', 'System', 1, 0),
+	(17, '180702000015', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-02', '10:55:41', '', 1, 100000.00, 1, NULL, 0, '', '', 0.00, 2000.00, 0.00, 20000.00, 22000.00, 22000.00, 78000.00, 20000.00, 18000.00, '2018-07-02 10:55:44', 'Super Retail', '2018-07-02 10:55:49', 'System', 1, 0),
+	(18, '180702000016', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-02', '10:57:35', '', 1, 50000.00, 1, NULL, 0, '', '', 0.00, 2400.00, 0.00, 24000.00, 26400.00, 26400.00, 23600.00, 24000.00, 21600.00, '2018-07-02 10:57:39', 'Super Retail', '2018-07-02 10:57:43', 'System', 1, 0),
+	(19, '180702000017', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-02', '10:58:06', '', 1, 50000.00, 1, NULL, 0, '', '', 0.00, 2800.00, 0.00, 28000.00, 30800.00, 30800.00, 19200.00, 28000.00, 25200.00, '2018-07-02 10:58:12', 'Super Retail', '2018-07-02 10:58:15', 'System', 1, 0),
+	(20, '180702000018', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-02', '10:58:16', '', 1, 2000.00, 1, NULL, 0, '', '', 0.00, 180.00, 0.00, 1800.00, 1980.00, 1980.00, 20.00, 1800.00, 1620.00, '2018-07-02 10:59:08', 'Super Retail', '2018-07-02 10:59:14', 'System', 1, 0),
+	(21, '180702000019', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-02', '11:08:56', '', 0, 0.00, -2, NULL, 0, '', '', 0.00, 13200.00, 0.00, 132000.00, 145200.00, 145200.00, 0.00, 132000.00, 118800.00, '2018-07-02 11:13:45', 'Super Retail', '2018-07-03 08:41:32', 'Super Retail', 1, 0),
+	(22, '180702000020', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-02', '11:13:58', '', 0, 0.00, -2, NULL, 0, '', '', 0.00, 2400.00, 0.00, 24000.00, 26400.00, 26400.00, 0.00, 24000.00, 21600.00, '2018-07-02 11:14:07', 'Super Retail', '2018-07-03 08:41:32', 'System', 1, 0),
+	(23, '180702000021', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-02', '11:14:26', '', 0, 0.00, -2, NULL, 0, '', '', 0.00, 4000.00, 0.00, 40000.00, 44000.00, 44000.00, 0.00, 40000.00, 36000.00, '2018-07-02 11:14:30', 'Super Retail', '2018-07-03 08:41:32', 'System', 1, 0),
+	(24, '180702000022', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-02', '11:20:14', '', 1, 50000.00, 1, NULL, 0, '', '', 0.00, 2400.00, 0.00, 24000.00, 26400.00, 26400.00, 23600.00, 24000.00, 21600.00, '2018-07-02 11:20:18', 'Super Retail', '2018-07-02 11:20:23', 'System', 1, 0),
+	(25, '180702000023', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-02', '11:20:48', '', 1, 22222.00, 1, NULL, 0, '', '', 0.00, 400.00, 0.00, 4000.00, 4400.00, 4400.00, 17822.00, 4000.00, 3600.00, '2018-07-02 11:20:54', 'Super Retail', '2018-07-02 11:20:58', 'System', 1, 0),
+	(26, '180702000024', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-02', '11:21:42', '', 1, 100000.00, 1, NULL, 0, '', '', 0.00, 2400.00, 0.00, 24000.00, 26400.00, 26400.00, 73600.00, 24000.00, 21600.00, '2018-07-02 11:21:48', 'Super Retail', '2018-07-02 11:21:56', 'System', 1, 0),
+	(27, '180702000025', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-02', '11:23:27', '', 1, 50000.00, 1, NULL, 0, '', '', 0.00, 2400.00, 0.00, 24000.00, 26400.00, 26400.00, 23600.00, 24000.00, 21600.00, '2018-07-02 11:23:31', 'Super Retail', '2018-07-02 11:23:34', 'System', 1, 0),
+	(28, '180702000026', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-02', '11:24:23', '', 1, 50000.00, 1, NULL, 0, '', '', 0.00, 2400.00, 0.00, 24000.00, 26400.00, 26400.00, 23600.00, 24000.00, 21600.00, '2018-07-02 11:24:27', 'Super Retail', '2018-07-02 11:24:39', 'System', 1, 0),
+	(29, '180702000027', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-02', '11:24:39', '', 0, 0.00, -2, NULL, 0, '', '', 0.00, 2800.00, 0.00, 28000.00, 30800.00, 30800.00, 0.00, 28000.00, 25200.00, '2018-07-02 11:25:02', 'Super Retail', '2018-07-03 08:41:32', 'System', 1, 0),
+	(30, '180702000028', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-02', '11:27:39', '', 2, 0.00, 1, NULL, 1, '20000', '', 0.00, 800.00, 0.00, 8000.00, 8800.00, 8800.00, 0.00, 8000.00, 7200.00, '2018-07-02 11:27:42', 'Super Retail', '2018-07-02 11:27:48', 'System', 1, 0),
+	(31, '180702000029', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-02', '11:29:30', '', 2, 4400.00, 1, NULL, 1, '123', '', 0.00, 400.00, 0.00, 4000.00, 4400.00, 4400.00, 0.00, 4000.00, 3600.00, '2018-07-02 11:29:32', 'Super Retail', '2018-07-02 11:29:35', 'System', 1, 0),
+	(32, '180702000030', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-02', '11:29:36', '', 0, 0.00, -2, NULL, 0, '', '', 0.00, 2000.00, 0.00, 20000.00, 22000.00, 22000.00, 0.00, 20000.00, 18000.00, '2018-07-02 11:30:32', 'Super Retail', '2018-07-03 08:41:32', 'System', 1, 0),
+	(33, '180702000031', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-02', '11:30:36', '', 0, 0.00, -2, NULL, 0, '', '', 0.00, 1600.00, 0.00, 16000.00, 17600.00, 17600.00, 0.00, 16000.00, 14400.00, '2018-07-02 11:30:39', 'Super Retail', '2018-07-03 08:41:32', 'System', 1, 0),
+	(34, '180702000032', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-02', '11:30:40', '', 1, 50000.00, 1, NULL, 0, '', '', 0.00, 2000.00, 0.00, 20000.00, 22000.00, 22000.00, 28000.00, 20000.00, 18000.00, '2018-07-02 11:30:43', 'Super Retail', '2018-07-02 11:30:47', 'System', 1, 0),
+	(35, '180702000033', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-02', '11:30:47', '', 2, 5940.00, 1, NULL, 1, '123', '', 0.00, 540.00, 0.00, 5400.00, 5940.00, 5940.00, 0.00, 5400.00, 4860.00, '2018-07-02 11:31:05', 'Super Retail', '2018-07-02 11:31:09', 'System', 1, 0),
+	(36, '180702000034', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-02', '11:42:42', '', 1, 50000.00, 1, NULL, 0, '', '', 56218.00, 180.00, 0.00, 1800.00, 1980.00, 1980.00, 48020.00, 0.00, 0.00, '2018-07-02 11:42:45', 'Super Retail', '2018-07-02 11:42:49', 'System', 1, 0),
+	(37, '180703000001', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-03', '08:41:32', '', 1, 50000.00, 1, NULL, 0, '', '', 70030.00, 4000.00, 0.00, 40000.00, 44000.00, 44000.00, 6000.00, 0.00, 0.00, '2018-07-03 08:41:37', 'Super Retail', '2018-07-03 08:41:42', 'System', 1, 0),
+	(38, '180703000002', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-03', '08:41:53', '', 1, 50000.00, 1, NULL, 0, '', '', 28492.00, 180.00, 0.00, 1800.00, 1980.00, 1980.00, 48020.00, 0.00, 0.00, '2018-07-03 08:43:15', 'Super Retail', '2018-07-03 08:43:24', 'System', 1, 0),
+	(39, '180704000001', 1, 'Super Retail', 0, 'Umum', 'TXS', '2018-07-04', '13:17:41', '', 0, 0.00, -1, NULL, 0, '', '', 170952.00, 1080.00, 0.00, 10800.00, 11880.00, 11880.00, 0.00, 0.00, 0.00, '2018-07-04 13:17:45', 'Super Retail', '2018-07-04 13:17:54', 'System', 1, 0);
 /*!40000 ALTER TABLE `ret_billing` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_billing_buyall
@@ -2931,11 +2972,30 @@ CREATE TABLE IF NOT EXISTS `ret_billing_buyget` (
   `is_active` tinyint(1) NOT NULL,
   `is_deleted` tinyint(1) NOT NULL,
   PRIMARY KEY (`billing_buyget_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.ret_billing_buyget: ~0 rows (approximately)
+-- Dumping data for table prisma_pos.ret_billing_buyget: ~17 rows (approximately)
 DELETE FROM `ret_billing_buyget`;
 /*!40000 ALTER TABLE `ret_billing_buyget` DISABLE KEYS */;
+INSERT INTO `ret_billing_buyget` (`billing_buyget_id`, `tx_id`, `tx_type`, `promo_buyget_id`, `buy_item_id`, `buy_amount`, `get_item_id`, `get_amount`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
+	(1, 11, 'PRB', 3, 1, 5.00, 1, 1.00, '2018-07-02 10:49:51', 'System', '0000-00-00 00:00:00', 'System', 0, 0),
+	(2, 12, 'PRB', 3, 1, 5.00, 1, 1.00, '2018-07-02 10:50:36', 'System', '0000-00-00 00:00:00', 'System', 0, 0),
+	(3, 13, 'PRB', 3, 1, 6.00, 1, 1.00, '2018-07-02 10:51:11', 'System', '0000-00-00 00:00:00', 'System', 0, 0),
+	(4, 14, 'PRB', 3, 1, 6.00, 1, 1.00, '2018-07-02 10:51:31', 'System', '0000-00-00 00:00:00', 'System', 0, 0),
+	(5, 17, 'PRB', 3, 1, 5.00, 1, 1.00, '2018-07-02 10:55:44', 'System', '0000-00-00 00:00:00', 'System', 0, 0),
+	(6, 18, 'PRB', 3, 1, 6.00, 1, 1.00, '2018-07-02 10:57:38', 'System', '0000-00-00 00:00:00', 'System', 0, 0),
+	(7, 19, 'PRB', 3, 1, 7.00, 1, 1.00, '2018-07-02 10:58:12', 'System', '0000-00-00 00:00:00', 'System', 0, 0),
+	(8, 21, 'PRB', 3, 1, 33.00, 1, 1.00, '2018-07-02 11:13:45', 'System', '0000-00-00 00:00:00', 'System', 0, 0),
+	(9, 22, 'PRB', 3, 1, 6.00, 1, 1.00, '2018-07-02 11:14:07', 'System', '0000-00-00 00:00:00', 'System', 0, 0),
+	(10, 23, 'PRB', 3, 1, 10.00, 1, 1.00, '2018-07-02 11:14:30', 'System', '0000-00-00 00:00:00', 'System', 0, 0),
+	(11, 24, 'PRB', 3, 1, 6.00, 1, 1.00, '2018-07-02 11:20:18', 'System', '0000-00-00 00:00:00', 'System', 0, 0),
+	(12, 26, 'PRB', 3, 1, 6.00, 1, 1.00, '2018-07-02 11:21:48', 'System', '0000-00-00 00:00:00', 'System', 0, 0),
+	(13, 27, 'PRB', 3, 1, 6.00, 1, 1.00, '2018-07-02 11:23:31', 'System', '0000-00-00 00:00:00', 'System', 0, 0),
+	(14, 28, 'PRB', 3, 1, 6.00, 1, 1.00, '2018-07-02 11:24:27', 'System', '0000-00-00 00:00:00', 'System', 0, 0),
+	(15, 29, 'PRB', 3, 1, 7.00, 1, 1.00, '2018-07-02 11:25:02', 'System', '0000-00-00 00:00:00', 'System', 0, 0),
+	(16, 32, 'PRB', 3, 1, 5.00, 1, 1.00, '2018-07-02 11:30:32', 'System', '0000-00-00 00:00:00', 'System', 0, 0),
+	(17, 34, 'PRB', 3, 1, 5.00, 1, 1.00, '2018-07-02 11:30:43', 'System', '0000-00-00 00:00:00', 'System', 0, 0),
+	(18, 37, 'PRB', 3, 1, 10.00, 1, 1.00, '2018-07-03 08:41:37', 'System', '0000-00-00 00:00:00', 'System', 0, 0);
 /*!40000 ALTER TABLE `ret_billing_buyget` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_billing_buyitem
@@ -2989,14 +3049,52 @@ CREATE TABLE IF NOT EXISTS `ret_billing_detail` (
   `is_active` tinyint(1) NOT NULL DEFAULT '1',
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`billing_detail_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
--- Dumping data for table prisma_pos.ret_billing_detail: ~2 rows (approximately)
+-- Dumping data for table prisma_pos.ret_billing_detail: ~38 rows (approximately)
 DELETE FROM `ret_billing_detail`;
 /*!40000 ALTER TABLE `ret_billing_detail` DISABLE KEYS */;
 INSERT INTO `ret_billing_detail` (`billing_detail_id`, `tx_id`, `tx_type`, `item_id`, `item_name`, `item_price_before_tax`, `item_price_after_tax`, `item_price_buy_average`, `tx_amount`, `tx_subtotal_tax`, `tx_subtotal_discount`, `tx_subtotal_buy_average`, `tx_subtotal_before_tax`, `tx_subtotal_after_tax`, `tx_subtotal_profit_before_tax`, `tx_subtotal_profit_after_tax`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
 	(1, 1, 'TXS', 1, 'Ayam Goreng', 4000.00, 4400.00, 0.00, 1, 400.00, 0.00, 0.00, 4000.00, 4400.00, 4000.00, 3600.00, '2018-06-28 11:42:21', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
-	(2, 2, 'TXS', 1, 'Ayam Goreng', 4000.00, 4400.00, 0.00, 10, 4000.00, 0.00, 0.00, 40000.00, 44000.00, 40000.00, 36000.00, '2018-06-28 13:44:51', 'System', '0000-00-00 00:00:00', 'System', 1, 0);
+	(2, 2, 'TXS', 1, 'Ayam Goreng', 4000.00, 4400.00, 0.00, 10, 4000.00, 0.00, 0.00, 40000.00, 44000.00, 40000.00, 36000.00, '2018-06-28 13:44:51', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(3, 3, 'TXS', 1, 'Ayam Goreng', 4000.00, 4400.00, 0.00, 1, 400.00, 0.00, 0.00, 4000.00, 4400.00, 4000.00, 3600.00, '2018-07-02 09:28:51', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(4, 4, 'TXS', 2, 'Es Teh', 1800.00, 1980.00, 0.00, 1, 180.00, 0.00, 0.00, 1800.00, 1980.00, 1800.00, 1620.00, '2018-07-02 09:30:47', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(5, 5, 'TXS', 2, 'Es Teh', 1800.00, 1980.00, 0.00, 3, 540.00, 0.00, 0.00, 5400.00, 5940.00, 5400.00, 4860.00, '2018-07-02 09:31:05', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(6, 6, 'TXS', 2, 'Es Teh', 1800.00, 1980.00, 0.00, 4, 720.00, 0.00, 0.00, 7200.00, 7920.00, 7200.00, 6480.00, '2018-07-02 09:31:49', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(7, 7, 'TXS', 2, 'Es Teh', 1800.00, 1980.00, 0.00, 1, 180.00, 0.00, 0.00, 1800.00, 1980.00, 1800.00, 1620.00, '2018-07-02 10:29:18', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(8, 7, 'TXS', 1, 'Ayam Goreng', 4000.00, 4400.00, 0.00, 3, 1200.00, 0.00, 0.00, 12000.00, 13200.00, 12000.00, 10800.00, '2018-07-02 10:29:22', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(9, 8, 'TXS', 1, 'Ayam Goreng', 4000.00, 4400.00, 0.00, 11, 4400.00, 0.00, 0.00, 44000.00, 48400.00, 44000.00, 39600.00, '2018-07-02 10:32:48', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(10, 9, 'TXS', 2, 'Es Teh', 1800.00, 1980.00, 0.00, 1, 180.00, 0.00, 0.00, 1800.00, 1980.00, 1800.00, 1620.00, '2018-07-02 10:34:10', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(11, 10, 'TXS', 2, 'Es Teh', 1800.00, 1980.00, 0.00, 1, 180.00, 0.00, 0.00, 1800.00, 1980.00, 1800.00, 1620.00, '2018-07-02 10:38:45', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(12, 11, 'TXS', 1, 'Ayam Goreng', 4000.00, 4400.00, 0.00, 5, 2000.00, 0.00, 0.00, 20000.00, 22000.00, 20000.00, 18000.00, '2018-07-02 10:49:51', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(13, 12, 'TXS', 1, 'Ayam Goreng', 4000.00, 4400.00, 0.00, 5, 2000.00, 0.00, 0.00, 20000.00, 22000.00, 20000.00, 18000.00, '2018-07-02 10:50:36', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(14, 13, 'TXS', 1, 'Ayam Goreng', 4000.00, 4400.00, 0.00, 6, 2400.00, 0.00, 0.00, 24000.00, 26400.00, 24000.00, 21600.00, '2018-07-02 10:51:10', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(15, 14, 'TXS', 1, 'Ayam Goreng', 4000.00, 4400.00, 0.00, 6, 2400.00, 0.00, 0.00, 24000.00, 26400.00, 24000.00, 21600.00, '2018-07-02 10:51:31', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(16, 15, 'TXS', 2, 'Es Teh', 1800.00, 1980.00, 0.00, 2, 360.00, 0.00, 0.00, 3600.00, 3960.00, 3600.00, 3240.00, '2018-07-02 10:53:06', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(17, 16, 'TXS', 2, 'Es Teh', 1800.00, 1980.00, 0.00, 6, 1080.00, 0.00, 0.00, 10800.00, 11880.00, 10800.00, 9720.00, '2018-07-02 10:53:27', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(18, 17, 'TXS', 1, 'Ayam Goreng', 4000.00, 4400.00, 0.00, 5, 2000.00, 0.00, 0.00, 20000.00, 22000.00, 20000.00, 18000.00, '2018-07-02 10:55:44', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(19, 18, 'TXS', 1, 'Ayam Goreng', 4000.00, 4400.00, 0.00, 6, 2400.00, 0.00, 0.00, 24000.00, 26400.00, 24000.00, 21600.00, '2018-07-02 10:57:38', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(20, 19, 'TXS', 1, 'Ayam Goreng', 4000.00, 4400.00, 0.00, 7, 2800.00, 0.00, 0.00, 28000.00, 30800.00, 28000.00, 25200.00, '2018-07-02 10:58:12', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(21, 20, 'TXS', 2, 'Es Teh', 1800.00, 1980.00, 0.00, 1, 180.00, 0.00, 0.00, 1800.00, 1980.00, 1800.00, 1620.00, '2018-07-02 10:59:08', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(22, 21, 'TXS', 1, 'Ayam Goreng', 4000.00, 4400.00, 0.00, 33, 13200.00, 0.00, 0.00, 132000.00, 145200.00, 132000.00, 118800.00, '2018-07-02 11:13:45', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(23, 22, 'TXS', 1, 'Ayam Goreng', 4000.00, 4400.00, 0.00, 6, 2400.00, 0.00, 0.00, 24000.00, 26400.00, 24000.00, 21600.00, '2018-07-02 11:14:07', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(24, 23, 'TXS', 1, 'Ayam Goreng', 4000.00, 4400.00, 0.00, 10, 4000.00, 0.00, 0.00, 40000.00, 44000.00, 40000.00, 36000.00, '2018-07-02 11:14:30', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(25, 24, 'TXS', 1, 'Ayam Goreng', 4000.00, 4400.00, 0.00, 6, 2400.00, 0.00, 0.00, 24000.00, 26400.00, 24000.00, 21600.00, '2018-07-02 11:20:18', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(26, 25, 'TXS', 1, 'Ayam Goreng', 4000.00, 4400.00, 0.00, 1, 400.00, 0.00, 0.00, 4000.00, 4400.00, 4000.00, 3600.00, '2018-07-02 11:20:54', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(27, 26, 'TXS', 1, 'Ayam Goreng', 4000.00, 4400.00, 0.00, 6, 2400.00, 0.00, 0.00, 24000.00, 26400.00, 24000.00, 21600.00, '2018-07-02 11:21:48', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(28, 27, 'TXS', 1, 'Ayam Goreng', 4000.00, 4400.00, 0.00, 6, 2400.00, 0.00, 0.00, 24000.00, 26400.00, 24000.00, 21600.00, '2018-07-02 11:23:31', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(29, 28, 'TXS', 1, 'Ayam Goreng', 4000.00, 4400.00, 0.00, 6, 2400.00, 0.00, 0.00, 24000.00, 26400.00, 24000.00, 21600.00, '2018-07-02 11:24:26', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(30, 29, 'TXS', 1, 'Ayam Goreng', 4000.00, 4400.00, 0.00, 7, 2800.00, 0.00, 0.00, 28000.00, 30800.00, 28000.00, 25200.00, '2018-07-02 11:25:01', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(31, 30, 'TXS', 1, 'Ayam Goreng', 4000.00, 4400.00, 0.00, 2, 800.00, 0.00, 0.00, 8000.00, 8800.00, 8000.00, 7200.00, '2018-07-02 11:27:41', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(32, 31, 'TXS', 1, 'Ayam Goreng', 4000.00, 4400.00, 0.00, 1, 400.00, 0.00, 0.00, 4000.00, 4400.00, 4000.00, 3600.00, '2018-07-02 11:29:32', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(33, 32, 'TXS', 1, 'Ayam Goreng', 4000.00, 4400.00, 0.00, 5, 2000.00, 0.00, 0.00, 20000.00, 22000.00, 20000.00, 18000.00, '2018-07-02 11:30:32', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(34, 33, 'TXS', 1, 'Ayam Goreng', 4000.00, 4400.00, 0.00, 4, 1600.00, 0.00, 0.00, 16000.00, 17600.00, 16000.00, 14400.00, '2018-07-02 11:30:39', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(35, 34, 'TXS', 1, 'Ayam Goreng', 4000.00, 4400.00, 0.00, 5, 2000.00, 0.00, 0.00, 20000.00, 22000.00, 20000.00, 18000.00, '2018-07-02 11:30:43', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(36, 35, 'TXS', 2, 'Es Teh', 1800.00, 1980.00, 0.00, 3, 540.00, 0.00, 0.00, 5400.00, 5940.00, 5400.00, 4860.00, '2018-07-02 11:31:05', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(37, 36, 'TXS', 2, 'Es Teh', 1800.00, 1980.00, 56218.00, 1, 180.00, 0.00, 56218.00, 1800.00, 1980.00, -54418.00, -54598.00, '2018-07-02 11:42:45', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(38, 37, 'TXS', 1, 'Ayam Goreng', 4000.00, 4400.00, 7003.00, 10, 4000.00, 0.00, 70030.00, 40000.00, 44000.00, -30030.00, -34030.00, '2018-07-03 08:41:37', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(39, 38, 'TXS', 2, 'Es Teh', 1800.00, 1980.00, 28492.00, 1, 180.00, 0.00, 28492.00, 1800.00, 1980.00, -26692.00, -26872.00, '2018-07-03 08:43:14', 'System', '0000-00-00 00:00:00', 'System', 1, 0),
+	(40, 39, 'TXS', 2, 'Es Teh', 1800.00, 1980.00, 28492.00, 6, 1080.00, 0.00, 170952.00, 10800.00, 11880.00, -160152.00, -161232.00, '2018-07-04 13:17:45', 'System', '0000-00-00 00:00:00', 'System', 1, 0);
 /*!40000 ALTER TABLE `ret_billing_detail` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_category
@@ -3064,7 +3162,7 @@ CREATE TABLE IF NOT EXISTS `ret_client` (
   PRIMARY KEY (`client_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.ret_client: ~1 rows (approximately)
+-- Dumping data for table prisma_pos.ret_client: ~0 rows (approximately)
 DELETE FROM `ret_client`;
 /*!40000 ALTER TABLE `ret_client` DISABLE KEYS */;
 INSERT INTO `ret_client` (`client_id`, `client_name`, `client_brand`, `client_status`, `client_street`, `client_subdistrict`, `client_district`, `client_city`, `client_province`, `client_email`, `client_phone_1`, `client_phone_2`, `client_npwp`, `client_npwpd`, `client_owner_name`, `client_owner_address`, `client_notes`, `client_serial_number`, `client_keyboard_status`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
@@ -3164,9 +3262,9 @@ CREATE TABLE IF NOT EXISTS `ret_log` (
   `log_date` date NOT NULL,
   `log_time` time NOT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
--- Dumping data for table prisma_pos.ret_log: ~54 rows (approximately)
+-- Dumping data for table prisma_pos.ret_log: ~65 rows (approximately)
 DELETE FROM `ret_log`;
 /*!40000 ALTER TABLE `ret_log` DISABLE KEYS */;
 INSERT INTO `ret_log` (`log_id`, `user_id`, `user_realname`, `log_type`, `log_date`, `log_time`) VALUES
@@ -3223,7 +3321,27 @@ INSERT INTO `ret_log` (`log_id`, `user_id`, `user_realname`, `log_type`, `log_da
 	(50, 1, 'Super Retail', 'Sign In', '2018-06-28', '11:32:13'),
 	(51, 1, 'Super Retail', 'Sign In', '2018-06-28', '11:41:20'),
 	(52, 1, 'Super Retail', 'Sign In', '2018-06-29', '03:36:31'),
-	(53, 1, 'Super Retail', 'Sign Out', '2018-06-29', '03:36:39');
+	(53, 1, 'Super Retail', 'Sign Out', '2018-06-29', '03:36:39'),
+	(54, 1, 'Super Retail', 'Sign In', '2018-07-02', '09:10:46'),
+	(55, 1, 'Super Retail', 'Sign Out', '2018-07-02', '11:05:18'),
+	(56, 1, 'Super Retail', 'Sign In', '2018-07-02', '11:08:36'),
+	(57, 1, 'Super Retail', 'Sign Out', '2018-07-02', '11:42:23'),
+	(58, 1, 'Super Retail', 'Sign In', '2018-07-02', '11:42:39'),
+	(59, 1, 'Super Retail', 'Sign Out', '2018-07-02', '11:47:45'),
+	(60, 1, 'Super Retail', 'Sign In', '2018-07-02', '12:50:57'),
+	(61, 1, 'Super Retail', 'Sign In', '2018-07-02', '12:59:49'),
+	(62, 1, 'Super Retail', 'Sign In', '2018-07-03', '08:33:12'),
+	(63, 1, 'Super Retail', 'Sign Out', '2018-07-03', '08:36:47'),
+	(64, 1, 'Super Retail', 'Sign In', '2018-07-03', '08:41:27'),
+	(65, 1, 'Super Retail', 'Sign Out', '2018-07-03', '08:43:43'),
+	(66, 1, 'Super Retail', 'Sign In', '2018-07-03', '09:40:52'),
+	(67, 1, 'Super Retail', 'Sign In', '2018-07-03', '09:57:43'),
+	(68, 1, 'Super Retail', 'Sign In', '2018-07-03', '10:01:40'),
+	(69, 1, 'Super Retail', 'Sign In', '2018-07-04', '08:12:03'),
+	(70, 1, 'Super Retail', 'Sign In', '2018-07-04', '09:30:52'),
+	(71, 1, 'Super Retail', 'Sign In', '2018-07-04', '10:25:15'),
+	(72, 1, 'Super Retail', 'Sign Out', '2018-07-04', '12:53:02'),
+	(73, 1, 'Super Retail', 'Sign In', '2018-07-04', '13:10:37');
 /*!40000 ALTER TABLE `ret_log` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_module
@@ -3286,8 +3404,7 @@ INSERT INTO `ret_module` (`module_id`, `module_parent`, `module_name`, `module_f
 	('99.02', '99', 'Role', 'ret_role', 'ret_role', 'index', 'users', '2018-04-04 09:46:50', 'Super Administrator', '2018-04-19 10:40:40', 'Super Administrator', 1, 0),
 	('99.03', '99', 'Pengguna', 'ret_user', 'ret_user', 'index', '', '2018-04-04 10:37:41', 'Super Administrator', '2018-04-19 10:40:49', 'Super Administrator', 1, 0),
 	('99.04', '99', 'Hak Akses', 'ret_permission', 'ret_permission', 'index', 'list', '2018-04-05 08:20:56', 'Super Administrator', '2018-04-19 10:40:56', '', 1, 0),
-	('99.05', '99', 'Client', 'ret_client', 'ret_client', 'index', 'th-large', '2018-04-05 17:31:04', 'Super Administrator', '2018-04-20 08:15:47', 'Super Administrator', 1, 0),
-	('99.06', '99', 'Struk', 'ret_receipt', 'ret_receipt', 'index', 'print', '2018-06-06 10:58:40', 'Super Retail', '2018-06-06 11:04:56', 'Super Retail', 1, 0);
+	('99.05', '99', 'Client', 'ret_client', 'ret_client', 'index', 'th-large', '2018-04-05 17:31:04', 'Super Administrator', '2018-04-20 08:15:47', 'Super Administrator', 1, 0);
 /*!40000 ALTER TABLE `ret_module` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_payment_type
@@ -3485,7 +3602,7 @@ CREATE TABLE IF NOT EXISTS `ret_promo` (
   `is_active` tinyint(1) NOT NULL DEFAULT '1',
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`promo_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table prisma_pos.ret_promo: ~4 rows (approximately)
 DELETE FROM `ret_promo`;
@@ -3494,7 +3611,8 @@ INSERT INTO `ret_promo` (`promo_id`, `promo_type_id`, `promo_name`, `promo_date_
 	(1, 2, 'Promo ayam beli 5 diskon 5%', '2018-05-01', '2018-05-31', '00:00:01', '23:59:59', 1, 1, 1, 1, 1, 1, 1, '2018-05-14 11:13:13', 'Super Retail', '0000-00-00 00:00:00', 'System', 1, 0),
 	(2, 1, 'Beli 3 Es Teh Gratis 1', '2018-05-01', '2018-05-31', '00:00:01', '23:59:59', 1, 1, 1, 1, 1, 1, 1, '2018-05-15 09:36:17', 'Super Retail', '0000-00-00 00:00:00', 'System', 1, 0),
 	(3, 3, 'Setiap Belanja 100.000 diskon 3%', '2018-05-01', '2018-05-31', '00:00:01', '23:59:59', 1, 1, 1, 1, 1, 1, 1, '2018-05-15 09:56:44', 'Super Retail', '0000-00-00 00:00:00', 'System', 1, 0),
-	(4, 1, 'Super Promo', '2018-05-28', '2018-05-28', '00:00:01', '23:59:59', 1, 1, 1, 1, 1, 1, 1, '2018-05-28 08:51:08', 'Super Retail', '0000-00-00 00:00:00', 'System', 1, 0);
+	(4, 1, 'Super Promo', '2018-05-28', '2018-05-28', '00:00:01', '23:59:59', 1, 1, 1, 1, 1, 1, 1, '2018-05-28 08:51:08', 'Super Retail', '0000-00-00 00:00:00', 'System', 1, 0),
+	(5, 1, 'Beli 5 dapet 1', '2018-07-01', '2018-07-31', '00:00:01', '23:59:59', 1, 1, 1, 1, 1, 1, 1, '2018-07-02 10:49:43', 'Super Retail', '0000-00-00 00:00:00', 'System', 1, 0);
 /*!40000 ALTER TABLE `ret_promo` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_promo_buyall
@@ -3513,7 +3631,7 @@ CREATE TABLE IF NOT EXISTS `ret_promo_buyall` (
   PRIMARY KEY (`promo_buyall_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.ret_promo_buyall: ~1 rows (approximately)
+-- Dumping data for table prisma_pos.ret_promo_buyall: ~0 rows (approximately)
 DELETE FROM `ret_promo_buyall`;
 /*!40000 ALTER TABLE `ret_promo_buyall` DISABLE KEYS */;
 INSERT INTO `ret_promo_buyall` (`promo_buyall_id`, `promo_id`, `buy_amount`, `get_discount`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
@@ -3536,14 +3654,15 @@ CREATE TABLE IF NOT EXISTS `ret_promo_buyget` (
   `is_active` tinyint(1) NOT NULL DEFAULT '1',
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`promo_buyget_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table prisma_pos.ret_promo_buyget: ~2 rows (approximately)
 DELETE FROM `ret_promo_buyget`;
 /*!40000 ALTER TABLE `ret_promo_buyget` DISABLE KEYS */;
 INSERT INTO `ret_promo_buyget` (`promo_buyget_id`, `promo_id`, `buy_item_id`, `buy_amount`, `get_item_id`, `get_amount`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
 	(1, 2, 2, 3.00, 2, 1.00, '2018-05-15 09:36:17', 'Super Retail', '0000-00-00 00:00:00', 'System', 1, 0),
-	(2, 4, 1, 2.00, 2, 3.00, '2018-05-28 08:51:07', 'Super Retail', '0000-00-00 00:00:00', 'System', 1, 0);
+	(2, 4, 1, 2.00, 2, 3.00, '2018-05-28 08:51:07', 'Super Retail', '0000-00-00 00:00:00', 'System', 1, 0),
+	(3, 5, 1, 5.00, 1, 1.00, '2018-07-02 10:49:42', 'Super Retail', '0000-00-00 00:00:00', 'System', 1, 0);
 /*!40000 ALTER TABLE `ret_promo_buyget` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_promo_buyitem
@@ -3563,7 +3682,7 @@ CREATE TABLE IF NOT EXISTS `ret_promo_buyitem` (
   PRIMARY KEY (`promo_buyitem_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.ret_promo_buyitem: ~1 rows (approximately)
+-- Dumping data for table prisma_pos.ret_promo_buyitem: ~0 rows (approximately)
 DELETE FROM `ret_promo_buyitem`;
 /*!40000 ALTER TABLE `ret_promo_buyitem` DISABLE KEYS */;
 INSERT INTO `ret_promo_buyitem` (`promo_buyitem_id`, `promo_id`, `buy_item_id`, `buy_amount`, `get_discount`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
@@ -3594,33 +3713,6 @@ INSERT INTO `ret_promo_type` (`promo_type_id`, `promo_type_code`, `promo_type_na
 	(3, 'PRA', 'Promo Buy All\r\n', '2018-05-08 14:09:49', 'System', '0000-00-00 00:00:00', 'System', 1, 0);
 /*!40000 ALTER TABLE `ret_promo_type` ENABLE KEYS */;
 
--- Dumping structure for table prisma_pos.ret_receipt
-DROP TABLE IF EXISTS `ret_receipt`;
-CREATE TABLE IF NOT EXISTS `ret_receipt` (
-  `receipt_id` tinyint(1) NOT NULL AUTO_INCREMENT,
-  `receipt_name` tinyint(1) NOT NULL DEFAULT '1',
-  `receipt_street` tinyint(1) NOT NULL DEFAULT '1',
-  `receipt_district` tinyint(1) NOT NULL DEFAULT '1',
-  `receipt_city` tinyint(1) NOT NULL DEFAULT '1',
-  `receipt_province` tinyint(1) NOT NULL DEFAULT '1',
-  `receipt_npwp` tinyint(1) NOT NULL DEFAULT '1',
-  `receipt_footer` varchar(255) NOT NULL,
-  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `created_by` varchar(32) NOT NULL DEFAULT 'System',
-  `updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `updated_by` varchar(32) NOT NULL DEFAULT 'System',
-  `is_active` tinyint(1) NOT NULL DEFAULT '1',
-  `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`receipt_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
-
--- Dumping data for table prisma_pos.ret_receipt: ~1 rows (approximately)
-DELETE FROM `ret_receipt`;
-/*!40000 ALTER TABLE `ret_receipt` DISABLE KEYS */;
-INSERT INTO `ret_receipt` (`receipt_id`, `receipt_name`, `receipt_street`, `receipt_district`, `receipt_city`, `receipt_province`, `receipt_npwp`, `receipt_footer`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
-	(1, 1, 0, 0, 0, 1, 1, 'Terimakasih atas kedatangan anda.', '2018-05-08 10:26:03', 'System', '2018-06-06 10:55:53', 'Super Retail', 1, 0);
-/*!40000 ALTER TABLE `ret_receipt` ENABLE KEYS */;
-
 -- Dumping structure for table prisma_pos.ret_return
 DROP TABLE IF EXISTS `ret_return`;
 CREATE TABLE IF NOT EXISTS `ret_return` (
@@ -3644,7 +3736,7 @@ CREATE TABLE IF NOT EXISTS `ret_return` (
   PRIMARY KEY (`tx_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
--- Dumping data for table prisma_pos.ret_return: ~1 rows (approximately)
+-- Dumping data for table prisma_pos.ret_return: ~0 rows (approximately)
 DELETE FROM `ret_return`;
 /*!40000 ALTER TABLE `ret_return` DISABLE KEYS */;
 INSERT INTO `ret_return` (`tx_id`, `tx_id_source`, `tx_receipt_no`, `tx_type`, `user_id`, `user_realname`, `customer_id`, `customer_name`, `tx_date`, `tx_time`, `return_notes`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
@@ -3671,7 +3763,7 @@ CREATE TABLE IF NOT EXISTS `ret_return_detail` (
   PRIMARY KEY (`return_detail_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
--- Dumping data for table prisma_pos.ret_return_detail: ~1 rows (approximately)
+-- Dumping data for table prisma_pos.ret_return_detail: ~0 rows (approximately)
 DELETE FROM `ret_return_detail`;
 /*!40000 ALTER TABLE `ret_return_detail` DISABLE KEYS */;
 INSERT INTO `ret_return_detail` (`return_detail_id`, `tx_id`, `tx_type`, `item_id`, `item_name`, `item_price_after_tax`, `tx_amount`, `return_amount`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
@@ -3750,7 +3842,7 @@ CREATE TABLE IF NOT EXISTS `ret_shift` (
   `updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `updated_by` varchar(128) NOT NULL DEFAULT 'System',
   PRIMARY KEY (`shift_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- Dumping data for table prisma_pos.ret_shift: ~5 rows (approximately)
 DELETE FROM `ret_shift`;
@@ -3760,7 +3852,8 @@ INSERT INTO `ret_shift` (`shift_id`, `user_id`, `user_realname`, `shift_in_statu
 	(2, 1, 'Super Retail', 1, 1, '2018-05-28', '10:17:11', '2018-05-28', '10:17:17', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '2018-05-28 10:17:11', 'Super Retail', '0000-00-00 00:00:00', 'Super Retail'),
 	(3, 1, 'Super Retail', 1, 1, '2018-05-28', '10:19:49', '2018-05-30', '20:57:05', 1, 1, 1, 12, 1, 1, 0, 297000, 5, 5, 51, 1, 1, 1, 17875, 314875, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '2018-05-28 10:19:49', 'Super Retail', '0000-00-00 00:00:00', 'Super Retail'),
 	(4, 1, 'Super Retail', 1, 1, '2018-05-30', '20:57:07', '2018-06-05', '10:57:10', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '2018-05-30 20:57:07', 'Super Retail', '0000-00-00 00:00:00', 'Super Retail'),
-	(5, 1, 'Super Retail', 1, 0, '2018-06-05', '11:49:27', NULL, NULL, 56, 0, 0, 0, 0, 0, 0, 5600000, 0, 0, 0, 0, 0, 0, 0, 5600000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '2018-06-05 11:49:27', 'Super Retail', '0000-00-00 00:00:00', 'System');
+	(5, 1, 'Super Retail', 1, 1, '2018-06-05', '11:49:27', '2018-07-03', '08:43:40', 56, 0, 0, 0, 0, 0, 0, 5600000, 0, 0, 0, 0, 0, 0, 0, 5600000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '2018-06-05 11:49:27', 'Super Retail', '0000-00-00 00:00:00', 'Super Retail'),
+	(6, 1, 'Super Retail', 1, 0, '2018-07-04', '13:17:31', NULL, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '2018-07-04 13:17:31', 'Super Retail', '0000-00-00 00:00:00', 'System');
 /*!40000 ALTER TABLE `ret_shift` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_stock
@@ -3778,15 +3871,71 @@ CREATE TABLE IF NOT EXISTS `ret_stock` (
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by` varchar(255) NOT NULL DEFAULT 'System',
   PRIMARY KEY (`stock_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.ret_stock: ~3 rows (approximately)
+-- Dumping data for table prisma_pos.ret_stock: ~55 rows (approximately)
 DELETE FROM `ret_stock`;
 /*!40000 ALTER TABLE `ret_stock` DISABLE KEYS */;
 INSERT INTO `ret_stock` (`stock_id`, `tx_id`, `tx_type`, `tx_date`, `item_id`, `stock_in`, `stock_out`, `stock_adjustment`, `stock_price`, `created`, `created_by`) VALUES
 	(1, 1, 'TXS', '2018-06-28', 1, 0.00, -1.00, 0.00, 0.00, '2018-06-28 11:43:19', 'Super Retail'),
 	(2, 1, 'TXR', '2018-06-28', 1, 1.00, 0.00, 0.00, 0.00, '2018-06-28 12:47:16', 'System'),
-	(3, 12, 'TXV', '2018-06-28', 1, 1.00, 0.00, 0.00, 0.00, '2018-06-28 12:51:48', 'System');
+	(3, 12, 'TXV', '2018-06-28', 1, 1.00, 0.00, 0.00, 0.00, '2018-06-28 12:51:48', 'System'),
+	(4, 3, 'TXS', '2018-07-02', 1, 0.00, -1.00, 0.00, 0.00, '2018-07-02 09:28:57', 'Super Retail'),
+	(5, 4, 'TXS', '2018-07-02', 2, 0.00, -1.00, 0.00, 0.00, '2018-07-02 09:30:51', 'Super Retail'),
+	(6, 5, 'TXS', '2018-07-02', 2, 0.00, -3.00, 0.00, 0.00, '2018-07-02 09:31:10', 'Super Retail'),
+	(7, 6, 'TXS', '2018-07-02', 2, 0.00, -4.00, 0.00, 0.00, '2018-07-02 09:31:55', 'Super Retail'),
+	(8, 7, 'TXS', '2018-07-02', 2, 0.00, -1.00, 0.00, 0.00, '2018-07-02 10:29:26', 'Super Retail'),
+	(9, 7, 'TXS', '2018-07-02', 1, 0.00, -3.00, 0.00, 0.00, '2018-07-02 10:29:26', 'Super Retail'),
+	(10, 8, 'TXS', '2018-07-02', 1, 0.00, -11.00, 0.00, 0.00, '2018-07-02 10:33:00', 'Super Retail'),
+	(11, 9, 'TXS', '2018-07-02', 2, 0.00, -1.00, 0.00, 0.00, '2018-07-02 10:38:33', 'Super Retail'),
+	(12, 10, 'TXS', '2018-07-02', 2, 0.00, -1.00, 0.00, 0.00, '2018-07-02 10:38:51', 'Super Retail'),
+	(13, 11, 'TXS', '2018-07-02', 1, 0.00, -5.00, 0.00, 0.00, '2018-07-02 10:49:58', 'Super Retail'),
+	(14, 11, 'PRB', '2018-07-02', 1, 0.00, -1.00, 0.00, 0.00, '2018-07-02 10:49:58', 'Super Retail'),
+	(15, 12, 'TXS', '2018-07-02', 1, 0.00, -5.00, 0.00, 0.00, '2018-07-02 10:50:41', 'Super Retail'),
+	(16, 12, 'PRB', '2018-07-02', 1, 0.00, -1.00, 0.00, 0.00, '2018-07-02 10:50:41', 'Super Retail'),
+	(17, 13, 'TXS', '2018-07-02', 1, 0.00, -6.00, 0.00, 0.00, '2018-07-02 10:51:17', 'Super Retail'),
+	(18, 13, 'PRB', '2018-07-02', 1, 0.00, -1.00, 0.00, 0.00, '2018-07-02 10:51:17', 'Super Retail'),
+	(19, 14, 'TXS', '2018-07-02', 1, 0.00, -6.00, 0.00, 0.00, '2018-07-02 10:51:36', 'Super Retail'),
+	(20, 14, 'PRB', '2018-07-02', 1, 0.00, -1.00, 0.00, 0.00, '2018-07-02 10:51:36', 'Super Retail'),
+	(21, 15, 'TXS', '2018-07-02', 2, 0.00, -2.00, 0.00, 0.00, '2018-07-02 10:53:10', 'Super Retail'),
+	(22, 16, 'TXS', '2018-07-02', 2, 0.00, -6.00, 0.00, 0.00, '2018-07-02 10:53:35', 'Super Retail'),
+	(23, 17, 'TXS', '2018-07-02', 1, 0.00, -5.00, 0.00, 0.00, '2018-07-02 10:55:49', 'Super Retail'),
+	(24, 17, 'PRB', '2018-07-02', 1, 0.00, -1.00, 0.00, 0.00, '2018-07-02 10:55:49', 'Super Retail'),
+	(25, 18, 'TXS', '2018-07-02', 1, 0.00, -6.00, 0.00, 0.00, '2018-07-02 10:57:43', 'Super Retail'),
+	(26, 18, 'PRB', '2018-07-02', 1, 0.00, -1.00, 0.00, 0.00, '2018-07-02 10:57:43', 'Super Retail'),
+	(27, 19, 'TXS', '2018-07-02', 1, 0.00, -7.00, 0.00, 0.00, '2018-07-02 10:58:15', 'Super Retail'),
+	(28, 19, 'PRB', '2018-07-02', 1, 0.00, -1.00, 0.00, 0.00, '2018-07-02 10:58:16', 'Super Retail'),
+	(29, 20, 'TXS', '2018-07-02', 2, 0.00, -1.00, 0.00, 0.00, '2018-07-02 10:59:14', 'Super Retail'),
+	(30, 24, 'TXS', '2018-07-02', 1, 0.00, -6.00, 0.00, 0.00, '2018-07-02 11:20:23', 'Super Retail'),
+	(31, 24, 'PRB', '2018-07-02', 1, 0.00, -1.00, 0.00, 0.00, '2018-07-02 11:20:23', 'Super Retail'),
+	(32, 25, 'TXS', '2018-07-02', 1, 0.00, -1.00, 0.00, 0.00, '2018-07-02 11:20:58', 'Super Retail'),
+	(33, 26, 'TXS', '2018-07-02', 1, 0.00, -6.00, 0.00, 0.00, '2018-07-02 11:21:56', 'Super Retail'),
+	(34, 26, 'PRB', '2018-07-02', 1, 0.00, -1.00, 0.00, 0.00, '2018-07-02 11:21:56', 'Super Retail'),
+	(35, 27, 'TXS', '2018-07-02', 1, 0.00, -6.00, 0.00, 0.00, '2018-07-02 11:23:34', 'Super Retail'),
+	(36, 27, 'PRB', '2018-07-02', 1, 0.00, -1.00, 0.00, 0.00, '2018-07-02 11:23:35', 'Super Retail'),
+	(37, 28, 'TXS', '2018-07-02', 1, 0.00, -6.00, 0.00, 0.00, '2018-07-02 11:24:39', 'Super Retail'),
+	(38, 28, 'PRB', '2018-07-02', 1, 0.00, -1.00, 0.00, 0.00, '2018-07-02 11:24:39', 'Super Retail'),
+	(39, 30, 'TXS', '2018-07-02', 1, 0.00, -2.00, 0.00, 0.00, '2018-07-02 11:27:48', 'Super Retail'),
+	(40, 30, 'TXS', '2018-07-02', 1, 0.00, -2.00, 0.00, 0.00, '2018-07-02 11:27:48', 'Super Retail'),
+	(41, 31, 'TXS', '2018-07-02', 1, 0.00, -1.00, 0.00, 0.00, '2018-07-02 11:29:36', 'Super Retail'),
+	(42, 34, 'TXS', '2018-07-02', 1, 0.00, -5.00, 0.00, 0.00, '2018-07-02 11:30:47', 'Super Retail'),
+	(43, 34, 'PRB', '2018-07-02', 1, 0.00, -1.00, 0.00, 0.00, '2018-07-02 11:30:47', 'Super Retail'),
+	(44, 35, 'TXS', '2018-07-02', 2, 0.00, -3.00, 0.00, 0.00, '2018-07-02 11:31:09', 'Super Retail'),
+	(45, 3, 'TXA', '2018-07-02', 1, 0.00, 0.00, 113.00, 12312.00, '2018-07-02 11:33:09', 'Super Retail'),
+	(46, 3, 'TXA', '2018-07-02', 2, 0.00, 0.00, 35.00, 112312.00, '2018-07-02 11:33:09', 'Super Retail'),
+	(47, 3, 'TXA', '2018-07-02', 3, 0.00, 0.00, 12.00, 1213.00, '2018-07-02 11:33:09', 'Super Retail'),
+	(48, 1, 'TXI', '2018-07-02', 1, 1.00, 0.00, 0.00, 2345.00, '2018-07-02 11:40:18', 'Super Retail'),
+	(49, 2, 'TXI', '2018-07-02', 2, 12.00, 0.00, 0.00, 123.00, '2018-07-02 11:41:21', 'Super Retail'),
+	(50, 36, 'TXS', '2018-07-02', 2, 0.00, -1.00, 0.00, 0.00, '2018-07-02 11:42:49', 'Super Retail'),
+	(51, 8, 'TXA', '2018-07-02', 1, 0.00, 0.00, -1.00, 1232.00, '2018-07-02 11:46:56', 'Super Retail'),
+	(52, 8, 'TXA', '2018-07-02', 2, 0.00, 0.00, -11.00, 1213.00, '2018-07-02 11:46:56', 'Super Retail'),
+	(53, 8, 'TXA', '2018-07-02', 3, 0.00, 0.00, 0.00, 12312.00, '2018-07-02 11:46:56', 'Super Retail'),
+	(54, 9, 'TXA', '2018-07-02', 1, 0.00, 0.00, 0.00, 12123.00, '2018-07-02 11:47:23', 'Super Retail'),
+	(55, 9, 'TXA', '2018-07-02', 2, 0.00, 0.00, 0.00, 321.00, '2018-07-02 11:47:23', 'Super Retail'),
+	(56, 9, 'TXA', '2018-07-02', 3, 0.00, 0.00, 0.00, 123.00, '2018-07-02 11:47:23', 'Super Retail'),
+	(57, 37, 'TXS', '2018-07-03', 1, 0.00, -10.00, 0.00, 0.00, '2018-07-03 08:41:42', 'Super Retail'),
+	(58, 37, 'PRB', '2018-07-03', 1, 0.00, -1.00, 0.00, 0.00, '2018-07-03 08:41:42', 'Super Retail'),
+	(59, 38, 'TXS', '2018-07-03', 2, 0.00, -1.00, 0.00, 0.00, '2018-07-03 08:43:24', 'Super Retail');
 /*!40000 ALTER TABLE `ret_stock` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_stock_in
@@ -3800,11 +3949,14 @@ CREATE TABLE IF NOT EXISTS `ret_stock_in` (
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by` varchar(255) NOT NULL DEFAULT 'System',
   PRIMARY KEY (`tx_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.ret_stock_in: ~0 rows (approximately)
+-- Dumping data for table prisma_pos.ret_stock_in: ~2 rows (approximately)
 DELETE FROM `ret_stock_in`;
 /*!40000 ALTER TABLE `ret_stock_in` DISABLE KEYS */;
+INSERT INTO `ret_stock_in` (`tx_id`, `tx_receipt_no`, `tx_type`, `tx_date`, `tx_notes`, `created`, `created_by`) VALUES
+	(1, '180702000001', 'TXI', '2018-07-02', '123123', '2018-07-02 11:40:18', 'Super Retail'),
+	(2, '180702000002', 'TXI', '2018-07-02', 'fasd', '2018-07-02 11:41:21', 'Super Retail');
 /*!40000 ALTER TABLE `ret_stock_in` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_stock_opname
@@ -3819,11 +3971,21 @@ CREATE TABLE IF NOT EXISTS `ret_stock_opname` (
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by` varchar(255) NOT NULL DEFAULT 'System',
   PRIMARY KEY (`tx_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.ret_stock_opname: ~0 rows (approximately)
+-- Dumping data for table prisma_pos.ret_stock_opname: ~8 rows (approximately)
 DELETE FROM `ret_stock_opname`;
 /*!40000 ALTER TABLE `ret_stock_opname` DISABLE KEYS */;
+INSERT INTO `ret_stock_opname` (`tx_id`, `tx_receipt_no`, `tx_type`, `tx_date`, `tx_notes`, `tx_status`, `created`, `created_by`) VALUES
+	(1, '0', 'TXA', '2018-07-02', 'fasd', 0, '2018-07-02 09:36:08', 'Super Retail'),
+	(2, '0', 'TXA', '2018-07-02', 'qe', 0, '2018-07-02 09:36:19', 'Super Retail'),
+	(3, '180702000001', 'TXA', '2018-07-02', 'sadfasdf', 1, '2018-07-02 11:33:09', 'Super Retail'),
+	(4, '180702000002', 'TXA', '2018-07-02', 'fasdfasd', 0, '2018-07-02 11:33:41', 'Super Retail'),
+	(5, '180702000002', 'TXA', '2018-07-02', 'fasdfasd', 0, '2018-07-02 11:33:41', 'Super Retail'),
+	(6, '180702000003', 'TXA', '2018-07-02', 'dqwq', 0, '2018-07-02 11:33:56', 'Super Retail'),
+	(7, '180702000004', 'TXA', '2018-07-02', '12312', 0, '2018-07-02 11:46:28', 'Super Retail'),
+	(8, '180702000005', 'TXA', '2018-07-02', 'fasdfasdf', 1, '2018-07-02 11:46:55', 'Super Retail'),
+	(9, '180702000006', 'TXA', '2018-07-02', 'fasdfasd', 1, '2018-07-02 11:47:16', 'Super Retail');
 /*!40000 ALTER TABLE `ret_stock_opname` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_stock_opname_detail
@@ -3841,11 +4003,39 @@ CREATE TABLE IF NOT EXISTS `ret_stock_opname_detail` (
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by` varchar(255) NOT NULL DEFAULT 'System',
   PRIMARY KEY (`stock_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.ret_stock_opname_detail: ~0 rows (approximately)
+-- Dumping data for table prisma_pos.ret_stock_opname_detail: ~24 rows (approximately)
 DELETE FROM `ret_stock_opname_detail`;
 /*!40000 ALTER TABLE `ret_stock_opname_detail` DISABLE KEYS */;
+INSERT INTO `ret_stock_opname_detail` (`stock_id`, `tx_id`, `tx_type`, `tx_date`, `item_id`, `stock_last`, `stock_now`, `stock_adjustment`, `stock_price`, `created`, `created_by`) VALUES
+	(1, 1, 'TXA', '2018-07-02', 1, 0.00, 12.00, 12.00, 1.00, '2018-07-02 09:36:08', 'Super Retail'),
+	(2, 1, 'TXA', '2018-07-02', 2, -8.00, 12.00, 20.00, 2.00, '2018-07-02 09:36:08', 'Super Retail'),
+	(3, 1, 'TXA', '2018-07-02', 3, 0.00, 12.00, 12.00, 1.00, '2018-07-02 09:36:08', 'Super Retail'),
+	(4, 2, 'TXA', '2018-07-02', 1, 0.00, 0.00, 0.00, 0.00, '2018-07-02 09:36:19', 'Super Retail'),
+	(5, 2, 'TXA', '2018-07-02', 2, -8.00, 0.00, 0.00, 0.00, '2018-07-02 09:36:19', 'Super Retail'),
+	(6, 2, 'TXA', '2018-07-02', 3, 0.00, 0.00, 0.00, 0.00, '2018-07-02 09:36:19', 'Super Retail'),
+	(7, 3, 'TXA', '2018-07-02', 1, -101.00, 12.00, 113.00, 12312.00, '2018-07-02 11:33:09', 'Super Retail'),
+	(8, 3, 'TXA', '2018-07-02', 2, -23.00, 12.00, 35.00, 112312.00, '2018-07-02 11:33:09', 'Super Retail'),
+	(9, 3, 'TXA', '2018-07-02', 3, 0.00, 12.00, 12.00, 1213.00, '2018-07-02 11:33:09', 'Super Retail'),
+	(10, 4, 'TXA', '2018-07-02', 1, 12.00, 1.23, 1219.00, 0.00, '2018-07-02 11:33:41', 'Super Retail'),
+	(11, 4, 'TXA', '2018-07-02', 2, 12.00, 0.00, 0.00, 0.00, '2018-07-02 11:33:41', 'Super Retail'),
+	(12, 4, 'TXA', '2018-07-02', 3, 12.00, 12.31, 12300.00, 0.00, '2018-07-02 11:33:41', 'Super Retail'),
+	(13, 4, 'TXA', '2018-07-02', 1, 12.00, 1.23, 1219.00, 0.00, '2018-07-02 11:33:41', 'Super Retail'),
+	(14, 4, 'TXA', '2018-07-02', 2, 12.00, 0.00, 0.00, 0.00, '2018-07-02 11:33:41', 'Super Retail'),
+	(15, 4, 'TXA', '2018-07-02', 3, 12.00, 12.31, 12300.00, 0.00, '2018-07-02 11:33:41', 'Super Retail'),
+	(16, 6, 'TXA', '2018-07-02', 1, 12.00, 12.00, 0.00, 12.00, '2018-07-02 11:33:56', 'Super Retail'),
+	(17, 6, 'TXA', '2018-07-02', 2, 12.00, 12.00, 0.00, 12.00, '2018-07-02 11:33:56', 'Super Retail'),
+	(18, 6, 'TXA', '2018-07-02', 3, 12.00, 12.00, 0.00, 0.00, '2018-07-02 11:33:56', 'Super Retail'),
+	(19, 7, 'TXA', '2018-07-02', 1, 13.00, 12.00, -1.00, 3121.00, '2018-07-02 11:46:28', 'Super Retail'),
+	(20, 7, 'TXA', '2018-07-02', 2, 23.00, 12.00, -11.00, 3232.00, '2018-07-02 11:46:28', 'Super Retail'),
+	(21, 7, 'TXA', '2018-07-02', 3, 12.00, 12.00, 0.00, 2341.00, '2018-07-02 11:46:28', 'Super Retail'),
+	(22, 8, 'TXA', '2018-07-02', 1, 13.00, 12.00, -1.00, 1232.00, '2018-07-02 11:46:56', 'Super Retail'),
+	(23, 8, 'TXA', '2018-07-02', 2, 23.00, 12.00, -11.00, 1213.00, '2018-07-02 11:46:56', 'Super Retail'),
+	(24, 8, 'TXA', '2018-07-02', 3, 12.00, 12.00, 0.00, 12312.00, '2018-07-02 11:46:56', 'Super Retail'),
+	(25, 9, 'TXA', '2018-07-02', 1, 12.00, 12.00, 0.00, 12123.00, '2018-07-02 11:47:16', 'Super Retail'),
+	(26, 9, 'TXA', '2018-07-02', 2, 12.00, 12.00, 0.00, 321.00, '2018-07-02 11:47:16', 'Super Retail'),
+	(27, 9, 'TXA', '2018-07-02', 3, 12.00, 32.00, 0.00, 123.00, '2018-07-02 11:47:16', 'Super Retail');
 /*!40000 ALTER TABLE `ret_stock_opname_detail` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_stock_out
@@ -3911,7 +4101,7 @@ CREATE TABLE IF NOT EXISTS `ret_tax` (
   PRIMARY KEY (`tax_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.ret_tax: ~1 rows (approximately)
+-- Dumping data for table prisma_pos.ret_tax: ~0 rows (approximately)
 DELETE FROM `ret_tax`;
 /*!40000 ALTER TABLE `ret_tax` DISABLE KEYS */;
 INSERT INTO `ret_tax` (`tax_id`, `tax_code`, `tax_name`, `tax_ratio`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
