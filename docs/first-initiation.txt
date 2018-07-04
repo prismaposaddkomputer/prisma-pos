@@ -1,0 +1,11 @@
+app_type
+1. Retail
+2. Restaurant
+3. Hotel
+4. Karaoke
+
+app_client
+one row exist
+
+app_install
+one row exist

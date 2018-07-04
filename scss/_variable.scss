@@ -1,0 +1,49 @@
+//font style
+$primaryFontSize : 1em;
+$primaryFontWeight : 300;
+$primaryLineHeight : 1.7em;
+
+// color canadian color
+$primaryColor : #2e86de;
+$primaryColorDarker : darken($primaryColor,6.5%);
+$primaryColorLighter : lighten($primaryColor,6.5%);
+$infoColor : #0abde3;
+$infoColorDarker : darken($infoColor,6.5%);
+$infoColorLighter : lighten($infoColor,6.5%);
+$successColor : #10ac84;
+$successColorDarker : darken($successColor,6.5%);
+$successColorLighter : lighten($successColor,6.5%);
+$warningColor : #ff9f43;
+$warningColorDarker : darken($warningColor,6.5%);
+$warningColorLighter : lighten($warningColor,6.5%);
+$dangerColor : #ee5253;
+$dangerColorDarker : darken($dangerColor,6.5%);
+$dangerColorLighter : lighten($dangerColor,6.5%);
+
+//cashier variable
+$bgDefault   : $infoColor;
+$bgHighlight : $infoColorDarker;
+$colDefault  : #ecf0f1;
+$colHighlight: #ffbbbc;
+
+// background
+$primaryBg : #fafafa;
+
+//sidebar color
+$sidebarBgColor : #2f3640;
+$sidebarBgColorDarker : darken($sidebarBgColor, 5%);
+$sidebarBgColorLighter : darken($sidebarBgColor, 10%);
+$sidebarTextColor : #8395a7;
+$sidebarTextColorLighter : lighten($sidebarTextColor,6.5%);
+
+// border
+$borderColor : lighten($sidebarTextColorLighter,25%);
+$borderColorDarker : darken($sidebarTextColorLighter,25%);
+//text color
+$textColorPrimary : #576574;
+
+$bgBody : #fafafa;
+
+// width
+$sidebarWidth : 220px;
+$sidebarMinHeight : 100vh;

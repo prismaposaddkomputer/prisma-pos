@@ -1,0 +1,31 @@
+@import 'variable';
+@import 'common';
+@import 'navbar';
+
+.navbar-brand{
+  color: $infoColor;
+  font-weight: bold;
+}
+
+.login-container{
+  width: 350px;
+  margin: auto;
+  margin-top: 50px;
+  padding: 20px;
+  border: 1px solid $borderColor;
+  background: white;
+  .login-header{
+    color: $textColorPrimary;
+    margin-bottom: 50px;
+  }
+  .form-control{
+    // outline: none;
+    border: none !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+    border-bottom: 1px solid $borderColor !important;
+    border-radius: 0;
+    background: white;
+  }
+}

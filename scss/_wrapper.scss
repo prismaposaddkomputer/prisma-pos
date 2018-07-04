@@ -1,0 +1,9 @@
+.wrapper {
+  display: flex;
+  align-items: stretch;
+}
+
+
+#sidebar.active {
+  margin-left: -$sidebarWidth;
+}

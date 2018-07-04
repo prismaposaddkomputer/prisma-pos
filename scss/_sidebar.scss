@@ -1,0 +1,109 @@
+/* ---------------------------------------------------
+    SIDEBAR STYLE
+----------------------------------------------------- */
+#sidebar {
+  width: $sidebarWidth;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 999;
+  background: $sidebarBgColor;
+  color: $sidebarTextColor;
+  transition: all 0.3s;
+  .sidebar-header {
+    height: 50px;
+    padding: 7px 0px;
+    background: $sidebarBgColorDarker;
+    text-align: center;
+    h5{
+      font-size: 16px;
+      font-weight: bold;
+      color: $infoColor;
+    }
+  }
+  ul.components {
+    padding: 1px 0;
+  }
+  ul {
+    p {
+      color: #fff;
+      padding: 10px;
+    }
+    li a {
+      padding: 15px 12px;
+      font-size: 1.125em;
+      display: block;
+      border-bottom: 1px solid $sidebarBgColorDarker;;
+      &:hover{
+        color: $sidebarTextColorLighter;
+        background: $sidebarBgColorDarker;
+      }
+      i {
+        color : $sidebarTextColor;
+        text-align: center;
+        width: 25px;
+        margin-right: 10px;
+        font-size: 1em;
+      }
+    }
+  }
+  a[data-toggle="collapse"] {
+    position: relative;
+  }
+
+  a[aria-expanded="false"]::before, a[aria-expanded="true"]::before {
+    content: '\e259';
+    display: block;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-family: 'Glyphicons Halflings';
+    font-size: 0.6em;
+  }
+
+  a[aria-expanded="true"]::before {
+    content: '\e260';
+  }
+
+  ul ul a {
+    font-size: 1.125em !important;
+    padding: 7px 0px !important;
+    padding-left: 47px !important;
+    background: $sidebarBgColorLighter;
+  }
+
+  ul ul ul a {
+    font-size: 0.9em !important;
+    padding: 7px 0px !important;
+    padding-left: 50px !important;
+    background: $sidebarBgColorLighter;
+  }
+  .sidebar-footer{
+    height: 35px;
+    padding: 0px 0px;
+    background: $sidebarBgColorDarker;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: $sidebarWidth;
+    h5{
+      font-size: 14px;
+      font-weight: bold;
+    }
+  }
+}
+
+#sidebar.active {
+  margin-left: -$sidebarWidth;
+}
+
+#sidebar ul li.active > a, a[aria-expanded="true"] {
+  color: $sidebarTextColorLighter;
+  background: $sidebarBgColorDarker;
+}
+
+#sidebar ul ul li.active > a {
+  color: $sidebarTextColorLighter;
+  background: darken($sidebarBgColorDarker, 8%);
+}

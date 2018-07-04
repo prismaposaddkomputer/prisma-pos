@@ -1,0 +1,20 @@
+@import 'variable';
+
+@import 'common';
+
+.navbar-default {
+  background-color: white;
+  border-color: $borderColor;
+  border-radius: 0;
+  .navbar-brand {
+    color: $infoColor;
+    font-weight: bold;
+    &:hover, &:focus {
+      color: $infoColorDarker;
+    }
+  }
+}
+
+#login-container{
+  margin-top: 100px;
+}

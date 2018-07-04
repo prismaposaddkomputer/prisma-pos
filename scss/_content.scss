@@ -1,0 +1,21 @@
+#content {
+  width: calc(100% - 220px);
+  padding: 20px;
+  min-height: 100vh;
+  transition: all 0.3s;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+#content.active {
+  width: 100%;
+}
+
+.content-header{
+  border-bottom: $borderColor;
+  margin-bottom: 25px;
+  h4 {
+    font-weight: bold;
+  }
+}

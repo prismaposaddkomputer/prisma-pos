@@ -1,0 +1,31 @@
+.navbar {
+  padding: 0px 0px;
+  background: #fff;
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid $borderColor;
+  margin:-20px;
+  margin-bottom: 20px;
+}
+
+.navbar-btn {
+  box-shadow: none;
+  outline: none !important;
+  border: none;
+}
+
+.line {
+  width: 100%;
+  height: 1px;
+  border-bottom: 1px dashed #ddd;
+  margin: 40px 0;
+}
+
+#navbar-login, #navbar-welcome {
+  padding: 0px 0px;
+  background: #fff;
+  border: none;
+  border-radius: 0;
+  border-bottom: 1px solid $borderColor;
+  margin-bottom: 20px;
+}

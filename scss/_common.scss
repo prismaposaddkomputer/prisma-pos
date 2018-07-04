@@ -1,0 +1,104 @@
+body {
+  background: $primaryBg;
+}
+
+p {
+  font-size: $primaryFontSize;
+  font-weight: $primaryFontWeight;
+  line-height: $primaryLineHeight;
+  color: $textColorPrimary;
+}
+
+a, a:hover, a:focus {
+  color: inherit;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.btn-flat{
+  border-radius: 0px;
+}
+
+.btn-primary {
+  background-color: $primaryColor;
+  border-color: $primaryColorDarker;
+}
+
+.btn-info {
+  background-color: $infoColor;
+  border-color: $infoColorDarker;
+}
+
+.btn-warning {
+  background-color: $warningColor;
+  border-color: $warningColorDarker;
+}
+
+.btn-danger {
+  background-color: $dangerColor;
+  border-color: $dangerColorDarker;
+}
+
+.required-field{
+  color: red;
+}
+
+.pagination{
+  >li{
+    >a, >span{
+      color: $infoColor;
+    }
+  }
+  >li.active{
+    >span{
+      background: $infoColor;
+      color: #fff;
+    }
+  }
+}
+
+// colors and background
+.cl-success{
+  color: $successColor;
+}
+
+.cl-warning{
+  color: $warningColor;
+}
+
+.cl-info{
+  color: $infoColor;
+}
+
+.cl-danger{
+  color: $dangerColor;
+}
+
+.bg-success{
+  background-color: $successColor;
+}
+
+.bg-warning{
+  background-color: $warningColor;
+}
+
+.bg-info{
+  background-color: $infoColor;
+}
+
+.bg-danger{
+  background-color: $dangerColor;
+}
+
+//panels
+.panel-info{
+  border-color: $infoColor;
+  > .panel-heading {
+    background-color: $infoColor;
+  }
+}
+
+//table
+table{
+  background: #fff !important; 
+}

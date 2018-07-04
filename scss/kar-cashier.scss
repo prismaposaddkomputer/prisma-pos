@@ -1,0 +1,221 @@
+@import 'variable';
+
+@import 'common';
+
+html,body {
+  height: 100%;
+}
+
+#room-type {
+  padding: 0px;
+  border-right: 1px solid $borderColor;
+  #room-type-list{
+    list-style-type: none;
+    padding: 0px;
+    li a {
+      padding: 12px 15px;
+      font-size: 1em;
+      display: block;
+      border-bottom: 1px solid $borderColor;
+      &:hover{
+        color: $sidebarTextColorLighter;
+        background: #dfe4ea;
+        cursor: pointer;
+      }
+      i {
+        color : $sidebarTextColor;
+        text-align: center;
+        width: 25px;
+        margin-right: 10px;
+        font-size: 1em;
+      }
+    }
+  }
+}
+
+#room {
+  padding: 0px;
+  border-right: 1px solid $borderColor;
+  #search-form{
+    padding: 5px;
+    border-bottom: 1px solid $borderColor;
+  }
+  #room-header{
+    padding: 5px 5px 0px 5px;
+    table{
+      margin-bottom: 0px;
+    }
+  }
+  #room-list{
+    height: calc(100% - 45px);
+    padding: 0px 15px;
+    .room-item{
+      margin: 5px;
+      width: 150px;
+      height: 155px;
+      cursor: pointer;
+      border: 1px solid $borderColor;
+      padding: 0;
+      .room-code{
+        text-align: center;
+        font-size: 30px;
+        padding: 10px 10px;
+        background: $borderColor;
+        border-bottom: 1px solid $borderColor;
+      }
+      .room-type{
+        padding: 2px 5px;
+        font-size: 12px;
+      }
+      .room-status{
+        padding: 2px 5px;
+        font-size: 14px;
+        font-weight: bold;
+      }
+      .room-timestamp-start, .room-timestamp-end{
+        padding: 2px 5px;
+        font-size: 12px;
+      }
+    }
+  }
+}
+
+#bill{
+  padding: 0px;
+  #bill-info{
+    height: 45px;
+    border-bottom: 1px solid $borderColor;
+    .lbl-tx{
+      height: 45px;
+      padding: 12px 5px;
+      border-right: 1px solid $borderColor;
+      overflow: hidden !important;
+      white-space: nowrap !important;
+      text-overflow: ellipsis;
+    }
+  }
+  #bill-rooms{
+    .bill-list {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      >li{
+        display: block;
+        padding: 0px 15px;
+        text-decoration: none;
+        color: black;
+        cursor: pointer;
+        border-bottom: 1px solid $borderColor;
+        padding: 10px;
+        overflow: auto;
+        &:hover{
+          background-color: $infoColor;
+          color: white;
+        }
+        .amount{
+          float: left;
+          margin: 0 15px 0 0;
+          background: orange;
+          width: 30px;
+          height: 30px;
+          padding: 5px;
+          text-align: center;
+          border-radius: 100%;
+          font-weight: bold;
+          color: white;
+        }
+        .name{
+          font-weight: bold;
+          .price{
+            float: right;
+          }
+        }
+        >ul{
+          margin-left: 8px;
+          >li{
+            text-decoration: none;
+            display: block;
+            font-size: 11px;
+          }
+        }
+      }
+    }
+  }
+  #tx-actions{
+    position:absolute;
+    bottom:0;
+    width:100%;
+    height: 215px;
+    .lbl-bill{
+      padding: 5px;
+      border-bottom: 1px solid $borderColor;
+    }
+    #tx-subtotal{
+      background: #dfe4ea;
+    }
+    #tx-discount, #tx-tax{
+      font-size: 12px;
+    }
+    #tx-grandtotal{
+      font-size: 18px;
+      color: $infoColor;
+    }
+  }
+}
+
+.navbar {
+  padding: 0px 0px;
+  background: $infoColor;
+  border: none;
+  border-radius: 0;
+  margin-bottom: 0px;
+}
+
+.navbar-default{
+  .navbar {
+    position: relative;
+  }
+  .navbar-brand {
+    position: absolute;
+    left: 50%;
+    margin-left: -50px !important;  /* 50% of your logo width */
+    display: block;
+    color: white;
+  }
+  .navbar-nav {
+    > li {
+      > a {
+        color: white;
+        &:hover,  &:focus {
+          color: $textColorPrimary;
+        }
+      }
+    }
+    > .active {
+      > a, > a:hover, > a:focus {
+        color: white;
+        background-color: $bgHighlight;
+      }
+    }
+    > .open {
+      > a, > a:hover, > a:focus {
+        color: white;
+        background-color: $bgHighlight;
+      }
+    }
+  }
+}
+
+
+.full-height-container {
+  height: calc(100% - 50px);
+}
+
+.full-height-row {
+  height: 100%;
+}
+
+.full-height-col {
+  height: 100%;
+}
