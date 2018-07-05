@@ -4,6 +4,8 @@
 <div class="content-body">
   <div class="row">
     <div class="col-md-12">
+      <a class="btn btn-primary" href="<?=base_url()?>par_report_log/weekly_pdf/<?=$date_start?>/<?=$date_end?>" target="_blank"><i class="fa fa-print"></i> Download PDF</a>
+      <br><br>
       <table class="table table-condensed table-bordered table-striped">
         <thead>
           <tr>
