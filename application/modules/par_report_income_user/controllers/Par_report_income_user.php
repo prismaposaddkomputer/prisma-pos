@@ -18,6 +18,7 @@ class Par_report_income_user extends MY_Parking {
     $this->access = $this->m_par_config->get_permission($this->role_id, $this->module_controller);
 
     $this->load->model('m_par_report_income_user');
+    $this->load->model('par_client/m_par_client');
     $this->load->model('par_user/m_par_user');
   }
 
@@ -25,8 +26,8 @@ class Par_report_income_user extends MY_Parking {
   {
     if ($this->access->_read == 1) {
       $data['access'] = $this->access;
-      $data['title'] = 'Laporan Pendapatan';
       $data['user'] = $this->m_par_user->get_all();
+      $data['title'] = 'Laporan Pendapatan';
 
       $this->view('par_report_income_user/index',$data);
     } else {
@@ -72,39 +73,36 @@ class Par_report_income_user extends MY_Parking {
     }
   }
 
-  public function report_annual($year, $user_id)
+  public function report_annual($year,$user_id)
   {
     $data['access'] = $this->access;
-    $user = $this->m_par_user->get_by_id($user_id);
-    $data['title'] = 'Laporan Pendapatan "'.$user->user_realname.'" Tahun '.$year;
+    $data['title'] = 'Laporan Pendapatan Tahun '.$year;
     $data['billing'] = $this->m_par_report_income_user->report_annual($year,$user_id);
-    $data['year'] = $year;
     $data['user_id'] = $user_id;
+    $data['year'] = $year;
 
     $this->view('report_annual', $data);
   }
 
-  public function report_annual_pdf($year, $user_id)
+  public function report_annual_pdf($year,$user_id)
   {
-    $user = $this->m_par_user->get_by_id($user_id);
-    $data['title'] = 'Laporan Pendapatan "'.$user->user_realname.'" Tahun '.$year;
+    $data['title'] = 'Laporan Pendapatan Tahun '.$year;
     $data['billing'] = $this->m_par_report_income_user->report_annual($year,$user_id);
-
+    $data['client'] = $this->m_par_client->get_all();
     $this->load->library('pdf');
     //
     $this->pdf->setPaper('A4', 'potrait');
-    $this->pdf->filename = "pedapatan-tahun-".$year.".pdf";
+    $this->pdf->filename = "pedendapatan-tahun-".$year.".pdf";
     $this->pdf->load_view('report_annual_pdf', $data);
   }
 
-  public function report_monthly($month, $user_id)
+  public function report_monthly($month,$user_id)
   {
     $raw = $raw = explode("-", $month);
     $num_month = $raw[1];
 
     $data['access'] = $this->access;
-    $user = $this->m_par_user->get_by_id($user_id);
-    $data['title'] = 'Laporan Pendapatan "'.$user->user_realname.'" Bulan '.month_name_ind($num_month);
+    $data['title'] = 'Laporan Pendapatan Bulan '.month_name_ind($num_month);
     $data['billing'] = $this->m_par_report_income_user->report_monthly($month,$user_id);
     $data['month'] = $month;
     $data['user_id'] = $user_id;
@@ -112,15 +110,14 @@ class Par_report_income_user extends MY_Parking {
     $this->view('report_monthly', $data);
   }
 
-  public function report_monthly_pdf($month, $user_id)
+  public function report_monthly_pdf($month,$user_id)
   {
     $raw = $raw = explode("-", $month);
     $num_month = $raw[1];
 
-    $user = $this->m_par_user->get_by_id($user_id);
-    $data['title'] = 'Laporan Pendapatan "'.$user->user_realname.'" Bulan '.month_name_ind($num_month);
+    $data['title'] = 'Laporan Pendapatan Bulan '.month_name_ind($num_month);
     $data['billing'] = $this->m_par_report_income_user->report_monthly($month,$user_id);
-
+    $data['client'] = $this->m_par_client->get_all();
     $this->load->library('pdf');
     //
     $this->pdf->setPaper('A4', 'potrait');
@@ -128,11 +125,10 @@ class Par_report_income_user extends MY_Parking {
     $this->pdf->load_view('report_monthly_pdf', $data);
   }
 
-  public function report_weekly($date_start,$date_end, $user_id)
+  public function report_weekly($date_start,$date_end,$user_id)
   {
     $data['access'] = $this->access;
-    $user = $this->m_par_user->get_by_id($user_id);
-    $data['title'] = 'Laporan Pendapatan "'.$user->user_realname.'" Mingguan ('.$date_start.' - '.$date_start.')';
+    $data['title'] = 'Laporan Pendapatan Mingguan ('.$date_start.' - '.$date_start.')';
     $data['billing'] = $this->m_par_report_income_user->report_weekly(date_to_ind($date_start),date_to_ind($date_end),$user_id);
     $data['date_start'] = $date_start;
     $data['date_end'] = $date_end;
@@ -141,12 +137,11 @@ class Par_report_income_user extends MY_Parking {
     $this->view('report_weekly', $data);
   }
 
-  public function report_weekly_pdf($date_start,$date_end, $user_id)
+  public function report_weekly_pdf($date_start,$date_end,$user_id)
   {
-    $user = $this->m_par_user->get_by_id($user_id);
-    $data['title'] = 'Laporan Pendapatan "'.$user->user_realname.'" Mingguan ('.$date_start.' - '.$date_start.')';
+    $data['title'] = 'Laporan Pendapatan Mingguan ('.$date_start.' - '.$date_start.')';
     $data['billing'] = $this->m_par_report_income_user->report_weekly(date_to_ind($date_start),date_to_ind($date_end),$user_id);
-
+    $data['client'] = $this->m_par_client->get_all();
     $this->load->library('pdf');
     //
     $this->pdf->setPaper('A4', 'potrait');
@@ -157,9 +152,8 @@ class Par_report_income_user extends MY_Parking {
   public function report_daily($date,$user_id)
   {
     $data['access'] = $this->access;
-    $user = $this->m_par_user->get_by_id($user_id);
-    $data['title'] = 'Laporan Pendapatan "'.$user->user_realname.'" Tanggal '.date_to_ind($date);
-    $data['billing'] = $this->m_par_report_income_user->report_daily($date,$user_id,$user_id);
+    $data['title'] = 'Laporan Pendapatan Tanggal '.date_to_ind($date);
+    $data['billing'] = $this->m_par_report_income_user->report_daily($date,$user_id);
     $data['date'] = $date;
     $data['user_id'] = $user_id;
 
@@ -168,9 +162,9 @@ class Par_report_income_user extends MY_Parking {
 
   public function report_daily_pdf($date,$user_id)
   {
-    $user = $this->m_par_user->get_by_id($user_id);
-    $data['title'] = 'Laporan Pendapatan "'.$user->user_realname.'" Tanggal '.date_to_ind($date);
-    $data['billing'] = $this->m_par_report_income_user->report_daily($date,$user_id,$user_id);
+    $data['title'] = 'Laporan Pendapatan Tanggal '.date_to_ind($date);
+    $data['billing'] = $this->m_par_report_income_user->report_daily($date,$user_id);
+    $data['client'] = $this->m_par_client->get_all();
 
     $this->load->library('pdf');
     //
@@ -179,11 +173,10 @@ class Par_report_income_user extends MY_Parking {
     $this->pdf->load_view('report_daily_pdf', $data);
   }
 
-  public function report_range($date_start, $date_end, $user_id)
+  public function report_range($date_start, $date_end,$user_id)
   {
     $data['access'] = $this->access;
-    $user = $this->m_par_user->get_by_id($user_id);
-    $data['title'] = 'Laporan Pendapatan "'.$user->user_realname.'" Tanggal ('.$date_start.' - '.$date_start.')';
+    $data['title'] = 'Laporan Pendapatan Tanggal ('.$date_start.' - '.$date_start.')';
     $data['billing'] = $this->m_par_report_income_user->report_range(date_to_ind($date_start),date_to_ind($date_end),$user_id);
     $data['date_start'] = $date_start;
     $data['date_end'] = $date_end;
@@ -192,12 +185,11 @@ class Par_report_income_user extends MY_Parking {
     $this->view('report_range', $data);
   }
 
-  public function report_range_pdf($date_start, $date_end, $user_id)
+  public function report_range_pdf($date_start, $date_end,$user_id)
   {
-    $user = $this->m_par_user->get_by_id($user_id);
-    $data['title'] = 'Laporan Pendapatan "'.$user->user_realname.'" Tanggal ('.$date_start.' - '.$date_start.')';
+    $data['title'] = 'Laporan Pendapatan Tanggal ('.$date_start.' - '.$date_start.')';
     $data['billing'] = $this->m_par_report_income_user->report_range(date_to_ind($date_start),date_to_ind($date_end),$user_id);
-
+    $data['client'] = $this->m_par_client->get_all();
     $this->load->library('pdf');
     //
     $this->pdf->setPaper('A4', 'potrait');
