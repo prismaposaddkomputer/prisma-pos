@@ -9,7 +9,9 @@ class M_par_report_income extends CI_Model {
 			->query(
 				"SELECT
 					billing_date_out AS billing_date,
-					SUM(billing_total) AS billing_total,
+					SUM(billing_subtotal) AS billing_subtotal,
+					SUM(billing_tax) AS billing_tax,
+					SUM(billing_total_grand) AS billing_total_grand,
 					COUNT(billing_tnkb) AS billing_count
 				FROM par_billing
 				WHERE
@@ -28,7 +30,9 @@ class M_par_report_income extends CI_Model {
 			->query(
 				"SELECT
 					billing_date_out AS billing_date,
-					SUM(billing_total) AS billing_total,
+					SUM(billing_subtotal) AS billing_subtotal,
+					SUM(billing_tax) AS billing_tax,
+					SUM(billing_total_grand) AS billing_total_grand,
 					COUNT(billing_tnkb) AS billing_count
 				FROM par_billing
 				WHERE
@@ -46,7 +50,9 @@ class M_par_report_income extends CI_Model {
 			->query(
 				"SELECT
 					billing_date_out AS billing_date,
-					SUM(billing_total) AS billing_total,
+					SUM(billing_subtotal) AS billing_subtotal,
+					SUM(billing_tax) AS billing_tax,
+					SUM(billing_total_grand) AS billing_total_grand,
 					COUNT(billing_tnkb) AS billing_count
 				FROM par_billing
 				WHERE
@@ -65,7 +71,9 @@ class M_par_report_income extends CI_Model {
 			->query(
 				"SELECT
 					billing_date_out AS billing_date,
-					SUM(billing_total) AS billing_total,
+					SUM(billing_subtotal) AS billing_subtotal,
+					SUM(billing_tax) AS billing_tax,
+					SUM(billing_total_grand) AS billing_total_grand,
 					COUNT(billing_tnkb) AS billing_count
 				FROM par_billing
 				WHERE
@@ -82,8 +90,10 @@ class M_par_report_income extends CI_Model {
 		$billing = $this->db
 			->query(
 				"SELECT
-					MONTH(billing_date_out) AS billing_month,
-					SUM(billing_total) AS billing_total,
+					billing_date_out AS billing_date,
+					SUM(billing_subtotal) AS billing_subtotal,
+					SUM(billing_tax) AS billing_tax,
+					SUM(billing_total_grand) AS billing_total_grand,
 					COUNT(billing_tnkb) AS billing_count
 				FROM par_billing
 				WHERE
