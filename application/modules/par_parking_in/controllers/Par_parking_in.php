@@ -152,7 +152,7 @@ class Par_parking_in extends MY_Parking {
     $category = $this->m_par_category->get_by_id($data['category_id']);
     $data['category_name'] = $category->category_name;
     $data['category_rate'] = $category->category_rate;
-    $data['category_is_flat'] = $category->category_is_flat;
+    $data['category_not_flat'] = $category->category_not_flat;
     $data['category_per_hour'] = $category->category_per_hour;
     // get brand
     $this->load->model('par_brand/m_par_brand');
@@ -202,7 +202,7 @@ class Par_parking_in extends MY_Parking {
       $printer -> text($billing->billing_tnkb);
       $printer -> feed();
       $printer -> setTextSize(1, 1);
-      $printer -> text($billing->billing_date_in.' '.$billing->billing_time_out);
+      $printer -> text($billing->billing_date_in.' '.$billing->billing_time_in);
       $printer -> feed();
       $printer -> text('Petugas : '.$billing->user_realname_in);
       $printer -> feed();

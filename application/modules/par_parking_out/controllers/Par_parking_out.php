@@ -21,6 +21,7 @@ class Par_parking_out extends MY_Parking {
     $this->load->model('par_category/m_par_category');
     $this->load->model('par_brand/m_par_brand');
     $this->load->model('par_shift/m_par_shift');
+    $this->load->model('par_tax/m_par_tax');
   }
 
   public function get_list_out()
@@ -120,8 +121,11 @@ class Par_parking_out extends MY_Parking {
     $data['updated_by'] = $this->session->userdata('user_realname');
 
     $data['billing_tnkb'] = strtoupper($data['billing_tnkb']);
-    $data['billing_total'] = price_to_num($data['billing_total']);
+    $data['billing_subtotal'] = price_to_num($data['billing_subtotal']);
+    $data['billing_tax'] = price_to_num($data['billing_tax']);
+    $data['billing_total_grand'] = price_to_num($data['billing_total_grand']);
     $data['billing_payment'] = price_to_num($data['billing_payment']);
+    $data['billing_change'] = price_to_num($data['billing_change']);
 
     $data['billing_status_out'] = 1;
     unset($data['billing_id']);
@@ -133,6 +137,7 @@ class Par_parking_out extends MY_Parking {
 
   public function get_billing()
   {
+    $tax = $this->m_par_tax->get_by_id(1);
     $billing_tnkb = $this->input->post('billing_tnkb');
     $billing = $this->m_par_billing->get_by_tnkb($billing_tnkb);
 
@@ -141,16 +146,22 @@ class Par_parking_out extends MY_Parking {
     $timestamp_now = $date_now.' '.$time_now;
 
     $timestamp_in = Carbon\Carbon::parse($billing->billing_date_in.' '.$billing->billing_time_in);
-    $duration = $timestamp_in->diffInHours($timestamp_now)+1;
+    $duration = $timestamp_in->diffInHours($timestamp_now);
 
     $billing->billing_duration = $duration;
     $billing->billing_date_out = $date_now;
     $billing->billing_time_out = $time_now;
 
-    if ($billing->category_is_flat == 0) {
-      $billing->billing_total = $duration*$billing->category_rate;
-    }else {
-      $billing->billing_total = $billing->category_rate + (($duration-1)*$billing->category_per_hour);
+    if ($billing->category_not_flat == 1) {
+      $billing->not_flat = 1;
+      $billing->billing_total_grand = $billing->category_rate+(($duration-1)*$billing->category_per_hour);
+      $billing->billing_tax = round(($tax->tax_ratio/(100+$tax->tax_ratio)) * $billing->billing_total_grand);
+      $billing->billing_subtotal = $billing->billing_total_grand-$billing->billing_tax;
+    } else {
+      $billing->not_flat = 0;
+      $billing->billing_total_grand = $billing->category_rate;
+      $billing->billing_tax = round(($tax->tax_ratio/(100+$tax->tax_ratio)) * $billing->billing_total_grand);
+      $billing->billing_subtotal = $billing->billing_total_grand-$billing->billing_tax;
     }
 
     echo json_encode($billing);
