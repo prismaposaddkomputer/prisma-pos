@@ -4,27 +4,29 @@
 <div class="content-body">
   <div class="row">
     <div class="col-md-12">
-      <a class="btn btn-primary" href="<?=base_url()?>par_report_log/annual_pdf/<?=$year?>" target="_blank"><i class="fa fa-print"></i> Download PDF</a>
+      <a class="btn btn-primary" href="<?=base_url()?>par_report_shift/monthly_pdf/<?=$month?>" target="_blank"><i class="fa fa-print"></i> Download PDF</a>
       <br><br>
       <table class="table table-condensed table-bordered table-striped">
         <thead>
           <tr>
             <th class="text-center">No</th>
             <th class="text-center">Nama</th>
-            <th class="text-center">Jenis</th>
-            <th class="text-center">Tanggal</th>
-            <th class="text-center">Waktu</th>
+            <th class="text-center">Waktu Masuk</th>
+            <th class="text-center">Uang Masuk</th>
+            <th class="text-center">Waktu Keluar</th>
+            <th class="text-center">Uang Keluar</th>
           </tr>
         </thead>
         <tbody>
-          <?php if ($annual != null): ?>
-            <?php $i=1; foreach ($annual as $row): ?>
+          <?php if ($monthly != null): ?>
+            <?php $i=1; foreach ($monthly as $row): ?>
               <tr>
                 <td class="text-center"><?=$i++?></td>
                 <td><?=$row->user_realname?></td>
-                <td class="text-center"><?=$row->log_type?></td>
-                <td class="text-center"><?=$row->log_date?></td>
-                <td class="text-center"><?=$row->log_time?></td>
+                <td class="text-center"><?=$row->shift_in_date?> <?=$row->shift_in_time?></td>
+                <td><?=num_to_idr($row->total_in)?></td>
+                <td class="text-center"><?=$row->shift_out_date?> <?=$row->shift_out_time?></td>
+                <td><?=num_to_idr($row->total_out)?></td>
               </tr>
             <?php endforeach; ?>
           <?php else: ?>

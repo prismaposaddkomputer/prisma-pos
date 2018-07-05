@@ -43,7 +43,7 @@ class M_par_dashboard extends CI_Model {
 
     $billing = $this->db->query(
       "SELECT
-        COUNT(billing_total) AS total
+        COUNT(billing_total_grand) AS total
       FROM
         par_billing
       WHERE
@@ -77,7 +77,7 @@ class M_par_dashboard extends CI_Model {
 
     $query = $this->db->query(
 			"SELECT
-				SUM(billing_total) AS total
+				SUM(billing_total_grand) AS total
 			FROM par_billing
 			WHERE
         billing_date_out LIKE '$month_now%' AND
@@ -111,7 +111,7 @@ class M_par_dashboard extends CI_Model {
 
     $query = $this->db->query(
 			"SELECT
-        SUM(billing_total) AS total
+        SUM(billing_total_grand) AS total
       FROM par_billing
       WHERE
         billing_date_out LIKE '$year_now%' AND
@@ -127,7 +127,7 @@ class M_par_dashboard extends CI_Model {
     $date = date('Y-m-d');
 
     $query = $this->db->query(
-      "SELECT * 
+      "SELECT *
       FROM par_billing
       WHERE billing_date_in = '$date'
       ORDER BY billing_id DESC
@@ -142,7 +142,7 @@ class M_par_dashboard extends CI_Model {
     $date = date('Y-m-d');
 
     $query = $this->db->query(
-      "SELECT * 
+      "SELECT *
       FROM par_billing
       WHERE billing_date_out = '$date'
       ORDER BY billing_id DESC

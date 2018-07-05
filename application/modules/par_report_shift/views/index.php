@@ -9,16 +9,16 @@
         <?php if ($type == '') {$type = 'daily';} ?>
         <select class="form-control select2" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
           <option value="<?=base_url()?>par_report_shift/index/daily" <?php if($type == 'daily'){echo 'selected';}?>>Harian</option>
-          <!-- <option value="<?=base_url()?>par_report_shift/index/weekly" <?php if($type == 'weekly'){echo 'selected';}?>>Mingguan</option> -->
+          <option value="<?=base_url()?>par_report_shift/index/weekly" <?php if($type == 'weekly'){echo 'selected';}?>>Mingguan</option>
           <option value="<?=base_url()?>par_report_shift/index/monthly" <?php if($type == 'monthly'){echo 'selected';}?>>Bulanan</option>
-          <!-- <option value="<?=base_url()?>par_report_shift/index/annual" <?php if($type == 'annual'){echo 'selected';}?>>Tahunan</option> -->
-          <!-- <option value="<?=base_url()?>par_report_shift/index/range" <?php if($type == 'range'){echo 'selected';}?>>Rentang Waktu</option> -->
+          <option value="<?=base_url()?>par_report_shift/index/annual" <?php if($type == 'annual'){echo 'selected';}?>>Tahunan</option>
+          <option value="<?=base_url()?>par_report_shift/index/range" <?php if($type == 'range'){echo 'selected';}?>>Rentang Waktu</option>
         </select>
       </div>
     </div>
     <?php if ($type == 'daily'): ?>
       <div class="col-md-3">
-        <form class="" action="<?=base_url()?>par_report_shift/report_action" method="post">
+        <form class="" action="<?=base_url()?>par_report_shift/action" method="post">
           <input type="hidden" name="type" value="daily">
           <div class="form-group">
             <div class="input-group">
@@ -33,7 +33,7 @@
     <?php endif; ?>
     <?php if ($type == 'weekly'): ?>
       <div class="col-md-4">
-        <form class="" action="<?=base_url()?>par_report_shift/report_action" method="post">
+        <form class="" action="<?=base_url()?>par_report_shift/action" method="post">
           <input type="hidden" name="type" value="weekly">
           <div class="form-group">
             <div class="input-group">
@@ -48,7 +48,7 @@
     <?php endif; ?>
     <?php if ($type == 'monthly'): ?>
       <div class="col-md-3">
-        <form class="" action="<?=base_url()?>par_report_shift/report_action" method="post">
+        <form class="" action="<?=base_url()?>par_report_shift/action" method="post">
           <input type="hidden" name="type" value="monthly">
           <div class="form-group">
             <div class="input-group">
@@ -63,7 +63,7 @@
     <?php endif; ?>
     <?php if ($type == 'annual'): ?>
       <div class="col-md-3">
-        <form class="" action="<?=base_url()?>par_report_shift/report_action" method="post">
+        <form class="" action="<?=base_url()?>par_report_shift/action" method="post">
           <input type="hidden" name="type" value="annual">
           <div class="form-group">
             <div class="input-group">
@@ -78,7 +78,7 @@
     <?php endif; ?>
     <?php if ($type == 'range'): ?>
       <div class="col-md-4">
-        <form class="" action="<?=base_url()?>par_report_shift/report_action" method="post">
+        <form class="" action="<?=base_url()?>par_report_shift/action" method="post">
           <input type="hidden" name="type" value="range">
           <div class="form-group">
             <div class="input-group">
