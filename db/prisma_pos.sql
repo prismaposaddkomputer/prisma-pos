@@ -32,11 +32,11 @@ CREATE TABLE IF NOT EXISTS `app_install` (
   PRIMARY KEY (`install_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.app_install: ~0 rows (approximately)
+-- Dumping data for table prisma_pos.app_install: ~1 rows (approximately)
 DELETE FROM `app_install`;
 /*!40000 ALTER TABLE `app_install` DISABLE KEYS */;
 INSERT INTO `app_install` (`install_id`, `type_id`, `install_status`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
-	(1, 4, 1, '2018-04-18 12:14:03', 'System', '2018-07-05 13:18:33', 'System', 1, 0);
+	(1, 1, 0, '2018-04-18 12:14:03', 'System', '2018-07-05 16:08:17', 'System', 1, 0);
 /*!40000 ALTER TABLE `app_install` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.app_type
@@ -207,7 +207,7 @@ CREATE TABLE IF NOT EXISTS `hot_client` (
   PRIMARY KEY (`client_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.hot_client: ~0 rows (approximately)
+-- Dumping data for table prisma_pos.hot_client: ~1 rows (approximately)
 DELETE FROM `hot_client`;
 /*!40000 ALTER TABLE `hot_client` DISABLE KEYS */;
 INSERT INTO `hot_client` (`client_id`, `client_name`, `client_brand`, `client_status`, `client_street`, `client_subdistrict`, `client_district`, `client_city`, `client_province`, `client_email`, `client_phone_1`, `client_phone_2`, `client_npwp`, `client_npwpd`, `client_owner_name`, `client_owner_address`, `client_notes`, `client_serial_number`, `client_keyboard_status`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
@@ -590,7 +590,7 @@ CREATE TABLE IF NOT EXISTS `kar_client` (
   PRIMARY KEY (`client_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.kar_client: ~0 rows (approximately)
+-- Dumping data for table prisma_pos.kar_client: ~1 rows (approximately)
 DELETE FROM `kar_client`;
 /*!40000 ALTER TABLE `kar_client` DISABLE KEYS */;
 INSERT INTO `kar_client` (`client_id`, `client_name`, `client_brand`, `client_status`, `client_street`, `client_subdistrict`, `client_district`, `client_city`, `client_province`, `client_email`, `client_phone_1`, `client_phone_2`, `client_npwp`, `client_npwpd`, `client_owner_name`, `client_owner_address`, `client_notes`, `client_serial_number`, `client_keyboard_status`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
@@ -1119,7 +1119,7 @@ CREATE TABLE IF NOT EXISTS `par_client` (
   PRIMARY KEY (`client_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.par_client: ~0 rows (approximately)
+-- Dumping data for table prisma_pos.par_client: ~1 rows (approximately)
 DELETE FROM `par_client`;
 /*!40000 ALTER TABLE `par_client` DISABLE KEYS */;
 INSERT INTO `par_client` (`client_id`, `client_name`, `client_brand`, `client_status`, `client_street`, `client_subdistrict`, `client_district`, `client_city`, `client_province`, `client_email`, `client_phone_1`, `client_phone_2`, `client_npwp`, `client_npwpd`, `client_owner_name`, `client_owner_address`, `client_notes`, `client_serial_number`, `client_keyboard_status`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
@@ -1342,7 +1342,7 @@ CREATE TABLE IF NOT EXISTS `par_tax` (
   PRIMARY KEY (`tax_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
--- Dumping data for table prisma_pos.par_tax: ~0 rows (approximately)
+-- Dumping data for table prisma_pos.par_tax: ~1 rows (approximately)
 DELETE FROM `par_tax`;
 /*!40000 ALTER TABLE `par_tax` DISABLE KEYS */;
 INSERT INTO `par_tax` (`tax_id`, `tax_code`, `tax_name`, `tax_ratio`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
@@ -1598,7 +1598,7 @@ CREATE TABLE IF NOT EXISTS `res_client` (
   PRIMARY KEY (`client_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.res_client: ~0 rows (approximately)
+-- Dumping data for table prisma_pos.res_client: ~1 rows (approximately)
 DELETE FROM `res_client`;
 /*!40000 ALTER TABLE `res_client` DISABLE KEYS */;
 INSERT INTO `res_client` (`client_id`, `client_name`, `client_brand`, `client_status`, `client_street`, `client_subdistrict`, `client_district`, `client_city`, `client_province`, `client_email`, `client_phone_1`, `client_phone_2`, `client_npwp`, `client_npwpd`, `client_owner_name`, `client_owner_address`, `client_notes`, `client_serial_number`, `client_keyboard_status`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
@@ -1732,7 +1732,7 @@ CREATE TABLE IF NOT EXISTS `res_module` (
   PRIMARY KEY (`module_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.res_module: ~39 rows (approximately)
+-- Dumping data for table prisma_pos.res_module: ~38 rows (approximately)
 DELETE FROM `res_module`;
 /*!40000 ALTER TABLE `res_module` DISABLE KEYS */;
 INSERT INTO `res_module` (`module_id`, `module_parent`, `module_name`, `module_folder`, `module_controller`, `module_url`, `module_icon`, `created`, `created_by`, `updated`, `updated_by`, `is_actived`, `is_deleted`) VALUES
@@ -2332,7 +2332,7 @@ CREATE TABLE IF NOT EXISTS `res_tax` (
   PRIMARY KEY (`tax_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.res_tax: ~0 rows (approximately)
+-- Dumping data for table prisma_pos.res_tax: ~1 rows (approximately)
 DELETE FROM `res_tax`;
 /*!40000 ALTER TABLE `res_tax` DISABLE KEYS */;
 INSERT INTO `res_tax` (`tax_id`, `tax_code`, `tax_name`, `tax_ratio`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
@@ -2692,7 +2692,7 @@ CREATE TABLE IF NOT EXISTS `ret_client` (
   PRIMARY KEY (`client_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.ret_client: ~0 rows (approximately)
+-- Dumping data for table prisma_pos.ret_client: ~1 rows (approximately)
 DELETE FROM `ret_client`;
 /*!40000 ALTER TABLE `ret_client` DISABLE KEYS */;
 INSERT INTO `ret_client` (`client_id`, `client_name`, `client_brand`, `client_status`, `client_street`, `client_subdistrict`, `client_district`, `client_city`, `client_province`, `client_email`, `client_phone_1`, `client_phone_2`, `client_npwp`, `client_npwpd`, `client_owner_name`, `client_owner_address`, `client_notes`, `client_serial_number`, `client_keyboard_status`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
@@ -2807,7 +2807,7 @@ CREATE TABLE IF NOT EXISTS `ret_module` (
   PRIMARY KEY (`module_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.ret_module: ~39 rows (approximately)
+-- Dumping data for table prisma_pos.ret_module: ~38 rows (approximately)
 DELETE FROM `ret_module`;
 /*!40000 ALTER TABLE `ret_module` DISABLE KEYS */;
 INSERT INTO `ret_module` (`module_id`, `module_parent`, `module_name`, `module_folder`, `module_controller`, `module_url`, `module_icon`, `created`, `created_by`, `updated`, `updated_by`, `is_actived`, `is_deleted`) VALUES
@@ -3407,7 +3407,7 @@ CREATE TABLE IF NOT EXISTS `ret_tax` (
   PRIMARY KEY (`tax_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
--- Dumping data for table prisma_pos.ret_tax: ~0 rows (approximately)
+-- Dumping data for table prisma_pos.ret_tax: ~1 rows (approximately)
 DELETE FROM `ret_tax`;
 /*!40000 ALTER TABLE `ret_tax` DISABLE KEYS */;
 INSERT INTO `ret_tax` (`tax_id`, `tax_code`, `tax_name`, `tax_ratio`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
