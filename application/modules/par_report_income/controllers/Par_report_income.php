@@ -18,6 +18,7 @@ class Par_report_income extends MY_Parking {
     $this->access = $this->m_par_config->get_permission($this->role_id, $this->module_controller);
 
     $this->load->model('m_par_report_income');
+    $this->load->model('ret_client/m_ret_client');
   }
 
 	public function index($type = null)
@@ -84,7 +85,7 @@ class Par_report_income extends MY_Parking {
   {
     $data['title'] = 'Laporan Pendapatan Tahun '.$year;
     $data['billing'] = $this->m_par_report_income->report_annual($year);
-
+    $data['client'] = $this->m_ret_client->get_all(); 
     $this->load->library('pdf');
     //
     $this->pdf->setPaper('A4', 'potrait');
@@ -112,7 +113,7 @@ class Par_report_income extends MY_Parking {
 
     $data['title'] = 'Laporan Pendapatan Bulan '.month_name_ind($num_month);
     $data['billing'] = $this->m_par_report_income->report_monthly($month);
-
+    $data['client'] = $this->m_ret_client->get_all();
     $this->load->library('pdf');
     //
     $this->pdf->setPaper('A4', 'potrait');
@@ -135,7 +136,7 @@ class Par_report_income extends MY_Parking {
   {
     $data['title'] = 'Laporan Pendapatan Mingguan ('.$date_start.' - '.$date_start.')';
     $data['billing'] = $this->m_par_report_income->report_weekly(date_to_ind($date_start),date_to_ind($date_end));
-
+    $data['client'] = $this->m_ret_client->get_all();
     $this->load->library('pdf');
     //
     $this->pdf->setPaper('A4', 'potrait');
@@ -157,6 +158,7 @@ class Par_report_income extends MY_Parking {
   {
     $data['title'] = 'Laporan Pendapatan Tanggal '.date_to_ind($date);
     $data['billing'] = $this->m_par_report_income->report_daily($date);
+    $data['client'] = $this->m_ret_client->get_all();
 
     $this->load->library('pdf');
     //
@@ -180,7 +182,7 @@ class Par_report_income extends MY_Parking {
   {
     $data['title'] = 'Laporan Pendapatan Tanggal ('.$date_start.' - '.$date_start.')';
     $data['billing'] = $this->m_par_report_income->report_range(date_to_ind($date_start),date_to_ind($date_end));
-
+    $data['client'] = $this->m_ret_client->get_all();
     $this->load->library('pdf');
     //
     $this->pdf->setPaper('A4', 'potrait');

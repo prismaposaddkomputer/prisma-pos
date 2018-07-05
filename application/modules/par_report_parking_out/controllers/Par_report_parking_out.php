@@ -18,6 +18,7 @@ class Par_report_parking_out extends MY_Parking {
     $this->access = $this->m_par_config->get_permission($this->role_id, $this->module_controller);
 
     $this->load->model('m_par_report_parking_out');
+    $this->load->model('ret_client/m_ret_client');
   }
 
 	public function index($type = null)
@@ -70,14 +71,37 @@ class Par_report_parking_out extends MY_Parking {
     }
   }
 
+  public function report_annual($year)
+  {
+    $data['access'] = $this->access;
+    $data['title'] = 'Laporan Parkir Keluar Tahun '.$year;
+    $data['billing'] = $this->m_par_report_parking_out->report_annual($year);
+    $data['year'] = $year;
+
+    $this->view('par_report_parking_out/report_annual', $data);
+  }
+
+  public function report_annual_pdf($year)
+  {
+    $data['title'] = 'Laporan Parkir Keluar Tahun '.$year;
+    $data['billing'] = $this->m_par_report_parking_out->report_annual($year);
+    $data['client'] = $this->m_ret_client->get_all();
+
+    $this->load->library('pdf');
+
+    $this->pdf->setPaper('A4', 'potrait');
+    $this->pdf->filename = "parkir-keluar-tahun-".$year.".pdf";
+    $this->pdf->load_view('report_pdf', $data);
+  }
+
   public function report_monthly($month)
   {
     $raw = $raw = explode("-", $month);
     $num_month = $raw[1];
 
     $data['access'] = $this->access;
-    $data['title'] = 'Laporan Parkir Keluar Bulan '.month_name_ind($num_month);
-    $data['monthly'] = $this->m_par_report_parking_out->report_monthly($month);
+    $data['title'] = 'Laporan Parkir Keluar Bulan '.month_name_ind($num_month).' '.$raw[0];
+    $data['billing'] = $this->m_par_report_parking_out->report_monthly($month);
     $data['month'] = $month;
 
     $this->view('report_monthly', $data);
@@ -88,13 +112,41 @@ class Par_report_parking_out extends MY_Parking {
     $raw = $raw = explode("-", $month);
     $num_month = $raw[1];
 
-    $data['title'] = 'Laporan Parkir Keluar Bulan '.month_name_ind($num_month);
+    $data['title'] = 'Laporan Parkir Keluar Bulan '.month_name_ind($num_month).' '.$raw[0];
     $data['billing'] = $this->m_par_report_parking_out->report_monthly($month);
-    // var_dump($data);
+    $data['client'] = $this->m_ret_client->get_all();
     $this->load->library('pdf');
     //
     $this->pdf->setPaper('A4', 'potrait');
     $this->pdf->filename = "parkir-keluar-bulan-".$month.".pdf";
+    $this->pdf->load_view('report_pdf', $data);
+  }
+
+  public function report_weekly($date_start, $date_end)
+  {
+    $data['access'] = $this->access;
+    $data['title'] = 'Laporan Parkir Keluar Mingguan ('.$date_start.' - '.$date_end.')';
+    $data['date_start'] = $date_start;
+    $data['date_end'] = $date_end;
+
+    $data['billing'] = $this->m_par_report_parking_out->report_weekly(ind_to_date($date_start),ind_to_date($date_end));
+    $this->view('report_weekly', $data);
+  }
+
+  public function report_weekly_pdf($date_start,$date_end)
+  {
+    $data['access'] = $this->access;
+    $data['title'] = 'Laporan Parkir Keluar Mingguan ('.$date_start.' - '.$date_end.')';
+    $data['date_start'] = $date_start;
+    $data['date_end'] = $date_end;
+    $data['client'] = $this->m_ret_client->get_all();
+
+    $data['billing'] = $this->m_par_report_parking_out->report_weekly(ind_to_date($date_start),ind_to_date($date_end));
+
+    $this->load->library('pdf');
+
+    $this->pdf->setPaper('A4', 'potrait');
+    $this->pdf->filename = "laporan-parkir-keluar-tanggal".$date_start.'-'.$date_end.".pdf";
     $this->pdf->load_view('report_pdf', $data);
   }
 
@@ -112,6 +164,7 @@ class Par_report_parking_out extends MY_Parking {
   {
     $data['title'] = 'Laporan Parkir Keluar Tanggal '.date_to_ind($date);
     $data['billing'] = $this->m_par_report_parking_out->report_daily($date);
+    $data['client'] = $this->m_ret_client->get_all();
 
     $this->load->library('pdf');
 
@@ -135,6 +188,7 @@ class Par_report_parking_out extends MY_Parking {
   {
     $data['access'] = $this->access;
     $data['title'] = 'Laporan Parkir Keluar Tanggal '.$date_start.' - '.$date_end;
+    $data['client'] = $this->m_ret_client->get_all();
 
     $data['billing'] = $this->m_par_report_parking_out->report_range(ind_to_date($date_start),ind_to_date($date_end));
     $this->load->library('pdf');

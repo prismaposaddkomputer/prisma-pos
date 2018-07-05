@@ -1,6 +1,7 @@
 <div class="content-header">
   <h4><i class="fa fa-<?=$access->module_icon?>"></i> <?=$title?></h4>
-  <small>Kolom dengan tanda <b class="required-field">*</b> wajib diisi!</small>
+  <small>Kolom dengan tanda <b class="required-field">*</b> wajib diisi!</small><br>
+  <small>Tarif termasuk pajak</small>
 </div>
 <div class="content-body">
   <div class="row">
@@ -16,8 +17,8 @@
           <input class="form-control keyboard autonumeric" type="text" name="category_rate" value="<?php if($category != null){echo $category->category_rate;}?>">
         </div>
         <div class="form-group">
-          <label>Tarif Flat?</label><br>
-          <input class="" type="checkbox" name="category_is_flat" value="1" <?php if($category != null){if($category->category_is_flat  == 1){echo 'checked';}};?>>
+          <label>Tarif Per Jam?</label><br>
+          <input class="" type="checkbox" name="category_not_flat" value="1" <?php if($category != null){if($category->category_not_flat  == 1){echo 'checked';}};?>>
         </div>
         <div class="form-group" id="category_per_hour">
           <label>Tarif Per Jam</label>
@@ -38,7 +39,7 @@
 <script type="text/javascript">
   $(document).ready(function () {
     $('#category_per_hour').hide();
-    $('input[name=category_is_flat]').change(function() {
+    $('input[name=category_not_flat]').change(function() {
       if($(this).is(":checked")) {
         $('input[name=category_per_hour]').val('0');
         $('#category_per_hour').show();

@@ -45,7 +45,9 @@
               <div class="col-md-9">
                 <div class="form-group">
                   <label>Biaya Parkir</label>
-                  <input id="billing_total" class="form-control" type="text" name="billing_total" value="" readonly>
+                  <input id="billing_total_grand" class="form-control" type="text" name="billing_total_grand" value="" readonly>
+                  <input id="billing_subtotal" type="hidden" name="billing_subtotal" value="">
+                  <input id="billing_tax" type="hidden" name="billing_tax" value="">
                 </div>
               </div>
             </div>
@@ -53,7 +55,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Bayar</label>
-                  <input id="billing_payment" class="form-control keyboard autonumeric" type="text" name="billing_payment" value="">
+                  <input id="billing_payment" class="form-control keyboard autonumeric" type="text" name="billing_payment" value="" onkeyup="calcChange()">
                 </div>
               </div>
               <div class="col-md-6">
@@ -65,7 +67,7 @@
             </div>
             <div class="pull-right">
               <button id="btn_save" class="btn btn-info" type="submit"><i class="fa fa-save"></i> Simpan</button>
-              <button id="btn_progress" class="btn btn-info disabled" type="button"><i class="fa fa-spinner fa-spin"></i> Proses...</button>
+              <button id="btn_progress" class="btn btn-default disabled" type="button"><i class="fa fa-spinner fa-spin"></i> Proses...</button>
             </div>
           </form>
           <div id="message"></div>
@@ -124,6 +126,7 @@
     $('#sidebar, #content').toggleClass('active');
     $('.collapse.in').toggleClass('in');
     $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+    $("#btn_save").prop("disabled", true);
 
     //get list today
     $("#btn_progress").hide();
@@ -141,10 +144,10 @@
         }
       },
       submitHandler: function(form) {
-        var billing_total = ind_to_sys($("#billing_total").val());
+        var billing_total_grand = ind_to_sys($("#billing_total_grand").val());
         var billing_payment = ind_to_sys($("#billing_payment").val());
         var billing_change;
-        billing_change = parseFloat(billing_payment) - parseFloat(billing_total);
+        billing_change = parseFloat(billing_payment) - parseFloat(billing_total_grand);
         console.log(billing_change);
         if (billing_payment == '') {
           $("#message").html('<i class="cl-danger">Isi pembayaran!</i>');
@@ -164,6 +167,7 @@
               $("#btn_progress").show();
             },
             success: function(data) {
+              $("#btn_save").prop("disabled", true);
               $("#billing_tnkb").val('');
               $("#billing_id").val('');
               $("#receipt_no").val('');
@@ -172,7 +176,7 @@
               $("#brand_name").val('');
               $("#billing_duration").val('');
               $("#billing_timestamp_out").val('');
-              $("#billing_total").val('');
+              $("#billing_total_grand").val('');
               $("#billing_payment").val('');
               $("#billing_change").val('');
               $("#btn_save").show();
@@ -187,6 +191,22 @@
       }
     });
   })
+
+  function calcChange() {
+    var billing_total_grand = ind_to_sys($("#billing_total_grand").val());
+    var billing_payment = ind_to_sys($("#billing_payment").val());
+    var billing_change;
+    billing_change = parseFloat(billing_payment) - parseFloat(billing_total_grand);
+    console.log(billing_change);
+    if (billing_change < 0) {
+      $("#message").html('<i class="cl-danger">Pembayaran kurang!</i>');
+      setTimeout(function() {$('#message').html('');}, 1500);
+      $("#btn_save").prop("disabled", true);
+    }else{
+      $("#btn_save").prop("disabled", false);
+    };
+    $("#billing_change").val(billing_change);
+  }
 
   function get_list_out() {
     $.ajax({
@@ -204,7 +224,7 @@
               '<td class="text-center">'+item.billing_date_in+' '+item.billing_time_in+'</td>'+
               '<td class="text-center">'+item.billing_date_out+' '+item.billing_time_out+'</td>'+
               '<td class="text-center">'+item.billing_duration+' jam</td>'+
-              '<td class="text-center">'+item.billing_total+'</td>'+
+              '<td class="text-center">'+item.billing_total_grand+'</td>'+
             '</tr>';
           $("#get_list_out").append(html);
         });
@@ -228,7 +248,9 @@
         $("#billing_duration").val(data.billing_duration);
         $("#billing_date_out").val(data.billing_date_out);
         $("#billing_time_out").val(data.billing_time_out);
-        $("#billing_total").val(sys_to_ind(data.billing_total));
+        $("#billing_subtotal").val(data.billing_subtotal);
+        $("#billing_tax").val(data.billing_tax);
+        $("#billing_total_grand").val(sys_to_ind(data.billing_total_grand));
         console.log(data);
       }
     })

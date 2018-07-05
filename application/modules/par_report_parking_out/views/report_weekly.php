@@ -1,5 +1,5 @@
 <div class="content-header">
-  <a class="btn btn-success pull-right" target="_blank" href="<?=base_url()?>par_report_parking_out/report_daily_pdf/<?=$date?>"><i class="fa fa-file-pdf-o"></i> Download PDF</a>
+  <a class="btn btn-success pull-right" target="_blank" href="<?=base_url()?>par_report_parking_out/report_weekly_pdf/<?=$date_start?>/<?=$date_end?>"><i class="fa fa-file-pdf-o"></i> Download PDF</a>
   <h4><i class="fa fa-<?=$access->module_icon?>"></i> <?=$title?></h4>
 </div>
 <div class="content-body">

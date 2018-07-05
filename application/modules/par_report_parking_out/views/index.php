@@ -9,9 +9,9 @@
         <?php if ($type == '') {$type = 'daily';} ?>
         <select class="form-control select2" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
           <option value="<?=base_url()?>par_report_parking_out/index/daily" <?php if($type == 'daily'){echo 'selected';}?>>Harian</option>
-          <!-- <option value="<?=base_url()?>par_report_parking_out/index/weekly" <?php if($type == 'weekly'){echo 'selected';}?>>Mingguan</option> -->
+          <option value="<?=base_url()?>par_report_parking_out/index/weekly" <?php if($type == 'weekly'){echo 'selected';}?>>Mingguan</option>
           <option value="<?=base_url()?>par_report_parking_out/index/monthly" <?php if($type == 'monthly'){echo 'selected';}?>>Bulanan</option>
-          <!-- <option value="<?=base_url()?>par_report_parking_out/index/annual" <?php if($type == 'annual'){echo 'selected';}?>>Tahunan</option> -->
+          <option value="<?=base_url()?>par_report_parking_out/index/annual" <?php if($type == 'annual'){echo 'selected';}?>>Tahunan</option>
           <option value="<?=base_url()?>par_report_parking_out/index/range" <?php if($type == 'range'){echo 'selected';}?>>Rentang Waktu</option>
         </select>
       </div>

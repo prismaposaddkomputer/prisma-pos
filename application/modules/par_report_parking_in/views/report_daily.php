@@ -1,12 +1,12 @@
 <div class="content-header">
-  <a class="btn btn-success pull-right" target="" href="<?=base_url()?>par_report_parking_in/report_daily_pdf/<?=$date?>"><i class="fa fa-file-pdf-o"></i> Download PDF</a>
+  <a class="btn btn-success pull-right" target="_blank" href="<?=base_url()?>par_report_parking_in/report_daily_pdf/<?=$date?>"><i class="fa fa-file-pdf-o"></i> Download PDF</a>
   <h4><i class="fa fa-<?=$access->module_icon?>"></i> <?=$title?></h4>
 </div>
 <div class="content-body">
   <table class="table table-bordered table-condensed table-striped">
     <thead>
       <tr>
-        <th class="text-center" width="80">ID</th>
+        <th class="text-center" width="80">No. Karcis</th>
         <th class="text-center">Kategori</th>
         <th class="text-center">Merek</th>
         <th class="text-center">TNKB</th>
@@ -18,7 +18,7 @@
       <?php if($billing != null):?>
         <?php foreach ($billing as $row): ?>
           <tr>
-            <td>TXP-<?=$row->billing_id?></td>
+            <td>TXP-<?=$row->receipt_no?></td>
             <td><?=$row->category_name?></td>
             <td><?=$row->brand_name?></td>
             <td class="text-center"><?=$row->billing_tnkb?></td>
