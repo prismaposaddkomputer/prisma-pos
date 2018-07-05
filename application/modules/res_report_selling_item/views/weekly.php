@@ -4,6 +4,8 @@
 <div class="content-body">
   <div class="row">
     <div class="col-md-12">
+      <a class="btn btn-primary" href="<?=base_url()?>res_report_selling_item/weekly_pdf/<?=$date_start?>/<?=$date_end?>" target="_blank"><i class="fa fa-print"></i> Download PDF</a>
+      <br><br>
       <table class="table table-condensed table-bordered table-striped">
         <thead>
           <tr>
@@ -15,7 +17,7 @@
         <tbody>
           <?php if ($weekly != null): ?>
             <?php $i=1;foreach ($weekly as $row): ?>
-              <tr>  
+              <tr>
                 <td class="text-center"><?=$i++?></td>
                 <td><?=$row->item_name?></td>
                 <td class="text-center"><?=$row->tx_amount?></td>

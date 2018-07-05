@@ -22,6 +22,7 @@ class Res_report_profit_cashier extends MY_Restaurant {
 
     $this->load->model('m_res_report_profit_cashier');
     $this->load->model('res_user/m_res_user');
+    $this->load->model('res_client/m_res_client');
   }
 
 	public function index()
@@ -79,10 +80,25 @@ class Res_report_profit_cashier extends MY_Restaurant {
     $data['access'] = $this->access;
     $user = $this->m_res_user->get_by_id($user_id);
     $data['title'] = 'Laporan Omzet "'.$user->user_realname.'" Tahun '.$year;
+    $data['year'] = $year;
     $data['user_id'] = $user_id;
 
     $data['annual'] = $this->m_res_report_profit_cashier->annual($year,$user_id);
     $this->view('annual', $data);
+  }
+
+  public function annual_pdf($year,$user_id)
+  {
+    $data['title'] = 'Laporan Omzet Kasir Tahun '.$year;
+    $data['annual'] = $this->m_res_report_profit_cashier->annual($year,$user_id);
+    $data['client'] = $this->m_res_client->get_all();
+    $user = $this->m_res_user->get_by_id($user_id);
+    $data['user'] = $user;
+
+    $this->load->library('pdf');
+    $this->pdf->setPaper('A4', 'potrait');
+    $this->pdf->filename = "laporan-omzet-kasir('.$user->user_realname.')-tahun-".$year.".pdf";
+    $this->pdf->load_view('annual_pdf', $data);
   }
 
   public function monthly($month,$user_id)
@@ -92,11 +108,29 @@ class Res_report_profit_cashier extends MY_Restaurant {
 
     $data['access'] = $this->access;
     $user = $this->m_res_user->get_by_id($user_id);
-    $data['title'] = 'Laporan Omzet "'.$user->user_realname.'" Bulan '.month_name_ind($num_month);
+    $data['title'] = 'Laporan Omzet "'.$user->user_realname.'" Bulan '.month_name_ind($num_month).' '.$raw[0];
+    $data['month'] = $month;
     $data['user_id']=$user_id;
 
     $data['monthly'] = $this->m_res_report_profit_cashier->monthly($month,$user_id);
     $this->view('monthly', $data);
+  }
+
+  public function monthly_pdf($month,$user_id)
+  {
+    $raw = $raw = explode("-", $month);
+    $num_month = $raw[1];
+
+    $data['title'] = 'Laporan Omzet Kasir Bulan '.month_name_ind($num_month).' '.$raw[0];
+    $data['monthly'] = $this->m_res_report_profit_cashier->monthly($month,$user_id);
+    $data['client'] = $this->m_res_client->get_all();
+    $user = $this->m_res_user->get_by_id($user_id);
+    $data['user'] = $user;
+
+    $this->load->library('pdf');
+    $this->pdf->setPaper('A4', 'potrait');
+    $this->pdf->filename = "laporan-omzet-pelanggan('.$user->user_realname.')-kasir-".$month.' '.$raw[0].".pdf";
+    $this->pdf->load_view('monthly_pdf', $data);
   }
 
   public function weekly($date_start, $date_end, $user_id)
@@ -104,10 +138,26 @@ class Res_report_profit_cashier extends MY_Restaurant {
     $data['access'] = $this->access;
     $user = $this->m_res_user->get_by_id($user_id);
     $data['title'] = 'Laporan Omzet "'.$user->user_realname.'" Mingguan ('.$date_start.' - '.$date_end.')';
+    $data['date_start'] = $date_start;
+    $data['date_end'] = $date_end;
     $data['user_id'] = $user_id;
 
     $data['weekly'] = $this->m_res_report_profit_cashier->weekly(ind_to_date($date_start),ind_to_date($date_end),$user_id);
     $this->view('weekly', $data);
+  }
+
+  public function weekly_pdf($date_start,$date_end,$user_id)
+  {
+    $data['title'] = 'Laporan Omzet Kasir Mingguan ('.$date_start.' - '.$date_end.')';
+    $data['weekly'] = $this->m_res_report_profit_cashier->weekly(ind_to_date($date_start),ind_to_date($date_end),$user_id);
+    $data['client'] = $this->m_res_client->get_all();
+    $user = $this->m_res_user->get_by_id($user_id);
+    $data['user'] = $user;
+
+    $this->load->library('pdf');
+    $this->pdf->setPaper('A4', 'potrait');
+    $this->pdf->filename = "laporan-omzet-kasir('.$user->user_realname.')-mingguan-".$date_start.'-'.$date_end.".pdf";
+    $this->pdf->load_view('weekly_pdf', $data);
   }
 
   public function daily($date, $user_id)
@@ -115,9 +165,25 @@ class Res_report_profit_cashier extends MY_Restaurant {
     $data['access'] = $this->access;
     $user = $this->m_res_user->get_by_id($user_id);
     $data['title'] = 'Laporan Omzet "'.$user->user_realname.'" Tanggal '.date_to_ind($date);
+    $data['date'] = $date;
+    $data['user_id'] = $user_id;
 
     $data['daily'] = $this->m_res_report_profit_cashier->daily($date,$user_id);
     $this->view('daily', $data);
+  }
+
+  public function daily_pdf($date,$user_id)
+  {
+    $data['title'] = 'Laporan Omzet Kasir Tanggal '.date_to_ind($date);
+    $data['daily'] = $this->m_res_report_profit_cashier->daily($date, $user_id);
+    $data['client'] = $this->m_res_client->get_all();
+    $user = $this->m_res_user->get_by_id($user_id);
+    $data['user'] = $user;
+
+    $this->load->library('pdf');
+    $this->pdf->setPaper('A4', 'potrait');
+    $this->pdf->filename = "laporan-omzet-kasir('.$user->user_realname.')-tanggal-".date_to_ind($date).".pdf";
+    $this->pdf->load_view('daily_pdf', $data);
   }
 
   public function range($date_start, $date_end, $user_id)
@@ -125,10 +191,26 @@ class Res_report_profit_cashier extends MY_Restaurant {
     $data['access'] = $this->access;
     $user = $this->m_res_user->get_by_id($user_id);
     $data['title'] = 'Laporan Omzet "'.$user->user_realname.'" Tanggal '.$date_start.' - '.$date_end;
+    $data['date_start'] = $date_start;
+    $data['date_end'] = $date_end;
     $data['user_id'] = $user_id;
 
     $data['range'] = $this->m_res_report_profit_cashier->range(ind_to_date($date_start),ind_to_date($date_end),$user_id);
     $this->view('range', $data);
+  }
+
+  public function range_pdf($date_start,$date_end,$user_id)
+  {
+    $data['title'] = 'Laporan Omzet Kasir Tanggal ('.$date_start.' - '.$date_end.')';
+    $data['range'] = $this->m_res_report_profit_cashier->range(ind_to_date($date_start),ind_to_date($date_end),$user_id);
+    $data['client'] = $this->m_res_client->get_all();
+    $user = $this->m_res_user->get_by_id($user_id);
+    $data['user'] = $user;
+
+    $this->load->library('pdf');
+    $this->pdf->setPaper('A4', 'potrait');
+    $this->pdf->filename = "laporan-omzet-kasir('.$user->user_realname.')-rentang-".$date_start.'-'.$date_end.".pdf";
+    $this->pdf->load_view('range_pdf', $data);
   }
 
   public function detail($tx_id)

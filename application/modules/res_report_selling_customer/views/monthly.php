@@ -4,6 +4,8 @@
 <div class="content-body">
   <div class="row">
     <div class="col-md-12">
+      <a class="btn btn-primary" href="<?=base_url()?>res_report_selling_customer/monthly_pdf/<?=$month?>/<?=$customer_id?>" target="_blank"><i class="fa fa-print"></i> Download PDF</a>
+      <br><br>
       <table class="table table-striped table-bordered table-condensed">
         <thead>
           <tr>
@@ -69,14 +71,16 @@
           <?php endif; ?>
         </tbody>
         <tfoot>
-          <th class="text-center" colspan="2">Total</th>
-          <th><?=num_to_idr($tx_total_buy_average)?></th>
-          <th><?=num_to_idr($tx_total_before_tax)?></th>
-          <th><?=num_to_idr($tx_total_tax)?></th>
-          <th><?=num_to_idr($tx_total_after_tax)?></th>
-          <th><?=num_to_idr($tx_total_discount)?></th>
-          <th><?=num_to_idr($tx_total_profit_before_tax)?></th>
-          <th><?=num_to_idr($tx_total_profit_after_tax)?></th>
+          <tr>
+            <th class="text-center" colspan="2">Total</th>
+            <th><?=num_to_idr($tx_total_buy_average)?></th>
+            <th><?=num_to_idr($tx_total_before_tax)?></th>
+            <th><?=num_to_idr($tx_total_tax)?></th>
+            <th><?=num_to_idr($tx_total_after_tax)?></th>
+            <th><?=num_to_idr($tx_total_discount)?></th>
+            <th><?=num_to_idr($tx_total_profit_before_tax)?></th>
+            <th><?=num_to_idr($tx_total_profit_after_tax)?></th>
+          </tr>
         </tfoot>
       </table>
     </div>

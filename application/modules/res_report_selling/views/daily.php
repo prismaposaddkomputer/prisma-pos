@@ -4,6 +4,8 @@
 <div class="content-body">
   <div class="row">
     <div class="col-md-12">
+      <a class="btn btn-primary" href="<?=base_url()?>res_report_selling/daily_pdf/<?=$date?>" target="_blank"><i class="fa fa-print"></i> Download PDF</a>
+      <br><br>
       <table class="table table-condensed table-bordered table-striped">
         <thead>
           <tr>
@@ -74,11 +76,13 @@
           <?php endif; ?>
         </tbody>
         <tfoot>
-          <th colspan="7" class="text-center">Total</th>
-          <th><?=num_to_idr($total_before_tax)?></th>
-          <th><?=num_to_idr($total_discount)?></th>
-          <th><?=num_to_idr($total_tax)?></th>
-          <th><?=num_to_idr($total_grand)?></th>
+          <tr>
+            <th colspan="7" class="text-center">Total</th>
+            <th><?=num_to_idr($total_before_tax)?></th>
+            <th><?=num_to_idr($total_tax)?></th>
+            <th><?=num_to_idr($total_discount)?></th>
+            <th><?=num_to_idr($total_grand)?></th>
+          </tr>
         </tfoot>
       </table>
     </div>

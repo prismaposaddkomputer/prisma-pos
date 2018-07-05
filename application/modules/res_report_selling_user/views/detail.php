@@ -48,7 +48,7 @@
     <div class="col-md-6">
       <table class="table table-striped table-condensed">
         <tr>
-          <td width="150">Kasir</td>
+          <td width="150">Pelanggan</td>
           <td width="20">:</td>
           <td><?=$billing->customer_name?></td>
         </tr>

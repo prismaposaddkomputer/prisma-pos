@@ -4,6 +4,8 @@
 <div class="content-body">
   <div class="row">
     <div class="col-md-12">
+      <a class="btn btn-primary" href="<?=base_url()?>ret_report_selling_user/monthly_pdf/<?=$month?>/<?=$user_id?>" target="_blank"><i class="fa fa-print"></i> Download PDF</a>
+      <br><br>
       <table class="table table-striped table-bordered table-condensed">
         <thead>
           <tr>
@@ -44,7 +46,7 @@
               <tr>
                 <td class="text-center"><?=date_to_ind($row->tx_date)?></td>
                 <td class="text-center">
-                  <a href="<?=base_url()?>res_report_selling_user/daily/<?=$row->tx_date?>/<?=$user_id?>" class="btn btn-xs btn-success"><i class="fa fa-list"></i> </a>
+                  <a href="<?=base_url()?>ret_report_selling_user/daily/<?=$row->tx_date?>/<?=$user_id?>" class="btn btn-xs btn-success"><i class="fa fa-list"></i> </a>
                 </td>
                 <td><?=num_to_idr($row->tx_total_buy_average)?></td>
                   <?php $tx_total_buy_average += $row->tx_total_buy_average;?>
@@ -69,14 +71,16 @@
           <?php endif; ?>
         </tbody>
         <tfoot>
-          <th class="text-center" colspan="2">Total</th>
-          <th><?=num_to_idr($tx_total_buy_average)?></th>
-          <th><?=num_to_idr($tx_total_before_tax)?></th>
-          <th><?=num_to_idr($tx_total_tax)?></th>
-          <th><?=num_to_idr($tx_total_after_tax)?></th>
-          <th><?=num_to_idr($tx_total_discount)?></th>
-          <th><?=num_to_idr($tx_total_profit_before_tax)?></th>
-          <th><?=num_to_idr($tx_total_profit_after_tax)?></th>
+          <tr>
+            <th class="text-center" colspan="2">Total</th>
+            <th><?=num_to_idr($tx_total_buy_average)?></th>
+            <th><?=num_to_idr($tx_total_before_tax)?></th>
+            <th><?=num_to_idr($tx_total_tax)?></th>
+            <th><?=num_to_idr($tx_total_after_tax)?></th>
+            <th><?=num_to_idr($tx_total_discount)?></th>
+            <th><?=num_to_idr($tx_total_profit_before_tax)?></th>
+            <th><?=num_to_idr($tx_total_profit_after_tax)?></th>
+          </tr>
         </tfoot>
       </table>
     </div>
