@@ -31,21 +31,37 @@
       .text-right{
         text-align: right !important;
       }
+      h1,h2,h3,h4,h5,h6{
+        font-weight: normal;
+      }
       h3{
         font-size: 16px;
       }
       h4{
         font-size: 14px;
       }
+      .bolder{
+        font-weight: bold;
+      }
     </style>
+    <title><?=$title?></title>
   </head>
   <body>
-    <h4 class="text-center"><?=$title?></h4>
+    <div id="header">
+      <h5 class="text-center"><?=$client->client_name?></h5>
+      <h4 class="text-center bolder"><?=$client->client_brand?></h4>
+      <h5 class="text-center"><?=$client->client_street.', '.$client->client_subdistrict.', '.$client->client_district.', '.$client->client_city?></h5>
+    </div>
+    <br>
+    <hr>
+    <br>
+    <h4 class="text-center bolder"><?=$title?></h4>
     <br>
     <table id="main">
       <thead>
         <tr>
-          <th class="text-center">ID</th>
+          <th class="text-center" width="30">No.</th>
+          <th class="text-center" width="80">No. Karcis</th>
           <th class="text-center">Kategori</th>
           <th class="text-center">Merek</th>
           <th class="text-center">TNKB</th>
@@ -58,9 +74,10 @@
           $total_row = 0;
         ?>
         <?php if ($billing != null): ?>
-          <?php foreach ($billing as $row): ?>
+          <?php $i=1;foreach ($billing as $row): ?>
             <tr>
-              <td>TXP-<?=$row->billing_id?></td>
+              <td class="text-center"><?=$i++?></td>
+              <td class="text-center">TXP-<?=$row->receipt_no?></td>
               <td><?=$row->category_name?></td>
               <td><?=$row->brand_name?></td>
               <td class="text-center"><?=$row->billing_tnkb?></td>
