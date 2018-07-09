@@ -197,7 +197,7 @@
       }
     });
 
-    var printer = new Recta('17081945', '1811');
+    // var printer = new Recta('17081945', '1811');
 
     $("#form_payment").validate({
       rules: {
@@ -226,78 +226,8 @@
             success: function(data) {
               console.log(data);
               $("#modal_payment").modal('hide');
+              print_bill(data.tx_id);
               get_all_room();
-              printer.open().then(function () {
-                printer.mode('A', false, false, false, false)
-                  printer.align('center');
-                  printer.bold(true);
-                  if (data.receipt.receipt_name == 1) {
-                    printer.text(data.client.client_name);
-                  }
-                  printer.bold(false);
-                  if (data.receipt.receipt_street == 1) {
-                    printer.text(data.client.client_street);
-                  }
-                  if (data.receipt.receipt_district == 1) {
-                    printer.text(data.client.client_district);
-                  }
-                  if (data.receipt.receipt_city == 1) {
-                    printer.text(data.client.client_city);
-                  }
-                  if (data.receipt.receipt_province == 1) {
-                    printer.text(data.client.client_province);
-                  }
-                  if (data.receipt.receipt_npwp == 1) {
-                    printer.text('NPWP : '+data.client.client_npwp);
-                  }
-                  printer.bold(false);
-                  printer.text('--------------------------------');
-                  printer.bold(true);
-                  printer.text('TXP-'+data.billing.tx_id+' '+data.billing.member_name);
-                  printer.bold(false);
-                  printer.text('--------------------------------');
-                  printer.align('left');
-                  printer.text('Room '+data.room_type.room_type_name+' '+data.room.room_code);
-                  printer.align('right');
-                  printer.text(data.billing.tx_duration+' x '+sys_to_ind(data.billing.tx_room_price)+' = '+sys_to_ind(data.billing.tx_room_price_total));
-                if(data.service_charge != null || data.service_charge != ''){
-                  $.each(data.service_charge, function(i, item) {
-                    printer.align('left');
-                    printer.text(data.service_charge[i].service_charge_name);
-                    printer.align('right');
-                    printer.text(data.service_charge[i].service_charge_amount+' x '+sys_to_ind(data.service_charge[i].service_charge_price)+' = '+sys_to_ind(data.service_charge[i].service_charge_total));
-                  })
-                }
-                printer.text('--------------------------------');
-                // get length
-                var l_payment = data.billing.tx_payment.length;
-                var l_change = data.billing.tx_change.length;
-                var l_subtotal = data.billing.tx_total_before_tax.length;
-                var l_discount = data.billing.tx_total_discount.length;
-                var l_tax = data.billing.tx_total_tax.length;
-                var l_total = data.billing.tx_total_grand.length;
-                // inital space
-                var s_subtotal = '';
-                var s_discount = '';
-                var s_tax = '';
-                var s_total = '';
-                var s_change = '';
-                // set space
-                for (var i = 0; i < (parseInt(l_payment)-parseInt(l_subtotal)); i++) {s_subtotal += ' ';};
-                for (var i = 0; i < (parseInt(l_payment)-parseInt(l_discount)); i++) {s_discount += ' ';};
-                for (var i = 0; i < (parseInt(l_payment)-parseInt(l_tax)); i++) {s_tax += ' ';};
-                for (var i = 0; i < (parseInt(l_payment)-parseInt(l_total)); i++) {s_total += ' ';};
-                for (var i = 0; i < (parseInt(l_payment)-parseInt(l_change)); i++) {s_change += ' ';};
-                // printer.align('right').text('Subtotal = '+s_subtotal+sys_to_ind(data.billing.tx_total_before_tax));
-                // printer.align('right').text('Diskon = '+s_discount+sys_to_ind(data.billing.tx_total_discount));
-                // printer.align('right').text('Pajak = '+s_tax+sys_to_ind(data.billing.tx_total_tax));
-                printer.align('right').text('Total = '+s_total+sys_to_ind(data.billing.tx_total_grand));
-                printer.text('');
-                printer.text('Bayar = '+sys_to_ind(data.billing.tx_payment));
-                printer.text('Kembali = '+s_change+sys_to_ind(data.billing.tx_change));
-                printer.text(data.client.client_footer);
-                printer.cut().print();
-              });
               $("#modal_success").modal('show');
             }
           });
@@ -305,6 +235,21 @@
       }
     });
   })
+
+  function print_bill(tx_id) {
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>kar_cashier/print_bill',
+      data : 'tx_id='+tx_id,
+      dataType : 'json',
+      success : function (data) {
+        console.log(data);
+        $("#payment_tx_id").val(data.tx_id);
+        $("#payment_tx_total_grand").val(data.tx_total_grand);
+        $("#modal_payment").modal('show');
+      }
+    })
+  }
 
   function payment(tx_id) {
     $.ajax({
@@ -316,6 +261,8 @@
         console.log(data);
         $("#payment_tx_id").val(data.tx_id);
         $("#payment_tx_total_grand").val(data.tx_total_grand);
+        $("#payment_tx_payment").val('');
+        $("#payment_tx_change").val('');
         $("#modal_payment").modal('show');
       }
     })
@@ -491,6 +438,9 @@
       data : 'room_id='+id,
       dataType : 'json',
       success : function (data) {
+        $("#service_charge_list").html('');
+        $("#proses_tx_duration").val('');
+        $("#proses_tx_room_price_total").val('');
         console.log(data);
         var status,cl,panel;
         if (data.room_is_used == 0) {

@@ -16,9 +16,9 @@
           <td><?=date_to_ind($billing->tx_date)?> <?=$billing->tx_time_start?> s/d <?=$billing->tx_time_end?></td>
         </tr>
         <tr>
-          <td>Kasir</td>
+          <td>Member</td>
           <td>:</td>
-          <td><?=$billing->user_realname?></td>
+          <td><?=$billing->member_name?></td>
         </tr>
         <tr>
           <td>Status</td>

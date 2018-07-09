@@ -19,13 +19,11 @@
     <?php if ($type == 'daily'): ?>
       <form class="" action="<?=base_url()?>kar_report_billing_cashier/action" method="post">
         <div class="col-md-3">
-          <div class="form-group">
-            <select class="form-control select2" name="user_id">
-              <?php foreach ($cashier as $row): ?>
-                <option value="<?=$row->user_id?>"><?=$row->user_realname?></option>
-              <?php endforeach; ?>
-            </select>
-          </div>
+          <select class="form-control select2" name="user_id" id="">
+            <?php foreach ($user as $row): ?>
+              <option value="<?=$row->user_id?>"><?=$row->user_realname?></option>
+            <?php endforeach; ?>
+          </select>
         </div>
         <div class="col-md-3">
           <input type="hidden" name="type" value="daily">
@@ -43,13 +41,11 @@
     <?php if ($type == 'weekly'): ?>
       <form class="" action="<?=base_url()?>kar_report_billing_cashier/action" method="post">
         <div class="col-md-3">
-          <div class="form-group">
-            <select class="form-control select2" name="user_id">
-              <?php foreach ($cashier as $row): ?>
-                <option value="<?=$row->user_id?>"><?=$row->user_realname?></option>
-              <?php endforeach; ?>
-            </select>
-          </div>
+          <select class="form-control select2" name="user_id" id="">
+            <?php foreach ($user as $row): ?>
+              <option value="<?=$row->user_id?>"><?=$row->user_realname?></option>
+            <?php endforeach; ?>
+          </select>
         </div>
         <div class="col-md-4">
           <input type="hidden" name="type" value="weekly">
@@ -67,13 +63,11 @@
     <?php if ($type == 'monthly'): ?>
       <form class="" action="<?=base_url()?>kar_report_billing_cashier/action" method="post">
         <div class="col-md-3">
-          <div class="form-group">
-            <select class="form-control select2" name="user_id">
-              <?php foreach ($cashier as $row): ?>
-                <option value="<?=$row->user_id?>"><?=$row->user_realname?></option>
-              <?php endforeach; ?>
-            </select>
-          </div>
+          <select class="form-control select2" name="user_id" id="">
+            <?php foreach ($user as $row): ?>
+              <option value="<?=$row->user_id?>"><?=$row->user_realname?></option>
+            <?php endforeach; ?>
+          </select>
         </div>
         <div class="col-md-3">
           <input type="hidden" name="type" value="monthly">
@@ -91,13 +85,11 @@
     <?php if ($type == 'annual'): ?>
       <form class="" action="<?=base_url()?>kar_report_billing_cashier/action" method="post">
         <div class="col-md-3">
-          <div class="form-group">
-            <select class="form-control select2" name="user_id">
-              <?php foreach ($cashier as $row): ?>
-                <option value="<?=$row->user_id?>"><?=$row->user_realname?></option>
-              <?php endforeach; ?>
-            </select>
-          </div>
+          <select class="form-control select2" name="user_id" id="">
+            <?php foreach ($user as $row): ?>
+              <option value="<?=$row->user_id?>"><?=$row->user_realname?></option>
+            <?php endforeach; ?>
+          </select>
         </div>
         <div class="col-md-3">
           <input type="hidden" name="type" value="annual">
@@ -109,19 +101,17 @@
               </span>
             </div>
           </div>
-        </div>
+       </div>
       </form>
     <?php endif; ?>
     <?php if ($type == 'range'): ?>
       <form class="" action="<?=base_url()?>kar_report_billing_cashier/action" method="post">
         <div class="col-md-3">
-          <div class="form-group">
-            <select class="form-control select2" name="user_id">
-              <?php foreach ($cashier as $row): ?>
-                <option value="<?=$row->user_id?>"><?=$row->user_realname?></option>
-              <?php endforeach; ?>
-            </select>
-          </div>
+          <select class="form-control select2" name="user_id" id="">
+            <?php foreach ($user as $row): ?>
+              <option value="<?=$row->user_id?>"><?=$row->user_realname?></option>
+            <?php endforeach; ?>
+          </select>
         </div>
         <div class="col-md-4">
           <input type="hidden" name="type" value="range">
