@@ -26,22 +26,9 @@ class Kar_cashier extends MY_Karaoke {
     $this->load->model('kar_time/m_kar_time');
     $this->load->model('kar_service_charge/m_kar_service_charge');
     $this->load->model('kar_receipt/m_kar_receipt');
+    $this->load->model('kar_client/m_kar_client');
+    $this->load->model('kar_tax/m_kar_tax');
   }
-
-  // public function new_billing()
-  // {
-  //   $data['billing'] = $this->m_kar_billing->get_list_in();
-  //
-  //   $last = $this->m_kar_billing->get_last();
-  //   if ($last == null) {
-  //     $billing_id = 'TXP-'.'1';
-  //   }else{
-  //     $billing_id = 'TXP-'.($last->billing_id+1);
-  //   }
-  //   $data['billing_id'] = $billing_id;
-  //
-  //   echo json_encode($data);
-  // }
 
   public function get_list_in()
   {
@@ -245,11 +232,14 @@ class Kar_cashier extends MY_Karaoke {
     }
 
     //update billing total
+    $tax = $this->m_kar_tax->get_by_id(1);
     $billing = $this->m_kar_billing->get_by_id($tx_id);
 
     $data_billing = array();
-    $data_billing['tx_total_before_tax'] = $billing->tx_room_price_total + $total_service;
-    $data_billing['tx_total_grand'] = $data_billing['tx_total_before_tax'] + $billing->tx_total_tax-$billing->tx_total_discount;
+    $data_billing['tx_total_after_tax'] = $billing->tx_room_price_total + $total_service;
+    $data_billing['tx_total_tax'] = ($tax->tax_ratio/(100+$tax->tax_ratio))*$data_billing['tx_total_after_tax'];
+    $data_billing['tx_total_before_tax'] = $data_billing['tx_total_after_tax'] - $data_billing['tx_total_tax'];
+    $data_billing['tx_total_grand'] = $data_billing['tx_total_after_tax'] - $billing->tx_total_discount;
 
     $this->m_kar_billing->update($tx_id,$data_billing);
 
@@ -278,16 +268,134 @@ class Kar_cashier extends MY_Karaoke {
     $data['tx_status'] = 2;
     $data['payment_type_id'] = 1;
     $this->m_kar_billing->update($tx_id, $data);
-    $data = null;
+    //$data = null;
     $this->load->model('kar_client/m_kar_client');
     $data['client'] = $this->m_kar_client->get_all();
-    $data['receipt'] = $this->m_kar_receipt->get_all();
-    $data['billing'] = $this->m_kar_billing->get_by_id($tx_id);
-    $data['room'] = $this->m_kar_room->get_by_id($data['billing']->room_id);
-    $data['room_type'] = $this->m_kar_room_type->get_by_id($data['room']->room_type_id);
-    $data['service_charge'] = $this->m_kar_cashier->get_service_charge($tx_id);
+    $data['tx_id'] = $tx_id;
+    // $data['billing'] = $this->m_kar_billing->get_by_id($tx_id);
+    // $data['room'] = $this->m_kar_room->get_by_id($data['billing']->room_id);
+    // $data['room_type'] = $this->m_kar_room_type->get_by_id($data['room']->room_type_id);
+    // $data['service_charge'] = $this->m_kar_cashier->get_service_charge($tx_id);
 
     echo json_encode($data);
+  }
+
+  public function print_bill()
+  {
+    $tx_id = $this->input->post('tx_id');
+    //$billing = $this->m_kar_cashier->get_receipt($tx_id);
+    $billing = $this->m_kar_billing->get_by_id($tx_id);
+    $room = $this->m_kar_room->get_by_id($billing->room_id);
+    $room_type = $this->m_kar_room_type->get_by_id($room->room_type_id);
+    $service_charge = $this->m_kar_cashier->get_service_charge($tx_id);
+
+    $client = $this->m_kar_client->get_all();
+
+    $this->load->library("EscPos.php");
+
+		try {
+  	  $connector = new Escpos\PrintConnectors\WindowsPrintConnector("POS-58");
+
+			$printer = new Escpos\Printer($connector);
+      $printer -> setJustification(Escpos\Printer::JUSTIFY_CENTER);
+      $printer -> text($client->client_brand);
+      $printer -> feed();
+      $printer -> text($client->client_street.','.$client->client_district);
+      $printer -> feed();
+      $printer -> text($client->client_city);
+      $printer -> feed();
+      $printer -> text('NPWP : '.$client->client_npwp);
+      $printer -> feed();
+      $printer -> text('--------------------------------');
+      $printer -> feed();
+      $printer -> text('TXS-'.$billing->tx_receipt_no);
+      $printer -> feed();
+      $printer -> text('Member : '.$billing->member_name);
+      $printer -> feed();
+      $printer -> text('--------------------------------');
+      $printer -> feed();
+      $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+      $printer -> text(substr($billing->user_realname,0,12).' '.date_to_ind($billing->tx_date).' '.date('H:i:s'));
+      $printer -> feed();
+      $printer -> text('--------------------------------');
+      $printer -> feed();
+      $printer -> text($room_type->room_type_name.' Room');
+      $printer -> feed();
+      $printer -> setJustification(Escpos\Printer::JUSTIFY_RIGHT);
+      $printer -> text($billing->tx_duration.' jam x '.num_to_price($billing->tx_room_price).' = '.num_to_price($billing->tx_room_price_total));
+      $printer -> feed();
+      if ($service_charge != null) {
+        foreach ($service_charge as $row) {
+          $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+          $printer -> text($row->service_charge_name);
+          $printer -> feed();
+          $printer -> setJustification(Escpos\Printer::JUSTIFY_RIGHT);
+          $printer -> text($row->service_charge_amount.' x '.num_to_price($row->service_charge_price).' = '.num_to_price($row->service_charge_total));
+          $printer -> feed();
+        }
+      }
+      $space_array = array(
+        strlen(num_to_price($billing->tx_total_before_tax)),
+        strlen(num_to_price($billing->tx_total_discount)),
+        strlen(num_to_price($billing->tx_total_tax)),
+        strlen(num_to_price($billing->tx_total_grand)),
+        strlen(num_to_price($billing->tx_payment)),
+        strlen(num_to_price($billing->tx_change))
+      );
+      $l_max = max($space_array);
+      $l_1 = $l_max - strlen(num_to_price($billing->tx_total_before_tax));
+      $s_1 = '';
+      for ($i=0; $i < $l_1; $i++) {
+        $s_1 .= ' ';
+      };
+      $l_2 = $l_max - strlen(num_to_price($billing->tx_total_discount));
+      $s_2 = '';
+      for ($i=0; $i < $l_2; $i++) {
+        $s_2 .= ' ';
+      };
+      $l_3 = $l_max - strlen(num_to_price($billing->tx_total_tax));
+      $s_3 = '';
+      for ($i=0; $i < $l_3; $i++) {
+        $s_3 .= ' ';
+      };
+      $l_4 = $l_max - strlen(num_to_price($billing->tx_total_grand));
+      $s_4 = '';
+      for ($i=0; $i < $l_4; $i++) {
+        $s_4 .= ' ';
+      };
+      $printer -> setJustification(Escpos\Printer::JUSTIFY_RIGHT);
+      $printer -> text('--------------------------------');
+      $printer -> text('Subtotal = '.$s_1.num_to_price($billing->tx_total_before_tax));
+      $printer -> feed();
+      $printer -> text('Diskon = '.$s_2.num_to_price($billing->tx_total_discount));
+      $printer -> feed();
+      $printer -> text('Pajak = '.$s_3.num_to_price($billing->tx_total_tax));
+      $printer -> feed();
+      $printer -> text('Total = '.$s_4.num_to_price($billing->tx_total_grand));
+      $printer -> feed(2);
+      $l_5 = $l_max - strlen(num_to_price($billing->tx_payment));
+      $s_5 = '';
+      for ($i=0; $i < $l_5; $i++) {
+        $s_5 .= ' ';
+      };
+      $printer -> text('Bayar = '.$s_5.num_to_price($billing->tx_payment));
+      $printer -> feed();
+      $l_6 = $l_max - strlen(num_to_price($billing->tx_change));
+      $s_6 = '';
+      for ($i=0; $i < $l_6; $i++) {
+        $s_6 .= ' ';
+      };
+      $printer -> text('Kembali = '.$s_6.num_to_price($billing->tx_change));
+      $printer -> feed(2);
+      $printer -> text('Terimakasih atas kunjungan anda.');
+			$printer -> feed(4);
+			$printer -> pulse(0, 120, 240);
+
+			/* Close printer */
+			$printer -> close();
+		} catch (Exception $e) {
+			echo "Couldn't print to this printer: " . $e -> getMessage() . "\n";
+		}
   }
 
 }

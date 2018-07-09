@@ -84,7 +84,7 @@ class M_kar_report_billing extends CI_Model {
 	{
 		$billing = $this->db->query(
 			"SELECT
-				tx_date,
+			tx_date,
 				SUM(tx_total_before_tax) AS tx_total_before_tax,
 				SUM(tx_total_tax) AS tx_total_tax,
 				SUM(tx_total_after_tax) AS tx_total_after_tax,
