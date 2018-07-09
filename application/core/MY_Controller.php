@@ -16,6 +16,9 @@ class MY_Install extends MX_Controller
     if ($install['install_status'] == 1) {
       redirect(base_url().'app_auth/login/index');
     }
+
+    //--------- update app version ----------
+    $this->m_app_version->do_update();
   }
 
   function render($content, $data = NULL){
