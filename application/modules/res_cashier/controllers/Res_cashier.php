@@ -2,7 +2,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Ret_cashier extends MY_Restaurant {
+class Res_cashier extends MY_Restaurant {
 
   var $access, $cashier_shift_id, $type_id;
 
