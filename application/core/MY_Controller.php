@@ -10,6 +10,7 @@ class MY_Install extends MX_Controller
   {
     parent::__construct();
     $this->load->model("app_install/m_app_install");
+    $this->load->model("app_version/m_app_version");
     $install = $this->m_app_install->get_install();
 
     // if installation success redirect to login
