@@ -33,7 +33,7 @@ class M_hot_booking extends CI_Model {
 			->select('tax_ratio')
 			->where('is_deleted','0')
 			->where('is_active','1')
-			->get('hot_tax')->result();
+			->get('hot_tax')->row();
 	}
 
 

@@ -125,8 +125,9 @@ class Hot_payment extends MY_Hotel {
     $k= $this->input->post('bea_room');
     $p= $this->input->post('bea_service');
     $subtotal = $k+$p; 
-		$disc = $this->input->post('disc');
-		$total = (($subtotal-(($subtotal*$disc)/100))/10)+($subtotal-(($subtotal*$disc)/100));
+    $disc = $this->input->post('disc');
+    $pajak = $this->m_hot_booking->get_pajak();
+		$total = ((($subtotal-(($subtotal*$disc)/100))*$pajak)/100)+($subtotal-(($subtotal*$disc)/100));
  
 		$data = array(
 			'subtotal' => $subtotal,
