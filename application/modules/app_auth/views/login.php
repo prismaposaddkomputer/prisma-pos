@@ -7,17 +7,17 @@
           <div class="form-group">
             <div class="input-group">
               <span class="input-group-addon"><i class="fa fa-user"></i></span>
-              <input class="form-control input-lg" type="text" name="user_name" value="" placeholder="Nama Pengguna" required>
+              <input class="form-control" type="text" name="user_name" value="" placeholder="Nama Pengguna" required>
             </div>
           </div>
           <div class="form-group">
             <div class="input-group">
               <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-              <input class="form-control input-lg" type="password" name="user_password" value="" placeholder="Kata Sandi" required>
+              <input class="form-control" type="password" name="user_password" value="" placeholder="Kata Sandi" required>
             </div>
           </div>
           <div class="form-group">
-            <button class="btn btn-lg btn-info btn-block" type="submit" name="button">Masuk</button>
+            <button class="btn btn-info btn-block" type="submit" name="button">Masuk</button>
           </div>
           <?php echo $this->session->flashdata('status'); ?>
         </form>
