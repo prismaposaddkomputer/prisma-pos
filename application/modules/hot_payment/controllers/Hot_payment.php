@@ -125,8 +125,9 @@ class Hot_payment extends MY_Hotel {
     $k= $this->input->post('bea_room');
     $p= $this->input->post('bea_service');
     $subtotal = $k+$p; 
-		$disc = $this->input->post('disc');
-		$total = (($subtotal-(($subtotal*$disc)/100))/10)+($subtotal-(($subtotal*$disc)/100));
+    $disc = $this->input->post('disc');
+    $pajak = $this->m_hot_booking->get_pajak();
+		$total = ((($subtotal-(($subtotal*$disc)/100))*$pajak)/100)+($subtotal-(($subtotal*$disc)/100));
  
 		$data = array(
 			'subtotal' => $subtotal,
@@ -174,6 +175,7 @@ class Hot_payment extends MY_Hotel {
     $diskon = $this->m_hot_booking->get_all_diskon();
     $service = $this->m_hot_booking->get_all_service();
     $tipe = $this->m_hot_booking->get_tipe();
+    $pajak = $this->m_hot_booking->get_pajak();
     $payment = $this->m_hot_payment->get_payment();
     $booking = $this->m_hot_booking->get_by_id($id);
 
@@ -266,12 +268,12 @@ class Hot_payment extends MY_Hotel {
             $s=$t->subtotal;
             $d=$t->disc;
             $tot=($s*$d)/100;
-            $p=($s-$tot)/10;
+            $p=(($s-$tot)*$pajak)/100;
             $grand=($s-$tot)+$p;
 
             $printer -> text(num_to_price($tot));
             $printer -> feed();
-            $printer -> text('Pajak Hotel (10%) = '.num_to_price($p));
+            $printer -> text('Pajak Hotel ('.$pajak.'%) = '.num_to_price($p));
             $printer -> feed();
             $printer -> text('Total Pembayaran = '.num_to_price($grand));
             $printer -> feed();
