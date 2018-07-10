@@ -13,7 +13,7 @@
         </div>
         <div class="form-group">
           <label>Harga<small class="required-field">*</small></label>
-          <input class="form-control" type="number" name="category_price" value="<?php if($category != null){echo $category->category_price;}?>">
+          <input class="form-control autonumeric" type="text" name="category_price" value="<?php if($category != null){echo $category->category_price;}?>">
         </div>
         <div class="form-group">
           <label>Keterangan<small class="required-field">*</small></label>

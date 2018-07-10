@@ -96,6 +96,7 @@ class Hot_category extends MY_Hotel {
     if(!isset($data['is_active'])){
       $data['is_active'] = 0;
     }
+    $data['category_price']=price_to_num($data['category_price']);
     $this->m_hot_category->insert($data);
     $this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil ditambahkan!</div>');
     redirect(base_url().'hot_category/index');
@@ -115,6 +116,7 @@ class Hot_category extends MY_Hotel {
     if(!isset($data['is_active'])){
       $data['is_active'] = 0;
     }
+    $data['category_price']=price_to_num($data['category_price']);
     $this->m_hot_category->update($id,$data);
     $this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil diubah!</div>');
     redirect(base_url().'hot_category/index');

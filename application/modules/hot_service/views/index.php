@@ -55,7 +55,7 @@
                     <?php endif; ?>
                   </td>
                   <td><?=$row->service_name?></td>
-                  <td>Rp <?php echo digit ($row->service_price) ?></td>
+                  <td><?php echo num_to_idr ($row->service_price) ?></td>
                   <td class="text-center">
                     <?php if ($row->is_active == 1): ?>
                       <i class="fa fa-check cl-success"></i>
