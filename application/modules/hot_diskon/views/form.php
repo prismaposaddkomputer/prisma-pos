@@ -13,7 +13,7 @@
         </div>
         <div class="form-group">
           <label>Sebesar (%)<small class="required-field">*</small></label>
-          <input class="form-control" type="number" name="diskon_price" value="<?php if($diskon != null){echo $diskon->diskon_price;}?>">
+          <input class="form-control" type="number" min="0" max="100" name="diskon_price" value="<?php if($diskon != null){echo $diskon->diskon_price;}?>">
         </div>
         <div class="form-group">
           <label>Aktif?</label><br>

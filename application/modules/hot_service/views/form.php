@@ -13,7 +13,7 @@
         </div>
         <div class="form-group">
           <label>Harga<small class="required-field">*</small></label>
-          <input class="form-control" type="number" name="service_price" value="<?php if($service != null){echo $service->service_price;}?>">
+          <input class="form-control autonumeric" type="text" name="service_price" value="<?php if($service != null){echo $service->service_price;}?>">
         </div>
         <div class="form-group">
           <label>Tersedia?</label><br>

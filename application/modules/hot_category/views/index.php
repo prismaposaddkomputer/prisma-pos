@@ -56,7 +56,7 @@
                     <?php endif; ?>
                   </td>
                   <td><?=$row->category_name?></td>
-                  <td>Rp <?php echo digit ($row->category_price) ?></td>
+                  <td><?php echo num_to_idr ($row->category_price) ?></td>
                   <td><?=$row->category_desc?></td>
                   <td class="text-center">
                     <?php if ($row->is_active == 1): ?>
