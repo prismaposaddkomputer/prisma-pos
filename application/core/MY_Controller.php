@@ -203,7 +203,7 @@ class MY_Hotel extends MX_Controller{
     $data['sidenav'] = $this->m_hot_config->get_list();
 
     $this->load->model('hot_client/m_hot_client');
-    $client = $this->m_res_client->get_all();
+    $client = $this->m_hot_client->get_all();
     $data['keyboard'] = $client->client_keyboard_status;
     $data['client'] = $client;
 
