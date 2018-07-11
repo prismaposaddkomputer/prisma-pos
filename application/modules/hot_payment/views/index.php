@@ -78,7 +78,7 @@
                           foreach($booking as $t){
                             if($row->booking_id==$t->booking_id){
                               ?>
-                              <?=$t->date_booking_from?>
+                              <?=date_to_ind($t->date_booking_from)?>
                               <?php
                             }
                           }
@@ -89,7 +89,7 @@
                           foreach($booking as $t){
                             if($row->booking_id==$t->booking_id){
                               ?>
-                              <?=$t->date_booking_to?>
+                              <?=date_to_ind($t->date_booking_to)?>
                               <?php
                             }
                           }

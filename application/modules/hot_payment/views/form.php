@@ -162,7 +162,7 @@
           <input class="" type="hidden" name="is_active" value="1" />
         </div>
         <div class="form-group pull-right">
-          <a class="btn btn-default" href="<?=base_url()?>hot_booking/index"><i class="fa fa-close"></i> Batal</a>
+          <a class="btn btn-default" href="<?=base_url()?>hot_payment/index"><i class="fa fa-close"></i> Batal</a>
 
           <button class="btn btn-info" type="submit"><i class="fa fa-save"></i> Bayar</button>
 

@@ -9,16 +9,16 @@
         <input class="form-control" type="hidden" name="booking_id" value="<?php if($booking != null){echo $booking->booking_id;}?>">
         <div class="form-group">
           <label>Check In<small class="required-field">*</small></label>
-          <input class="form-control date-picker" type="text" id="check_in" value=" <?php if($booking != null){echo ind_to_date($booking->date_booking_from);}else{ echo date('d-m-y');}?>" readonly="true">
+          <input class="form-control" type="text" id="check_in" value=" <?php if($booking != null){echo ind_to_date($booking->date_booking_from);}else{ echo date('d-m-y');}?>" readonly="true">
           
         </div>
         <div class="form-group">
           <label>Durasi<small class="required-field">*</small></label>
-          <input class="form-control" type="number" min="1" max="7" id="number_of_days" name="number_of_days" value="<?php if($booking != null){echo $booking->number_of_days;}?>">
+          <input class="form-control" type="number" min="0" max="7" id="number_of_days" name="number_of_days" value="<?php if($booking != null){echo $booking->number_of_days;}?>" required>
         </div>
         <div class="form-group">
           <label>Check Out<small class="required-field">*</small></label>
-          <input class="form-control date-picker" id="date_booking_to" readonly="true" value="<?php if($booking != null){echo ind_to_date($booking->date_booking_to);}?>" readonly="true">
+          <input class="form-control" type="text" id="date_booking_to" value="<?php if($booking != null){echo ind_to_date($booking->date_booking_to);}?>" readonly="true">
         </div>
         <div class="form-group">
              <label>Nama Tamu<small class="required-field">*</small></label>
@@ -59,8 +59,8 @@
 
           <input class="form-control" type="hidden" id="xsaa" name="booking_code" value="<?=$kode?>">
 
-          <input class="form-control" type="hidden" id="xs" name="date_booking_from" value="">
-          <input class="form-control" type="hidden" id="xsz" name="date_booking" value="">
+          <input class="form-control" type="hidden" id="xs" value="">
+          <input class="form-control" type="hidden" id="xsz" value="">
           <input class="form-control" type="hidden" id="xz" name="date_booking_to" value="">
        
 
