@@ -130,6 +130,14 @@
         background-color: #0abde3;
       } */
     </style>
+    <style media="screen">
+      div.ui-widget {
+        font-size: 1.5em;
+      }
+      button.ui-keyboard-button {
+        margin: 4px;
+      }
+    </style>
   </head>
   <body>
     <div class="wrapper">
