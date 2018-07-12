@@ -127,7 +127,7 @@ class Hot_payment extends MY_Hotel {
     $subtotal = $k+$p; 
     $disc = $this->input->post('disc');
     $pajak = $this->m_hot_booking->get_pajak();
-		$total = ((($subtotal-(($subtotal*$disc)/100))*$pajak)/100)+($subtotal-(($subtotal*$disc)/100));
+		$total = ((($subtotal-(($subtotal*$disc)/100))*$pajak['tax_ratio'])/100)+($subtotal-(($subtotal*$disc)/100));
  
 		$data = array(
 			'subtotal' => $subtotal,
@@ -268,12 +268,12 @@ class Hot_payment extends MY_Hotel {
             $s=$t->subtotal;
             $d=$t->disc;
             $tot=($s*$d)/100;
-            $p=(($s-$tot)*$pajak)/100;
+            $p=(($s-$tot)*$pajak['tax_ratio'])/100;
             $grand=($s-$tot)+$p;
 
             $printer -> text(num_to_price($tot));
             $printer -> feed();
-            $printer -> text('Pajak Hotel ('.$pajak.'%) = '.num_to_price($p));
+            $printer -> text('Pajak Hotel ('.$pajak['tax_ratio'].'%) = '.num_to_price($p));
             $printer -> feed();
             $printer -> text('Total Pembayaran = '.num_to_price($grand));
             $printer -> feed();
@@ -290,7 +290,9 @@ class Hot_payment extends MY_Hotel {
 			$printer -> close();
 		} catch (Exception $e) {
 			echo "Couldn't print to this printer: " . $e -> getMessage() . "\n";
-		}
+    }
+    
+    redirect(base_url('hot_payment/index'));
   }
 
 }
