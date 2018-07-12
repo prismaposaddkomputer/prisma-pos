@@ -29,11 +29,13 @@ class M_hot_booking extends CI_Model {
 
 	public function get_pajak()
 	{
-		return $this->db
+		$result = $this->db
 			->select('tax_ratio')
 			->where('is_deleted','0')
 			->where('is_active','1')
-			->get('hot_tax')->row();
+			->get('hot_tax')->row_array();
+
+			return $result;
 	}
 
 

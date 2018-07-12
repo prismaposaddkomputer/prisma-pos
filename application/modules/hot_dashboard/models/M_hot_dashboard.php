@@ -30,10 +30,10 @@ class M_hot_dashboard extends CI_Model {
 				count(guest_id) AS total_guest
 	    FROM hot_guest
 	    WHERE
-	      created = '$date_now' AND
-	      is_active = 1 AND
+	      date(created) = '$date_now' AND
+	      is_active = 0 AND
         is_deleted = 0
-			GROUP BY created"
+        GROUP BY created"
 	  );
 
     return $query->row();

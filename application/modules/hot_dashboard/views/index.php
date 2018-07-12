@@ -54,7 +54,7 @@
 		<div class="col-lg-3 col-md-3 col-sm-6">
 			<div class="panel panel-default">
         <div class="panel-heading text-center">
-          <h3 class="panel-title">Jumlah Pelayanan</h3>
+          <h3 class="panel-title">Jumlah Pelayanan Tersedia</h3>
 				</div>
 				<div class="panel-body">
 					<i class="fa fa-bell fa-4x cl-info">&nbsp;<?php if($total_service_available != null){echo $total_service_available->total_service;}else{echo 0;} ?></i>
