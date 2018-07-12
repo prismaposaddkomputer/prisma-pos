@@ -7,13 +7,13 @@
           <div class="form-group">
             <div class="input-group">
               <span class="input-group-addon"><i class="fa fa-user"></i></span>
-              <input class="form-control" type="text" name="user_name" value="" placeholder="Nama Pengguna" required>
+              <input class="form-control keyboard" type="text" name="user_name" value="" placeholder="Nama Pengguna" required>
             </div>
           </div>
           <div class="form-group">
             <div class="input-group">
               <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-              <input class="form-control" type="password" name="user_password" value="" placeholder="Kata Sandi" required>
+              <input class="form-control keyboard" type="password" name="user_password" value="" placeholder="Kata Sandi" required>
             </div>
           </div>
           <div class="form-group">
