@@ -93,6 +93,14 @@
         <?php endif;?>
       })
     </script>
+    <style media="screen">
+      div.ui-widget {
+        font-size: 1.5em;
+      }
+      button.ui-keyboard-button {
+        margin: 4px;
+      }
+    </style>
   </head>
   <body>
 
