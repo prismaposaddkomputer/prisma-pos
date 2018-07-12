@@ -1,10 +1,10 @@
 <div class="col-md-8 col-md-offset-2">
   <form class="" action="<?=base_url()?>app_install/update_type" method="post">
     <div class="panel panel-default">
-      <div class="panel-heading">Pilih Modul</div>
+      <div class="panel-heading"><strong>Pilih Modul</strong></div>
       <div class="panel-body">
-        <b class="cl-info">Prisma Point of Sales</b> menyediakan beberapa modul.
-        Silakan pilih tipe modul yang sesuai dengan yang sesuai dengan tipe usaha Anda.
+        <b class="cl-info">Prisma POS</b> menyediakan beberapa modul.
+        Silakan pilih tipe modul yang sesuai dengan yang sesuai dengan tipe usaha anda.
         <br><br>
         <div class="row">
           <?php foreach ($type as $row): ?>
@@ -23,7 +23,8 @@
         </div>
       </div>
       <div class="panel-footer">
-        <button type="submit" class="btn btn-info">Lanjutkan</a>
+        <a class="btn btn-default" href="<?=base_url()?>app_install/index"><i class="fa fa-arrow-left"></i> Kembali</a>
+        <button type="submit" class="btn btn-info pull-right">Lanjut <i class="fa fa-arrow-right"></i></a>
       </div>
     </div>
   </form>
