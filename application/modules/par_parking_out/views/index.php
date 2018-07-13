@@ -185,12 +185,30 @@
               $("#modal_success").modal('show');
               get_list_out();
               console.log(data);
+              send_dashboard(data);
             }
           })
         }
       }
     });
   })
+
+  function send_dashboard(data) {
+    $.ajax({
+      type : 'GET',
+      url : 'http://addkomputer.com/prismapos/index.php/api/json/store',
+      data : data,
+      dataType : 'json',
+      success : function (data) {
+        console.log(data);
+      },
+      error: function(jqXHR, textStatus, errorThrown) { // if error occured
+        console.log(jqXHR.status);
+        console.log(errorThrown);
+      }
+    })
+    // console.log(data);
+  }
 
   function calcChange() {
     var billing_total_grand = ind_to_sys($("#billing_total_grand").val());
