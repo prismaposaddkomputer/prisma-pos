@@ -19,8 +19,10 @@ class Ret_cashier extends MY_Retail {
     $this->load->model('ret_customer/m_ret_customer');
     $this->load->model('ret_bank/m_ret_bank');
     $this->load->model('ret_shift/m_ret_shift');
+    $this->load->model('ret_tax/m_ret_tax');
     $this->load->model('m_ret_cashier');
     $this->load->model('ret_client/m_ret_client');
+    $this->load->model('app_install/m_app_install');
   }
 
   public function shift($shift_type)
@@ -192,7 +194,6 @@ class Ret_cashier extends MY_Retail {
     $this->load->model('ret_item/m_ret_item');
     $item = $this->m_ret_item->get_by_id($item_id);
     // get tax detail
-    $this->load->model('ret_tax/m_ret_tax');
     $tax = $this->m_ret_tax->get_by_id($item->tax_id);
 
     //item price
@@ -766,6 +767,35 @@ class Ret_cashier extends MY_Retail {
       $this->m_ret_cashier->insert_stock($data_buyget);
     }
 
+    $bill = $this->m_ret_cashier->get_billing_by_id($tx_id);
+    $client = $this->m_ret_client->get_all();
+    $app_install = $this->m_app_install->get_install();
+    $tax = $this->m_ret_tax->get_by_id(1);
+
+    $dashboard = array(
+      'auth'=> 'prismapos.addkomputer',
+      'apikey'=> '69f86eadd81650164619f585bb017316',
+      'app_type_id'=> $app_install['type_id'],
+      'client_id'=> $client->client_id,
+      'pos_sn'=> $client->client_serial_number,
+      'npwpd'=> $client->client_npwpd,
+      'customer_name'=> $bill->customer_name,
+      'no_receipt'=> 'TRS-'.$bill->tx_receipt_no,
+      'tx_id'=> $bill->tx_id,
+      'tx_date'=> $bill->tx_date,
+      'tx_time'=> $bill->tx_time,
+      'tx_total_before_tax'=> $bill->tx_total_before_tax,
+      'tax_code'=> $tax->tax_code,
+      'tax_ratio'=> $tax->tax_ratio,
+      'tx_total_tax'=> $bill->tx_total_tax,
+      'tx_total_after_tax'=> $bill->tx_total_after_tax,
+      'tx_total_grand'=> $bill->tx_total_grand,
+      'user_id'=> $bill->user_id,
+      'user_realname'=> $bill->user_realname,
+      'created'=> $bill->created,
+    );
+
+    echo json_encode($dashboard);
   }
 
   public function payment_card_action()
@@ -817,6 +847,36 @@ class Ret_cashier extends MY_Retail {
       );
       $this->m_ret_cashier->insert_stock($data_buyget);
     }
+
+    $bill = $this->m_ret_cashier->get_billing_by_id($tx_id);
+    $client = $this->m_ret_client->get_all();
+    $app_install = $this->m_app_install->get_install();
+    $tax = $this->m_ret_tax->get_by_id(1);
+
+    $dashboard = array(
+      'auth'=> 'prismapos.addkomputer',
+      'apikey'=> '69f86eadd81650164619f585bb017316',
+      'app_type_id'=> $app_install['type_id'],
+      'client_id'=> $client->client_id,
+      'pos_sn'=> $client->client_serial_number,
+      'npwpd'=> $client->client_npwpd,
+      'customer_name'=> $bill->customer_name,
+      'no_receipt'=> 'TRS-'.$bill->tx_receipt_no,
+      'tx_id'=> $bill->tx_id,
+      'tx_date'=> $bill->tx_date,
+      'tx_time'=> $bill->tx_time,
+      'tx_total_before_tax'=> $bill->tx_total_before_tax,
+      'tax_code'=> $tax->tax_code,
+      'tax_ratio'=> $tax->tax_ratio,
+      'tx_total_tax'=> $bill->tx_total_tax,
+      'tx_total_after_tax'=> $bill->tx_total_after_tax,
+      'tx_total_grand'=> $bill->tx_total_grand,
+      'user_id'=> $bill->user_id,
+      'user_realname'=> $bill->user_realname,
+      'created'=> $bill->created,
+    );
+
+    echo json_encode($dashboard);
   }
 
   public function get_customer()
