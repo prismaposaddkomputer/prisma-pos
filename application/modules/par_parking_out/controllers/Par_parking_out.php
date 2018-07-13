@@ -22,6 +22,8 @@ class Par_parking_out extends MY_Parking {
     $this->load->model('par_brand/m_par_brand');
     $this->load->model('par_shift/m_par_shift');
     $this->load->model('par_tax/m_par_tax');
+    $this->load->model('par_client/m_par_client');
+    $this->load->model('app_install/m_app_install');
   }
 
   public function get_list_out()
@@ -132,7 +134,36 @@ class Par_parking_out extends MY_Parking {
 
     $this->m_par_billing->update($billing_id, $data);
 
-    echo json_encode($data);
+    $bill = $this->m_par_billing->get_by_id($billing_id);
+    $client = $this->m_par_client->get_all();
+    $app_install = $this->m_app_install->get_install();
+    $tax = $this->m_par_tax->get_by_id(1);
+
+    $dashboard = array(
+      'auth'=> 'prismapos.addkomputer',
+      'apikey'=> '69f86eadd81650164619f585bb017316',
+      'app_type_id'=> $app_install['type_id'],
+      'client_id'=> $client->client_id,
+      'pos_sn'=> $client->client_serial_number,
+      'npwpd'=> $client->client_npwpd,
+      'customer_name'=> $bill->billing_tnkb,
+      'no_receipt'=> 'TRS-'.$bill->receipt_no,
+      'tx_id'=> $bill->billing_id,
+      'tx_date'=> $bill->billing_date_out,
+      'tx_time'=> $bill->billing_time_out,
+      'tx_total_before_tax'=> $bill->billing_subtotal,
+      'tax_code'=> $tax->tax_code,
+      'tax_ratio'=> $tax->tax_ratio,
+      'tx_total_tax'=> $bill->billing_tax,
+      'tx_total_after_tax'=> $bill->billing_total_grand,
+      'tx_total_grand'=> $bill->billing_total_grand,
+      'user_id'=> $bill->user_id_out,
+      'user_realname'=> $bill->user_realname_out,
+      'created'=> $bill->created,
+    );
+
+    echo json_encode($dashboard);
+
   }
 
   public function get_billing()

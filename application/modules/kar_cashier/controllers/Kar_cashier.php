@@ -28,6 +28,7 @@ class Kar_cashier extends MY_Karaoke {
     $this->load->model('kar_receipt/m_kar_receipt');
     $this->load->model('kar_client/m_kar_client');
     $this->load->model('kar_tax/m_kar_tax');
+    $this->load->model('app_install/m_app_install');
   }
 
   public function get_list_in()
@@ -272,12 +273,36 @@ class Kar_cashier extends MY_Karaoke {
     $this->load->model('kar_client/m_kar_client');
     $data['client'] = $this->m_kar_client->get_all();
     $data['tx_id'] = $tx_id;
-    // $data['billing'] = $this->m_kar_billing->get_by_id($tx_id);
-    // $data['room'] = $this->m_kar_room->get_by_id($data['billing']->room_id);
-    // $data['room_type'] = $this->m_kar_room_type->get_by_id($data['room']->room_type_id);
-    // $data['service_charge'] = $this->m_kar_cashier->get_service_charge($tx_id);
 
-    echo json_encode($data);
+    $bill = $this->m_kar_billing->get_by_id($tx_id);
+    $client = $this->m_kar_client->get_all();
+    $app_install = $this->m_app_install->get_install();
+    $tax = $this->m_kar_tax->get_by_id(1);
+
+    $dashboard = array(
+      'auth'=> 'prismapos.addkomputer',
+      'apikey'=> '69f86eadd81650164619f585bb017316',
+      'app_type_id'=> $app_install['type_id'],
+      'client_id'=> $client->client_id,
+      'pos_sn'=> $client->client_serial_number,
+      'npwpd'=> $client->client_npwpd,
+      'customer_name'=> $bill->member_name,
+      'no_receipt'=> 'TRS-'.$bill->tx_receipt_no,
+      'tx_id'=> $bill->tx_id,
+      'tx_date'=> $bill->tx_date,
+      'tx_time'=> $bill->tx_time_end,
+      'tx_total_before_tax'=> $bill->tx_total_before_tax,
+      'tax_code'=> $tax->tax_code,
+      'tax_ratio'=> $tax->tax_ratio,
+      'tx_total_tax'=> $bill->tx_total_tax,
+      'tx_total_after_tax'=> $bill->tx_total_after_tax,
+      'tx_total_grand'=> $bill->tx_total_grand,
+      'user_id'=> $bill->user_id,
+      'user_realname'=> $bill->user_realname,
+      'created'=> $bill->created,
+    );
+
+    echo json_encode($dashboard);
   }
 
   public function print_bill()
