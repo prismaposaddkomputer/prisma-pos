@@ -21,6 +21,8 @@ class Res_cashier extends MY_Restaurant {
     $this->load->model('res_shift/m_res_shift');
     $this->load->model('m_res_cashier');
     $this->load->model('res_client/m_res_client');
+    $this->load->model('res_tax/m_res_tax');
+    $this->load->model('app_install/m_app_install');
   }
 
   public function shift($shift_type)
@@ -766,6 +768,35 @@ class Res_cashier extends MY_Restaurant {
       $this->m_res_cashier->insert_stock($data_buyget);
     }
 
+    $bill = $this->m_res_cashier->get_billing_by_id($tx_id);
+    $client = $this->m_res_client->get_all();
+    $app_install = $this->m_app_install->get_install();
+    $tax = $this->m_res_tax->get_by_id(1);
+
+    $dashboard = array(
+      'auth'=> 'prismapos.addkomputer',
+      'apikey'=> '69f86eadd81650164619f585bb017316',
+      'app_type_id'=> $app_install['type_id'],
+      'client_id'=> $client->client_id,
+      'pos_sn'=> $client->client_serial_number,
+      'npwpd'=> $client->client_npwpd,
+      'customer_name'=> $bill->customer_name,
+      'no_receipt'=> 'TRS-'.$bill->tx_receipt_no,
+      'tx_id'=> $bill->tx_id,
+      'tx_date'=> $bill->tx_date,
+      'tx_time'=> $bill->tx_time,
+      'tx_total_before_tax'=> $bill->tx_total_before_tax,
+      'tax_code'=> $tax->tax_code,
+      'tax_ratio'=> $tax->tax_ratio,
+      'tx_total_tax'=> $bill->tx_total_tax,
+      'tx_total_after_tax'=> $bill->tx_total_after_tax,
+      'tx_total_grand'=> $bill->tx_total_grand,
+      'user_id'=> $bill->user_id,
+      'user_realname'=> $bill->user_realname,
+      'created'=> $bill->created,
+    );
+
+    echo json_encode($dashboard);
   }
 
   public function payment_card_action()
@@ -817,6 +848,36 @@ class Res_cashier extends MY_Restaurant {
       );
       $this->m_res_cashier->insert_stock($data_buyget);
     }
+
+    $bill = $this->m_res_cashier->get_billing_by_id($tx_id);
+    $client = $this->m_res_client->get_all();
+    $app_install = $this->m_app_install->get_install();
+    $tax = $this->m_res_tax->get_by_id(1);
+
+    $dashboard = array(
+      'auth'=> 'prismapos.addkomputer',
+      'apikey'=> '69f86eadd81650164619f585bb017316',
+      'app_type_id'=> $app_install['type_id'],
+      'client_id'=> $client->client_id,
+      'pos_sn'=> $client->client_serial_number,
+      'npwpd'=> $client->client_npwpd,
+      'customer_name'=> $bill->customer_name,
+      'no_receipt'=> 'TRS-'.$bill->tx_receipt_no,
+      'tx_id'=> $bill->tx_id,
+      'tx_date'=> $bill->tx_date,
+      'tx_time'=> $bill->tx_time,
+      'tx_total_before_tax'=> $bill->tx_total_before_tax,
+      'tax_code'=> $tax->tax_code,
+      'tax_ratio'=> $tax->tax_ratio,
+      'tx_total_tax'=> $bill->tx_total_tax,
+      'tx_total_after_tax'=> $bill->tx_total_after_tax,
+      'tx_total_grand'=> $bill->tx_total_grand,
+      'user_id'=> $bill->user_id,
+      'user_realname'=> $bill->user_realname,
+      'created'=> $bill->created,
+    );
+
+    echo json_encode($dashboard);
   }
 
   public function get_customer()
