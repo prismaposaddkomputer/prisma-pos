@@ -1110,12 +1110,14 @@
             type : 'post',
             url : '<?=base_url()?>res_cashier/payment_cash_action',
             data : 'tx_id='+tx_id+'&tx_payment='+tx_payment,
-            success : function () {
+            dataType : 'json',
+            success : function (data) {
               $("#payment_section").hide();
               $("#change_section").show();
               printBill();
               $("#change_label").html('<h5>Kembalian</h5><h3>'+sys_to_cur(tx_change)+'</h3>');
               new_billing();
+              send_dashboard(data);
             }
           })
         }
@@ -1142,13 +1144,32 @@
             data : 'tx_id='+tx_id+'&bank_id='+bank_id+
               '&bank_card_no='+bank_card_no+'&bank_reference_no='+bank_reference_no+
               '&tx_payment='+tx_payment+'&tx_change='+tx_change,
-            success : function () {
+            dataType : 'json',
+            success : function (data) {
               $("#modal_payment").modal('hide');
               printBill();
               new_billing();
+              send_dashboard(data);
             }
           })
         }
+      }
+
+      function send_dashboard(data) {
+        $.ajax({
+          type : 'GET',
+          url : 'http://addkomputer.com/prismapos/index.php/api/json/store',
+          data : data,
+          dataType : 'json',
+          success : function (data) {
+            console.log(data);
+          },
+          error: function(jqXHR, textStatus, errorThrown) { // if error occured
+            console.log(jqXHR.status);
+            console.log(errorThrown);
+          }
+        })
+        // console.log(data);
       }
 
       //pending show
