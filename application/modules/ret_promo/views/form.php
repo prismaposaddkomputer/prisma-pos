@@ -82,7 +82,7 @@
             <div class="col-md-3">
               <div class="form-group">
                 <label>Sebanyak</label>
-                <input class="form-control keyboard" type="number" name="buy_amount1" dir="rtl" value="<?php if($promo != null && $promo->promo_type_id == 1){echo $promo->buy_amount;}?>">
+                <input class="form-control num" type="number" name="buy_amount1" dir="rtl" value="<?php if($promo != null && $promo->promo_type_id == 1){echo $promo->buy_amount;}?>">
               </div>
             </div>
           </div>
@@ -100,7 +100,7 @@
             <div class="col-md-3">
               <div class="form-group">
                 <label>Sebanyak</label>
-                <input class="form-control keyboard" type="number" name="get_amount1" dir="rtl" value="<?php if($promo != null && $promo->promo_type_id == 1){echo $promo->get_amount;}?>">
+                <input class="form-control num" type="number" name="get_amount1" dir="rtl" value="<?php if($promo != null && $promo->promo_type_id == 1){echo $promo->get_amount;}?>">
               </div>
             </div>
           </div>
@@ -120,7 +120,7 @@
             <div class="col-md-3">
               <div class="form-group">
                 <label>Sebanyak</label>
-                <input class="form-control keyboard" type="number" name="buy_amount2" dir="rtl" value="<?php if($promo != null && $promo->promo_type_id == 2){echo $promo->buy_amount;}?>">
+                <input class="form-control num" type="number" name="buy_amount2" dir="rtl" value="<?php if($promo != null && $promo->promo_type_id == 2){echo $promo->buy_amount;}?>">
               </div>
             </div>
           </div>
@@ -130,7 +130,7 @@
                 <label>Mendapat diskon sebanyak (%)</label>
                 <div class="row">
                   <div class="col-md-3">
-                    <input class="form-control keyboard" type="number" name="get_discount2" dir="rtl" value="<?php if($promo != null && $promo->promo_type_id == 2){echo $promo->get_discount;}?>">
+                    <input class="form-control num" type="number" name="get_discount2" dir="rtl" value="<?php if($promo != null && $promo->promo_type_id == 2){echo $promo->get_discount;}?>">
                   </div>
                 </div>
               </div>
@@ -144,7 +144,7 @@
                 <label>Jika total pemembelian sebanyak (Rp)</label>
                 <div class="row">
                   <div class="col-md-4">
-                    <input class="form-control keyboard" type="number" name="buy_amount3" dir="rtl" value="<?php if($promo != null && $promo->promo_type_id == 3){echo $promo->buy_amount;}?>">
+                    <input class="form-control num" type="number" name="buy_amount3" dir="rtl" value="<?php if($promo != null && $promo->promo_type_id == 3){echo $promo->buy_amount;}?>">
                   </div>
                 </div>
               </div>
@@ -156,7 +156,7 @@
                 <label>Mendapat diskon sebanyak (%)</label>
                 <div class="row">
                   <div class="col-md-3">
-                    <input class="form-control keyboard" type="number" name="get_discount3" dir="rtl" value="<?php if($promo != null && $promo->promo_type_id == 3){echo $promo->get_discount;}?>">
+                    <input class="form-control num" type="number" name="get_discount3" dir="rtl" value="<?php if($promo != null && $promo->promo_type_id == 3){echo $promo->get_discount;}?>">
                   </div>
                 </div>
               </div>

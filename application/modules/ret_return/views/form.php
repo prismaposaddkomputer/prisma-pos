@@ -11,7 +11,7 @@
           <label>No Kwitansi</label>
           <div class="input-group">
             <span class="input-group-addon">TXS-</span>
-            <input id="tx_receipt_no" type="text" class="form-control keyboard" name="tx_receipt_no" placeholder="">
+            <input id="tx_receipt_no" type="text" class="form-control num" name="tx_receipt_no" placeholder="">
             <input id="tx_id_source" type="hidden" name="tx_id_source" value="">
             <span class="input-group-btn">
               <button class="btn btn-info" type="button" onclick="get_billing()"><i class="fa fa-search"></i></button>

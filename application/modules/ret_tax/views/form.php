@@ -18,7 +18,7 @@
         <div class="form-group">
           <label>Rasio Pajak <small class="required-field">*</small></label>
           <div class="input-group col-sm-4">
-            <input type="text" class="form-control keyboard autonumeric" name="tax_ratio" aria-describedby="basic-addon2" value="<?php if($tax != null){echo $tax->tax_ratio;}?>">
+            <input type="text" class="form-control num autonumeric" name="tax_ratio" aria-describedby="basic-addon2" value="<?php if($tax != null){echo $tax->tax_ratio;}?>">
             <span class="input-group-addon" id="basic-addon2">%</span>
           </div>
         </div>
