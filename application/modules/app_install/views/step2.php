@@ -67,13 +67,13 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Telepon 1 <small class="required-field">*</small></label>
-                  <input class="form-control keyboard" type="text" name="client_phone_1" value="">
+                  <input class="form-control num" type="text" name="client_phone_1" value="">
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Telepon 2</label>
-                  <input class="form-control keyboard" type="text" name="client_phone_2" value="">
+                  <input class="form-control num" type="text" name="client_phone_2" value="">
                 </div>
               </div>
             </div>
@@ -87,13 +87,13 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>NPWP <small class="required-field">*</small></label>
-                  <input class="form-control keyboard" type="text" name="client_npwp" value="">
+                  <input class="form-control num" type="text" name="client_npwp" value="">
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label>NPWPD <small class="required-field">*</small></label>
-                  <input class="form-control keyboard" type="text" name="client_npwpd" value="">
+                  <input class="form-control num" type="text" name="client_npwpd" value="">
                 </div>
               </div>
             </div>
@@ -114,7 +114,7 @@
             </div>
             <div class="form-group">
               <label>Serial Number <small class="required-field">*</small></label>
-              <input class="form-control keyboard" type="text" name="client_serial_number" value="">
+              <input class="form-control num" type="text" name="client_serial_number" value="">
             </div>
           </div>
           <div class="panel-footer">
