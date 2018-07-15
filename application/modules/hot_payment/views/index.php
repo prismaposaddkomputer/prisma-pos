@@ -15,7 +15,7 @@
       <form class="" action="<?=base_url()?>hot_payment/index" method="post">
         <div class="form-group">
           <div class="input-group">
-            <input type="text" class="form-control" name="search_term" placeholder="Pencarian..." value="<?php echo $this->session->userdata('search_term');?>">
+            <input type="text" class="form-control" name="search_term" placeholder="Pencarian (Kode Booking)..." value="<?php echo $this->session->userdata('search_term');?>">
             <span class="input-group-btn">
               <button class="btn btn-info" type="submit"><i class="fa fa-search"></i></button>
               <a class="btn btn-default" href="<?=base_url()?>hot_payment/reset_search"><i class="fa fa-refresh"></i></a>

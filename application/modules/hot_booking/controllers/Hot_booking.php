@@ -84,6 +84,111 @@ class Hot_booking extends MY_Hotel {
     redirect(base_url().'hot_booking/index');
   }
 
+  function ajax($id = null) {
+		if($id == 'get_image') {
+        	$config = $this->config_model->get_config();
+        	//
+        	$product_id  = $this->input->get('product_id');
+        	$image_no = $this->input->get('image_no')+1;
+        	//
+        	if($product_id != '' && $product_id != 'undefined') {
+        		$arr_image = $this->image_model->get_image_by_product($product_id);
+        		$html = '';
+        		$image_no = 1;
+        		foreach($arr_image as $row) {
+        			$html.= '<tr id="tr_image_'.$row['image_id'].'">
+								<td valign="top" colspan="3">
+									<table width="100%" class="table-no-border">
+									<tr>
+										<td valign="top">
+											<div class="form-group">
+												<label>Gambar '.$image_no.'</label>
+												<div>
+													<a href="'.base_url().$row['image_path'].'/'.$row['image_name'].'" target="_blank" title="Preview Image"><img class="img-thumbnail img-edit-product" src="'.base_url().$row['image_path'].$row['image_name'].'" style="border: 2px dotted blue;"></a>
+													<div>
+														<a class="btn btn-sm btn-primary btn-edit-product-img" href="'.base_url().$row['image_path'].'/'.$row['image_name'].'" target="_blank"><i class="fa fa-eye"></i> Lihat Gambar</a>
+														<a href="javascript:void(0)" class="remove_image btn btn-sm btn-danger btn-edit-product-img" data-id="'.$row['image_id'].'"><i class="fa fa-times"></i> Hapus Gambar</a>
+													</div>
+												</div>
+												<input type="file" class="form-control" name="image_source_'.$image_no.'" id="image_source_'.$image_no.'">
+												<span class="alert-product">* Isikan kolom diatas jika ingin mengganti Gambar</span>
+												<input type="hidden" name="image_pos_'.$image_no.'" value="2">
+												<input type="hidden" name="image_id_'.$image_no.'" value="'.$row['image_id'].'">
+											</div>
+										</td>
+									</tr>
+									</table>
+								</td>
+							</tr>
+							<script>
+							$(function() {
+								var id = "image_source_'.$image_no.'";
+								$("#"+id).bind("change",function() {
+									var size = this.files[0].size;
+									validate_image_size(size,"#"+id);
+								});
+							});
+							</script>';
+					$image_no++;
+        		}        		
+        		$image_no = $image_no-1;
+        		//
+        		$html.= '<script>
+        					$(function() {
+        						$(".remove_image").bind("click",function() {
+        							$(this).each(function() {
+        								var i = $(this).attr("data-id");
+        								if(confirm("Apakah anda yakin akan menghapus gambar ini ?")) {
+        									$.get("'.site_url("selling/delete_image").'/"+i,null,function(data) {
+	        									if(data.result == "true") {
+	        										//location.reload(true);
+	        										$("#tr_image_"+i).remove();
+	        									}
+	        								},"json");
+        								}        								
+        							});
+        						});
+        					});
+        				</script>';
+        	} else {
+        		$html = '<tr>
+							<td valign="top" colspan="3">
+								<div class="form-group" style="margin-bottom:-10px!important">
+									<label>Gambar '.$image_no.'</label>';
+							if($image_no == '1'){
+				$html .='			<label style="color:red;" class="pull-right">*Gambar '.$image_no.' akan dijadikan Utama</label>';
+								}
+				$html .='			<input type="file" class="form-control" name="image_source_'.$image_no.'" id="image_source_'.$image_no.'"><br>
+									<input type="hidden" name="image_pos_'.$image_no.'" value="2">
+								</div>
+							</td>
+						</tr>
+						<script>
+						$(function() {
+							var id = "image_source_'.$image_no.'";
+							$("#"+id).bind("change",function() {
+								var size = this.files[0].size;
+								validate_image_size(size,"#"+id);
+							});
+						});
+						</script>
+						';
+        	}
+        	//
+			echo json_encode(array(
+				'html' 		=> $html,
+				'image_no' 	=> $image_no,
+			));
+        }else if($id == 'permalink') {
+			$product_nm = $this->input->get('product_nm');
+			$permalink = clean_url($product_nm);
+			//
+			echo json_encode(array(
+				'permalink'	=> $permalink
+			));
+		}
+  }
+  
   public function form($id = null)
   {
     $data['access'] = $this->access;
