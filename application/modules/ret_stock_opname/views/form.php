@@ -57,13 +57,13 @@
                           <?=$row->stock_last?>
                         </td>
                         <td>
-                          <input class="autonumeric keyboard" id="stock_now_<?=$row->item_id?>" type="text" name="stock_now[]" size="5" onchange="diff('<?=$row->item_id?>')">
+                          <input class="autonumeric num" id="stock_now_<?=$row->item_id?>" type="text" name="stock_now[]" size="5" onchange="diff('<?=$row->item_id?>')">
                         </td>
                         <td class="text-center" id="stock_diff_<?=$row->item_id?>">0</td>
                         <td><?=num_to_idr($row->item_purchase)?></td>
                         <td>
                           <input id="stock_adjustment_<?=$row->item_id?>" type="hidden" name="stock_adjustment[]" size="5">
-                          <input class="autonumeric keyboard" type="text" name="stock_price[]" size="5">
+                          <input class="autonumeric num" type="text" name="stock_price[]" size="5">
                         </td>
                       </tr>
                     <?php endforeach; ?>
