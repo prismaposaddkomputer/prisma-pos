@@ -77,7 +77,7 @@
           </div>
           <div class="form-group">
             <label>Jumlah</label>
-            <input id="stock_out" class="form-control keyboard" name="stock_out" type="number" value="">
+            <input id="stock_out" class="form-control num" name="stock_out" type="number" value="">
           </div>
         </div>
         <div class="modal-footer">

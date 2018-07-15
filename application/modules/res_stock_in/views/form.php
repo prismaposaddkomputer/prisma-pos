@@ -86,11 +86,11 @@
           </div>
           <div class="form-group">
             <label>Jumlah</label>
-            <input id="stock_in" class="form-control keyboard" name="stock_in" type="number" value="">
+            <input id="stock_in" class="form-control num" name="stock_in" type="number" value="">
           </div>
           <div class="form-group">
             <label>Harga Beli</label>
-            <input id="stock_price" class="form-control keyboard autonumeric" name="stock_price" type="text" value="">
+            <input id="stock_price" class="form-control num autonumeric" name="stock_price" type="text" value="">
           </div>
         </div>
         <div class="modal-footer">
