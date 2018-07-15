@@ -70,7 +70,7 @@
               <td><?=$client->client_phone_2?></td>
             </tr>
             <tr>
-              <td>Telepon 2</td>
+              <td>Email</td>
               <td class="text-center">:</td>
               <td><?=$client->client_email?></td>
             </tr>
