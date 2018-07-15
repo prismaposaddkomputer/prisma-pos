@@ -89,10 +89,36 @@
           vMin: '-999999999'
         });
         <?php if($keyboard == 1):?>
-          $('.keyboard').keyboard();
+          $('.keyboard').keyboard({
+            layout : 'custom',
+            customLayout : {
+              'normal' : ['1 2 3 4 5 6 7 8 9 0',
+                          'q w e r t y u i o p',
+                          'a s d f g h j k l',
+                          '{s} z x c v b n m {b}',
+                          '{c} {space} {a}'],
+              'shift' : ['1 2 3 4 5 6 7 8 9 0',
+                          'Q W E R T Y U I O P',
+                          'A S D F G H J K L',
+                          '{s} Z X C V B N M {b}',
+                          '{c} {space} {a}'],
+            }
+          });
+          $('.num').keyboard({
+            layout : 'custom',
+            customLayout: { 'normal': ['1 2 3 {sign}', '4 5 6 ,', '7 8 9 {b}', '{c} 0 . {a}'] }
+          });
         <?php endif;?>
       })
     </script>
+    <style media="screen">
+      div.ui-widget {
+        font-size: 1.5em;
+      }
+      button.ui-keyboard-button {
+        margin: 4px;
+      }
+    </style>
   </head>
   <body>
 
@@ -214,19 +240,16 @@
     <!-- ############ MODALS ############ -->
     <!-- Modal add item -->
     <div id="modal_add_item" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-      <div class="modal-dialog modal-md" role="document">
+      <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-title">Tambah Item</h4>
           </div>
           <div class="modal-body">
             <input id="add_item_id" type="hidden" name="item_id" value="">
-            <table class="table table-condensed table-striped">
-              <tr>
-                <td width="150">Nama Item</td>
-                <td width="10">:</td>
-                <td id="add_item_name"></td>
-              </tr>
+            <h4 class="cl-info text-center" id="add_item_name"></h4>
+            <br>
+            <table class="table table-condensed table-sstriped">
               <tr>
                 <td>Barcode</td>
                 <td>:</td>
@@ -240,7 +263,7 @@
               <tr>
                 <td>Harga</td>
                 <td>:</td>
-                <td id="add_item_price_before_tax"></td>
+                <td class="cl-success" id="add_item_price_before_tax"></td>
               </tr>
               <tr>
                 <td>Satuan</td>
@@ -251,11 +274,11 @@
                 <td>Jumlah</td>
                 <td>:</td>
                 <td>
-                  <div class="input-group col-md-4">
+                  <div class="input-group col-md-10">
                     <span class="input-group-btn">
                       <button id="add_btn_decrement" class="btn btn-default" type="button"><i class="fa fa-minus"></i></button>
                     </span>
-                    <input id="add_tx_amount" type="number" class="form-control keyboard" value="1">
+                    <input id="add_tx_amount" type="number" class="form-control num" value="1">
                     <span class="input-group-btn">
                       <button id="add_btn_increment" class="btn btn-default" type="button"><i class="fa fa-plus"></i></button>
                     </span>
@@ -274,7 +297,7 @@
 
     <!-- Modal edit item -->
     <div id="modal_edit_item" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-      <div class="modal-dialog modal-md" role="document">
+      <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-title">Ubah Item</h4>
@@ -282,12 +305,9 @@
           <div class="modal-body">
             <input id="edit_billing_detail_id" type="hidden" name="billing_detail_id" value="">
             <input id="edit_item_id" type="hidden" name="item_id" value="">
-            <table class="table table-condensed table-striped">
-              <tr>
-                <td width="150">Nama Item</td>
-                <td width="10">:</td>
-                <td id="edit_item_name"></td>
-              </tr>
+            <h4 class="cl-info text-center" id="edit_item_name"></h4>
+            <br>
+            <table class="table table-condensed table-sstriped">
               <tr>
                 <td>Barcode</td>
                 <td>:</td>
@@ -301,7 +321,7 @@
               <tr>
                 <td>Harga</td>
                 <td>:</td>
-                <td id="edit_item_price_before_tax"></td>
+                <td class="cl-success" id="edit_item_price_before_tax"></td>
               </tr>
               <tr>
                 <td>Satuan</td>
@@ -312,11 +332,11 @@
                 <td>Jumlah</td>
                 <td>:</td>
                 <td>
-                  <div class="input-group col-md-4">
+                  <div class="input-group col-md-10">
                     <span class="input-group-btn">
                       <button id="edit_btn_decrement" class="btn btn-default" type="button"><i class="fa fa-minus"></i></button>
                     </span>
-                    <input id="edit_tx_amount" type="number" class="form-control keyboard" value="">
+                    <input id="edit_tx_amount" type="number" class="form-control num" value="1">
                     <span class="input-group-btn">
                       <button id="edit_btn_increment" class="btn btn-default" type="button"><i class="fa fa-plus"></i></button>
                     </span>
@@ -394,7 +414,7 @@
                 </div>
                 <div class="form-group">
                   <label>Telepon <small class="required-field">*</small></label>
-                  <input class="form-control keyboard" type="text" name="customer_phone" value="">
+                  <input class="form-control num" type="text" name="customer_phone" value="">
                 </div>
                 <div class="form-group">
                   <label>Email</label>
@@ -438,11 +458,11 @@
                 <div role="tabpanel" class="tab-pane active" id="cash">
                   <div class="form-group">
                     <label>Pembayaran</label>
-                    <input id="payment_tx_payment" class="form-control keyboard autonumeric" type="text" name="tx_payment" value="" dir="rtl" autofocus onkeyup="calc_change()">
+                    <input id="payment_tx_payment" class="form-control autonumeric num" type="text" name="tx_payment" value="" autofocus onkeyup="calc_change()" onchange="calc_change()">
                   </div>
                   <div class="form-group">
                     <label>Kembali</label>
-                    <input id="payment_tx_change" class="form-control" type="text" name="" value="" dir="rtl" readonly>
+                    <input id="payment_tx_change" class="form-control" type="text" name="" value="" readonly>
                   </div>
                   <div id="payment_cash_status" class="">
 
@@ -464,11 +484,11 @@
                   </div>
                   <div class="form-group">
                     <label>Nomor Kartu</label>
-                    <input id="payment_card_bank_card_no" class="form-control keyboard" type="text" name="" value="">
+                    <input id="payment_card_bank_card_no" class="form-control num" type="text" name="" value="">
                   </div>
                   <div class="form-group">
                     <label>Nomor Referensi</label>
-                    <input id="payment_card_bank_reference_no" class="form-control keyboard" type="text" name="" value="">
+                    <input id="payment_card_bank_reference_no" class="form-control num" type="text" name="" value="">
                   </div>
                   <div id="payment_card_status" class="">
 
@@ -1141,10 +1161,10 @@
           $.ajax({
             type : 'post',
             url : '<?=base_url()?>res_cashier/payment_card_action',
+            dataType : 'json',
             data : 'tx_id='+tx_id+'&bank_id='+bank_id+
               '&bank_card_no='+bank_card_no+'&bank_reference_no='+bank_reference_no+
               '&tx_payment='+tx_payment+'&tx_change='+tx_change,
-            dataType : 'json',
             success : function (data) {
               $("#modal_payment").modal('hide');
               printBill();
