@@ -93,6 +93,14 @@
         <?php endif;?>
       })
     </script>
+    <style media="screen">
+      div.ui-widget {
+        font-size: 1.5em;
+      }
+      button.ui-keyboard-button {
+        margin: 4px;
+      }
+    </style>
   </head>
   <body>
 
@@ -438,7 +446,7 @@
                 <div role="tabpanel" class="tab-pane active" id="cash">
                   <div class="form-group">
                     <label>Pembayaran</label>
-                    <input id="payment_tx_payment" class="form-control keyboard autonumeric" type="text" name="tx_payment" value="" dir="rtl" autofocus onkeyup="calc_change()">
+                    <input id="payment_tx_payment" class="form-control autonumeric" type="text" name="tx_payment" value="" dir="rtl" autofocus onkeyup="calc_change()">
                   </div>
                   <div class="form-group">
                     <label>Kembali</label>
@@ -1110,12 +1118,14 @@
             type : 'post',
             url : '<?=base_url()?>ret_cashier/payment_cash_action',
             data : 'tx_id='+tx_id+'&tx_payment='+tx_payment,
-            success : function () {
+            dataType : 'json',
+            success : function (data) {
               $("#payment_section").hide();
               $("#change_section").show();
               printBill();
               $("#change_label").html('<h5>Kembalian</h5><h3>'+sys_to_cur(tx_change)+'</h3>');
               new_billing();
+              send_dashboard(data);
             }
           })
         }
@@ -1139,16 +1149,35 @@
           $.ajax({
             type : 'post',
             url : '<?=base_url()?>ret_cashier/payment_card_action',
+            dataType : 'json',
             data : 'tx_id='+tx_id+'&bank_id='+bank_id+
               '&bank_card_no='+bank_card_no+'&bank_reference_no='+bank_reference_no+
               '&tx_payment='+tx_payment+'&tx_change='+tx_change,
-            success : function () {
+            success : function (data) {
               $("#modal_payment").modal('hide');
               printBill();
               new_billing();
+              send_dashboard(data);
             }
           })
         }
+      }
+
+      function send_dashboard(data) {
+        $.ajax({
+          type : 'GET',
+          url : 'http://addkomputer.com/prismapos/index.php/api/json/store',
+          data : data,
+          dataType : 'json',
+          success : function (data) {
+            console.log(data);
+          },
+          error: function(jqXHR, textStatus, errorThrown) { // if error occured
+            console.log(jqXHR.status);
+            console.log(errorThrown);
+          }
+        })
+        // console.log(data);
       }
 
       //pending show

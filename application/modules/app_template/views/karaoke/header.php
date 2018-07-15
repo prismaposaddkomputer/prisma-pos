@@ -128,8 +128,16 @@
       });
     </script>
     <style>
-      .bootstrap-datetimepicker-widget tr:hover {
+      /* .bootstrap-datetimepicker-widget tr:hover {
         background-color: #0abde3;
+      } */
+    </style>
+    <style media="screen">
+      div.ui-widget {
+        font-size: 1.5em;
+      }
+      button.ui-keyboard-button {
+        margin: 4px;
       }
     </style>
   </head>

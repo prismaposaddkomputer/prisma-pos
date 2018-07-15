@@ -228,6 +228,7 @@
               $("#modal_payment").modal('hide');
               print_bill(data.tx_id);
               get_all_room();
+              send_dashboard(data);
               $("#modal_success").modal('show');
             }
           });
@@ -235,6 +236,23 @@
       }
     });
   })
+
+  function send_dashboard(data) {
+    $.ajax({
+      type : 'GET',
+      url : 'http://addkomputer.com/prismapos/index.php/api/json/store',
+      data : data,
+      dataType : 'json',
+      success : function (data) {
+        console.log(data);
+      },
+      error: function(jqXHR, textStatus, errorThrown) { // if error occured
+        console.log(jqXHR.status);
+        console.log(errorThrown);
+      }
+    })
+    // console.log(data);
+  }
 
   function print_bill(tx_id) {
     $.ajax({
