@@ -22,8 +22,8 @@
                 <tr>
                   <td class="text-center"><?=$i++?></td>
                   <td><?=$row->booking_code?></td>
-                  <td><?=$row->date_booking_from?></td>
-                  <td><?=$row->date_booking_to?></td>
+                  <td><?=date_to_ind($row->date_booking_from)?></td>
+                  <td><?=date_to_ind($row->date_booking_to)?></td>
                   <td>
                   <?php
                         foreach($guest as $t){

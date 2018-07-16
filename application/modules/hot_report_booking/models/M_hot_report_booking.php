@@ -21,8 +21,6 @@ class M_hot_report_booking extends CI_Model {
 	public function get_all_room()
 	{
 		return $this->db
-			->where('is_deleted','0')
-			->where('is_active','1')
 			->get('hot_room')->result();
 	}
 
@@ -30,8 +28,6 @@ class M_hot_report_booking extends CI_Model {
 	public function get_tipe()
 	{
 		return $this->db
-			->where('is_deleted','0')
-			->where('is_active','1')
 			->get('hot_category')->result();
 	}
 

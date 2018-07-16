@@ -16,7 +16,7 @@
       <form class="" action="<?=base_url()?>hot_booking/index" method="post">
         <div class="form-group">
           <div class="input-group">
-            <input type="text" class="form-control" name="search_term" placeholder="Pencarian..." value="<?php echo $this->session->userdata('search_term');?>">
+            <input type="text" class="form-control" name="search_term" placeholder="Pencarian (Kode Booking)..." value="<?php echo $this->session->userdata('search_term');?>">
             <span class="input-group-btn">
               <button class="btn btn-info" type="submit"><i class="fa fa-search"></i></button>
               <a class="btn btn-default" href="<?=base_url()?>hot_booking/reset_search"><i class="fa fa-refresh"></i></a>
@@ -89,14 +89,26 @@
                   <td class="text-center"><?=$this->uri->segment('3')+$i++?></td>
                   <td class="text-center">
                     <?php if ($row->booking_id != 0 ): ?>
-                      <a class="btn btn-xs btn-warning" href="<?=base_url()?>hot_booking/form/<?=$row->booking_id?>"><i class="fa fa-pencil"></i></a>
+                      <?php
+                          foreach($payment as $t){
+                            if($row->booking_id==$t->booking_id){
+                              ?>
+                                <?php if ($t->cashed == 1): ?>
+                                    <small class='label label-success'>Sudah Selesai</small>
+                                <?php else: ?>
+                                  <a class="btn btn-xs btn-warning" href="<?=base_url()?>hot_booking/form/<?=$row->booking_id?>"><i class="fa fa-pencil"></i></a>
                       
-                      <button class="btn btn-xs btn-danger" onclick="del('<?=$row->booking_id?>');"><i class="fa fa-trash"></i></button>
-                    <?php endif; ?>
+                                  <button class="btn btn-xs btn-danger" onclick="del('<?=$row->booking_id?>');"><i class="fa fa-trash"></i></button>
+                                <?php endif; ?>
+                              <?php
+                            }
+                          }
+                        ?>
+                      <?php endif; ?>
                   </td>
                   <td><?=$row->booking_code?></td>
-                  <td><?=$row->date_booking_from?></td>
-                  <td><?=$row->date_booking_to?></td>
+                  <td><?=date_to_ind($row->date_booking_from)?></td>
+                  <td><?=date_to_ind($row->date_booking_to)?></td>
                   <td>
                   <?php
                         foreach($guest as $t){

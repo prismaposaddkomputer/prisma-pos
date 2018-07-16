@@ -4,7 +4,7 @@
 </div>
 <div class="content-body">
   <div class="row">
-    <form id="form" class="" action="<?=base_url()?>hot_payment/<?=$action?>" method="post">
+    <form id="telo" class="" action="#" method="post">
       <div class="col-md-6">
         <input class="form-control" type="hidden" name="booking_id" value="<?php if($booking != null){echo $booking->booking_id;}?>">
         <div class="form-group">
@@ -162,7 +162,7 @@
           <input class="" type="hidden" name="is_active" value="1" />
         </div>
         <div class="form-group pull-right">
-          <a class="btn btn-default" href="<?=base_url()?>hot_booking/index"><i class="fa fa-close"></i> Batal</a>
+          <a class="btn btn-default" href="<?=base_url()?>hot_payment/index"><i class="fa fa-close"></i> Batal</a>
 
           <button class="btn btn-info" type="submit"><i class="fa fa-save"></i> Bayar</button>
 
@@ -173,70 +173,42 @@
 </div>
 <script type="text/javascript">
   $(document).ready(function () {
-    $("#form").validate({
-      rules: {
-        'booking_id': {
-          required: true
-        },
-        'booking_name': {
-          required: true
-        }
-      },
-      messages: {
-        'booking_id': {
-          required: '<i style="color:red">Wajib diisi!</i>'
-        },
-        'booking_name': {
-          required: '<i style="color:red">Wajib diisi!</i>'
-        }
-      }
-    });
-
-     $('#number_of_days').change(function(){
-        	var value = $(this).val();
-        	value = parseInt(value);
-          var today = new Date();
-			    var next = today.getDate()+value;
-          var bulan = today.getMonth()+1;
-			    $('#date_booking_to').val(next+"-"+bulan+"-"+today.getFullYear());
-          var z=$('#date_booking_to').val();
-          var s= $('#check_in').val();
-          var res = s.split("-");
-          var resz = z.split("-");
-          $('#xs').val(res[2]+"-"+res[1]+"-"+res[0]);
-          $('#xsz').val(res[2]+"-"+res[1]+"-"+res[0]);
-          $('#xz').val(resz[2]+"-"+resz[1]+"-"+resz[0]);
-      
+    $("#telo").validate({ 
+      submitHandler: function(form) {
+        $.ajax({
+          url:"<?=base_url()?>hot_payment/<?=$action?>",
+          type: "post",
+          data: $(form).serialize(),
+          dataType : 'json',
+          success: function(data){
+            console.log(data);
+            send_dashboard(data);
+          },
+          complete: function() {
+              window.location="<?=base_url()?>hot_payment/index";
+          }   
         });
+      }
+    })
+  });
 
-  })
+   function send_dashboard(data) {
+    $.ajax({
+      type : 'GET',
+      url : 'http://addkomputer.com/prismapos/index.php/api/json/store',
+      data : data,
+      dataType : 'json',
+      success : function (data) {
+        console.log(data);
+      },
+      error: function(jqXHR, textStatus, errorThrown) { // if error occured
+        console.log(jqXHR.status);
+        console.log(errorThrown);
+      }
+    })
+    // console.log(data);
+  }
 
-  function AddService(){
-		var row = $('.service').length;
-		if(row>1){
-			var index = $('.service').last().attr('id');
-			index = index.substr(10);
-			index = parseInt(index);
-			row = parseInt(row);
-			row = index+1;
-		}
-		var html = '<div class="form-group" id="service'+row+'">';
-		html+= '<label"></label>';
-		html+= '<input type="hidden"  name="service_id[]" id="service_id'+row+'" class="form-control service"required required/>';
-		html+='<select class="form-control select2" id="service_id'+row+'" name="service_id[]">';
-              <?php foreach ($service as $row): ?>
-    html+=      '<option value="<?=$row->service_id?>" <?php if($booking != null){if($row->service_id == $bookings->service_id){echo 'selected';};}?>><?=$row->service_name?></option>';
-              <?php endforeach; ?>
-    html+='</select><br>';
-    html+= '<a href="javascript:void(0)" onclick="javascript:DeleteService('+row+')" title="Delete Service" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></a>';
-		html+= '</div>';
-		$('#data-service').append(html);
-		
-	}
-
-  function DeleteService(x){
-		$('#service'+x).remove();
-	}
-
+ 
 
 </script>
