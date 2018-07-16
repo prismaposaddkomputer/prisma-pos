@@ -51,6 +51,17 @@ class M_hot_payment extends CI_Model {
   public function get_by_id($id)
   {
     return $this->db->where('id',$id)->get('hot_payment')->row();
+	}
+	
+	public function get_by_billing($id)
+  {
+		return $this->db->query("select
+				* from hot_payment a 
+				join hot_booking b on a.booking_id=b.booking_id
+				join hot_guest c on b.guest_id=c.guest_id
+				join hot_room d on b.room_id=d.room_id
+				where a.id='$id' 
+		")->row();
   }
 
   public function get_last()
