@@ -71,6 +71,16 @@
   <body>
     <nav class="navbar navbar-default">
       <div class="container-fluid">
+        <div class="btn-group pull-right" role="group">
+          <button type="button" class="btn btn-danger navbar-btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-power-off"></i> Power
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a href="<?=base_url()?>app_system/shutdown"><i class="fa fa-circle-o"></i> Shutdown</a></li>
+            <li><a href="<?=base_url()?>app_system/shutdown"><i class="fa fa-refresh"></i> Restart</a></li>
+          </ul>
+        </div>
         <div class="navbar-header">
           <a class="navbar-brand" href="#">Prisma Point of Sales</a>
         </div>
