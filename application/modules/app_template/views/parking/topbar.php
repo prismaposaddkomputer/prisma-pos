@@ -13,7 +13,7 @@
         </button>
         <ul class="dropdown-menu">
           <li><a href="<?=base_url()?>app_system/shutdown"><i class="fa fa-circle-o"></i> Shutdown</a></li>
-          <li><a href="<?=base_url()?>app_system/shutdown"><i class="fa fa-refresh"></i> Restart</a></li>
+          <li><a href="<?=base_url()?>app_system/restart"><i class="fa fa-refresh"></i> Restart</a></li>
           <li><a href="<?=base_url()?>app_auth/logout/logout_action"><i class="fa fa-sign-out"></i> Logout</a></li>
         </ul>
       </div>

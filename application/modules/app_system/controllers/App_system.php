@@ -10,6 +10,6 @@ class App_system extends MX_Controller {
 
   public function restart()
   {
-    // code...
+    system('shutdown -r -t 0');
   }
 }
