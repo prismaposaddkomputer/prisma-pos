@@ -13,11 +13,11 @@
         </div>
         <div class="form-group">
           <label>Telepon <small class="required-field">*</small></label>
-          <input class="form-control keyboard" type="text" name="supplier_phone" value="<?php if($supplier != null){echo $supplier->supplier_phone;}?>">
+          <input class="form-control num" type="text" name="supplier_phone" value="<?php if($supplier != null){echo $supplier->supplier_phone;}?>">
         </div>
         <div class="form-group">
           <label>Fax</label>
-          <input class="form-control keyboard" type="text" name="supplier_fax" value="<?php if($supplier != null){echo $supplier->supplier_fax;}?>">
+          <input class="form-control num" type="text" name="supplier_fax" value="<?php if($supplier != null){echo $supplier->supplier_fax;}?>">
         </div>
         <div class="form-group">
           <label>Email</label>

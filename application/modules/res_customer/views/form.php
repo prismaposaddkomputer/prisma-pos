@@ -13,7 +13,7 @@
         </div>
         <div class="form-group">
           <label>Telepon <small class="required-field">*</small></label>
-          <input class="form-control keyboard" type="text" name="customer_phone" value="<?php if($customer != null){echo $customer->customer_phone;}?>">
+          <input class="form-control num" type="text" name="customer_phone" value="<?php if($customer != null){echo $customer->customer_phone;}?>">
         </div>
         <div class="form-group">
           <label>Email</label>

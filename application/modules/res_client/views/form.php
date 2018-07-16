@@ -6,37 +6,37 @@
   <div class="row">
     <form id="form" class="" action="<?=base_url()?>res_client/<?=$action?>" method="post">
       <div class="col-md-6">
-        <input class="form-control keyboard" type="hidden" name="client_id" value="<?php if($client != null){echo $client->client_id;}?>">
+        <input class="form-control keyboard keyboard" type="hidden" name="client_id" value="<?php if($client != null){echo $client->client_id;}?>">
         <h4>Profil Perusahaan</h4>
         <div class="form-group">
           <label>Nama Usaha <small class="required-field">*</small></label>
-          <input class="form-control" type="text" name="client_name" value="<?php if($client != null){echo $client->client_name;}?>">
+          <input class="form-control keyboard" type="text" name="client_name" value="<?php if($client != null){echo $client->client_name;}?>">
         </div>
         <div class="form-group">
           <label>Nama Brand <small class="required-field">*</small></label>
-          <input class="form-control" type="text" name="client_brand" value="<?php if($client != null){echo $client->client_brand;}?>">
+          <input class="form-control keyboard" type="text" name="client_brand" value="<?php if($client != null){echo $client->client_brand;}?>">
         </div>
         <div class="form-group">
           <label>Status Usaha <small class="required-field">*</small></label>
-          <input class="form-control" type="text" name="client_status" value="<?php if($client != null){echo $client->client_status;}?>">
+          <input class="form-control keyboard" type="text" name="client_status" value="<?php if($client != null){echo $client->client_status;}?>">
         </div>
         <hr>
         <h4>Alamat Perusahaan</h4>
         <div class="form-group">
           <label>Jalan <small class="required-field">*</small></label>
-          <input class="form-control" type="text" name="client_street" value="<?php if($client != null){echo $client->client_street;}?>">
+          <input class="form-control keyboard" type="text" name="client_street" value="<?php if($client != null){echo $client->client_street;}?>">
         </div>
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
               <label>Kelurahan <small class="required-field">*</small></label>
-              <input class="form-control" type="text" name="client_subdistrict" value="<?php if($client != null){echo $client->client_subdistrict;}?>">
+              <input class="form-control keyboard" type="text" name="client_subdistrict" value="<?php if($client != null){echo $client->client_subdistrict;}?>">
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label>Kecamatan <small class="required-field">*</small></label>
-              <input class="form-control" type="text" name="client_district" value="<?php if($client != null){echo $client->client_district;}?>">
+              <input class="form-control keyboard" type="text" name="client_district" value="<?php if($client != null){echo $client->client_district;}?>">
             </div>
           </div>
         </div>
@@ -44,13 +44,13 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Kota/Kabupaten <small class="required-field">*</small></label>
-              <input class="form-control" type="text" name="client_city" value="<?php if($client != null){echo $client->client_city;}?>">
+              <input class="form-control keyboard" type="text" name="client_city" value="<?php if($client != null){echo $client->client_city;}?>">
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label>Provinsi <small class="required-field">*</small></label>
-              <input class="form-control" type="text" name="client_province" value="<?php if($client != null){echo $client->client_province;}?>">
+              <input class="form-control keyboard" type="text" name="client_province" value="<?php if($client != null){echo $client->client_province;}?>">
             </div>
           </div>
         </div>
@@ -60,19 +60,19 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Telepon 1<small class="required-field">*</small></label>
-              <input class="form-control" type="text" name="client_phone_1" value="<?php if($client != null){echo $client->client_phone_1;}?>">
+              <input class="form-control num" type="text" name="client_phone_1" value="<?php if($client != null){echo $client->client_phone_1;}?>">
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label>Telepon 2<small class="required-field">*</small></label>
-              <input class="form-control" type="text" name="client_phone_2" value="<?php if($client != null){echo $client->client_phone_2;}?>">
+              <input class="form-control num" type="text" name="client_phone_2" value="<?php if($client != null){echo $client->client_phone_2;}?>">
             </div>
           </div>
         </div>
         <div class="form-group">
           <label>Email <small class="required-field">*</small></label>
-          <input class="form-control" type="text" name="client_email" value="<?php if($client != null){echo $client->client_email;}?>">
+          <input class="form-control keyboard" type="text" name="client_email" value="<?php if($client != null){echo $client->client_email;}?>">
         </div>
         <hr>
         <h4>Wajib Pajak</h4>
@@ -80,34 +80,34 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>NPWP<small class="required-field">*</small></label>
-              <input class="form-control" type="text" name="client_npwp" value="<?php if($client != null){echo $client->client_npwp;}?>">
+              <input class="form-control num" type="text" name="client_npwp" value="<?php if($client != null){echo $client->client_npwp;}?>">
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label>NPWPD<small class="required-field">*</small></label>
-              <input class="form-control" type="text" name="client_npwpd" value="<?php if($client != null){echo $client->client_npwpd;}?>">
+              <input class="form-control num" type="text" name="client_npwpd" value="<?php if($client != null){echo $client->client_npwpd;}?>">
             </div>
           </div>
         </div>
         <h4>Pemilik</h4>
         <div class="form-group">
           <label>Nama Pemilik<small class="required-field">*</small></label>
-          <input class="form-control" type="text" name="client_owner_name" value="<?php if($client != null){echo $client->client_owner_name;}?>">
+          <input class="form-control keyboard" type="text" name="client_owner_name" value="<?php if($client != null){echo $client->client_owner_name;}?>">
         </div>
         <div class="form-group">
           <label>Alamat Pemilik<small class="required-field">*</small></label>
-          <textarea class="form-control" type="text" name="client_owner_address"><?php if($client != null){echo $client->client_owner_address;}?></textarea>
+          <textarea class="form-control keyboard" type="text" name="client_owner_address"><?php if($client != null){echo $client->client_owner_address;}?></textarea>
         </div>
         <hr>
         <h4>Data Lain</h4>
         <div class="form-group">
           <label>Keterangan Tambahan<small class="required-field">*</small></label>
-          <textarea class="form-control" type="text" name="client_notes"><?php if($client != null){echo $client->client_notes;}?></textarea>
+          <textarea class="form-control keyboard" type="text" name="client_notes"><?php if($client != null){echo $client->client_notes;}?></textarea>
         </div>
         <div class="form-group">
           <label>Serial Number <small class="required-field">*</small></label>
-          <input class="form-control" type="text" name="client_serial_number" value="<?php if($client != null){echo $client->client_serial_number;}?>">
+          <input class="form-control num" type="text" name="client_serial_number" value="<?php if($client != null){echo $client->client_serial_number;}?>">
         </div>
         <div class="form-group">
           <label>Virtual Keyboard?</label><br>
@@ -124,67 +124,98 @@
 <script type="text/javascript">
   $(document).ready(function () {
     $("#form").validate({
-      rules: {
-        'client_name': {
-          required: true
+      rules : {
+        'client_name' : {
+          required : true
         },
-        'client_realname': {
-          required: true
+        'client_brand' : {
+          required : true
         },
-        'client_name': {
-          required: true
+        'client_status' : {
+          required : true
         },
-        'client_password': {
-          required: true
+        'client_street' : {
+          required : true
         },
-        'client_password_repeat': {
-          required: true,
-          equalTo: '#client_password'
+        'client_subdistrict' : {
+          required : true
+        },
+        'client_district' : {
+          required : true
+        },
+        'client_city' : {
+          required : true
+        },
+        'client_province' : {
+          required : true
+        },
+        'client_phone_1' : {
+          required : true,
+          number : true
+        },
+        'client_npwp' : {
+          required : true,
+          number : true
+        },
+        'client_npwpd' : {
+          required : true,
+          number : true
+        },
+        'client_owner_name' : {
+          required : true
+        },
+        'client_owner_address' : {
+          required : true
+        },
+        'client_serial_number' : {
+          required : true
         }
       },
-      messages: {
-        'client_name': {
+      messages : {
+        'client_name' : {
           required: '<i style="color:red">Wajib diisi!</i>'
         },
-        'client_realname': {
+        'client_brand' : {
           required: '<i style="color:red">Wajib diisi!</i>'
         },
-        'client_name': {
+        'client_status' : {
           required: '<i style="color:red">Wajib diisi!</i>'
         },
-        'client_password': {
+        'client_street' : {
           required: '<i style="color:red">Wajib diisi!</i>'
         },
-        'client_password_repeat': {
+        'client_subdistrict' : {
+          required: '<i style="color:red">Wajib diisi!</i>'
+        },
+        'client_district' : {
+          required: '<i style="color:red">Wajib diisi!</i>'
+        },
+        'client_city' : {
+          required: '<i style="color:red">Wajib diisi!</i>'
+        },
+        'client_province' : {
+          required: '<i style="color:red">Wajib diisi!</i>'
+        },
+        'client_phone_1' : {
           required: '<i style="color:red">Wajib diisi!</i>',
-          equalTo: '<i style="color:red">Kata sandi tidak sama!</i>'
-        }
-      }
-    });
-
-    $("#form_password").validate({
-      rules: {
-        'client_password_old': {
-          required: true
+          number: '<i style="color:red">Harus berupa angka!</i>'
         },
-        'client_password_new': {
-          required: true
+        'client_npwp' : {
+          required: '<i style="color:red">Wajib diisi!</i>',
+          number: '<i style="color:red">Harus berupa angka!</i>'
         },
-        'client_password_new_repeat': {
-          required: true,
-          equalTo: '#client_password_new'
-        }
-      },
-      messages: {
-        'client_password_old': {
+        'client_npwpd' : {
+          required: '<i style="color:red">Wajib diisi!</i>',
+          number: '<i style="color:red">Harus berupa angka!</i>'
+        },
+        'client_owner_name' : {
           required: '<i style="color:red">Wajib diisi!</i>'
         },
-        'client_password_new': {
-          required: '<i style="color:red">Wajib diisi!</i>',
+        'client_owner_address' : {
+          required: '<i style="color:red">Wajib diisi!</i>'
         },
-        'client_password_new_repeat': {
-          required: '<i style="color:red">Wajib diisi!</i>',
-          equalTo: '<i style="color:red">Kata sandi tidak sama!</i>'
+        'client_serial_number' : {
+          required: '<i style="color:red">Wajib diisi!</i>'
         }
       }
     });

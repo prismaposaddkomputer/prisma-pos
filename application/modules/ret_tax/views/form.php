@@ -16,14 +16,14 @@
           <input class="form-control keyboard" type="text" name="tax_name" value="<?php if($tax != null){echo $tax->tax_name;}?>">
         </div>
         <div class="form-group">
-          <label>Rasio Pajak</label>
+          <label>Rasio Pajak <small class="required-field">*</small></label>
           <div class="input-group col-sm-4">
-            <input type="text" class="form-control keyboard autonumeric" name="tax_ratio" aria-describedby="basic-addon2" value="<?php if($tax != null){echo $tax->tax_ratio;}?>">
+            <input type="text" class="form-control num autonumeric" name="tax_ratio" aria-describedby="basic-addon2" value="<?php if($tax != null){echo $tax->tax_ratio;}?>">
             <span class="input-group-addon" id="basic-addon2">%</span>
           </div>
         </div>
         <div class="form-group">
-          <label>Aktif? <small class="required-field">*</small></label><br>
+          <label>Aktif?</label><br>
           <input class="" type="checkbox" name="is_active" value="1" <?php if($tax != null){if($tax->is_active == 1){echo 'checked';}}else{echo 'checked';}?>>
         </div>
         <div class="form-group pull-right">

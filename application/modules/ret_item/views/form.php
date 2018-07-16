@@ -27,10 +27,17 @@
             <?php endforeach; ?>
           </select>
         </div>
-        <div class="form-group">
-          <label>Berupa Paket?</label><br>
-          <input class="" type="checkbox" name="is_package" value="1" <?php if($item != null){if($item->is_package == 1){echo 'checked';}}?>>
-        </div>
+        <?php if ($item == null): ?>
+          <div class="form-group">
+            <label>Berupa Paket?</label><br>
+            <input class="" type="checkbox" name="is_package" value="1" <?php if($item != null){if($item->is_package == 1){echo 'checked';}}?>>
+          </div>
+        <?php elseif($item != null && $item->is_package == 1): ?>
+          <div class="form-group">
+            <label>Berupa Paket?</label><br>
+            <input class="" type="checkbox" name="is_package" value="1" <?php if($item != null){if($item->is_package == 1){echo 'checked';}}?>>
+          </div>
+        <?php endif; ?>
         <div id="package_section">
           <?php if ($item == !null): ?>
             <?php if ($item->is_package == 1): ?>
@@ -64,8 +71,8 @@
           <?php endif; ?>
         </div>
         <div class="form-group">
-          <label>Harga Jual (sebelum pajak)<small class="required-field">*</small></label>
-          <input class="form-control keyboard autonumeric" type="text" name="item_price_before_tax" value="<?php if($item != null){echo $item->item_price_before_tax;}?>" <?php if($item !=null){if($item->is_package == 1){echo 'readonly';}}?>>
+          <label>Harga Jual (sebelum pajak) <small class="required-field">*</small></label>
+          <input class="form-control num autonumeric" type="text" name="item_price_before_tax" value="<?php if($item != null){echo $item->item_price_before_tax;}?>" <?php if($item !=null){if($item->is_package == 1){echo 'readonly';}}?>>
         </div>
       </div>
       <div class="col-md-6">
@@ -79,7 +86,7 @@
         </div>
         <div class="form-group">
           <label>Barcode </label>
-          <input class="form-control keyboard" type="text" name="item_barcode" value="<?php if($item != null){echo $item->item_barcode;}?>">
+          <input class="form-control num" type="text" name="item_barcode" value="<?php if($item != null){echo $item->item_barcode;}?>">
         </div>
         <div class="form-group">
           <label>Deskripsi</label>
