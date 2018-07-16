@@ -20,6 +20,9 @@ class Hot_payment extends MY_Hotel {
     $this->load->model('m_hot_payment');
     $this->load->model('m_hot_booking');
     $this->load->model('m_hot_room');
+    $this->load->model('app_install/m_app_install');
+    $this->load->model('hot_tax/m_hot_tax');
+    $this->load->model('hot_client/m_hot_client');
   }
 
 	public function index()
@@ -128,7 +131,9 @@ class Hot_payment extends MY_Hotel {
     $disc = $this->input->post('disc');
     $pajak = $this->m_hot_booking->get_pajak();
 		$total = ((($subtotal-(($subtotal*$disc)/100))*$pajak['tax_ratio'])/100)+($subtotal-(($subtotal*$disc)/100));
- 
+    
+    $pajaks=(($subtotal-(($subtotal*$disc)/100))*$pajak['tax_ratio'])/100;
+
 		$data = array(
 			'subtotal' => $subtotal,
 			'disc' => $disc,
@@ -149,8 +154,46 @@ class Hot_payment extends MY_Hotel {
       );
     $this->m_hot_room->update($idx,$datax);
     
-    $this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil diubah!</div>');
-    redirect(base_url().'hot_payment/index');
+
+  
+    //$data = null;
+    
+    $data['client'] = $this->m_hot_client->get_all();
+    $data['billing_id'] = $id;
+
+    $bill = $this->m_hot_payment->get_by_billing($id);
+    $client = $this->m_hot_client->get_all();
+    $app_install = $this->m_app_install->get_install();
+    $tax = $this->m_hot_tax->get_by_id(1);
+    
+
+    $dashboard = array(
+      'auth'=> 'prismapos.addkomputer',
+      'apikey'=> '69f86eadd81650164619f585bb017316',
+      'app_type_id'=> $app_install['type_id'],
+      'client_id'=> $client->client_id,
+      'pos_sn'=> $client->client_serial_number,
+      'npwpd'=> $client->client_npwpd,
+      'customer_name'=> $bill->guest_name,
+      'no_receipt'=> 'TRS-'.$bill->booking_code,
+      'tx_id'=> $bill->booking_id,
+      'tx_date'=> $bill->date_booking_to,
+      'tx_time'=> date('H:i:s'),
+      'tx_total_before_tax'=> $bill->subtotal,
+      'tax_code'=> $tax->tax_code,
+      'tax_ratio'=> $tax->tax_ratio,
+      'tx_total_tax'=> $pajaks,
+      'tx_total_after_tax'=> $bill->grand_total,
+      'tx_total_grand'=> $bill->grand_total,
+      'user_id'=> $this->session->userdata('user_id'),
+      'user_realname'=> $this->session->userdata('user_realname'),
+      'created'=> $bill->created,
+    );
+
+    echo json_encode($dashboard);
+
+    //$this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil diubah!</div>');
+    //redirect(base_url().'hot_payment/index');
   }
 
   public function delete($id)

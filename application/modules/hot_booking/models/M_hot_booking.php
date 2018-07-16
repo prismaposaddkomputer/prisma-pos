@@ -42,6 +42,13 @@ class M_hot_booking extends CI_Model {
 			->get('hot_room')->result();
 	}
 
+	public function get_payment()
+	{
+		return $this->db
+			->where('is_deleted','0')
+			->get('hot_payment')->result();
+	}
+
 	public function get_tipe()
 	{
 		return $this->db
@@ -65,13 +72,19 @@ class M_hot_booking extends CI_Model {
 			->get('hot_room')->result();
 	}
 
+	public function get_all_noroom()
+	{
+		return $this->db
+			->where('is_deleted','0')
+			->get('hot_room')->result();
+	}
+
 
   public function get_by_id($id)
   {
     return $this->db->where('booking_id',$id)->get('hot_booking')->row();
 	}
-	
-	
+		
 	public function get_by_idr($id)
   {
     return $this->db->where('booking_id',$id)->get('hot_booking_room')->row();
@@ -111,6 +124,11 @@ class M_hot_booking extends CI_Model {
 	public function deletePay($id)
   {
     $this->db->where('booking_id',$id)->update('hot_payment',array('is_deleted' => '1'));
+	}
+	
+	public function deleteRoom($id)
+  {
+    $this->db->where('room_id',$id)->update('hot_room',array('is_active' => '1'));
   }
 
 	function num_rows($search_term = null){
