@@ -84,7 +84,7 @@
                 <table class="table table-striped table-bordered table-condensed">
                   <thead>
                     <tr>
-                      <th class="text-center">Id</th>
+                      <th class="text-center">No. Karcis</th>
                       <th class="text-center">Kategori</th>
                       <th class="text-center">TNKB</th>
                       <th class="text-center">Merek</th>
