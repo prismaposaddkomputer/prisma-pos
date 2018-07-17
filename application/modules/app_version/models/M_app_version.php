@@ -48,6 +48,13 @@ class M_app_version extends CI_Model {
         );
 
         break;
+
+      case '1.3':
+        $this->db->query(
+          "INSERT INTO `par_tax` (`tax_id`, `tax_code`, `tax_name`, `tax_ratio`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
+	          (1, '1.1.1.07.01\r\n', 'Pajak Parkir', 15.00, '2018-07-05 09:49:40', 'System', '0000-00-00 00:00:00', 'System', 1, 0)
+        ");
+        break;
     }
 
     //insert new update history
@@ -73,6 +80,7 @@ class M_app_version extends CI_Model {
     $version = array();
     array_push($version, array("version_now"=>"1.1","version_release"=>"2018-07-09 14:16:00"));
     array_push($version, array("version_now"=>"1.2","version_release"=>"2018-07-16 11:20:00"));
+    array_push($version, array("version_now"=>"1.3","version_release"=>"2018-07-17 10:00:00"));
 
     foreach ($version as $key => $val) {
       //check version
