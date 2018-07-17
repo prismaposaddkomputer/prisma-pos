@@ -3,6 +3,9 @@ Application points of sale built by CV ADD Computer. This application consists o
 
 ## Change Log
 
+### V 1.4
+1. Add posting status and posting date
+
 ### V 1.3
 1. Fix database for tax parking
 
