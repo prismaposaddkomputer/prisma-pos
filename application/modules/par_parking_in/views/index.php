@@ -53,7 +53,7 @@
                 <table class="table table-striped table-bordered table-condensed">
                   <thead>
                     <tr>
-                      <th class="text-center" width="150">Id</th>
+                      <th class="text-center" width="150">No Karcis</th>
                       <th class="text-center">Kategori</th>
                       <th class="text-center">Merek</th>
                       <th class="text-center">TNKB</th>

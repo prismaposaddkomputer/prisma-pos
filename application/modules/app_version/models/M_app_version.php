@@ -55,6 +55,40 @@ class M_app_version extends CI_Model {
 	          (1, '1.1.1.07.01\r\n', 'Pajak Parkir', 15.00, '2018-07-05 09:49:40', 'System', '0000-00-00 00:00:00', 'System', 1, 0)
         ");
         break;
+
+      case '1.4':
+        //add status posting and posting date in db.
+        //retail
+        $this->db->query(
+          "ALTER TABLE `ret_billing`
+	         ADD COLUMN `posting_st` TINYINT(1) NOT NULL DEFAULT '0' AFTER `is_deleted`,
+	          ADD COLUMN `posting_date` DATETIME NULL DEFAULT NULL AFTER `posting_st`"
+        );
+        //restaurant
+        $this->db->query(
+          "ALTER TABLE `res_billing`
+	         ADD COLUMN `posting_st` TINYINT(1) NOT NULL DEFAULT '0' AFTER `is_deleted`,
+	          ADD COLUMN `posting_date` DATETIME NULL DEFAULT NULL AFTER `posting_st`"
+        );
+        //hotel
+        $this->db->query(
+          "ALTER TABLE `hot_payment`
+	         ADD COLUMN `posting_st` TINYINT(1) NOT NULL DEFAULT '0' AFTER `is_deleted`,
+	          ADD COLUMN `posting_date` DATETIME NULL DEFAULT NULL AFTER `posting_st`"
+        );
+        //karaoke
+        $this->db->query(
+          "ALTER TABLE `kar_billing`
+	         ADD COLUMN `posting_st` TINYINT(1) NOT NULL DEFAULT '0' AFTER `is_deleted`,
+	          ADD COLUMN `posting_date` DATETIME NULL DEFAULT NULL AFTER `posting_st`"
+        );
+        //parking
+        $this->db->query(
+          "ALTER TABLE `par_billing`
+	         ADD COLUMN `posting_st` TINYINT(1) NOT NULL DEFAULT '0' AFTER `is_deleted`,
+	          ADD COLUMN `posting_date` DATETIME NULL DEFAULT NULL AFTER `posting_st`"
+        );
+        break;
     }
 
     //insert new update history
@@ -81,6 +115,7 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"1.1","version_release"=>"2018-07-09 14:16:00"));
     array_push($version, array("version_now"=>"1.2","version_release"=>"2018-07-16 11:20:00"));
     array_push($version, array("version_now"=>"1.3","version_release"=>"2018-07-17 10:00:00"));
+    array_push($version, array("version_now"=>"1.4","version_release"=>"2018-07-17 10:41:00"));
 
     foreach ($version as $key => $val) {
       //check version

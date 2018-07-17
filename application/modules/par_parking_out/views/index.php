@@ -11,7 +11,7 @@
           <form id="form" class="form" action="<?=base_url()?>par_parking_out/<?=$action?>" method="post">
             <div class="form-group">
               <label>Tanda Nomor Kendaraan Bermotor</label>
-              <input id="billing_tnkb" class="form-control keyboard input-lg" style="text-transform: uppercase" type="text" name="billing_tnkb" value="" <?php if($keyboard == 1){echo 'onchange="get_billing()"';}else{echo 'oninput="get_billing()"';} ?> >
+              <input id="billing_tnkb" class="form-control keyboard input-lg" style="text-transform: uppercase" type="text" name="billing_tnkb" value="" onchange="get_billing()" oninput="get_billing()">
             </div>
             <div class="form-group">
               <label>No. Karcis</label>
@@ -55,7 +55,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Bayar</label>
-                  <input id="billing_payment" class="form-control keyboard autonumeric" type="text" name="billing_payment" value="" onkeyup="calcChange()">
+                  <input id="billing_payment" class="form-control num autonumeric" type="text" name="billing_payment" value="" onkeyup="calcChange()" onchange="calcChange()">
                 </div>
               </div>
               <div class="col-md-6">
@@ -84,7 +84,7 @@
                 <table class="table table-striped table-bordered table-condensed">
                   <thead>
                     <tr>
-                      <th class="text-center">Id</th>
+                      <th class="text-center">No. Karcis</th>
                       <th class="text-center">Kategori</th>
                       <th class="text-center">TNKB</th>
                       <th class="text-center">Merek</th>
@@ -181,7 +181,7 @@
               $("#billing_change").val('');
               $("#btn_save").show();
               $("#btn_progress").hide();
-              $("#label_change").html('Kembalian = '+data.billing_change);
+              $("#label_change").html('Kembalian = '+sys_to_ind(billing_change));
               $("#modal_success").modal('show');
               get_list_out();
               console.log(data);
