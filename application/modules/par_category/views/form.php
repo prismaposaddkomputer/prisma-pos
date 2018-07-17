@@ -1,7 +1,7 @@
 <div class="content-header">
   <h4><i class="fa fa-<?=$access->module_icon?>"></i> <?=$title?></h4>
   <small>Kolom dengan tanda <b class="required-field">*</b> wajib diisi!</small><br>
-  <small>Tarif termasuk pajak</small>
+  <small><b class="required-field">**</b> Tarif termasuk pajak</small>
 </div>
 <div class="content-body">
   <div class="row">
@@ -13,8 +13,8 @@
           <input class="form-control keyboard" type="text" name="category_name" value="<?php if($category != null){echo $category->category_name;}?>">
         </div>
         <div class="form-group">
-          <label>Tarif Dasar <small class="required-field">*</small></label>
-          <input class="form-control keyboard autonumeric" type="text" name="category_rate" value="<?php if($category != null){echo $category->category_rate;}?>">
+          <label>Tarif Dasar <small class="required-field">**</small></label>
+          <input class="form-control num autonumeric" type="text" name="category_rate" value="<?php if($category != null){echo $category->category_rate;}?>">
         </div>
         <div class="form-group">
           <label>Tarif Per Jam?</label><br>
@@ -22,7 +22,7 @@
         </div>
         <div class="form-group" id="category_per_hour">
           <label>Tarif Per Jam</label>
-          <input class="form-control keyboard autonumeric" type="text" name="category_per_hour" value="<?php if($category != null){echo $category->category_per_hour;}?>">
+          <input class="form-control num autonumeric" type="text" name="category_per_hour" value="<?php if($category != null){echo $category->category_per_hour;}?>">
         </div>
         <div class="form-group">
           <label>Aktif?</label><br>
