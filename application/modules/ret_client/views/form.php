@@ -4,7 +4,7 @@
 </div>
 <div class="content-body">
   <div class="row">
-    <form id="form" class="" action="<?=base_url()?>ret_client/<?=$action?>" method="post">
+    <form id="form" action="<?=base_url()?>ret_client/<?=$action?>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
       <div class="col-md-6">
         <input class="form-control keyboard keyboard" type="hidden" name="client_id" value="<?php if($client != null){echo $client->client_id;}?>">
         <h4>Profil Perusahaan</h4>
@@ -112,6 +112,18 @@
         <div class="form-group">
           <label>Virtual Keyboard?</label><br>
           <input class="" type="checkbox" name="client_keyboard_status" value="1" <?php if($client != null){if($client->client_keyboard_status == 1){echo 'checked';}}else{echo 'checked';}?>>
+        </div>
+        <div class="form-group">
+          <label>Logo Perusahaan</label>
+          <br>
+          <?php if ($client->client_logo == null || $client->client_logo == ''): ?>
+            <img src="<?=base_url()?>img/no-image.png" alt="" width="200" height="200">
+          <?php else: ?>
+            <img src="<?=base_url()?>img/<?=$client->client_logo?>" alt="" width="200" height="200">
+          <?php endif; ?>
+          <br><br>
+          <input type="file" name="client_logo" value="">
+          <small>Type : *.gif/*.jpg/*.png; Max Size : 10 MB; Max Height : 1024px; Max Width : 768px;</small>
         </div>
         <div class="form-group pull-right">
           <a class="btn btn-default" href="<?=base_url()?>ret_client/index"><i class="fa fa-close"></i> Batal</a>

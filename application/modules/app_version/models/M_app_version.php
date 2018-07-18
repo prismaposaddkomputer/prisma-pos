@@ -94,6 +94,35 @@ class M_app_version extends CI_Model {
 	          ADD COLUMN `posting_date` DATETIME NULL DEFAULT NULL AFTER `posting_st`"
         );
         break;
+
+      case '1.5':
+        // add logo field
+        // retail
+        $this->db->query(
+          "ALTER TABLE `ret_client`
+	         ADD COLUMN `client_logo` VARCHAR(255) NULL DEFAULT NULL AFTER `client_keyboard_status`"
+        );
+        // restaurant
+        $this->db->query(
+          "ALTER TABLE `res_client`
+	         ADD COLUMN `client_logo` VARCHAR(255) NULL DEFAULT NULL AFTER `client_keyboard_status`"
+        );
+        // hotel
+        $this->db->query(
+          "ALTER TABLE `hot_client`
+	         ADD COLUMN `client_logo` VARCHAR(255) NULL DEFAULT NULL AFTER `client_keyboard_status`"
+        );
+        // karaoke
+        $this->db->query(
+          "ALTER TABLE `kar_client`
+	         ADD COLUMN `client_logo` VARCHAR(255) NULL DEFAULT NULL AFTER `client_keyboard_status`"
+        );
+        //parking
+        $this->db->query(
+          "ALTER TABLE `par_client`
+	         ADD COLUMN `client_logo` VARCHAR(255) NULL DEFAULT NULL AFTER `client_keyboard_status`"
+        );
+        break;
     }
 
     //insert new update history
@@ -121,6 +150,7 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"1.2","version_release"=>"2018-07-16 11:20:00"));
     array_push($version, array("version_now"=>"1.3","version_release"=>"2018-07-17 10:00:00"));
     array_push($version, array("version_now"=>"1.4","version_release"=>"2018-07-17 10:41:00"));
+    array_push($version, array("version_now"=>"1.5","version_release"=>"2018-07-18 11:52:00"));
 
     foreach ($version as $key => $val) {
       //check version
