@@ -71,6 +71,9 @@
       button.ui-keyboard-button {
         margin: 4px;
       }
+      .modal-power{
+        margin-top: 200px;
+      }
     </style>
   </head>
   <body>
