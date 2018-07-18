@@ -119,6 +119,9 @@
       .bootstrap-datetimepicker-widget tr:hover {
         background-color: #0abde3;
       }
+      .modal-power{
+        margin-top: 200px;
+      }
     </style>
   </head>
   <body>
