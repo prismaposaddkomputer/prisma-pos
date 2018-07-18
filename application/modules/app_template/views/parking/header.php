@@ -122,11 +122,21 @@
                           'A S D F G H J K L',
                           '{s} Z X C V B N M {b}',
                           '{c} < {space} > {a}'],
+            },
+            visible: function(e, keyboard, el) {
+              keyboard.$keyboard.find('.ui-keyboard-bksp')
+                .text('\u2190')
+                .attr('data-html', '<span class="ui-keyboard-text">\u2190</span>');
             }
           });
           $('.num').keyboard({
             layout : 'custom',
-            customLayout: { 'normal': ['1 2 3 {sign}', '4 5 6 ,', '7 8 9 {b}', '{c} 0 . {a}'] }
+            customLayout: { 'normal': ['1 2 3 {sign}', '4 5 6 ,', '7 8 9 {b}', '{c} 0 . {a}'] },
+            visible: function(e, keyboard, el) {
+              keyboard.$keyboard.find('.ui-keyboard-bksp')
+                .text('\u2190')
+                .attr('data-html', '<span class="ui-keyboard-text">\u2190</span>');
+            }
           });
         <?php endif;?>
       });
