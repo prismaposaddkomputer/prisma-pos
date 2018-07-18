@@ -3,6 +3,9 @@ Application points of sale built by CV ADD Computer. This application consists o
 
 ## Change Log
 
+### V 1.5
+1. Add logo company
+
 ### V 1.4
 1. Add posting status and posting date
 
