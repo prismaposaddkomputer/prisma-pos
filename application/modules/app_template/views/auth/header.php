@@ -50,7 +50,9 @@
           visible: function(e, keyboard, el) {
             keyboard.$keyboard.find('.ui-keyboard-bksp')
               .text('\u2190')
-              .attr('data-html', '<span class="ui-keyboard-text">\u2190</span>');
+              .attr('data-html', '<span class="ui-keyboard-text">\u2190</span>')
+              .css('background-color','#ee5253')
+              .css('color','#ffffff');
           }
         });
         $('.num').keyboard({
@@ -59,7 +61,9 @@
           visible: function(e, keyboard, el) {
             keyboard.$keyboard.find('.ui-keyboard-bksp')
               .text('\u2190')
-              .attr('data-html', '<span class="ui-keyboard-text">\u2190</span>');
+              .attr('data-html', '<span class="ui-keyboard-text">\u2190</span>')
+              .css('background-color','#ee5253')
+              .css('color','#ffffff');
           }
         });
       })
