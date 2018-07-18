@@ -124,6 +124,17 @@
                 <?php endif; ?>
               </td>
             </tr>
+            <tr>
+              <td>Logo Perusahaan</td>
+              <td class="text-center">:</td>
+              <td>
+                <?php if ($client->client_logo == null || $client->client_logo == ''): ?>
+                  <img src="<?=base_url()?>img/no-image.png" alt="" width="200" height="200">
+                <?php else: ?>
+                  <img src="<?=base_url()?>img/<?=$client->client_logo?>" alt="" width="200" height="200">
+                <?php endif; ?>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>

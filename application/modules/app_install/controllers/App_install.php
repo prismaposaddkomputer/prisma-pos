@@ -6,6 +6,7 @@ class App_install extends MY_Install {
   {
     parent::__construct();
     $this->load->model('m_app_install');
+    $this->load->helper(array('form', 'url'));
   }
 
   public function index()
@@ -39,6 +40,19 @@ class App_install extends MY_Install {
 
     $this->load->model('app_config/m_app_config');
     $install = $this->m_app_config->get_install();
+
+    $config['upload_path']          = './img/';
+		$config['allowed_types']        = 'gif|jpg|png';
+		$config['max_size']             = 100;
+		$config['max_width']            = 1024;
+		$config['max_height']           = 768;
+
+		$this->load->library('upload', $config);
+
+		if ($this->upload->do_upload('client_logo')){
+      $file = array('upload_data' => $this->upload->data());
+      $data['client_logo'] = $file['upload_data']['file_name'];
+		}
 
     switch ($install->type_id) {
       case '1':

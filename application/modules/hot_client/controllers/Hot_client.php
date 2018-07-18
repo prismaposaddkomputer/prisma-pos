@@ -7,6 +7,7 @@ class Hot_client extends MY_Hotel {
 
   function __construct(){
     parent::__construct();
+    $this->load->helper(array('form', 'url'));
 
     $this->load->model('app_config/m_hot_config');
 
@@ -37,7 +38,7 @@ class Hot_client extends MY_Hotel {
     $data['access'] = $this->access;
     if ($this->access->_update == 1) {
       $data['title'] = 'Ubah Client';
-      $data['user'] = $this->m_hot_client->get_by_id($id);
+      $data['client'] = $this->m_hot_client->get_by_id($id);
       $data['action'] = 'update';
       $this->view('hot_client/form', $data);
     } else {
@@ -45,16 +46,28 @@ class Hot_client extends MY_Hotel {
     }
   }
 
-  public function edit($id)
-  {
-    $data['user']= $this->m_hot_client->get_by_id($id);
-    $this->load->view('hot_client/update', $data);
-  }
-
   public function update()
   {
     $data = $_POST;
     $id = $data['client_id'];
+
+    $config['upload_path']          = './img/';
+		$config['allowed_types']        = 'gif|jpg|png';
+		$config['max_size']             = 100;
+		$config['max_width']            = 1024;
+		$config['max_height']           = 768;
+
+		$this->load->library('upload', $config);
+
+		if ($this->upload->do_upload('client_logo')){
+      $file = array('upload_data' => $this->upload->data());
+      $data['client_logo'] = $file['upload_data']['file_name'];
+		}
+
+    if(!isset($data['client_keyboard_status'])){
+      $data['client_keyboard_status'] = 0;
+    }
+
     $data['updated_by'] = $this->session->userdata('user_realname');
     $this->m_hot_client->update($id,$data);
     $this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil diubah!</div>');
