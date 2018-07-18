@@ -99,12 +99,15 @@ class MY_Retail extends MX_Controller{
     $client = $this->m_ret_client->get_all();
     $data['keyboard'] = $client->client_keyboard_status;
     $data['client'] = $client;
+    $this->load->model('app_version/m_app_version');
+    $data['version'] = $this->m_app_version->get_last();
+
 
     $role_id = $this->session->userdata('role_id');
     $data['sidenav'] = $this->m_ret_config->get_list();
 
     $data['header'] = $this->load->view('app_template/retail/header', $data, TRUE);
-    $data['sidebar'] = $this->load->view('app_template/retail/sidebar', $data['sidenav'], TRUE);
+    $data['sidebar'] = $this->load->view('app_template/retail/sidebar', $data, TRUE);
     $data['topbar'] = $this->load->view('app_template/retail/topbar', $data, TRUE);
     $data['footer'] = $this->load->view('app_template/retail/footer', $data, TRUE);
     $data['content'] = $this->load->view($content, $data, TRUE);
@@ -154,9 +157,11 @@ class MY_Restaurant extends MX_Controller{
     $client = $this->m_res_client->get_all();
     $data['keyboard'] = $client->client_keyboard_status;
     $data['client'] = $client;
+    $this->load->model('app_version/m_app_version');
+    $data['version'] = $this->m_app_version->get_last();
 
     $data['header'] = $this->load->view('app_template/restaurant/header', $data, TRUE);
-    $data['sidebar'] = $this->load->view('app_template/restaurant/sidebar', $data['sidenav'], TRUE);
+    $data['sidebar'] = $this->load->view('app_template/restaurant/sidebar', $data, TRUE);
     $data['topbar'] = $this->load->view('app_template/restaurant/topbar', $data, TRUE);
     $data['footer'] = $this->load->view('app_template/restaurant/footer', $data, TRUE);
     $data['content'] = $this->load->view($content, $data, TRUE);
@@ -206,9 +211,11 @@ class MY_Hotel extends MX_Controller{
     $client = $this->m_hot_client->get_all();
     $data['keyboard'] = $client->client_keyboard_status;
     $data['client'] = $client;
+    $this->load->model('app_version/m_app_version');
+    $data['version'] = $this->m_app_version->get_last();
 
     $data['header'] = $this->load->view('app_template/hotel/header', $data, TRUE);
-    $data['sidebar'] = $this->load->view('app_template/hotel/sidebar', $data['sidenav'], TRUE);
+    $data['sidebar'] = $this->load->view('app_template/hotel/sidebar', $data, TRUE);
     $data['topbar'] = $this->load->view('app_template/hotel/topbar', $data, TRUE);
     $data['footer'] = $this->load->view('app_template/hotel/footer', $data, TRUE);
     $data['content'] = $this->load->view($content, $data, TRUE);
@@ -257,9 +264,11 @@ class MY_Karaoke extends MX_Controller{
     $client = $this->m_kar_client->get_all();
     $data['keyboard'] = $client->client_keyboard_status;
     $data['client'] = $client;
+    $this->load->model('app_version/m_app_version');
+    $data['version'] = $this->m_app_version->get_last();
 
     $data['header'] = $this->load->view('app_template/karaoke/header', $data, TRUE);
-    $data['sidebar'] = $this->load->view('app_template/karaoke/sidebar', $data['sidenav'], TRUE);
+    $data['sidebar'] = $this->load->view('app_template/karaoke/sidebar', $data, TRUE);
     $data['topbar'] = $this->load->view('app_template/karaoke/topbar', $data, TRUE);
     $data['footer'] = $this->load->view('app_template/karaoke/footer', $data, TRUE);
     $data['content'] = $this->load->view($content, $data, TRUE);
@@ -308,9 +317,11 @@ class MY_Parking extends MX_Controller{
     $client = $this->m_par_client->get_all();
     $data['keyboard'] = $client->client_keyboard_status;
     $data['client'] = $client;
+    $this->load->model('app_version/m_app_version');
+    $data['version'] = $this->m_app_version->get_last();
 
     $data['header'] = $this->load->view('app_template/parking/header', $data, TRUE);
-    $data['sidebar'] = $this->load->view('app_template/parking/sidebar', $data['sidenav'], TRUE);
+    $data['sidebar'] = $this->load->view('app_template/parking/sidebar', $data, TRUE);
     $data['topbar'] = $this->load->view('app_template/parking/topbar', $data, TRUE);
     $data['footer'] = $this->load->view('app_template/parking/footer', $data, TRUE);
     $data['content'] = $this->load->view($content, $data, TRUE);

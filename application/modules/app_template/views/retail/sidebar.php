@@ -20,6 +20,6 @@
     <?php endforeach; ?>
   </ul>
   <div class="sidebar-footer">
-    <h5>Prisma POS</h5>
+    <h5>Prisma POS - V<?=$version->version_now?></h5>
   </div>
 </nav>
