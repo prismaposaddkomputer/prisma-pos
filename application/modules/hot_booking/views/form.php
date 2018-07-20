@@ -63,44 +63,25 @@
 					</div>
 					<div class="form-group" id="service1">
             <label>Pelayanan Kamar<small class="required-field">*</small></label>
-            <table width="100%">
-              <tr>
-                  <td width="80%">
-                    <select class="form-control select2" id="service_id1" name="service_id">
+            <select class="form-control select2" name="service_id">
                       <option value="0">Tidak Ada</option>
                       <?php foreach ($service as $row): ?>
                         <option value="<?=$row->service_id?>" <?php if($booking != null){if($row->service_id == $booking->service_id){echo 'selected';};}?>><?=$row->service_name?></option>
                       <?php endforeach; ?>
                     </select>
-                  </td>
-                  <td width="5%"></td>
-                  <td width="15%">
-                  <a href="javascript:void(0)" onclick="javascript:AddService()" title="Add New Room" class="btn btn-sm btn-success"><i class="fa fa-plus"></i></a>
-                  </td>
-              </tr>
-            </table>
+            
           </div>
-          <div id="data-service"></div>
+         
 
-          <div class="form-group" id="room1">
+          <div class="form-group">
             <label>Pilih Kamar<small class="required-field">*</small></label>
-            <table width="100%">
-              <tr>
-                  <td width="80%">
-                      <select class="form-control select2" name="room_id">
+            <select class="form-control select2" name="room_id">
                         <?php foreach ($room as $row): ?>
                           <option value="<?=$row->room_id?>" <?php if($booking != null){if($row->room_id == $booking->room_id){echo 'selected';};}?>><?=$row->room_name?></option>
                         <?php endforeach; ?>
                       </select>
-                  </td>
-                  <td width="5%"></td>
-                  <td width="15%">
-                  <a href="javascript:void(0)" onclick="javascript:AddRoom()" title="Add New Room" class="btn btn-sm btn-success"><i class="fa fa-plus"></i></a>
-                  </td>
-              </tr>
-            </table>
           </div>
-          <div id="data-room"></div>
+          
           <br>
           <?php
             $year = date('Y');
