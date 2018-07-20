@@ -9,11 +9,11 @@
         <input class="form-control" type="hidden" name="diskon_id" value="<?php if($diskon != null){echo $diskon->diskon_id;}?>">
         <div class="form-group">
           <label>Nama Diskon<small class="required-field">*</small></label>
-          <input class="form-control keyboard" type="text" name="diskon_name" value="<?php if($diskon != null){echo $diskon->diskon_name;}?>">
+          <input class="form-control" type="text" name="diskon_name" value="<?php if($diskon != null){echo $diskon->diskon_name;}?>">
         </div>
         <div class="form-group">
           <label>Sebesar (%)<small class="required-field">*</small></label>
-          <input class="form-control num" type="number" min="0" max="100" name="diskon_price" value="<?php if($diskon != null){echo $diskon->diskon_price;}?>">
+          <input class="form-control" type="number" min="0" max="100" name="diskon_price" value="<?php if($diskon != null){echo $diskon->diskon_price;}?>">
         </div>
         <div class="form-group">
           <label>Aktif?</label><br>

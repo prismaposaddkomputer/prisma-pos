@@ -9,15 +9,15 @@
         <input class="form-control" type="hidden" name="tax_id" value="<?php if($tax != null){echo $tax->tax_id;}?>">
         <div class="form-group">
           <label>Kode Pajak<small class="required-field">*</small></label>
-          <input class="form-control keyboard" type="text" name="tax_code" readonly value="<?php if($tax != null){echo $tax->tax_code;}?>">
+          <input class="form-control" type="text" name="tax_code" readonly value="<?php if($tax != null){echo $tax->tax_code;}?>">
         </div>
         <div class="form-group">
           <label>Nama Pajak<small class="required-field">*</small></label>
-          <input class="form-control keyboard" type="text" name="tax_name" value="<?php if($tax != null){echo $tax->tax_name;}?>">
+          <input class="form-control" type="text" name="tax_name" value="<?php if($tax != null){echo $tax->tax_name;}?>">
         </div>
         <div class="form-group">
           <label>Sebesar (%)<small class="required-field">*</small></label>
-          <input class="form-control num" type="number" min="0" max="100" name="tax_ratio" value="<?php if($tax != null){echo $tax->tax_ratio;}?>">
+          <input class="form-control" type="number" min="0" max="100" name="tax_ratio" value="<?php if($tax != null){echo $tax->tax_ratio;}?>">
         </div>
         <div class="form-group">
           <label>Aktif?</label><br>

@@ -18,7 +18,6 @@
     <!-- Font Awesome CSS -->
     <link rel="stylesheet" href="<?=base_url()?>vendor/font-awesome/css/font-awesome.min.css">
     <!-- Select2 CSS -->
-    <link rel="stylesheet" href="<?=base_url()?>vendor/keyboard-master/dist/css/keyboard.min.css">
     <link rel="stylesheet" href="<?=base_url()?>vendor/select2/dist/css/select2.min.css">
     <!-- Select2 Bootstrap CSS -->
     <link rel="stylesheet" href="<?=base_url()?>vendor/select2/dist/css/select2-bootstrap.css">
@@ -31,8 +30,6 @@
     <script src="<?=base_url()?>vendor/jquery/date.js"></script>
     <!-- Bootstrap Js CDN -->
     <script src="<?=base_url()?>vendor/bootstrap/js/bootstrap.min.js"></script>
-    <!-- jquery ui css -->
-    <link rel="stylesheet" href="<?=base_url()?>vendor/jquery-ui/jquery-ui.min.css">
     <!-- jQuery Custom Scroller CDN -->
     <script src="<?=base_url()?>vendor/jquery-custom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
     <!-- jQuery Validation JS -->
@@ -45,13 +42,10 @@
     <script src="<?=base_url()?>vendor/bootstrap-datetimepicker/bootstrap-datetimepicker.js" charset="utf-8"></script>
     <!-- Daterangepicker JS -->
     <script src="<?=base_url()?>vendor/bootstrap-daterangepicker/daterangepicker.js" charset="utf-8"></script>
-    <!-- JQuery UI -->
-    <script src="<?=base_url()?>vendor/jquery-ui/jquery-ui.min.js"></script>
     <!-- Select2 JS -->
     <script src="<?=base_url()?>vendor/select2/dist/js/select2.full.min.js" charset="utf-8"></script>
     <!-- Auto Numeric JS -->
     <script src="<?=base_url()?>vendor/autoNumeric/autoNumeric.js" charset="utf-8"></script>
-    <script src="<?=base_url()?>vendor/keyboard-master/dist/js/jquery.keyboard.min.js"></script>
     <!-- Tooltip JS -->
     <script src="<?=base_url()?>vendor/tooltip-viewport/tooltip-viewport.js" charset="utf-8"></script>
     <!-- Chart JS -->
@@ -105,41 +99,6 @@
         setInterval(function () {
           $('.alert').fadeOut();
         }, 1500);
-        <?php if($keyboard == 1):?>
-          $('.keyboard').keyboard({
-            layout : 'custom',
-            customLayout : {
-              'normal' : ['1 2 3 4 5 6 7 8 9 0',
-                          'q w e r t y u i o p',
-                          'a s d f g h j k l',
-                          '{s} z x c v b n m {b}',
-                          '{c} , {space} . {a}'],
-              'shift' : ['! @ # $ % ^ & * ( )',
-                          'Q W E R T Y U I O P',
-                          'A S D F G H J K L',
-                          '{s} Z X C V B N M {b}',
-                          '{c} < {space} > {a}'],
-            },
-            visible: function(e, keyboard, el) {
-              keyboard.$keyboard.find('.ui-keyboard-bksp')
-                .text('\u2190')
-                .attr('data-html', '<span class="ui-keyboard-text">\u2190</span>')
-                .css('background-color','#ee5253')
-                .css('color','#ffffff');
-            }
-          });
-          $('.num').keyboard({
-            layout : 'custom',
-            customLayout: { 'normal': ['1 2 3 {sign}', '4 5 6 ,', '7 8 9 {b}', '{c} 0 . {a}'] },
-            visible: function(e, keyboard, el) {
-              keyboard.$keyboard.find('.ui-keyboard-bksp')
-                .text('\u2190')
-                .attr('data-html', '<span class="ui-keyboard-text">\u2190</span>')
-                .css('background-color','#ee5253')
-                .css('color','#ffffff');
-            }
-          });
-          <?php endif;?>
       });
     </script>
     <!-- Custom Script -->
@@ -159,17 +118,6 @@
     <style>
       .bootstrap-datetimepicker-widget tr:hover {
         background-color: #0abde3;
-      }
-      .modal-power{
-        margin-top: 200px;
-      }
-    </style>
-    <style media="screen">
-      div.ui-widget {
-        font-size: 1.5em;
-      }
-      button.ui-keyboard-button {
-        margin: 4px;
       }
       .modal-power{
         margin-top: 200px;
