@@ -235,7 +235,7 @@ class Hot_payment extends MY_Hotel {
       $printer -> feed();
       $printer -> text($client->client_city);
       $printer -> feed();
-      $printer -> text('NPWP : '.$client->client_npwp);
+      $printer -> text('NPWPD : '.$client->client_npwp);
       $printer -> feed();
       $printer -> text('#'.$booking->booking_code);
       $printer -> feed();
