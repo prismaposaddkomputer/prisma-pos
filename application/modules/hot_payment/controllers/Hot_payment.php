@@ -177,7 +177,7 @@ class Hot_payment extends MY_Hotel {
       'customer_name'=> $bill->guest_name,
       'no_receipt'=> 'TRS-'.$bill->booking_code,
       'tx_id'=> $bill->booking_id,
-      'tx_date'=> $bill->date_booking_to,
+      'tx_date'=> date('y-m-d'),
       'tx_time'=> date('H:i:s'),
       'tx_total_before_tax'=> $bill->subtotal,
       'tax_code'=> $tax->tax_code,
