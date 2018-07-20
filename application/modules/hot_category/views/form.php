@@ -9,15 +9,15 @@
         <input class="form-control" type="hidden" name="category_id" value="<?php if($category != null){echo $category->category_id;}?>">
         <div class="form-group">
           <label>Nama Tipe<small class="required-field">*</small></label>
-          <input class="form-control" type="text" name="category_name" value="<?php if($category != null){echo $category->category_name;}?>">
+          <input class="form-control keyboard" type="text" name="category_name" value="<?php if($category != null){echo $category->category_name;}?>">
         </div>
         <div class="form-group">
           <label>Harga<small class="required-field">*</small></label>
-          <input class="form-control autonumeric" type="text" name="category_price" value="<?php if($category != null){echo $category->category_price;}?>">
+          <input class="form-control autonumeric num" type="text" name="category_price" value="<?php if($category != null){echo $category->category_price;}?>">
         </div>
         <div class="form-group">
           <label>Keterangan<small class="required-field">*</small></label>
-          <textarea name="category_desc" class="form-control"><?php if($category != null){echo $category->category_desc;}?></textarea>
+          <textarea name="category_desc" class="form-control keyboard"><?php if($category != null){echo $category->category_desc;}?></textarea>
         </div>
         <div class="form-group">
           <label>Aktif?</label><br>

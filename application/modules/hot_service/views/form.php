@@ -9,11 +9,11 @@
         <input class="form-control" type="hidden" name="service_id" value="<?php if($service != null){echo $service->service_id;}?>">
         <div class="form-group">
           <label>Nama Pelayanan Kamar<small class="required-field">*</small></label>
-          <input class="form-control" type="text" name="service_name" value="<?php if($service != null){echo $service->service_name;}?>">
+          <input class="form-control keyboard" type="text" name="service_name" value="<?php if($service != null){echo $service->service_name;}?>">
         </div>
         <div class="form-group">
           <label>Harga<small class="required-field">*</small></label>
-          <input class="form-control autonumeric" type="text" name="service_price" value="<?php if($service != null){echo $service->service_price;}?>">
+          <input class="form-control autonumeric num" type="text" name="service_price" value="<?php if($service != null){echo $service->service_price;}?>">
         </div>
         <div class="form-group">
           <label>Tersedia?</label><br>
