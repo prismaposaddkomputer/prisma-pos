@@ -25,6 +25,10 @@
     <link rel="stylesheet" href="<?=base_url()?>dist/css/prismapos.css">
     <!-- Tooltip CSS -->
     <link rel="stylesheet" href="<?=base_url()?>vendor/tooltip-viewport/tooltip-viewport.css">
+     <!-- jquery ui css -->
+     <link rel="stylesheet" href="<?=base_url()?>vendor/jquery-ui/jquery-ui.min.css">
+    <!-- Keyboard css -->
+    <link rel="stylesheet" href="<?=base_url()?>vendor/keyboard-master/dist/css/keyboard.min.css">
     <!-- jQuery CDN -->
     <script src="<?=base_url()?>vendor/jquery/jquery-3.3.1.min.js"></script>
     <script src="<?=base_url()?>vendor/jquery/date.js"></script>
@@ -51,6 +55,10 @@
     <!-- Chart JS -->
     <script src="<?=base_url()?>vendor/chart-js/Chart.min.js" charset="utf-8"></script>
     <script src="<?=base_url()?>vendor/chart-js/Chart.bundle.min.js" charset="utf-8"></script>
+    <!-- JQuery UI -->
+    <script src="<?=base_url()?>vendor/jquery-ui/jquery-ui.min.js"></script>
+    <!-- keyboard js -->
+    <script src="<?=base_url()?>vendor/keyboard-master/dist/js/jquery.keyboard.min.js"></script>
     <!-- Nabapos JS -->
     <script src="<?=base_url()?>dist/js/prismapos.js" charset="utf-8"></script>
     <!-- Common JS -->
@@ -99,6 +107,41 @@
         setInterval(function () {
           $('.alert').fadeOut();
         }, 1500);
+        <?php if($keyboard == 1):?>
+          $('.keyboard').keyboard({
+            layout : 'custom',
+            customLayout : {
+              'normal' : ['1 2 3 4 5 6 7 8 9 0',
+                          'q w e r t y u i o p',
+                          'a s d f g h j k l',
+                          '{s} z x c v b n m {b}',
+                          '{c} , {space} . {a}'],
+              'shift' : ['! @ # $ % ^ & * ( )',
+                          'Q W E R T Y U I O P',
+                          'A S D F G H J K L',
+                          '{s} Z X C V B N M {b}',
+                          '{c} < {space} > {a}'],
+            },
+            visible: function(e, keyboard, el) {
+              keyboard.$keyboard.find('.ui-keyboard-bksp')
+                .text('\u2190')
+                .attr('data-html', '<span class="ui-keyboard-text">\u2190</span>')
+                .css('background-color','#ee5253')
+                .css('color','#ffffff');
+            }
+          });
+          $('.num').keyboard({
+            layout : 'custom',
+            customLayout: { 'normal': ['1 2 3 {sign}', '4 5 6 ,', '7 8 9 {b}', '{c} 0 . {a}'] },
+            visible: function(e, keyboard, el) {
+              keyboard.$keyboard.find('.ui-keyboard-bksp')
+                .text('\u2190')
+                .attr('data-html', '<span class="ui-keyboard-text">\u2190</span>')
+                .css('background-color','#ee5253')
+                .css('color','#ffffff');
+            }
+          });
+        <?php endif;?>
       });
     </script>
     <!-- Custom Script -->
@@ -118,6 +161,17 @@
     <style>
       .bootstrap-datetimepicker-widget tr:hover {
         background-color: #0abde3;
+      }
+      .modal-power{
+        margin-top: 200px;
+      }
+    </style>
+    <style media="screen">
+      div.ui-widget {
+        font-size: 1.5em;
+      }
+      button.ui-keyboard-button {
+        margin: 4px;
       }
       .modal-power{
         margin-top: 200px;
