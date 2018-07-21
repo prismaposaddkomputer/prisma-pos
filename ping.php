@@ -48,7 +48,8 @@ if($app_install_status == '1') {
 	$client_npwpd = @$client_row['client_npwpd'];
 	//
 	// baseurl
-	$dashboard_base_url = 'http://addkomputer.com/prismapos/index.php/api/json/ping?auth=prismapos.addkomputer&apikey=69f86eadd81650164619f585bb017316';
+	// $dashboard_base_url = 'http://addkomputer.com/prismapos/index.php/api/json/ping?auth=prismapos.addkomputer&apikey=69f86eadd81650164619f585bb017316';
+	$dashboard_base_url = 'http://182.253.114.52/dashboard_pos/index.php/api/json/ping?auth=prismapos.addkomputer&apikey=69f86eadd81650164619f585bb017316';
 	$dashboard_base_url.= '&app_type_id='.$app_type_id;
 	$dashboard_base_url.= '&client_id='.$client_id;
 	$dashboard_base_url.= '&name='.$client_name;
