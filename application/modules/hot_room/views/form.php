@@ -9,7 +9,7 @@
         <input class="form-control" type="hidden" name="room_id" value="<?php if($room != null){echo $room->room_id;}?>">
         <div class="form-group">
           <label>Nama Kamar<small class="required-field">*</small></label>
-          <input class="form-control" type="text" name="room_name" value="<?php if($room != null){echo $room->room_name;}?>">
+          <input class="form-control keyboard" type="text" name="room_name" value="<?php if($room != null){echo $room->room_name;}?>">
         </div>
         <div class="form-group">
           <label>Tipe Kamar<small class="required-field">*</small></label>
@@ -28,11 +28,11 @@
         </div>
         <div class="form-group">
           <label>Nomor Kamar<small class="required-field">*</small></label>
-          <input class="form-control" type="number" name="room_number" value="<?php if($room != null){echo $room->room_number;}?>">
+          <input class="form-control num" type="number" name="room_number" value="<?php if($room != null){echo $room->room_number;}?>">
         </div>
         <div class="form-group">
           <label>Lantai<small class="required-field">*</small></label>
-          <input class="form-control" type="number" name="room_floor" value="<?php if($room != null){echo $room->room_floor;}?>">
+          <input class="form-control num" type="number" name="room_floor" value="<?php if($room != null){echo $room->room_floor;}?>">
         </div>
         <div class="form-group" style="display:none;">
           <label>Aktif?</label><br>
