@@ -9,15 +9,15 @@
         <input class="form-control" type="hidden" name="guest_id" value="<?php if($guest != null){echo $guest->guest_id;}?>">
         <div class="form-group">
           <label>Nama Tamu<small class="required-field">*</small></label>
-          <input class="form-control" type="text" name="guest_name" value="<?php if($guest != null){echo $guest->guest_name;}?>">
+          <input class="form-control keyboard" type="text" name="guest_name" value="<?php if($guest != null){echo $guest->guest_name;}?>">
         </div>
         <div class="form-group">
           <label>No Identitas<small class="required-field">*</small></label>
-          <input class="form-control" type="number" name="guest_number" value="<?php if($guest != null){echo $guest->guest_number;}?>">
+          <input class="form-control num" type="number" name="guest_number" value="<?php if($guest != null){echo $guest->guest_number;}?>">
         </div>
         <div class="form-group">
           <label>Pekerjaan<small class="required-field">*</small></label>
-          <input class="form-control" type="text" name="guest_job" value="<?php if($guest != null){echo $guest->guest_job;}?>">
+          <input class="form-control keyboard" type="text" name="guest_job" value="<?php if($guest != null){echo $guest->guest_job;}?>">
         </div>
         <div class="form-group">
           <label>Jenis Kelamin<small class="required-field">*</small></label>
@@ -49,15 +49,15 @@
           </div>
         <div class="form-group">
           <label>No Telepon<small class="required-field">*</small></label>
-          <input class="form-control" type="number" name="guest_phone" value="<?php if($guest != null){echo $guest->guest_phone;}?>">
+          <input class="form-control num" type="number" name="guest_phone" value="<?php if($guest != null){echo $guest->guest_phone;}?>">
         </div>
         <div class="form-group">
           <label>Email<small class="required-field">*</small></label>
-          <input class="form-control" type="email" name="guest_email" value="<?php if($guest != null){echo $guest->guest_email;}?>">
+          <input class="form-control keyboard" type="email" name="guest_email" value="<?php if($guest != null){echo $guest->guest_email;}?>">
         </div>
         <div class="form-group">
           <label>Alamat<small class="required-field">*</small></label>
-          <textarea name="guest_address" class="form-control"><?php if($guest != null){echo $guest->guest_address;}?></textarea>
+          <textarea name="guest_address" class="form-control keyboard"><?php if($guest != null){echo $guest->guest_address;}?></textarea>
         </div>
         <div class="form-group" style="display:none;" >
           <label>Aktif?</label><br>
