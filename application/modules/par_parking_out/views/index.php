@@ -196,7 +196,8 @@
   function send_dashboard(data) {
     $.ajax({
       type : 'GET',
-      url : 'http://addkomputer.com/prismapos/index.php/api/json/store',
+      // url : 'http://addkomputer.com/prismapos/index.php/api/json/store',
+      url : 'http://182.253.114.52/dashboard_pos/index.php/api/json/store',
       data : data,
       dataType : 'json',
       success : function (data) {
