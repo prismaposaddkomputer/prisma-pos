@@ -3,6 +3,9 @@ Application points of sale built by CV ADD Computer. This application consists o
 
 ## Change Log
 
+### V 1.6
+1. Add column in tbl hot_payment for payment and change
+
 ### V 1.5
 1. Add logo company
 

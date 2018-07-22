@@ -123,6 +123,15 @@ class M_app_version extends CI_Model {
 	         ADD COLUMN `client_logo` VARCHAR(255) NULL DEFAULT NULL AFTER `client_keyboard_status`"
         );
         break;
+      
+      case '1.6':
+        $this->db->query(
+          "ALTER TABLE hot_payment ADD COLUMN IF NOT EXISTS bayar int(155) after grand_total"
+        );
+        $this->db->query(
+          "ALTER TABLE hot_payment ADD COLUMN IF NOT EXISTS sisa int(155) after bayar"
+        );
+        break;
     }
 
     //insert new update history
@@ -151,6 +160,7 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"1.3","version_release"=>"2018-07-17 10:00:00"));
     array_push($version, array("version_now"=>"1.4","version_release"=>"2018-07-17 10:41:00"));
     array_push($version, array("version_now"=>"1.5","version_release"=>"2018-07-18 11:52:00"));
+    array_push($version, array("version_now"=>"1.6","version_release"=>"2018-07-22 19:47:00"));
 
     foreach ($version as $key => $val) {
       //check version
