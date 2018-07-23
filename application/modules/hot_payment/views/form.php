@@ -160,7 +160,7 @@
             <label>Pajak Hotel (<?=$pajak->tax_ratio?>%)<small class="required-field">*</small></label>
             <input class="form-control" type="hidden" id="pajakx" value="<?=$pajak->tax_ratio?>">
             <input class="form-control" type="hidden" id="diskonx" value="0">
-            <input readonly="true" class="form-control" type="text" id="pajak" value="0">
+            <input readonly="true" class="form-control" type="text" id="pajak" name="pajak">
           </div>
           <div class="form-group">
             <label>Grand Total (Setelah Pajak)<small class="required-field">*</small></label>
