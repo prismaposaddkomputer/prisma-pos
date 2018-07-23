@@ -46,7 +46,7 @@
           
         </div>
         <div class="form-group">
-          <label>Durasi<small class="required-field">*</small></label>
+          <label>Durasi (Hari)<small class="required-field">*</small></label>
           <input class="form-control num" type="number" min="0" max="7" id="number_of_days" name="number_of_days" value="<?php if($booking != null){echo $booking->number_of_days;}?>" required>
         </div>
         <div class="form-group">
