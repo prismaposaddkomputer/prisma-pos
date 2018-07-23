@@ -316,6 +316,7 @@
           var tot_sisas=0;
           var bayars =parseInt($('#bayar').val());
           var sisas=$("#sisa");
+          tot_sisas=bayars-tot_grands;
           if (tot_sisas > 0) {
             sisas.val(tot_sisas);   
           }else{
