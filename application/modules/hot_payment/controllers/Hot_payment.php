@@ -134,8 +134,11 @@ class Hot_payment extends MY_Hotel {
 		$total = $this->input->post('grand_total');
     
     $pajaks=$this->input->post('pajak');
+
     $bayar=$this->input->post('bayar');
     $sisa=$this->input->post('sisa');
+
+   
 
 		$data = array(
 			'subtotal' => $subtotal,

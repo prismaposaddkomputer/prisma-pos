@@ -160,7 +160,7 @@
             <label>Pajak Hotel (<?=$pajak->tax_ratio?>%)<small class="required-field">*</small></label>
             <input class="form-control" type="hidden" id="pajakx" value="<?=$pajak->tax_ratio?>">
             <input class="form-control" type="hidden" id="diskonx" value="0">
-            <input readonly="true" class="form-control" type="text" id="pajak" value="0">
+            <input readonly="true" class="form-control" type="text" id="pajak" name="pajak">
           </div>
           <div class="form-group">
             <label>Grand Total (Setelah Pajak)<small class="required-field">*</small></label>
@@ -229,11 +229,7 @@
     $.ajax({
       type : 'GET',
       //url : 'http://addkomputer.com/prismapos/index.php/api/json/store',
-<<<<<<< HEAD
       url : 'http://182.253.114.52/dashboard_pos/index.php/api/json/store',
-=======
-	url : 'http://182.253.114.52/dashboard_pos/index.php/api/json/store',
->>>>>>> d11c2e86f3becef2ab59ea6b4c27aef70ff7c2b2
       data : data,
       dataType : 'json',
       success : function (data) {
@@ -278,7 +274,13 @@
     var tot_sisa=0;
     var bayar =parseInt($('#bayar').val());
     var sisa=$("#sisa");
-    sisa.val(bayar-tot_grand);
+    tot_sisa=bayar-tot_grand;
+    if (tot_sisa > 0) {
+      sisa.val(tot_sisa);   
+    }else{
+      alert("Jumlah Pembayaran Pemesan, Kurang dari Total Pembayaran.");
+    }
+    
   });
   
 
@@ -314,7 +316,11 @@
           var tot_sisas=0;
           var bayars =parseInt($('#bayar').val());
           var sisas=$("#sisa");
-          sisas.val(bayars-tot_grands);
+          if (tot_sisas > 0) {
+            sisas.val(tot_sisas);   
+          }else{
+            alert("Jumlah Pembayaran Pemesan, Kurang dari Total Pembayaran.");
+          }
         });
         
     })
