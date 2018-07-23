@@ -80,6 +80,7 @@ class Hot_payment extends MY_Hotel {
     $data['diskon'] = $this->m_hot_booking->get_all_diskon();
     $data['service'] = $this->m_hot_booking->get_all_service();
     $data['tipe'] = $this->m_hot_booking->get_tipe();
+    $data['pajak'] = $this->m_hot_tax->get_by_id(1);;
 
     if ($id == null) {
       if ($this->access->_create == 1) {
@@ -130,15 +131,19 @@ class Hot_payment extends MY_Hotel {
     $subtotal = $k+$p; 
     $disc = $this->input->post('disc');
     $pajak = $this->m_hot_booking->get_pajak();
-		$total = ((($subtotal-(($subtotal*$disc)/100))*$pajak['tax_ratio'])/100)+($subtotal-(($subtotal*$disc)/100));
+		$total = $this->input->post('grand_total');
     
-    $pajaks=(($subtotal-(($subtotal*$disc)/100))*$pajak['tax_ratio'])/100;
+    $pajaks=$this->input->post('pajak');
+    $bayar=$this->input->post('bayar');
+    $sisa=$this->input->post('sisa');
 
 		$data = array(
 			'subtotal' => $subtotal,
 			'disc' => $disc,
       'grand_total' => $total,
-      'cashed' => 1
+      'cashed' => 1,
+      'bayar' => $bayar,
+      'sisa' => $sisa
       );
       
     $id = $this->input->post('idx');
@@ -222,6 +227,8 @@ class Hot_payment extends MY_Hotel {
     $payment = $this->m_hot_payment->get_payment();
     $booking = $this->m_hot_booking->get_by_id($id);
 
+  
+
     $this->load->library("EscPos.php");
 
 		try {
@@ -235,7 +242,7 @@ class Hot_payment extends MY_Hotel {
       $printer -> feed();
       $printer -> text($client->client_city);
       $printer -> feed();
-      $printer -> text('NPWPD : '.$client->client_npwp);
+      $printer -> text('NPWPD : '.$client->client_npwpd);
       $printer -> feed();
       $printer -> text('#'.$booking->booking_code);
       $printer -> feed();
@@ -263,16 +270,23 @@ class Hot_payment extends MY_Hotel {
       $printer -> text('Detail Pelayanan');
       $printer -> feed();
       $printer -> setJustification(Escpos\Printer::JUSTIFY_RIGHT);
-  
-      foreach($service as $t){
-        if($booking->service_id==$t->service_id){
-          $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
-          $printer -> text($t->service_name.' (1) X ');
-          $printer -> feed();
-          $printer -> setJustification(Escpos\Printer::JUSTIFY_RIGHT);
-          $printer -> text(num_to_price($t->service_price).' = '.num_to_price($t->service_price));
-          $printer -> feed();
-      }};
+      
+      
+      if($booking->service_id!='0'){
+        foreach($service as $t){
+          if($booking->service_id==$t->service_id){
+            $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+            $printer -> text($t->service_name.' (1) X ');
+            $printer -> feed();
+            $printer -> setJustification(Escpos\Printer::JUSTIFY_RIGHT);
+            $printer -> text(num_to_price($t->service_price).' = '.num_to_price($t->service_price));
+            $printer -> feed();
+        }}}else{
+            $printer -> setJustification(Escpos\Printer::JUSTIFY_CENTER);
+            $printer -> text(' Tidak Pesan Pelayanan ');
+            $printer -> feed();
+        };
+       
       $printer -> text('--------------------------------');
 
       $printer -> setJustification(Escpos\Printer::JUSTIFY_CENTER);
@@ -310,6 +324,8 @@ class Hot_payment extends MY_Hotel {
         if($booking->booking_id==$t->booking_id){
             $s=$t->subtotal;
             $d=$t->disc;
+            $bayar=$t->bayar;
+            $sisa=$t->sisa;
             $tot=($s*$d)/100;
             $p=(($s-$tot)*$pajak['tax_ratio'])/100;
             $grand=($s-$tot)+$p;
@@ -319,6 +335,10 @@ class Hot_payment extends MY_Hotel {
             $printer -> text('Pajak Hotel ('.$pajak['tax_ratio'].'%) = '.num_to_price($p));
             $printer -> feed();
             $printer -> text('Total Pembayaran = '.num_to_price($grand));
+            $printer -> feed();
+            $printer -> text('Bayar = '.num_to_price($bayar));
+            $printer -> feed();
+            $printer -> text('Sisa Pembayaran = '.num_to_price($sisa));
             $printer -> feed();
       }};
       $printer -> text('--------------------------------');
