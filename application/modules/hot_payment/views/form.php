@@ -228,8 +228,9 @@
    function send_dashboard(data) {
     $.ajax({
       type : 'GET',
-      //surl : 'http://addkomputer.com/prismapos/index.php/api/json/store',
-	url : 'http://182.253.114.52/dashboard_pos/index.php/api/json/store',
+      //url : 'http://addkomputer.com/prismapos/index.php/api/json/store',
+      url : 'http://182.253.114.52/dashboard_pos/index.php/api/json/store',
+
       data : data,
       dataType : 'json',
       success : function (data) {
@@ -274,7 +275,13 @@
     var tot_sisa=0;
     var bayar =parseInt($('#bayar').val());
     var sisa=$("#sisa");
-    sisa.val(bayar-tot_grand);
+    tot_sisa=bayar-tot_grand;
+    if (tot_sisa > 0) {
+      sisa.val(tot_sisa);   
+    }else{
+      alert("Jumlah Pembayaran Pemesan, Kurang dari Total Pembayaran.");
+    }
+    
   });
   
 
@@ -310,7 +317,12 @@
           var tot_sisas=0;
           var bayars =parseInt($('#bayar').val());
           var sisas=$("#sisa");
-          sisas.val(bayars-tot_grands);
+          tot_sisas=bayars-tot_grands;
+          if (tot_sisas > 0) {
+            sisas.val(tot_sisas);   
+          }else{
+            alert("Jumlah Pembayaran Pemesan, Kurang dari Total Pembayaran.");
+          }
         });
         
     })
