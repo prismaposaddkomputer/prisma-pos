@@ -229,7 +229,11 @@
     $.ajax({
       type : 'GET',
       //url : 'http://addkomputer.com/prismapos/index.php/api/json/store',
+<<<<<<< HEAD
       url : 'http://182.253.114.52/dashboard_pos/index.php/api/json/store',
+=======
+	url : 'http://182.253.114.52/dashboard_pos/index.php/api/json/store',
+>>>>>>> d11c2e86f3becef2ab59ea6b4c27aef70ff7c2b2
       data : data,
       dataType : 'json',
       success : function (data) {
