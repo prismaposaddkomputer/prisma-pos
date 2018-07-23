@@ -275,7 +275,7 @@
     var bayar =parseInt($('#bayar').val());
     var sisa=$("#sisa");
     tot_sisa=bayar-tot_grand;
-    if (tot_sisa > 0) {
+    if (tot_sisa >= 0) {
       sisa.val(tot_sisa);   
     }else{
       alert("Jumlah Pembayaran Pemesan, Kurang dari Total Pembayaran.");
@@ -317,7 +317,7 @@
           var bayars =parseInt($('#bayar').val());
           var sisas=$("#sisa");
           tot_sisas=bayars-tot_grands;
-          if (tot_sisas > 0) {
+          if (tot_sisas >= 0) {
             sisas.val(tot_sisas);   
           }else{
             alert("Jumlah Pembayaran Pemesan, Kurang dari Total Pembayaran.");
