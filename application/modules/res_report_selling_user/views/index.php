@@ -8,16 +8,16 @@
         <?php $type = $this->uri->segment(3); ?>
         <?php if ($type == '') {$type = 'daily';} ?>
         <select class="form-control select2" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
-          <option value="<?=base_url()?>ret_report_selling_user/index/daily" <?php if($type == 'daily'){echo 'selected';}?>>Harian</option>
-          <option value="<?=base_url()?>ret_report_selling_user/index/weekly" <?php if($type == 'weekly'){echo 'selected';}?>>Mingguan</option>
-          <option value="<?=base_url()?>ret_report_selling_user/index/monthly" <?php if($type == 'monthly'){echo 'selected';}?>>Bulanan</option>
-          <option value="<?=base_url()?>ret_report_selling_user/index/annual" <?php if($type == 'annual'){echo 'selected';}?>>Tahunan</option>
-          <option value="<?=base_url()?>ret_report_selling_user/index/range" <?php if($type == 'range'){echo 'selected';}?>>Rentang Waktu</option>
+          <option value="<?=base_url()?>res_report_selling_user/index/daily" <?php if($type == 'daily'){echo 'selected';}?>>Harian</option>
+          <option value="<?=base_url()?>res_report_selling_user/index/weekly" <?php if($type == 'weekly'){echo 'selected';}?>>Mingguan</option>
+          <option value="<?=base_url()?>res_report_selling_user/index/monthly" <?php if($type == 'monthly'){echo 'selected';}?>>Bulanan</option>
+          <option value="<?=base_url()?>res_report_selling_user/index/annual" <?php if($type == 'annual'){echo 'selected';}?>>Tahunan</option>
+          <option value="<?=base_url()?>res_report_selling_user/index/range" <?php if($type == 'range'){echo 'selected';}?>>Rentang Waktu</option>
         </select>
       </div>
     </div>
     <?php if ($type == 'daily'): ?>
-      <form class="" action="<?=base_url()?>ret_report_selling_user/action" method="post">
+      <form class="" action="<?=base_url()?>res_report_selling_user/action" method="post">
         <div class="col-md-2">
           <div class="form-group">
             <select class="form-control select2" name="user_id">
@@ -41,7 +41,7 @@
       </form>
     <?php endif; ?>
     <?php if ($type == 'weekly'): ?>
-      <form class="" action="<?=base_url()?>ret_report_selling_user/action" method="post">
+      <form class="" action="<?=base_url()?>res_report_selling_user/action" method="post">
         <div class="col-md-2">
           <div class="form-group">
             <select class="form-control select2" name="user_id">
@@ -65,7 +65,7 @@
       </form>
     <?php endif; ?>
     <?php if ($type == 'monthly'): ?>
-      <form class="" action="<?=base_url()?>ret_report_selling_user/action" method="post">
+      <form class="" action="<?=base_url()?>res_report_selling_user/action" method="post">
         <div class="col-md-2">
           <div class="form-group">
             <select class="form-control select2" name="user_id">
@@ -89,7 +89,7 @@
       </form>
     <?php endif; ?>
     <?php if ($type == 'annual'): ?>
-      <form class="" action="<?=base_url()?>ret_report_selling_user/action" method="post">
+      <form class="" action="<?=base_url()?>res_report_selling_user/action" method="post">
         <div class="col-md-2">
           <div class="form-group">
             <select class="form-control select2" name="user_id">
@@ -113,7 +113,7 @@
       </form>
     <?php endif; ?>
     <?php if ($type == 'range'): ?>
-      <form class="" action="<?=base_url()?>ret_report_selling_user/action" method="post">
+      <form class="" action="<?=base_url()?>res_report_selling_user/action" method="post">
         <div class="col-md-2">
           <div class="form-group">
             <select class="form-control select2" name="user_id">
