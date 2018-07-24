@@ -4,7 +4,7 @@
 <div class="content-body">
   <div class="row">
     <div class="col-md-12">
-      <a class="btn btn-primary" href="<?=base_url()?>ret_report_selling_user/daily_pdf/<?=$date?>/<?=$user_id?>" target="_blank"><i class="fa fa-print"></i> Download PDF</a>
+      <a class="btn btn-primary" href="<?=base_url()?>res_report_selling_user/daily_pdf/<?=$date?>/<?=$user_id?>" target="_blank"><i class="fa fa-print"></i> Download PDF</a>
       <br><br>
       <table class="table table-condensed table-bordered table-striped">
         <thead>
@@ -34,7 +34,7 @@
               <tr>
                 <td class="text-center"><?=$row->tx_type.'-'.$row->tx_receipt_no?></td>
                 <td class="text-center">
-                  <a href="<?=base_url()?>ret_report_selling_user/detail/<?=$row->tx_id?>" class="btn btn-xs btn-success"><i class="fa fa-list"></i> </a>
+                  <a href="<?=base_url()?>res_report_selling_user/detail/<?=$row->tx_id?>" class="btn btn-xs btn-success"><i class="fa fa-list"></i> </a>
                 </td>
                 <td class="text-center"><?=$row->tx_time?></td>
                 <td><?=$row->user_realname?></td>
