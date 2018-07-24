@@ -7,22 +7,22 @@ class Res_report_selling_user extends MY_Restaurant {
 
   function __construct(){
     parent::__construct();
-    if($this->session->userdata('menu') != 'report_selling_user'){
-      $this->session->set_userdata(array('menu' => 'report_selling_user'));
+    if($this->session->userdata('menu') != 'res_report_selling_user'){
+      $this->session->set_userdata(array('menu' => 'res_report_selling_user'));
       $this->session->unset_userdata('search_stock');
       $this->session->unset_userdata('search_selling_user');
       $this->session->unset_userdata('search_profit_daily');
       $this->session->unset_userdata('search_profit_item');
     }
-    $this->load->model('app_config/m_config');
+    $this->load->model('app_config/m_res_config');
 
     $this->role_id = $this->session->userdata('role_id');
-    $this->module_controller = 'report_selling_user';
-    $this->access = $this->m_config->get_permission($this->role_id, $this->module_controller);
+    $this->module_controller = 'res_report_selling_user';
+    $this->access = $this->m_res_config->get_permission($this->role_id, $this->module_controller);
 
-    $this->load->model('m_report_selling_user');
-    $this->load->model('user/m_user');
-    $this->load->model('client/m_client');
+    $this->load->model('m_res_report_selling_user');
+    $this->load->model('res_user/m_res_user');
+    $this->load->model('res_client/m_res_client');
   }
 
 	public function index()
@@ -30,9 +30,9 @@ class Res_report_selling_user extends MY_Restaurant {
     if ($this->access->_read == 1) {
       $data['access'] = $this->access;
       $data['title'] = 'Laporan Penjualan Kasir';
-      $data['user'] = $this->m_user->get_all();
+      $data['user'] = $this->m_res_user->get_all();
 
-      $this->view('report_selling_user/index',$data);
+      $this->view('res_report_selling_user/index',$data);
     } else {
       redirect(base_url().'app_error/error/403');
     }
@@ -47,29 +47,29 @@ class Res_report_selling_user extends MY_Restaurant {
 
       case 'annual':
         $year = $data['year'];
-        redirect(base_url().'report_selling_user/annual/'.$year.'/'.$user_id);
+        redirect(base_url().'res_report_selling_user/annual/'.$year.'/'.$user_id);
         break;
 
       case 'monthly':
         $month = ind_to_month($data['month']);
-        redirect(base_url().'report_selling_user/monthly/'.$month.'/'.$user_id);
+        redirect(base_url().'res_report_selling_user/monthly/'.$month.'/'.$user_id);
         break;
 
       case 'weekly':
         $week = $data['week'];
         $week = str_replace(' - ', '/', $week);
-        redirect(base_url().'report_selling_user/weekly/'.$week.'/'.$user_id);
+        redirect(base_url().'res_report_selling_user/weekly/'.$week.'/'.$user_id);
         break;
 
       case 'daily':
         $date = ind_to_date($data['date']);
-        redirect(base_url().'report_selling_user/daily/'.$date.'/'.$user_id);
+        redirect(base_url().'res_report_selling_user/daily/'.$date.'/'.$user_id);
         break;
 
       case 'range':
         $range = $data['range'];
         $range = str_replace(' - ', '/', $range);
-        redirect(base_url().'report_selling_user/range/'.$range.'/'.$user_id);
+        redirect(base_url().'res_report_selling_user/range/'.$range.'/'.$user_id);
         break;
 
     }
@@ -78,9 +78,9 @@ class Res_report_selling_user extends MY_Restaurant {
   public function annual($year,$user_id)
   {
     $data['access'] = $this->access;
-    $user = $this->m_user->get_by_id($user_id);
+    $user = $this->m_res_user->get_by_id($user_id);
     $data['title'] = 'Laporan Penjualan Kasir "'.$user->user_realname.'" Tahun '.$year;
-    $data['annual'] = $this->m_report_selling_user->annual($year,$user_id);
+    $data['annual'] = $this->m_res_report_selling_user->annual($year,$user_id);
     $data['year'] = $year;
     $data['user_id'] = $user_id;
 
@@ -90,9 +90,9 @@ class Res_report_selling_user extends MY_Restaurant {
   public function annual_pdf($year,$user_id)
   {
     $data['title'] = 'Laporan Penjualan Kasir Tahun '.$year;
-    $data['annual'] = $this->m_report_selling_user->annual($year,$user_id);
-    $data['client'] = $this->m_client->get_all();
-    $user = $this->m_user->get_by_id($user_id);
+    $data['annual'] = $this->m_res_report_selling_user->annual($year,$user_id);
+    $data['client'] = $this->m_res_client->get_all();
+    $user = $this->m_res_user->get_by_id($user_id);
     $data['user'] = $user;
 
     $this->load->library('pdf');
@@ -107,12 +107,12 @@ class Res_report_selling_user extends MY_Restaurant {
     $num_month = $raw[1];
 
     $data['access'] = $this->access;
-    $user = $this->m_user->get_by_id($user_id);
+    $user = $this->m_res_user->get_by_id($user_id);
     $data['title'] = 'Laporan Penjualan Kasir "'.$user->user_realname.'" Bulan '.month_name_ind($num_month).' '.$raw[0];;
     $data['month'] = $month;
     $data['user_id'] = $user_id;
 
-    $data['monthly'] = $this->m_report_selling_user->monthly($month,$user_id);
+    $data['monthly'] = $this->m_res_report_selling_user->monthly($month,$user_id);
     $this->view('monthly', $data);
   }
 
@@ -122,9 +122,9 @@ class Res_report_selling_user extends MY_Restaurant {
     $num_month = $raw[1];
 
     $data['title'] = 'Laporan Penjualan Kasir Bulan '.month_name_ind($num_month).' '.$raw[0];
-    $data['monthly'] = $this->m_report_selling_user->monthly($month,$user_id);
-    $data['client'] = $this->m_client->get_all();
-    $user = $this->m_user->get_by_id($user_id);
+    $data['monthly'] = $this->m_res_report_selling_user->monthly($month,$user_id);
+    $data['client'] = $this->m_res_client->get_all();
+    $user = $this->m_res_user->get_by_id($user_id);
     $data['user'] = $user;
 
     $this->load->library('pdf');
@@ -136,22 +136,22 @@ class Res_report_selling_user extends MY_Restaurant {
   public function weekly($date_start, $date_end, $user_id)
   {
     $data['access'] = $this->access;
-    $user = $this->m_user->get_by_id($user_id);
+    $user = $this->m_res_user->get_by_id($user_id);
     $data['title'] = 'Laporan Penjualan Kasir "'.$user->user_realname.'" Mingguan ('.$date_start.' - '.$date_end.')';
     $data['date_start'] = $date_start;
     $data['date_end'] = $date_end;
     $data['user_id'] = $user_id;
 
-    $data['weekly'] = $this->m_report_selling_user->weekly(ind_to_date($date_start),ind_to_date($date_end),$user_id);
+    $data['weekly'] = $this->m_res_report_selling_user->weekly(ind_to_date($date_start),ind_to_date($date_end),$user_id);
     $this->view('weekly', $data);
   }
 
   public function weekly_pdf($date_start,$date_end,$user_id)
   {
     $data['title'] = 'Laporan Penjualan Kasir Mingguan ('.$date_start.' - '.$date_end.')';
-    $data['weekly'] = $this->m_report_selling_user->weekly(ind_to_date($date_start),ind_to_date($date_end),$user_id);
-    $data['client'] = $this->m_client->get_all();
-    $user = $this->m_user->get_by_id($user_id);
+    $data['weekly'] = $this->m_res_report_selling_user->weekly(ind_to_date($date_start),ind_to_date($date_end),$user_id);
+    $data['client'] = $this->m_res_client->get_all();
+    $user = $this->m_res_user->get_by_id($user_id);
     $data['user'] = $user;
 
     $this->load->library('pdf');
@@ -163,21 +163,21 @@ class Res_report_selling_user extends MY_Restaurant {
   public function daily($date, $user_id)
   {
     $data['access'] = $this->access;
-    $user = $this->m_user->get_by_id($user_id);
+    $user = $this->m_res_user->get_by_id($user_id);
     $data['title'] = 'Laporan Penjualan Kasir "'.$user->user_realname.'" Tanggal '.date_to_ind($date);
     $data['date'] = $date;
     $data['user_id'] = $user_id;
 
-    $data['daily'] = $this->m_report_selling_user->daily($date, $user_id);
+    $data['daily'] = $this->m_res_report_selling_user->daily($date, $user_id);
     $this->view('daily', $data);
   }
 
   public function daily_pdf($date,$user_id)
   {
     $data['title'] = 'Laporan Penjualan Kasir Tanggal '.date_to_ind($date);
-    $data['daily'] = $this->m_report_selling_user->daily($date, $user_id);
-    $data['client'] = $this->m_client->get_all();
-    $user = $this->m_user->get_by_id($user_id);
+    $data['daily'] = $this->m_res_report_selling_user->daily($date, $user_id);
+    $data['client'] = $this->m_res_client->get_all();
+    $user = $this->m_res_user->get_by_id($user_id);
     $data['user'] = $user;
 
     $this->load->library('pdf');
@@ -189,22 +189,22 @@ class Res_report_selling_user extends MY_Restaurant {
   public function range($date_start, $date_end, $user_id)
   {
     $data['access'] = $this->access;
-    $user = $this->m_user->get_by_id($user_id);
+    $user = $this->m_res_user->get_by_id($user_id);
     $data['title'] = 'Laporan Penjualan Kasir "'.$user->user_realname.'" Tanggal '.$date_start.' - '.$date_end;
     $data['date_start'] = $date_start;
     $data['date_end'] = $date_end;
     $data['user_id'] = $user_id;
 
-    $data['range'] = $this->m_report_selling_user->range(ind_to_date($date_start),ind_to_date($date_end),$user_id);
+    $data['range'] = $this->m_res_report_selling_user->range(ind_to_date($date_start),ind_to_date($date_end),$user_id);
     $this->view('range', $data);
   }
 
   public function range_pdf($date_start,$date_end,$user_id)
   {
     $data['title'] = 'Laporan Penjualan Kasir Tanggal ('.$date_start.' - '.$date_end.')';
-    $data['range'] = $this->m_report_selling_user->range(ind_to_date($date_start),ind_to_date($date_end),$user_id);
-    $data['client'] = $this->m_client->get_all();
-    $user = $this->m_user->get_by_id($user_id);
+    $data['range'] = $this->m_res_report_selling_user->range(ind_to_date($date_start),ind_to_date($date_end),$user_id);
+    $data['client'] = $this->m_res_client->get_all();
+    $user = $this->m_res_user->get_by_id($user_id);
     $data['user'] = $user;
 
     $this->load->library('pdf');
@@ -218,7 +218,7 @@ class Res_report_selling_user extends MY_Restaurant {
     $data['access'] = $this->access;
     $data['title'] = 'Detail Transaksi';
 
-    $data['billing'] = $this->m_report_selling_user->detail($tx_id);
+    $data['billing'] = $this->m_res_report_selling_user->detail($tx_id);
     $this->view('detail', $data);
 
   }
