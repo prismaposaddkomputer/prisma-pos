@@ -104,7 +104,7 @@
           </div>
           <div class="form-group">
             <label>Serial Number <small class="required-field">*</small></label>
-            <input class="form-control keyboard" type="text" name="client_serial_number" value="">
+            <input class="form-control keyboard" type="text" name="client_serial_number" value="06042018AA">
           </div>
           <div class="form-group">
             <label>Logo Perusahaan</label>
