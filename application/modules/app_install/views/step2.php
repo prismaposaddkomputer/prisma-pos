@@ -41,13 +41,13 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>Kota/Kabupaten <small class="required-field">*</small></label>
-                <input class="form-control keyboard" type="text" name="client_city" value="">
+                <input class="form-control keyboard" type="text" name="client_city" value="SEMARANG">
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label>Provinsi <small class="required-field">*</small></label>
-                <input class="form-control keyboard" type="text" name="client_province" value="">
+                <input class="form-control keyboard" type="text" name="client_province" value="JAWA TENGAH">
               </div>
             </div>
           </div>
@@ -77,7 +77,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label>NPWP <small class="required-field">*</small></label>
-                <input class="form-control num" type="text" name="client_npwp" value="">
+                <input class="form-control num" type="text" name="client_npwp" value="0">
               </div>
             </div>
             <div class="col-md-6">
@@ -104,7 +104,7 @@
           </div>
           <div class="form-group">
             <label>Serial Number <small class="required-field">*</small></label>
-            <input class="form-control keyboard" type="text" name="client_serial_number" value="">
+            <input class="form-control keyboard" type="text" name="client_serial_number" value="06042018AA">
           </div>
           <div class="form-group">
             <label>Logo Perusahaan</label>
