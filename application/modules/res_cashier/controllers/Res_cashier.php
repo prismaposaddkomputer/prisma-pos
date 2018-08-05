@@ -299,13 +299,13 @@ class Res_cashier extends MY_Restaurant {
     //get all detail and count it
     $detail = $this->m_res_cashier->get_billing_detail($tx_id);
     foreach ($detail as $row) {
-      $tx_total_buy_average .= $row->tx_subtotal_buy_average;
-      $tx_total_before_tax .= $row->tx_subtotal_before_tax;
-      $tx_total_after_tax .= $row->tx_subtotal_after_tax;
-      $tx_total_tax .= $row->tx_subtotal_tax;
-      $tx_total_discount .= $row->tx_subtotal_discount;
-      $tx_total_profit_before_tax .= $row->tx_subtotal_profit_before_tax;
-      $tx_total_profit_after_tax .= $row->tx_subtotal_profit_after_tax;
+      $tx_total_buy_average += $row->tx_subtotal_buy_average;
+      $tx_total_before_tax += $row->tx_subtotal_before_tax;
+      $tx_total_after_tax += $row->tx_subtotal_after_tax;
+      $tx_total_tax += $row->tx_subtotal_tax;
+      $tx_total_discount += $row->tx_subtotal_discount;
+      $tx_total_profit_before_tax += $row->tx_subtotal_profit_before_tax;
+      $tx_total_profit_after_tax += $row->tx_subtotal_profit_after_tax;
     }
 
     // grand total before discount
