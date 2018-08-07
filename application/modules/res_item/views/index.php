@@ -36,6 +36,7 @@
               <th class="text-center">Kategori</th>
               <th class="text-center" width="70">Satuan</th>
               <th class="text-center" width="130">Harga<br><small>(Sebelum Pajak)</small></th>
+              <th class="text-center" width="130">Harga<br><small>(Setelah Pajak)</small></th>
               <th class="text-center" width="80">Aktif</th>
             </tr>
           </thead>
@@ -54,6 +55,7 @@
                   <td><?=$row->category_name?></td>
                   <td class="text-center"><?=$row->unit_code?></td>
                   <td><?= num_to_idr($row->item_price_before_tax);?></td>
+                  <td><?= num_to_idr($row->item_price_after_tax);?></td>
                   <td class="text-center">
                     <?php if ($row->is_active == 1): ?>
                       <i class="fa fa-check cl-success"></i>

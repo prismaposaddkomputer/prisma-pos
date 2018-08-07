@@ -30,7 +30,12 @@ class M_res_tax extends CI_Model {
   public function get_by_id($id)
   {
     return $this->db->where('tax_id',$id)->get('res_tax')->row();
-  }
+	}
+	
+	public function get_first()
+	{
+		return $this->db->order_by('tax_id','asc')->get('res_tax')->row();
+	}
 
   public function get_last()
   {

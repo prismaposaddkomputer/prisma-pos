@@ -73,7 +73,7 @@ class Res_item extends MY_Restaurant {
     $this->load->model('res_unit/m_res_unit');
     $data['unit_list'] = $this->m_res_unit->get_all();
     $this->load->model('res_tax/m_res_tax');
-    $data['tax_list'] = $this->m_res_tax->get_all();
+    $data['tax'] = $this->m_res_tax->get_first();
     $data['item_list'] = $this->m_res_item->get_all();
     if ($id == null) {
       if ($this->access->_create == 1) {
@@ -112,6 +112,8 @@ class Res_item extends MY_Restaurant {
       $data['is_active'] = 0;
     }
     $data['item_price_before_tax'] = price_to_num($data['item_price_before_tax']);
+    $data['item_tax'] = price_to_num($data['item_tax']);
+    $data['item_price_after_tax'] = price_to_num($data['item_price_after_tax']);
 
     // clear package
     $this->m_res_item->clear_package($item_id);
@@ -151,7 +153,8 @@ class Res_item extends MY_Restaurant {
       $data['is_active'] = 0;
     }
     $data['item_price_before_tax'] = price_to_num($data['item_price_before_tax']);
-
+    $data['item_tax'] = price_to_num($data['item_tax']);
+    $data['item_price_after_tax'] = price_to_num($data['item_price_after_tax']);
     // clear package
     $this->m_res_item->clear_package($item_id);
     // insert package

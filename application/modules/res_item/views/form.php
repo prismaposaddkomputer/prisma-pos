@@ -21,11 +21,9 @@
         </div>
         <div class="form-group">
           <label>Pajak <small class="required-field">*</small></label>
-          <select class="form-control keyboard select2" name="tax_id">
-            <?php foreach ($tax_list as $row): ?>
-              <option value="<?=$row->tax_id?>" <?php if($item != null){if($row->tax_id == $item->tax_id){echo 'selected';};}?>><?=$row->tax_code?> (<?=$row->tax_ratio?>%) - <?=$row->tax_name?></option>
-            <?php endforeach; ?>
-          </select>
+          <input class="form-control" type="text" value="<?=$tax->tax_code?> (<?=$tax->tax_ratio?>%) - <?=$tax->tax_name?>" readonly  >
+          <input type="hidden" value="<?=$tax->tax_id?>" name="tax_id">
+          <input id="tax_ratio" type="hidden" value="<?=$tax->tax_ratio?>">
         </div>
         <?php if ($item == null): ?>
           <div class="form-group">
@@ -71,8 +69,16 @@
           <?php endif; ?>
         </div>
         <div class="form-group">
-          <label>Harga Jual (sebelum pajak) <small class="required-field">*</small></label>
-          <input class="form-control num autonumeric" type="text" name="item_price_before_tax" value="<?php if($item != null){echo $item->item_price_before_tax;}?>" <?php if($item !=null){if($item->is_package == 1){echo 'readonly';}}?>>
+          <label>Harga Pokok (sebelum pajak) <small class="required-field">*</small></label>
+          <input class="form-control num autonumeric" onchange="calc_after_tax()" type="text" name="item_price_before_tax" value="<?php if($item != null){echo $item->item_price_before_tax;}else{echo '0';}?>" <?php if($item !=null){if($item->is_package == 1){echo 'readonly';}}?>>
+        </div>
+        <div class="form-group">
+          <label>Pajak <small class="required-field">*</small></label>
+          <input class="form-control num autonumeric" type="text" name="item_tax" value="<?php if($item != null){echo $item->item_tax;}else{echo '0';}?>" readonly>
+        </div>
+        <div class="form-group">
+          <label>Harga Jual (setelah pajak) <small class="required-field">*</small></label>
+          <input class="form-control num autonumeric" onchange="calc_before_tax()" type="text" name="item_price_after_tax" value="<?php if($item != null){echo $item->item_price_after_tax;}else{echo '0';}?>" <?php if($item !=null){if($item->is_package == 1){echo 'readonly';}}?>>
         </div>
       </div>
       <div class="col-md-6">
@@ -114,7 +120,6 @@
 </div>
 
 <script type="text/javascript">
-
   var package_row=0;
 
   <?php if ($item != null): ?>
@@ -157,6 +162,27 @@
       }
     });
     $("input[name='item_price_before_tax']").val(sys_to_ind(price));
+    calc_after_tax();
+  }
+
+  function calc_after_tax() {
+    var item_price_before_tax = parseFloat(ind_to_sys($("input[name='item_price_before_tax']").val()));
+    var tax_ratio = $("#tax_ratio").val();
+    var item_tax, item_price_after_tax;
+    item_tax = item_price_before_tax*tax_ratio/100;
+    item_price_after_tax = item_price_before_tax+item_tax;
+    $("input[name='item_tax']").val(sys_to_ind(item_tax));
+    $("input[name='item_price_after_tax']").val(sys_to_ind(item_price_after_tax));
+  }
+
+  function calc_before_tax() {
+    var item_price_after_tax = parseFloat(ind_to_sys($("input[name='item_price_after_tax']").val()));
+    var tax_ratio = parseFloat($("#tax_ratio").val());
+    var item_tax, item_price_before_tax;
+    item_tax = tax_ratio*item_price_after_tax/(tax_ratio+100);
+    item_price_before_tax = item_price_after_tax-item_tax;
+    $("input[name='item_tax']").val(sys_to_ind(item_tax.toFixed(2)));
+    $("input[name='item_price_before_tax']").val(sys_to_ind(item_price_before_tax.toFixed(2)));
   }
 
   function remove_package(id){
@@ -189,12 +215,15 @@
     $('input[name=is_package]').change(function() {
       if($(this).is(":checked")) {
         $('input[name="item_price_before_tax"]').attr('readonly', true);
+        $('input[name="item_price_after_tax"]').attr('readonly', true);
         $('input[name="item_price_before_tax"]').val(0);
+        $('input[name="item_tax"]').val(0);
+        $('input[name="item_price_after_tax"]').val(0);
         $("#package_section").append('<button class="btn btn-info" type="button" onclick="add_package()">Tambah</button><br><br>');
         add_package();
       }else{
         $('input[name="item_price_before_tax"]').attr('readonly', false);
-        $('input[name="item_price_before_tax"]').val(0);
+        //$('input[name="item_price_before_tax"]').val(0);
         $("#package_section").html('');
       };
     });
