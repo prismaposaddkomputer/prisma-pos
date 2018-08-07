@@ -986,7 +986,7 @@ class Res_cashier extends MY_Restaurant {
       };
       $printer -> setJustification(Escpos\Printer::JUSTIFY_RIGHT);
       $printer -> text('--------------------------------');
-      $printer -> text('Subtotal = '.$s_1.num_to_price($billing->tx_total_before_tax));
+      $printer -> text('Subtotal = '.$s_1.num_to_price($billing->tx_total_after_tax));
       $printer -> feed();
       $printer -> text('Diskon = '.$s_2.num_to_price($billing->tx_total_discount));
       $printer -> feed();
