@@ -123,7 +123,7 @@ class M_app_version extends CI_Model {
 	         ADD COLUMN `client_logo` VARCHAR(255) NULL DEFAULT NULL AFTER `client_keyboard_status`"
         );
         break;
-      
+
       case '1.6':
         $this->db->query(
           "ALTER TABLE hot_payment ADD COLUMN IF NOT EXISTS bayar int(155) after grand_total"
@@ -131,6 +131,96 @@ class M_app_version extends CI_Model {
         $this->db->query(
           "ALTER TABLE hot_payment ADD COLUMN IF NOT EXISTS sisa int(155) after bayar"
         );
+        break;
+
+      case '1.7':
+        // Empty Data
+        $this->db->query("DELETE FROM `res_permission`");
+        // Reset auto increment
+        $this->db->query("ALTER TABLE res_permission AUTO_INCREMENT = 1");
+        // Insert data permission
+        $this->db->query("INSERT INTO `res_permission` (`permission_id`, `role_id`, `module_id`, `_create`, `_read`, `_update`, `_delete`, `created_by`) VALUES
+        	(NULL, 0, '01', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '02', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '02.01', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '02.02', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '02.03', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '02.04', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '02.05', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '02.06', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '02.07', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '02.08', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '03', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '03.01', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '03.02', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '03.03', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '04', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '04.01', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '04.02', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '04.03', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '04.04', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '04.05', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '05', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '05.01', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '05.02', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '05.03', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '05.04', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '05.05', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '05.06', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '05.07', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '05.08', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '05.09', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '05.10', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '05.11', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '99', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '99.01', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '99.02', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '99.03', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '99.04', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '99.05', 1, 1, 1, 1, 'System'),
+        	(NULL, 0, '99.06', 1, 1, 1, 1, 'System'),
+          (NULL, 1, '01', 1, 1, 1, 1, 'System'),
+        	(NULL, 1, '02', 1, 1, 1, 1, 'System'),
+        	(NULL, 1, '02.01', 1, 1, 1, 1, 'System'),
+        	(NULL, 1, '02.02', 1, 1, 1, 1, 'System'),
+        	(NULL, 1, '02.03', 1, 1, 1, 1, 'System'),
+        	(NULL, 1, '02.04', 1, 1, 1, 1, 'System'),
+        	(NULL, 1, '02.05', 1, 1, 1, 1, 'System'),
+        	(NULL, 1, '02.06', 1, 1, 1, 1, 'System'),
+        	(NULL, 1, '02.08', 1, 1, 1, 1, 'System'),
+        	(NULL, 1, '03', 1, 1, 1, 1, 'System'),
+        	(NULL, 1, '03.01', 1, 1, 1, 1, 'System'),
+        	(NULL, 1, '03.02', 1, 1, 1, 1, 'System'),
+        	(NULL, 1, '03.03', 1, 1, 1, 1, 'System'),
+        	(NULL, 1, '04', 1, 1, 1, 1, 'System'),
+        	(NULL, 1, '04.01', 1, 1, 1, 1, 'System'),
+        	(NULL, 1, '04.02', 1, 1, 1, 1, 'System'),
+        	(NULL, 1, '04.03', 1, 1, 1, 1, 'System'),
+        	(NULL, 1, '04.04', 1, 1, 1, 1, 'System'),
+        	(NULL, 1, '04.05', 1, 1, 1, 1, 'System'),
+        	(NULL, 1, '05', 1, 1, 1, 1, 'System'),
+        	(NULL, 1, '05.01', 1, 1, 1, 1, 'System'),
+        	(NULL, 1, '05.02', 1, 1, 1, 1, 'System'),
+        	(NULL, 1, '05.03', 1, 1, 1, 1, 'System'),
+        	(NULL, 1, '05.04', 1, 1, 1, 1, 'System'),
+        	(NULL, 1, '05.05', 1, 1, 1, 1, 'System'),
+        	(NULL, 1, '05.06', 1, 1, 1, 1, 'System'),
+        	(NULL, 1, '05.07', 1, 1, 1, 1, 'System'),
+        	(NULL, 1, '05.08', 1, 1, 1, 1, 'System'),
+        	(NULL, 1, '05.09', 1, 1, 1, 1, 'System'),
+        	(NULL, 1, '05.10', 1, 1, 1, 1, 'System'),
+        	(NULL, 1, '05.11', 1, 1, 1, 1, 'System'),
+        	(NULL, 1, '99', 1, 1, 1, 1, 'System'),
+        	(NULL, 1, '99.03', 1, 1, 1, 1, 'System'),
+        	(NULL, 1, '99.05', 1, 1, 1, 1, 'System'),
+          (NULL, 2, '01', 1, 1, 1, 1, 'System'),
+        	(NULL, 2, '03', 1, 1, 1, 1, 'System'),
+        	(NULL, 2, '03.01', 1, 1, 1, 1, 'System'),
+        	(NULL, 2, '03.02', 1, 1, 1, 1, 'System'),
+        	(NULL, 2, '03.03', 1, 1, 1, 1, 'System'),
+        	(NULL, 2, '05', 1, 1, 1, 1, 'System'),
+        	(NULL, 2, '05.04', 1, 1, 1, 1, 'System')
+        ");
         break;
     }
 
@@ -161,6 +251,7 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"1.4","version_release"=>"2018-07-17 10:41:00"));
     array_push($version, array("version_now"=>"1.5","version_release"=>"2018-07-18 11:52:00"));
     array_push($version, array("version_now"=>"1.6","version_release"=>"2018-07-22 19:47:00"));
+    array_push($version, array("version_now"=>"1.7","version_release"=>"2018-08-07 10:46:00"));
 
     foreach ($version as $key => $val) {
       //check version
