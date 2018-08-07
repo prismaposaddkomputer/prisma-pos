@@ -230,6 +230,26 @@ class M_app_version extends CI_Model {
           ADD COLUMN `item_price_after_tax` FLOAT(10,2) NOT NULL AFTER `item_tax`
         ");
         break;
+
+      case '1.9':
+        // alter table for tax in hotel
+        $this->db->query("ALTER TABLE hot_category
+          ADD COLUMN IF NOT EXISTS
+          status int(155)
+        ");
+        $this->db->query("ALTER TABLE hot_category
+          ADD COLUMN IF NOT EXISTS
+          before_tax int(155)
+        ");
+        $this->db->query("ALTER TABLE hot_category
+          ADD COLUMN IF NOT EXISTS
+          tax int(155)
+        ");
+        $this->db->query("ALTER TABLE hot_category
+          ADD COLUMN IF NOT EXISTS
+          after_tax int(155)
+        ");
+        break;
     }
 
     //insert new update history
@@ -261,6 +281,7 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"1.6","version_release"=>"2018-07-22 19:47:00"));
     array_push($version, array("version_now"=>"1.7","version_release"=>"2018-08-07 10:46:00"));
     array_push($version, array("version_now"=>"1.8","version_release"=>"2018-08-07 12:12:00"));
+    array_push($version, array("version_now"=>"1.9","version_release"=>"2018-08-07 14:12:00"));
 
     foreach ($version as $key => $val) {
       //check version
