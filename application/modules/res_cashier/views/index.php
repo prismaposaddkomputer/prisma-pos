@@ -297,7 +297,7 @@
 
     <!-- Modal edit item -->
     <div id="modal_edit_item" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-      <div class="modal-dialog modal-sm" role="document">
+      <div style="width:310px;" class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-title">Ubah Item</h4>
