@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Ret_stock_opname extends MY_Restaurant {
+class Res_stock_opname extends MY_Restaurant {
 
   var $access, $role_id;
 
