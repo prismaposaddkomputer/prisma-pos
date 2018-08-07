@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Res_return extends MY_Retail {
+class Res_return extends MY_Restaurant {
 
   var $access, $tx_id;
 
