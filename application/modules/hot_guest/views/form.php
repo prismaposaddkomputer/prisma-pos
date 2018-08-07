@@ -15,7 +15,7 @@
           <label>No Identitas<small class="required-field">*</small></label>
           <input class="form-control num" type="number" name="guest_number" value="<?php if($guest != null){echo $guest->guest_number;}?>">
         </div>
-        <div class="form-group">
+        <div class="form-group" style="display:none;">
           <label>Pekerjaan<small class="required-field">*</small></label>
           <input class="form-control keyboard" type="text" name="guest_job" value="<?php if($guest != null){echo $guest->guest_job;}?>">
         </div>
@@ -51,11 +51,11 @@
           <label>No Telepon<small class="required-field">*</small></label>
           <input class="form-control num" type="number" name="guest_phone" value="<?php if($guest != null){echo $guest->guest_phone;}?>">
         </div>
-        <div class="form-group">
+        <div class="form-group" style="display:none;">
           <label>Email<small class="required-field">*</small></label>
           <input class="form-control keyboard" type="email" name="guest_email" value="<?php if($guest != null){echo $guest->guest_email;}?>">
         </div>
-        <div class="form-group">
+        <div class="form-group" style="display:none;">
           <label>Alamat<small class="required-field">*</small></label>
           <textarea name="guest_address" class="form-control keyboard"><?php if($guest != null){echo $guest->guest_address;}?></textarea>
         </div>

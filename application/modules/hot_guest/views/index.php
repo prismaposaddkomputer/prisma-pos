@@ -41,8 +41,6 @@
               <th class="text-center">Nama Tamu</th>
               <th class="text-center">Gender</th>
               <th class="text-center">Telepon</th>
-              <th class="text-center">Email</th>
-              <th class="text-center">Alamat</th>
             </tr>
           </thead>
           <tbody>
@@ -65,8 +63,6 @@
                     <?php EndIf; ?>
                   </td>
                   <td><?=$row->guest_phone?></td>
-                  <td><?=$row->guest_email?></td>
-                  <td><?=$row->guest_address?></td>
                 </tr>
               <?php endforeach; ?>
             <?php else: ?>
