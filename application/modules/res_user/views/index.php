@@ -42,26 +42,51 @@
           <tbody>
             <?php if ($user != null): ?>
               <?php $i=1;foreach ($user as $row): ?>
-                <tr>
-                  <td class="text-center"><?=$this->uri->segment('3')+$i++?></td>
-                  <td class="text-center">
-                    <?php if ($row->user_id != '' ): ?>
-                      <a class="btn btn-xs btn-warning" href="<?=base_url()?>res_user/form/<?=$row->user_id?>"><i class="fa fa-pencil"></i></a>
-                      <button class="btn btn-xs btn-danger" onclick="del('<?=$row->user_id?>');"><i class="fa fa-trash"></i></button>
-                    <?php endif; ?>
-                  </td>
-                  <td><?=$row->user_realname?></td>
-                  <td><?=$row->role_name?></td>
-                  <td class="text-center"><?=timestamp_to_ind($row->created)?></td>
-                  <td class="text-center"><?=timestamp_to_ind($row->updated)?></td>
-                  <td class="text-center">
-                    <?php if ($row->is_active == 1): ?>
-                      <i class="fa fa-check cl-success"></i>
-                    <?php else: ?>
-                      <i class="fa fa-close cl-danger"></i>
-                    <?php endif; ?>
-                  </td>
-                </tr>
+                <?php if ($this->session->userdata('role_id') != 0): ?>
+                  <?php if ($row->role_id != 0): ?>
+                    <tr>
+                      <td class="text-center"><?=$this->uri->segment('3')+$i++?></td>
+                      <td class="text-center">
+                        <?php if ($row->user_id != '' ): ?>
+                          <a class="btn btn-xs btn-warning" href="<?=base_url()?>res_user/form/<?=$row->user_id?>"><i class="fa fa-pencil"></i></a>
+                          <button class="btn btn-xs btn-danger" onclick="del('<?=$row->user_id?>');"><i class="fa fa-trash"></i></button>
+                        <?php endif; ?>
+                      </td>
+                      <td><?=$row->user_realname?></td>
+                      <td><?=$row->role_name?></td>
+                      <td class="text-center"><?=timestamp_to_ind($row->created)?></td>
+                      <td class="text-center"><?=timestamp_to_ind($row->updated)?></td>
+                      <td class="text-center">
+                        <?php if ($row->is_active == 1): ?>
+                          <i class="fa fa-check cl-success"></i>
+                        <?php else: ?>
+                          <i class="fa fa-close cl-danger"></i>
+                        <?php endif; ?>
+                      </td>
+                    </tr>
+                  <?php endif; ?>
+                <?php else: ?>
+                  <tr>
+                    <td class="text-center"><?=$this->uri->segment('3')+$i++?></td>
+                    <td class="text-center">
+                      <?php if ($row->user_id != '' ): ?>
+                        <a class="btn btn-xs btn-warning" href="<?=base_url()?>res_user/form/<?=$row->user_id?>"><i class="fa fa-pencil"></i></a>
+                        <button class="btn btn-xs btn-danger" onclick="del('<?=$row->user_id?>');"><i class="fa fa-trash"></i></button>
+                      <?php endif; ?>
+                    </td>
+                    <td><?=$row->user_realname?></td>
+                    <td><?=$row->role_name?></td>
+                    <td class="text-center"><?=timestamp_to_ind($row->created)?></td>
+                    <td class="text-center"><?=timestamp_to_ind($row->updated)?></td>
+                    <td class="text-center">
+                      <?php if ($row->is_active == 1): ?>
+                        <i class="fa fa-check cl-success"></i>
+                      <?php else: ?>
+                        <i class="fa fa-close cl-danger"></i>
+                      <?php endif; ?>
+                    </td>
+                  </tr>
+                <?php endif; ?>
               <?php endforeach; ?>
             <?php else: ?>
               <tr>
