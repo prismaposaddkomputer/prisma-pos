@@ -3,6 +3,12 @@ Application points of sale built by CV ADD Computer. This application consists o
 
 ## Change Log
 
+### V 1.9
+1. Add column tax for hotel
+
+### V 1.8
+1. Add column tax for restaurant
+
 ### V 1.7
 1. Set role for restaurant module
 
