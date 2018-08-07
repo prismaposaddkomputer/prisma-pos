@@ -176,7 +176,7 @@
                   <th class="lbl-barcode">Barcode</th>
                   <th class="lbl-item_name">Nama Item</th>
                   <th class="lbl-category_name">Kategori</th>
-                  <th class="lbl-item_price_before_tax">Harga</th>
+                  <th class="lbl-item_price_after_tax">Harga</th>
                 </tr>
               </thead>
               <tbody id="item-row">
@@ -210,8 +210,8 @@
           </div>
           <div id="tx-actions">
             <div class="lbl-bill">
-              <b>SUBTOTAL <span id="bill_tx_total_before_tax_nominal" class="pull-right"></span></b>
-              <input id="bill_tx_total_before_tax" type="hidden" name="" value="">
+              <b>SUBTOTAL <span id="bill_tx_total_after_tax_nominal" class="pull-right"></span></b>
+              <input id="bill_tx_total_after_tax" type="hidden" name="" value="">
             </div>
             <div class="lbl-bill">
               DISKON<span id="bill_tx_total_discount_nominal" class="pull-right"></span>
@@ -263,7 +263,7 @@
               <tr>
                 <td>Harga</td>
                 <td>:</td>
-                <td class="cl-success" id="add_item_price_before_tax"></td>
+                <td class="cl-success" id="add_item_price_after_tax"></td>
               </tr>
               <tr>
                 <td>Satuan</td>
@@ -321,7 +321,7 @@
               <tr>
                 <td>Harga</td>
                 <td>:</td>
-                <td class="cl-success" id="edit_item_price_before_tax"></td>
+                <td class="cl-success" id="edit_item_price_after_tax"></td>
               </tr>
               <tr>
                 <td>Satuan</td>
@@ -763,8 +763,8 @@
           success : function (data) {
             $("#bill_tx_id").val(data.tx_id);
             $("#bill_tx_id_name").html('TXS-'+data.tx_id);
-            $("#bill_tx_total_before_tax_nominal").html(sys_to_ind(data.tx_total_before_tax));
-            $("#bill_tx_total_before_tax").val(data.tx_total_before_tax);
+            $("#bill_tx_total_after_tax_nominal").html(sys_to_ind(data.tx_total_after_tax));
+            $("#bill_tx_total_after_tax").val(data.tx_total_after_tax);
             $("#bill_tx_total_tax_nominal").html(sys_to_ind(data.tx_total_tax));
             $("#bill_tx_total_tax").val(data.tx_total_tax);
             $("#bill_tx_total_discount").val(data.tx_total_discount);
@@ -861,8 +861,8 @@
             $("#bill_tx_id_name").html(data.tx_id_name);
             $("#bill_tx_date").val(data.tx_date);
             $("#bill_tx_time").val(data.tx_time);
-            $("#bill_tx_total_before_tax").val(data.tx_total_before_tax);
-            $("#bill_tx_total_before_tax_nominal").html(data.tx_total_before_tax);
+            $("#bill_tx_total_after_tax").val(data.tx_total_after_tax);
+            $("#bill_tx_total_after_tax_nominal").html(data.tx_total_after_tax);
             $("#bill_tx_total_discount").val(data.tx_total_discount);
             $("#bill_tx_total_discount_nominal").html(data.tx_total_discount);
             $("#bill_tx_total_tax").val(data.tx_total_tax);
@@ -888,7 +888,7 @@
             '<td class="lbl-barcode">'+item.item_barcode+'</td>'+
             '<td class="lbl-item_name">'+item.item_name+'</td>'+
             '<td class="lbl-category_name">'+item.category_name+'</td>'+
-            '<td class="lbl-item_price_before_tax text-right">'+sys_to_ind(item.item_price_after_tax)+'</td>'+
+            '<td class="lbl-item_price_after_tax text-right">'+sys_to_ind(item.item_price_after_tax)+'</td>'+
             '</tr>';
           $("#item-row").append(row);
         })
@@ -940,7 +940,7 @@
             $("#add_item_id").val(data.item_id);
             $("#add_item_name").html(data.item_name);
             $("#add_item_barcode").html(data.item_barcode);
-            $("#add_item_price_before_tax").html(sys_to_ind(data.item_price_after_tax));
+            $("#add_item_price_after_tax").html(sys_to_ind(data.item_price_after_tax));
             $("#add_category_name").html(data.category_name);
             $("#add_unit_code").html(data.unit_code);
             $("#modal_add_item").modal('show');
@@ -983,8 +983,8 @@
           data : 'tx_id='+tx_id,
           dataType : 'json',
           success : function (data) {
-            $("#bill_tx_total_before_tax_nominal").html(sys_to_ind(data.tx_total_before_tax));
-            $("#bill_tx_total_before_tax").val(data.tx_total_before_tax);
+            $("#bill_tx_total_after_tax_nominal").html(sys_to_ind(data.tx_total_after_tax));
+            $("#bill_tx_total_after_tax").val(data.tx_total_after_tax);
             $("#bill_tx_total_tax_nominal").html(sys_to_ind(data.tx_total_tax));
             $("#bill_tx_total_tax").val(data.tx_total_tax);
             $("#bill_tx_total_discount").val(data.tx_total_discount);
@@ -1038,7 +1038,7 @@
             $("#edit_item_id").val(data.item_id);
             $("#edit_item_name").html(data.item_name);
             $("#edit_item_barcode").html(data.item_barcode);
-            $("#edit_item_price_before_tax").html(sys_to_ind(data.item_price_after_tax));
+            $("#edit_item_price_after_tax").html(sys_to_ind(data.item_price_after_tax));
             $("#edit_category_name").html(data.category_name);
             $("#edit_unit_code").html(data.unit_code);
             $("#edit_tx_amount").val(data.tx_amount);
@@ -1295,7 +1295,7 @@
                 '<td class="lbl-barcode">'+item.item_barcode+'</td>'+
                 '<td class="lbl-item_name">'+item.item_name+'</td>'+
                 '<td class="lbl-category_name">'+item.category_name+'</td>'+
-                '<td class="lbl-item_price_before_tax text-right">'+sys_to_ind(item.item_price_after_tax)+'</td>'+
+                '<td class="lbl-item_price_after_tax text-right">'+sys_to_ind(item.item_price_after_tax)+'</td>'+
                 '</tr>';
                 $("#search_row").append(row);
               })
