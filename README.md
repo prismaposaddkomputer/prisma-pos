@@ -3,6 +3,9 @@ Application points of sale built by CV ADD Computer. This application consists o
 
 ## Change Log
 
+### V 1.7
+1. Set role for restaurant module
+
 ### V 1.6
 1. Add column in tbl hot_payment for payment and change
 
