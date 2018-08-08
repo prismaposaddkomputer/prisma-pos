@@ -15,7 +15,13 @@
           <label>Role <small class="required-field">*</small></label>
           <select class="form-control keyboard select2" name="role_id">
             <?php foreach ($role_list as $row): ?>
-              <option value="<?=$row->role_id?>" <?php if($user != null){if($row->role_id == $user->role_id){echo 'selected';};}?>><?=$row->role_name?></option>
+              <?php if ($this->session->userdata('role_id') != 0): ?>
+                <?php if ($row->role_id != 0): ?>
+                  <option value="<?=$row->role_id?>" <?php if($user != null){if($row->role_id == $user->role_id){echo 'selected';};}?>><?=$row->role_name?></option>
+                <?php endif; ?>
+              <?php else: ?>
+                <option value="<?=$row->role_id?>" <?php if($user != null){if($row->role_id == $user->role_id){echo 'selected';};}?>><?=$row->role_name?></option>
+              <?php endif; ?>
             <?php endforeach; ?>
           </select>
         </div>
