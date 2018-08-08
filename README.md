@@ -3,6 +3,9 @@ Application points of sale built by CV ADD Computer. This application consists o
 
 ## Change Log
 
+### V 2.0
+1. Add setting for receipt 
+
 ### V 1.9
 1. Add column tax for hotel
 
