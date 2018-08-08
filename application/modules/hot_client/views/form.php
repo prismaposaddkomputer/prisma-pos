@@ -102,6 +102,11 @@
         <hr>
         <h4>Data Lain</h4>
         <div class="form-group">
+          <label>Metode cetak struk</label><br>
+          <input type="radio" value="0" name="client_receipt_is_taxed" <?php if($client != null){if($client->client_receipt_is_taxed == 0){echo 'checked';}}?>> Harga sebelum pajak.
+          <input type="radio" value="1" name="client_receipt_is_taxed" <?php if($client != null){if($client->client_receipt_is_taxed == 1){echo 'checked';}}?>> Harga setelah pajak.
+        </div>
+        <div class="form-group">
           <label>Keterangan Tambahan<small class="required-field">*</small></label>
           <textarea class="form-control keyboard" type="text" name="client_notes"><?php if($client != null){echo $client->client_notes;}?></textarea>
         </div>

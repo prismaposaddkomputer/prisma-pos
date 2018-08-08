@@ -250,6 +250,25 @@ class M_app_version extends CI_Model {
           after_tax int(155)
         ");
         break;
+
+      case '2.0':
+        //add column for setting in receipt
+        $this->db->query("ALTER TABLE `ret_client`
+          ADD COLUMN `client_receipt_is_taxed` TINYINT(1) NOT NULL DEFAULT '1' AFTER `client_keyboard_status`
+        ");
+        $this->db->query("ALTER TABLE `res_client`
+          ADD COLUMN `client_receipt_is_taxed` TINYINT(1) NOT NULL DEFAULT '1' AFTER `client_keyboard_status`
+        ");
+         $this->db->query("ALTER TABLE `hot_client`
+          ADD COLUMN `client_receipt_is_taxed` TINYINT(1) NOT NULL DEFAULT '1' AFTER `client_keyboard_status`
+        ");
+        $this->db->query("ALTER TABLE `kar_client`
+          ADD COLUMN `client_receipt_is_taxed` TINYINT(1) NOT NULL DEFAULT '1' AFTER `client_keyboard_status`
+        ");
+         $this->db->query("ALTER TABLE `par_client`
+          ADD COLUMN `client_receipt_is_taxed` TINYINT(1) NOT NULL DEFAULT '1' AFTER `client_keyboard_status`
+        ");
+        break;
     }
 
     //insert new update history
@@ -282,6 +301,7 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"1.7","version_release"=>"2018-08-07 10:46:00"));
     array_push($version, array("version_now"=>"1.8","version_release"=>"2018-08-07 12:12:00"));
     array_push($version, array("version_now"=>"1.9","version_release"=>"2018-08-07 14:12:00"));
+    array_push($version, array("version_now"=>"2.0","version_release"=>"2018-08-08 11:15:00"));
 
     foreach ($version as $key => $val) {
       //check version

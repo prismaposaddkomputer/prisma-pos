@@ -104,6 +104,17 @@
               <th colspan="3">Data Lain</th>
             </tr>
             <tr>
+              <td>Metode cetak struk</td>
+              <td class="text-center">:</td>
+              <td>
+                <?php if ($client->client_receipt_is_taxed == 0): ?>
+                  Harga sebelum pajak.
+                <?php else: ?>
+                  Harga sesudah pajak.
+                <?php endif; ?>
+              </td>
+            </tr>
+            <tr>
               <td>Keterangan Tambahan</td>
               <td class="text-center">:</td>
               <td><?=$client->client_notes?></td>
