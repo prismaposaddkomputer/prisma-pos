@@ -86,7 +86,7 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>NPWPD<small class="required-field">*</small></label>
-              <input class="form-control num" type="text" name="client_npwpd" value="<?php if($client != null){echo $client->client_npwpd;}?>">
+              <input class="form-control num" type="text" name="client_npwpd" value="<?php if($client != null){echo $client->client_npwpd;}?>" <?php if ($this->session->userdata('role_id') != 0) {echo 'readonly';}; ?>>
             </div>
           </div>
         </div>
@@ -107,7 +107,7 @@
         </div>
         <div class="form-group">
           <label>Serial Number <small class="required-field">*</small></label>
-          <input class="form-control num" type="text" name="client_serial_number" value="<?php if($client != null){echo $client->client_serial_number;}?>">
+          <input class="form-control num" type="text" name="client_serial_number" value="<?php if($client != null){echo $client->client_serial_number;}?>" <?php if ($this->session->userdata('role_id') != 0) {echo 'readonly';}; ?>>
         </div>
         <div class="form-group">
           <label>Virtual Keyboard?</label><br>
