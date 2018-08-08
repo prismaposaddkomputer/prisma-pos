@@ -926,107 +926,214 @@ class Res_cashier extends MY_Restaurant {
 
     $this->load->library("EscPos.php");
 
-		try {
-  	  $connector = new Escpos\PrintConnectors\WindowsPrintConnector("POS-58");
-
-			$printer = new Escpos\Printer($connector);
-      $printer -> setJustification(Escpos\Printer::JUSTIFY_CENTER);
-      $printer -> text($client->client_brand);
-      $printer -> feed();
-      $printer -> text($client->client_street.','.$client->client_district);
-      $printer -> feed();
-      $printer -> text($client->client_city);
-      $printer -> feed();
-      $printer -> text('NPWP : '.$client->client_npwp);
-      $printer -> feed();
-      $printer -> text('TXS-'.$billing->tx_receipt_no);
-      $printer -> feed();
-      $printer -> text('--------------------------------');
-      $printer -> feed();
-      $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
-      $printer -> text(substr($billing->user_realname,0,12).' '.date_to_ind($billing->tx_date).' '.$billing->tx_time);
-      $printer -> feed();
-      $printer -> text('--------------------------------');
-      foreach ($billing->detail as $row) {
-        $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
-        $printer -> text($row->item_name);
+    if ($client->client_receipt_is_taxed == 1) {
+      try {
+        $connector = new Escpos\PrintConnectors\WindowsPrintConnector("POS-58");
+  
+        $printer = new Escpos\Printer($connector);
+        $printer -> setJustification(Escpos\Printer::JUSTIFY_CENTER);
+        $printer -> text($client->client_brand);
         $printer -> feed();
+        $printer -> text($client->client_street.','.$client->client_district);
+        $printer -> feed();
+        $printer -> text($client->client_city);
+        $printer -> feed();
+        $printer -> text('NPWP : '.$client->client_npwp);
+        $printer -> feed();
+        $printer -> text('TXS-'.$billing->tx_receipt_no);
+        $printer -> feed();
+        $printer -> text('--------------------------------');
+        $printer -> feed();
+        $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+        $printer -> text(substr($billing->user_realname,0,12).' '.date_to_ind($billing->tx_date).' '.$billing->tx_time);
+        $printer -> feed();
+        $printer -> text('--------------------------------');
+        foreach ($billing->detail as $row) {
+          $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+          $printer -> text($row->item_name);
+          $printer -> feed();
+          $printer -> setJustification(Escpos\Printer::JUSTIFY_RIGHT);
+          $printer -> text($row->tx_amount.' X '.num_to_price($row->item_price_after_tax).' = '.num_to_price($row->tx_subtotal_after_tax));
+          $printer -> feed();
+        };
+        $space_array = array(
+          strlen(num_to_price($billing->tx_total_after_tax)),
+          strlen(num_to_price($billing->tx_total_discount)),
+          strlen(num_to_price($billing->tx_total_tax)),
+          strlen(num_to_price($billing->tx_total_grand)),
+          strlen(num_to_price($billing->tx_payment)),
+          strlen(num_to_price($billing->tx_change))
+        );
+        $l_max = max($space_array);
+        $l_1 = $l_max - strlen(num_to_price($billing->tx_total_after_tax));
+        $s_1 = '';
+        for ($i=0; $i < $l_1; $i++) {
+          $s_1 .= ' ';
+        };
+        $l_2 = $l_max - strlen(num_to_price($billing->tx_total_discount));
+        $s_2 = '';
+        for ($i=0; $i < $l_2; $i++) {
+          $s_2 .= ' ';
+        };
+        $l_3 = $l_max - strlen(num_to_price($billing->tx_total_tax));
+        $s_3 = '';
+        for ($i=0; $i < $l_3; $i++) {
+          $s_3 .= ' ';
+        };
+        $l_4 = $l_max - strlen(num_to_price($billing->tx_total_grand));
+        $s_4 = '';
+        for ($i=0; $i < $l_4; $i++) {
+          $s_4 .= ' ';
+        };
         $printer -> setJustification(Escpos\Printer::JUSTIFY_RIGHT);
-        $printer -> text($row->tx_amount.' X '.num_to_price($row->item_price_after_tax).' = '.num_to_price($row->tx_subtotal_after_tax));
+        $printer -> text('--------------------------------');
+        $printer -> text('Subtotal = '.$s_1.num_to_price($billing->tx_total_after_tax));
         $printer -> feed();
-      };
-      $space_array = array(
-        strlen(num_to_price($billing->tx_total_before_tax)),
-        strlen(num_to_price($billing->tx_total_discount)),
-        strlen(num_to_price($billing->tx_total_tax)),
-        strlen(num_to_price($billing->tx_total_grand)),
-        strlen(num_to_price($billing->tx_payment)),
-        strlen(num_to_price($billing->tx_change))
-      );
-      $l_max = max($space_array);
-      $l_1 = $l_max - strlen(num_to_price($billing->tx_total_before_tax));
-      $s_1 = '';
-      for ($i=0; $i < $l_1; $i++) {
-        $s_1 .= ' ';
-      };
-      $l_2 = $l_max - strlen(num_to_price($billing->tx_total_discount));
-      $s_2 = '';
-      for ($i=0; $i < $l_2; $i++) {
-        $s_2 .= ' ';
-      };
-      $l_3 = $l_max - strlen(num_to_price($billing->tx_total_tax));
-      $s_3 = '';
-      for ($i=0; $i < $l_3; $i++) {
-        $s_3 .= ' ';
-      };
-      $l_4 = $l_max - strlen(num_to_price($billing->tx_total_grand));
-      $s_4 = '';
-      for ($i=0; $i < $l_4; $i++) {
-        $s_4 .= ' ';
-      };
-      $printer -> setJustification(Escpos\Printer::JUSTIFY_RIGHT);
-      $printer -> text('--------------------------------');
-      $printer -> text('Subtotal = '.$s_1.num_to_price($billing->tx_total_after_tax));
-      $printer -> feed();
-      $printer -> text('Diskon = '.$s_2.num_to_price($billing->tx_total_discount));
-      $printer -> feed();
-      $printer -> text('Pajak = '.$s_3.num_to_price($billing->tx_total_tax));
-      $printer -> feed();
-      $printer -> text('Total = '.$s_4.num_to_price($billing->tx_total_grand));
-      $printer -> feed(2);
-      $l_5 = $l_max - strlen(num_to_price($billing->tx_payment));
-      $s_5 = '';
-      for ($i=0; $i < $l_5; $i++) {
-        $s_5 .= ' ';
-      };
-      $printer -> text('Bayar = '.$s_5.num_to_price($billing->tx_payment));
-      $printer -> feed();
-      $l_6 = $l_max - strlen(num_to_price($billing->tx_change));
-      $s_6 = '';
-      for ($i=0; $i < $l_6; $i++) {
-        $s_6 .= ' ';
-      };
-      $printer -> text('Kembali = '.$s_6.num_to_price($billing->tx_change));
-      $printer -> feed(2);
-      if ($billing->buyget != null) {
-        $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
-        $printer -> text("Anda berhak mendapatkan :");
+        $printer -> text('Diskon = '.$s_2.num_to_price($billing->tx_total_discount));
         $printer -> feed();
-        foreach ($billing->buyget as $row) {
-          $printer -> text('- '.$row->item_name.' ('.$row->get_amount.')');
+        $printer -> text('Total = '.$s_4.num_to_price($billing->tx_total_grand));
+        $printer -> feed(2);
+        $l_5 = $l_max - strlen(num_to_price($billing->tx_payment));
+        $s_5 = '';
+        for ($i=0; $i < $l_5; $i++) {
+          $s_5 .= ' ';
+        };
+        $printer -> text('Bayar = '.$s_5.num_to_price($billing->tx_payment));
+        $printer -> feed();
+        $l_6 = $l_max - strlen(num_to_price($billing->tx_change));
+        $s_6 = '';
+        for ($i=0; $i < $l_6; $i++) {
+          $s_6 .= ' ';
+        };
+        $printer -> text('Kembali = '.$s_6.num_to_price($billing->tx_change));
+        $printer -> feed(2);
+        if ($billing->buyget != null) {
+          $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+          $printer -> text("Anda berhak mendapatkan :");
+          $printer -> feed();
+          foreach ($billing->buyget as $row) {
+            $printer -> text('- '.$row->item_name.' ('.$row->get_amount.')');
+            $printer -> feed();
+          }
           $printer -> feed();
         }
         $printer -> feed();
+        $printer -> text('HPP = '.$s_3.num_to_price($billing->tx_total_before_tax));
+        $printer -> feed();
+        $printer -> text('Pajak Restorant = '.$s_3.num_to_price($billing->tx_total_tax));
+        $printer -> feed();
+        $printer -> text('Terimakasih atas kunjungan anda.');
+        $printer -> feed(4);
+        $printer -> pulse(0, 120, 240);
+  
+        /* Close printer */
+        $printer -> close();
+      } catch (Exception $e) {
+        echo "Couldn't print to this printer: " . $e -> getMessage() . "\n";
       }
-      $printer -> text('Terimakasih atas kunjungan anda.');
-			$printer -> feed(4);
-			$printer -> pulse(0, 120, 240);
-
-			/* Close printer */
-			$printer -> close();
-		} catch (Exception $e) {
-			echo "Couldn't print to this printer: " . $e -> getMessage() . "\n";
-		}
+    }else{
+      try {
+        $connector = new Escpos\PrintConnectors\WindowsPrintConnector("POS-58");
+  
+        $printer = new Escpos\Printer($connector);
+        $printer -> setJustification(Escpos\Printer::JUSTIFY_CENTER);
+        $printer -> text($client->client_brand);
+        $printer -> feed();
+        $printer -> text($client->client_street.','.$client->client_district);
+        $printer -> feed();
+        $printer -> text($client->client_city);
+        $printer -> feed();
+        $printer -> text('NPWP : '.$client->client_npwp);
+        $printer -> feed();
+        $printer -> text('TXS-'.$billing->tx_receipt_no);
+        $printer -> feed();
+        $printer -> text('--------------------------------');
+        $printer -> feed();
+        $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+        $printer -> text(substr($billing->user_realname,0,12).' '.date_to_ind($billing->tx_date).' '.$billing->tx_time);
+        $printer -> feed();
+        $printer -> text('--------------------------------');
+        foreach ($billing->detail as $row) {
+          $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+          $printer -> text($row->item_name);
+          $printer -> feed();
+          $printer -> setJustification(Escpos\Printer::JUSTIFY_RIGHT);
+          $printer -> text($row->tx_amount.' X '.num_to_price($row->item_price_before_tax).' = '.num_to_price($row->tx_subtotal_before_tax));
+          $printer -> feed();
+        };
+        $space_array = array(
+          strlen(num_to_price($billing->tx_total_before_tax)),
+          strlen(num_to_price($billing->tx_total_discount)),
+          strlen(num_to_price($billing->tx_total_tax)),
+          strlen(num_to_price($billing->tx_total_grand)),
+          strlen(num_to_price($billing->tx_payment)),
+          strlen(num_to_price($billing->tx_change))
+        );
+        $l_max = max($space_array);
+        $l_1 = $l_max - strlen(num_to_price($billing->tx_total_before_tax));
+        $s_1 = '';
+        for ($i=0; $i < $l_1; $i++) {
+          $s_1 .= ' ';
+        };
+        $l_2 = $l_max - strlen(num_to_price($billing->tx_total_discount));
+        $s_2 = '';
+        for ($i=0; $i < $l_2; $i++) {
+          $s_2 .= ' ';
+        };
+        $l_3 = $l_max - strlen(num_to_price($billing->tx_total_tax));
+        $s_3 = '';
+        for ($i=0; $i < $l_3; $i++) {
+          $s_3 .= ' ';
+        };
+        $l_4 = $l_max - strlen(num_to_price($billing->tx_total_grand));
+        $s_4 = '';
+        for ($i=0; $i < $l_4; $i++) {
+          $s_4 .= ' ';
+        };
+        $printer -> setJustification(Escpos\Printer::JUSTIFY_RIGHT);
+        $printer -> text('--------------------------------');
+        $printer -> text('Subtotal = '.$s_1.num_to_price($billing->tx_total_before_tax));
+        $printer -> feed();
+        $printer -> text('Diskon = '.$s_2.num_to_price($billing->tx_total_discount));
+        $printer -> feed();
+        $printer -> text('Pajak = '.$s_3.num_to_price($billing->tx_total_tax));
+        $printer -> feed();
+        $printer -> text('Total = '.$s_4.num_to_price($billing->tx_total_grand));
+        $printer -> feed(2);
+        $l_5 = $l_max - strlen(num_to_price($billing->tx_payment));
+        $s_5 = '';
+        for ($i=0; $i < $l_5; $i++) {
+          $s_5 .= ' ';
+        };
+        $printer -> text('Bayar = '.$s_5.num_to_price($billing->tx_payment));
+        $printer -> feed();
+        $l_6 = $l_max - strlen(num_to_price($billing->tx_change));
+        $s_6 = '';
+        for ($i=0; $i < $l_6; $i++) {
+          $s_6 .= ' ';
+        };
+        $printer -> text('Kembali = '.$s_6.num_to_price($billing->tx_change));
+        $printer -> feed(2);
+        if ($billing->buyget != null) {
+          $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+          $printer -> text("Anda berhak mendapatkan :");
+          $printer -> feed();
+          foreach ($billing->buyget as $row) {
+            $printer -> text('- '.$row->item_name.' ('.$row->get_amount.')');
+            $printer -> feed();
+          }
+          $printer -> feed();
+        }
+        $printer -> text('Terimakasih atas kunjungan anda.');
+        $printer -> feed(4);
+        $printer -> pulse(0, 120, 240);
+  
+        /* Close printer */
+        $printer -> close();
+      } catch (Exception $e) {
+        echo "Couldn't print to this printer: " . $e -> getMessage() . "\n";
+      }
+    }
   }
 
 }
