@@ -12,8 +12,33 @@
           <input class="form-control keyboard" type="text" name="category_name" value="<?php if($category != null){echo $category->category_name;}?>">
         </div>
         <div class="form-group">
-          <label>Harga<small class="required-field">*</small></label>
-          <input class="form-control autonumeric num" type="text" name="category_price" value="<?php if($category != null){echo $category->category_price;}?>">
+          <label>Sudah Termasuk Pajak?<small class="required-field">*</small></label>
+          <br>
+          <?php if($category != null):?>
+									<?php if($category->status=="1"): ?>
+                      <input type="radio" name="status" value="1" id="rad" required checked="true" /> Sudah &nbsp &nbsp
+                      <input type="radio" name="status" value="0" id="rad" /> Belum
+                    
+                  <?php elseif($category->status=="0"): ?>
+                      <input type="radio" name="status" value="1" id="rad" required /> Sudah &nbsp &nbsp
+                      <input type="radio" name="status" value="0" id="rad" checked="true" /> Belum
+                      <?php EndIf; ?>
+                  <?php Else: ?>
+                      <input type="radio" name="status" value="1" id="rad" required /> Sudah &nbsp &nbsp
+                      <input type="radio" name="status" value="0" id="rad" /> Belum
+					<?php EndIf; ?>
+        </div>
+        <div class="form-group">
+          <label>Harga Sebelum Pajak<small class="required-field">*</small></label>
+          <input onchange="findBefore()" class="form-control autonumeric num" type="text" id="belum" name="before_tax" value="<?php if($category != null){echo num_to_price($category->before_tax);}?>">
+        </div>
+        <div class="form-group">
+          <label>Pajak<small class="required-field">*</small></label>
+          <input class="form-control" type="text" id="pajak" name="tax" readonly value="<?php if($category != null){echo num_to_price($category->tax);}?>">
+        </div>
+        <div class="form-group">
+          <label>Harga Setelah Pajak<small class="required-field">*</small></label>
+          <input onchange="findAfter()" class="form-control autonumeric num" type="text" id="sudah" name="after_tax" value="<?php if($category != null){echo num_to_price($category->after_tax);}?>">
         </div>
         <div class="form-group">
           <label>Keterangan<small class="required-field">*</small></label>
@@ -52,4 +77,39 @@
       }
     });
   })
+
+ $('[name=status]').change(function(){
+		if($(this).val()==1){
+			$('[name=before_tax]').prop('readonly',true);
+      $('[name=after_tax]').prop('readonly',false);
+     
+    }else{
+			$('[name=before_tax]').prop('readonly',false);
+      $('[name=after_tax]').prop('readonly',true);	
+		}
+	});
+
+  function findAfter(){
+    $('[name=before_tax]').prop('readonly',true);
+    var pajak=0;
+    var hasil=0;
+    var sudahx=ind_to_sys($('#sudah').val());
+    var sudah=parseFloat(sudahx);
+      hasil=(sudah*100)/110;
+      pajak=sudah-hasil;
+    $("#pajak").val(sys_to_ind(pajak.toFixed(0)));
+    $("#belum").val(sys_to_ind(hasil.toFixed(0)));
+  }
+
+   function findBefore(){
+    $('[name=after_tax]').prop('readonly',true);
+    var pajak=0;
+    var hasil=0;
+    var belumx=ind_to_sys($('#belum').val());
+    var belum=parseFloat(belumx);
+      pajak=(belum*10)/100;
+      hasil=belum+pajak;
+    $("#pajak").val(sys_to_ind(pajak.toFixed(0)));
+    $("#sudah").val(sys_to_ind(hasil.toFixed(0)));
+  }
 </script>

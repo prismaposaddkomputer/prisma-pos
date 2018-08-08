@@ -110,7 +110,7 @@
                             foreach($service as $t){
                               if($booking->service_id==$t->service_id){
                             ?>
-                            <input readonly="true" class="form-control" type="text" id="bea_service" name="bea_service" value="<?=$t->service_price?>">
+                            <input readonly="true" class="form-control" type="text" id="bea_service" name="bea_service" value="<?=num_to_price($t->service_price)?>">
             <?php 
                             }
                           }
@@ -123,7 +123,7 @@
                             
           </div>
           <div class="form-group">
-            <label>Biaya Kamar<small class="required-field">*</small></label>
+            <label>Biaya Kamar (Setelah Pajak)<small class="required-field">*</small></label>
             <?php
                         foreach($room as $t){
                           if($booking->room_id==$t->room_id){
@@ -132,7 +132,7 @@
                               foreach($tipe as $s){
                                 if($s->category_id==$t->category_id){
                                   ?>
-            <input readonly="true" class="form-control" type="text" id="bea_room" name="bea_room" value="<?=$s->category_price?>">
+                                <input readonly="true" class="form-control" type="text" id="bea_room" name="bea_room" value="<?=num_to_price($s->after_tax)?>">
                                   <?php
                                 }
                               }
@@ -144,7 +144,7 @@
                       ?>
           </div>
           <div class="form-group">
-            <label>Sub Total (Sebelum Pajak)<small class="required-field">*</small></label>
+            <label>Sub Total (Setelah Pajak)<small class="required-field">*</small></label>
             <input readonly="true" class="form-control" type="text" name="subtotal" id="subtotal" value="">
           </div>
           <div class="form-group">
@@ -160,7 +160,25 @@
             <label>Pajak Hotel (<?=$pajak->tax_ratio?>%)<small class="required-field">*</small></label>
             <input class="form-control" type="hidden" id="pajakx" value="<?=$pajak->tax_ratio?>">
             <input class="form-control" type="hidden" id="diskonx" value="0">
-            <input readonly="true" class="form-control" type="text" id="pajak" name="pajak">
+            <input readonly="true" class="form-control" type="hidden" value="" id="pajak" name="pajakxxxxx">
+            <?php
+                        foreach($room as $t){
+                          if($booking->room_id==$t->room_id){
+                            ?>
+                            <?php
+                              foreach($tipe as $s){
+                                if($s->category_id==$t->category_id){
+                                  ?>
+            <input readonly="true" class="form-control" type="text" id="bea_roomxx" name="pajak" value="<?=num_to_price($s->tax)?>">
+                                  <?php
+                                }
+                              }
+                            ?>
+                            
+                            <?php
+                          }
+                        }
+                      ?>
           </div>
           <div class="form-group">
             <label>Grand Total (Setelah Pajak)<small class="required-field">*</small></label>
@@ -168,7 +186,7 @@
           </div>
           <div class="form-group">
             <label>Bayar<small class="required-field">*</small></label>
-            <input class="form-control num" type="text" name="bayar" id="bayar" required>
+            <input class="form-control autonumeric num" type="text" name="bayar" id="bayar" required>
           </div>
           <div class="form-group">
             <label>Sisa<small class="required-field">*</small></label>
@@ -245,11 +263,11 @@
   }
 
   var tot_subtotal=0;
-  var bea_service = $("#bea_service");
-  var bea_room = $("#bea_room");
+  var bea_service = ind_to_sys($("#bea_service").val());
+  var bea_room = ind_to_sys($("#bea_room").val());
   var subtotal = $("#subtotal");
-  tot_subtotal=parseInt(bea_service.val())+parseInt(bea_room.val());
-  subtotal.val(tot_subtotal);
+  tot_subtotal=parseFloat(bea_service)+parseFloat(bea_room);
+  subtotal.val(sys_to_ind(tot_subtotal));
 
   var tot_pajak=0;
   var tot_diskon=0;
@@ -261,30 +279,14 @@
   var pajak = $("#pajak");
   var grand_total = $("#grand_total");
   if(diskonx==0){
-    tot_pajak=(tot_subtotal*pajakx)/100;
-    tot_grand=tot_subtotal+tot_pajak;
+    tot_grand=tot_subtotal;
   }else{
     tot_diskon=(tot_subtotal*diskonx)/100;
-    tot_pajak=(tot_subtotal*pajakx)/100;
-    tot_grand=(tot_subtotal-tot_diskon)+tot_pajak;
+    tot_grand=tot_subtotal-tot_diskon;
   }
   pajak.val(tot_pajak);
-  grand_total.val(tot_grand);
-
-  $("#bayar").change(function(){
-    var tot_sisa=0;
-    var bayar =parseInt($('#bayar').val());
-    var sisa=$("#sisa");
-    tot_sisa=bayar-tot_grand;
-    if (tot_sisa >= 0) {
-      sisa.val(tot_sisa);   
-    }else{
-      alert("Jumlah Pembayaran Pemesan, Kurang dari Total Pembayaran.");
-    }
-    
-  });
+  grand_total.val(sys_to_ind(tot_grand));
   
-
   $(function () {
     $('select[name="disc"]').change(function() {
         $('#diskonx').val($(this,':selected').val());
@@ -293,40 +295,44 @@
         var tot_diskons=0;
         var tot_grands=0;
         var tot_subtotals=0;
-        var bea_services = $("#bea_service");
-        var bea_rooms = $("#bea_room");
+        var bea_services = ind_to_sys($("#bea_service").val());
+        var bea_rooms = ind_to_sys($("#bea_room").val());
         var subtotals = $("#subtotal");
-        tot_subtotals=parseInt(bea_services.val())+parseInt(bea_rooms.val());
+        tot_subtotals=parseFloat(bea_services)+parseFloat(bea_rooms);
+        
 
         var diskonxs = parseInt($('#diskonx').val());
         var pajakxs =parseInt($('#pajakx').val());
         var pajaks = $("#pajak");
         var grand_totals = $("#grand_total");
         if(diskonxs==0){
-          tot_pajaks=(tot_subtotals*pajakxs)/100;
-          tot_grands=tot_subtotals+tot_pajaks;
+          tot_grands=tot_subtotals;
         }else{
           tot_diskons=(tot_subtotals*diskonxs)/100;
-          tot_pajaks=((tot_subtotals-tot_diskons)*pajakxs)/100;
-          tot_grands=(tot_subtotals-tot_diskons)+tot_pajaks;
+          tot_grands=tot_subtotals-tot_diskons;
         }
         pajaks.val(tot_pajaks);
-        grand_totals.val(tot_grands);
+        grand_totals.val(sys_to_ind(tot_grands));
         
-        $("#bayar").change(function(){
-          var tot_sisas=0;
-          var bayars =parseInt($('#bayar').val());
-          var sisas=$("#sisa");
-          tot_sisas=bayars-tot_grands;
-          if (tot_sisas >= 0) {
-            sisas.val(tot_sisas);   
-          }else{
-            alert("Jumlah Pembayaran Pemesan, Kurang dari Total Pembayaran.");
-          }
-        });
         
     })
   })
+
+  $("#bayar").change(function(){
+    var tot_sisa=0;
+    var bayarx=ind_to_sys($('#bayar').val());
+    var tot_grandsx=ind_to_sys($('#grand_total').val());
+    var bayar =parseFloat(bayarx);
+    var tot_grands =parseFloat(tot_grandsx);
+    var sisa=$("#sisa");
+    tot_sisa=bayar-tot_grands;
+    if (tot_sisa >= 0) {
+      sisa.val(sys_to_ind(tot_sisa));   
+    }else{
+      alert("Jumlah Pembayaran Pemesan, Kurang dari Total Pembayaran.");
+    }
+    
+  });
   
 
 </script>

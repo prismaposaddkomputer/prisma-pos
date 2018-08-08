@@ -128,12 +128,13 @@ class Hot_payment extends MY_Hotel {
   {
     $k= $this->input->post('bea_room');
     $p= $this->input->post('bea_service');
-    $subtotal = $k+$p; 
+    $subtotal = $this->input->post('subtotal'); 
     $disc = $this->input->post('disc');
     $pajak = $this->m_hot_booking->get_pajak();
 		$total = $this->input->post('grand_total');
     
-    $pajaks=$this->input->post('pajak');
+    $pajakx=$this->input->post('pajak');
+    $pajaks=price_to_num($pajakx);
 
     $bayar=$this->input->post('bayar');
     $sisa=$this->input->post('sisa');
@@ -141,12 +142,12 @@ class Hot_payment extends MY_Hotel {
    
 
 		$data = array(
-			'subtotal' => $subtotal,
-			'disc' => $disc,
-      'grand_total' => $total,
+			'subtotal' => price_to_num($subtotal),
+			'disc' => price_to_num($disc),
+      'grand_total' => price_to_num($total),
       'cashed' => 1,
-      'bayar' => $bayar,
-      'sisa' => $sisa
+      'bayar' => price_to_num($bayar),
+      'sisa' => price_to_num($sisa)
       );
       
     $id = $this->input->post('idx');
