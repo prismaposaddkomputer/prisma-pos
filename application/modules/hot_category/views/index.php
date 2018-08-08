@@ -39,7 +39,9 @@
               <th class="text-center" width="50">No</th>
               <th class="text-center" width="70">Aksi</th>
               <th class="text-center">Nama Tipe</th>
-              <th class="text-center">Harga</th>
+              <th class="text-center">Harga Sebelum Pajak</th>
+              <th class="text-center">Pajak Hotel (10%)</th>
+              <th class="text-center">Harga Setelah Pajak</th>
               <th class="text-center">Keterangan</th>
               <th class="text-center" width="80">Aktif</th>
             </tr>
@@ -55,8 +57,10 @@
                       <button class="btn btn-xs btn-danger" onclick="del('<?=$row->category_id?>');"><i class="fa fa-trash"></i></button>
                     <?php endif; ?>
                   </td>
-                  <td><?=$row->category_name?></td>
-                  <td><?php echo num_to_idr ($row->category_price) ?></td>
+                  <td><?=$row->category_name?></td> 
+                  <td><?=num_to_price($row->before_tax)?></td>
+                  <td><?=num_to_price($row->tax)?></td>
+                  <td><?=num_to_price($row->after_tax)?></td>
                   <td><?=$row->category_desc?></td>
                   <td class="text-center">
                     <?php if ($row->is_active == 1): ?>
