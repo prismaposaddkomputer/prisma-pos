@@ -16,6 +16,10 @@
           <input class="form-control num" type="number" min="0" max="100" name="diskon_price" value="<?php if($diskon != null){echo $diskon->diskon_price;}?>">
         </div>
         <div class="form-group">
+          <label>Sebesar (nominal)<small class="required-field"></small></label>
+          <input class="form-control autonumeric num" type="text" name="nominal" value="<?php if($diskon != null){echo $diskon->nominal;}?>">
+        </div>
+        <div class="form-group">
           <label>Aktif?</label><br>
           <input class="" type="checkbox" name="is_active" value="1" <?php if($diskon != null){if($diskon->is_active == 1){echo 'checked';}}else{echo 'checked';}?>>
         </div>

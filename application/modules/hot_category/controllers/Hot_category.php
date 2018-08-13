@@ -98,6 +98,7 @@ class Hot_category extends MY_Hotel {
     }
     $data['category_price']=price_to_num($data['category_price']);
     $data['before_tax']=price_to_num($data['before_tax']);
+    $data['service_hotel']=price_to_num($data['service_hotel']);
     $data['tax']=price_to_num($data['tax']);
     $data['after_tax']=price_to_num($data['after_tax']);
     $this->m_hot_category->insert($data);
@@ -121,6 +122,7 @@ class Hot_category extends MY_Hotel {
     }
     $data['category_price']=price_to_num($data['category_price']);
     $data['before_tax']=price_to_num($data['before_tax']);
+    $data['service_hotel']=price_to_num($data['service_hotel']);
     $data['tax']=price_to_num($data['tax']);
     $data['after_tax']=price_to_num($data['after_tax']);
     $this->m_hot_category->update($id,$data);

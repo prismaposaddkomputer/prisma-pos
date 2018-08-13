@@ -40,6 +40,7 @@
               <th class="text-center" width="70">Aksi</th>
               <th class="text-center">Nama Tipe</th>
               <th class="text-center">Harga Sebelum Pajak</th>
+              <th class="text-center">Service Hotel (10%)</th>
               <th class="text-center">Pajak Hotel (10%)</th>
               <th class="text-center">Harga Setelah Pajak</th>
               <th class="text-center">Keterangan</th>
@@ -59,6 +60,7 @@
                   </td>
                   <td><?=$row->category_name?></td> 
                   <td><?=num_to_price($row->before_tax)?></td>
+                  <td><?=num_to_price($row->service_hotel)?></td>
                   <td><?=num_to_price($row->tax)?></td>
                   <td><?=num_to_price($row->after_tax)?></td>
                   <td><?=$row->category_desc?></td>

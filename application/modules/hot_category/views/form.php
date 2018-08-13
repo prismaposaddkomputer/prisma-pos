@@ -33,7 +33,11 @@
           <input onchange="findBefore()" class="form-control autonumeric num" type="text" id="belum" name="before_tax" value="<?php if($category != null){echo num_to_price($category->before_tax);}?>">
         </div>
         <div class="form-group">
-          <label>Pajak<small class="required-field">*</small></label>
+          <label>Service Hotel<small class="required-field">*</small></label>
+          <input class="form-control" type="text" id="service_hotel" name="service_hotel" readonly value="<?php if($category != null){echo num_to_price($category->service_hotel);}?>">
+        </div>
+        <div class="form-group">
+          <label>Pajak Hotel<small class="required-field">*</small></label>
           <input class="form-control" type="text" id="pajak" name="tax" readonly value="<?php if($category != null){echo num_to_price($category->tax);}?>">
         </div>
         <div class="form-group">
@@ -93,11 +97,13 @@
     $('[name=before_tax]').prop('readonly',true);
     var pajak=0;
     var hasil=0;
+    var service_hotel=0;
     var sudahx=ind_to_sys($('#sudah').val());
     var sudah=parseFloat(sudahx);
-      hasil=(sudah*100)/110;
-      pajak=sudah-hasil;
+      hasil=(sudah*100)/120;
+      pajak=(sudah*10)/120;
     $("#pajak").val(sys_to_ind(pajak.toFixed(0)));
+    $("#service_hotel").val(sys_to_ind(pajak.toFixed(0)));
     $("#belum").val(sys_to_ind(hasil.toFixed(0)));
   }
 
@@ -105,11 +111,13 @@
     $('[name=after_tax]').prop('readonly',true);
     var pajak=0;
     var hasil=0;
+    var service_hotel=0;
     var belumx=ind_to_sys($('#belum').val());
     var belum=parseFloat(belumx);
       pajak=(belum*10)/100;
-      hasil=belum+pajak;
+      hasil=belum+pajak+pajak;
     $("#pajak").val(sys_to_ind(pajak.toFixed(0)));
+    $("#service_hotel").val(sys_to_ind(pajak.toFixed(0)));
     $("#sudah").val(sys_to_ind(hasil.toFixed(0)));
   }
 </script>
