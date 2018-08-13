@@ -40,6 +40,7 @@
               <th class="text-center" width="70">Aksi</th>
               <th class="text-center">Nama Diskon</th>
               <th class="text-center">Sebesar (%)</th>
+              <th class="text-center">Sebesar (nominal)</th>
               <th class="text-center" width="80">Status</th>
             </tr>
           </thead>
@@ -56,6 +57,7 @@
                   </td>
                   <td><?=$row->diskon_name?></td>
                   <td align="center"><?=$row->diskon_price?>%</td>
+                  <td align="center">Rp <?=num_to_price($row->nominal)?></td>
                   <td class="text-center">
                     <?php if ($row->is_active == 1): ?>
                       <i class="fa fa-check cl-success"></i>

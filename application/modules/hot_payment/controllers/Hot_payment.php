@@ -230,15 +230,15 @@ class Hot_payment extends MY_Hotel {
     $pajak = $this->m_hot_booking->get_pajak();
     $payment = $this->m_hot_payment->get_payment();
     $booking = $this->m_hot_booking->get_by_id($id);
-
-  
+    $client = $this->m_hot_client->get_all();
+    $ket=$client->client_receipt_is_taxed;
+    
 
     $this->load->library("EscPos.php");
 
-		try {
-  	  $connector = new Escpos\PrintConnectors\WindowsPrintConnector("POS-58");
-
-			$printer = new Escpos\Printer($connector);
+    try {
+      $connector = new Escpos\PrintConnectors\WindowsPrintConnector("POS-58");
+      $printer = new Escpos\Printer($connector);
       $printer -> setJustification(Escpos\Printer::JUSTIFY_CENTER);
       $printer -> text($client->client_brand);
       $printer -> feed();
@@ -306,7 +306,7 @@ class Hot_payment extends MY_Hotel {
           $printer -> text($s->category_name.' - '.$t->room_name.' (1) X ');
           $printer -> feed();
           $printer -> setJustification(Escpos\Printer::JUSTIFY_RIGHT);
-          $printer -> text(num_to_price($s->category_price).' = '.num_to_price($s->category_price));
+          $printer -> text(num_to_price($s->before_tax).' = '.num_to_price($s->category_price));
           $printer -> feed();
       }}}};
       $printer -> text('--------------------------------');
@@ -330,7 +330,7 @@ class Hot_payment extends MY_Hotel {
             $d=$t->disc;
             $bayar=$t->bayar;
             $sisa=$t->sisa;
-            $tot=($s*$d)/100;
+            $tot=($s*$d)/100; 
             $p=(($s-$tot)*$pajak['tax_ratio'])/100;
             $grand=($s-$tot)+$p;
 
@@ -350,14 +350,15 @@ class Hot_payment extends MY_Hotel {
       $printer -> feed(2);
     
       $printer -> text('Terimakasih atas kunjungan anda.');
-			$printer -> feed(4);
-			$printer -> pulse(0, 120, 240);
+      $printer -> feed(4);
+      $printer -> pulse(0, 120, 240);
 
-			/* Close printer */
-			$printer -> close();
-		} catch (Exception $e) {
-			echo "Couldn't print to this printer: " . $e -> getMessage() . "\n";
+      /* Close printer */
+      $printer -> close();
+    } catch (Exception $e) {
+      echo "Couldn't print to this printer: " . $e -> getMessage() . "\n";
     }
+		
     
     redirect(base_url('hot_payment/index'));
   }

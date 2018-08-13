@@ -11,7 +11,7 @@
           <label>Nama Tamu<small class="required-field">*</small></label>
           <input class="form-control keyboard" type="text" name="guest_name" value="<?php if($guest != null){echo $guest->guest_name;}?>">
         </div>
-        <div class="form-group">
+        <div class="form-group" style="display:none;">
           <label>No Identitas<small class="required-field">*</small></label>
           <input class="form-control num" type="number" name="guest_number" value="<?php if($guest != null){echo $guest->guest_number;}?>">
         </div>
@@ -48,7 +48,7 @@
 							<?php EndIf; ?>	
           </div>
         <div class="form-group">
-          <label>No Telepon<small class="required-field">*</small></label>
+          <label>No Telepon<small class="required-field"></small></label>
           <input class="form-control num" type="number" name="guest_phone" value="<?php if($guest != null){echo $guest->guest_phone;}?>">
         </div>
         <div class="form-group" style="display:none;">
