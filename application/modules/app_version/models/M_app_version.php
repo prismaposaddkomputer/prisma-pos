@@ -269,6 +269,57 @@ class M_app_version extends CI_Model {
           ADD COLUMN `client_receipt_is_taxed` TINYINT(1) NOT NULL DEFAULT '1' AFTER `client_keyboard_status`
         ");
         break;
+
+      case '2.1':
+        //menambah kolom di hot_category
+        $this->db->query("ALTER TABLE hot_category
+          ADD COLUMN IF NOT EXISTS
+          service_hotel int(155)
+        ");
+        // menambah kolom di hot service
+        $this->db->query("ALTER TABLE hot_service
+          ADD COLUMN IF NOT EXISTS
+          status int(155)
+        ");  
+        $this->db->query("ALTER TABLE hot_service
+          ADD COLUMN IF NOT EXISTS
+          before_tax int(155)
+        ");
+        $this->db->query("ALTER TABLE hot_service
+          ADD COLUMN IF NOT EXISTS
+          before_tax int(155)
+        ");
+        $this->db->query("ALTER TABLE hot_service
+          ADD COLUMN IF NOT EXISTS
+          after_tax int(155)
+        ");
+        $this->db->query("ALTER TABLE hot_service
+          ADD COLUMN IF NOT EXISTS
+          service_hotel int(155)
+        ");
+        // Merubah nama modul
+        $this->db->query("UPDATE `prisma_pos`.`hot_module` 
+          SET `module_name`='Biaya Lain-lain' 
+          WHERE  `module_id`='02.03'
+        ");
+        // nambah kolom
+        $this->db->query("ALTER TABLE hot_diskon
+          ADD COLUMN IF NOT EXISTS
+          nominal int(155)
+        ");
+        // ganti tipe data guest
+        $this->db->query("ALTER TABLE `hot_guest`
+        	ALTER `guest_phone` DROP DEFAULT
+        ");
+        $this->db->query("ALTER TABLE `hot_guest`
+          CHANGE COLUMN `guest_phone` `guest_phone` VARCHAR(50) NOT NULL AFTER `guest_number`
+        ");
+        // nambah kolom hot payment
+        $this->db->query("ALTER TABLE hot_payment
+          ADD COLUMN IF NOT EXISTS
+          status int(155)
+        ");
+        break;
     }
 
     //insert new update history
@@ -302,6 +353,7 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"1.8","version_release"=>"2018-08-07 12:12:00"));
     array_push($version, array("version_now"=>"1.9","version_release"=>"2018-08-07 14:12:00"));
     array_push($version, array("version_now"=>"2.0","version_release"=>"2018-08-08 11:15:00"));
+    array_push($version, array("version_now"=>"2.1","version_release"=>"2018-08-13 12:12:00"));
 
     foreach ($version as $key => $val) {
       //check version
