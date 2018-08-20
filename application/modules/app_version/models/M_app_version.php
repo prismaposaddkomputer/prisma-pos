@@ -444,6 +444,8 @@ class M_app_version extends CI_Model {
         break;
 
       case '2.2.5':
+        //Drop table
+        $this->db->query("DROP TABLE IF EXISTS `hot_room_type`;");
         // Room Type
         $this->db->query("CREATE TABLE IF NOT EXISTS `hot_room_type` (
           `room_type_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -458,6 +460,102 @@ class M_app_version extends CI_Model {
           `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
           PRIMARY KEY (`room_type_id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=latin1");
+        break;
+      
+      case '2.2.6':
+        // Drop table
+        $this->db->query("DROP TABLE IF EXISTS `hot_room`");
+        // Make new table
+        $this->db->query("CREATE TABLE IF NOT EXISTS `hot_room` (
+          `room_id` int(11) NOT NULL AUTO_INCREMENT,
+          `room_type_id` int(11) NOT NULL DEFAULT '0',
+          `room_no` varchar(10) NOT NULL DEFAULT '0',
+          `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          `created_by` varchar(128) NOT NULL DEFAULT 'System',
+          `updated` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+          `updated_by` varchar(128) NOT NULL DEFAULT 'System',
+          `is_active` tinyint(1) NOT NULL DEFAULT '1',
+          `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+          PRIMARY KEY (`room_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=latin1;");
+        break;
+
+      case '2.2.7':
+        //Drop table
+        $this->db->query("DROP TABLE IF EXISTS `hot_member`");
+        // make new table
+        $this->db->query("CREATE TABLE IF NOT EXISTS `hot_member` (
+          `member_id` int(11) NOT NULL,
+          `member_name` varchar(128) NOT NULL,
+          `member_phone` varchar(128) NOT NULL,
+          `member_address` varchar(255) NOT NULL,
+          `member_id_type` tinyint(1) NOT NULL DEFAULT '1',
+          `member_id_no` varchar(20) NOT NULL,
+          `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          `created_by` varchar(50) NOT NULL DEFAULT 'System',
+          `updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+          `updated_by` varchar(20) NOT NULL DEFAULT 'System',
+          `is_active` tinyint(1) NOT NULL DEFAULT '1',
+          `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+          PRIMARY KEY (`member_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=latin1");
+        break;
+
+      case '2.2.8':
+        //Drop table
+        $this->db->query("DROP TABLE IF EXISTS `hot_guest`");
+        // make new table
+        $this->db->query("CREATE TABLE IF NOT EXISTS `hot_guest` (
+          `guest_id` int(11) NOT NULL,
+          `guest_name` varchar(128) NOT NULL,
+          `guest_phone` varchar(128) NOT NULL,
+          `guest_address` varchar(255) NOT NULL,
+          `guest_id_type` tinyint(1) NOT NULL DEFAULT '1',
+          `guest_id_no` varchar(20) NOT NULL,
+          `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          `created_by` varchar(50) NOT NULL DEFAULT 'System',
+          `updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+          `updated_by` varchar(20) NOT NULL DEFAULT 'System',
+          `is_active` tinyint(1) NOT NULL DEFAULT '1',
+          `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+          PRIMARY KEY (`guest_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=latin1");
+        break;
+
+      case '2.2.9':
+        //Drop table
+        $this->db->query("DROP TABLE IF EXISTS `hot_service`");
+        // make new table
+        $this->db->query("CREATE TABLE IF NOT EXISTS `hot_service` (
+          `service_id` int(11) NOT NULL AUTO_INCREMENT,
+          `service_name` varchar(128) NOT NULL,
+          `service_charge` float(10,2) NOT NULL,
+          `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          `created_by` varchar(32) NOT NULL DEFAULT 'System',
+          `updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+          `updated_by` varchar(32) NOT NULL DEFAULT 'System',
+          `is_active` tinyint(1) NOT NULL DEFAULT '1',
+          `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+          PRIMARY KEY (`service_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT");
+        break;
+
+      case '2.3.0':
+        //Drop table
+        $this->db->query("DROP TABLE IF EXISTS `hot_extra`");
+        // make new table
+        $this->db->query("CREATE TABLE IF NOT EXISTS `hot_extra` (
+          `extra_id` int(11) NOT NULL,
+          `extra_name` varchar(128) NOT NULL,
+          `extra_charge` float(10,2) NOT NULL,
+          `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          `created_by` varchar(50) NOT NULL DEFAULT 'System',
+          `updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+          `updated_by` varchar(20) NOT NULL DEFAULT 'System',
+          `is_active` tinyint(1) NOT NULL DEFAULT '1',
+          `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+          PRIMARY KEY (`extra_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT");
         break;
     }
 
@@ -504,7 +602,17 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"2.2.4","version_release"=>"2018-08-21 10:20:00"));
     // Table hot_room_type
     array_push($version, array("version_now"=>"2.2.5","version_release"=>"2018-08-21 10:20:00"));
-    
+    // Table hot_room
+    array_push($version, array("version_now"=>"2.2.6","version_release"=>"2018-08-21 14:45:00"));
+    // table hot_member
+    array_push($version, array("version_now"=>"2.2.7","version_release"=>"2018-08-21 14:56:00"));
+    // table hot_guest
+    array_push($version, array("version_now"=>"2.2.8","version_release"=>"2018-08-21 14:56:00"));
+    // table hot_service
+    array_push($version, array("version_now"=>"2.2.9","version_release"=>"2018-08-21 15:13:00"));
+    // table hot_extra
+    array_push($version, array("version_now"=>"2.3.0","version_release"=>"2018-08-21 15:20:00"));
+
     foreach ($version as $key => $val) {
       //check version
       $check = null;
