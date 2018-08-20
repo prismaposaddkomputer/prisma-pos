@@ -1,19 +1,25 @@
+<?php
+	function digit($inp = 0)
+	{
+	    return number_format($inp, 0, ',', '.');
+	}
+?>
 <div class="content-header">
   <h4><i class="fa fa-<?=$access->module_icon?>"></i> <?=$title?></h4>
 </div>
 <div class="content-body">
   <div class="row">
     <div class="col-md-4">
-      <a class="btn btn-info" href="<?=base_url()?>hot_room/form"><i class="fa fa-plus"></i> Tambah Kamar</a>
+      <a class="btn btn-info" href="<?=base_url()?>hot_room_type/form"><i class="fa fa-plus"></i> Tambah Tipe Kamar</a>
     </div>
     <div class="col-md-4 pull-right">
-      <form class="" action="<?=base_url()?>hot_room/index" method="post">
+      <form class="" action="<?=base_url()?>hot_room_type/index" method="post">
         <div class="form-group">
           <div class="input-group">
             <input type="text" class="form-control" name="search_term" placeholder="Pencarian..." value="<?php echo $this->session->userdata('search_term');?>">
             <span class="input-group-btn">
               <button class="btn btn-info" type="submit"><i class="fa fa-search"></i></button>
-              <a class="btn btn-default" href="<?=base_url()?>hot_room/reset_search"><i class="fa fa-refresh"></i></a>
+              <a class="btn btn-default" href="<?=base_url()?>hot_room_type/reset_search"><i class="fa fa-refresh"></i></a>
             </span>
           </div>
         </div>
@@ -32,36 +38,36 @@
             <tr>
               <th class="text-center" width="50">No</th>
               <th class="text-center" width="70">Aksi</th>
-              <th class="text-center">Tipe Kamar</th>
-              <th class="text-center">Nomor</th>
-              <th class="text-center" width="80">Status</th>
+              <th class="text-center">Nama Tipe Kamar</th>
+              <th class="text-center" width="150">Harga</th>
+              <th class="text-center" width="80">Aktif</th>
             </tr>
           </thead>
           <tbody>
-            <?php if ($room != null): ?>
-              <?php $i=1;foreach ($room as $row): ?>
+            <?php if ($room_type != null): ?>
+              <?php $i=1;foreach ($room_type as $row): ?>
                 <tr>
                   <td class="text-center"><?=$this->uri->segment('3')+$i++?></td>
                   <td class="text-center">
-                    <?php if ($row->room_id != 0 ): ?>
-                      <a class="btn btn-xs btn-warning" href="<?=base_url()?>hot_room/form/<?=$row->room_id?>"><i class="fa fa-pencil"></i></a>
-                      <button class="btn btn-xs btn-danger" onclick="del('<?=$row->room_id?>');"><i class="fa fa-trash"></i></button>
+                    <?php if ($row->room_type_id > 0 ): ?>
+                      <a class="btn btn-xs btn-warning" href="<?=base_url()?>hot_room_type/form/<?=$row->room_type_id?>"><i class="fa fa-pencil"></i></a>
+                      <button class="btn btn-xs btn-danger" onclick="del('<?=$row->room_type_id?>');"><i class="fa fa-trash"></i></button>
                     <?php endif; ?>
                   </td>
-                  <td><?=$row->room_type_name?></td>
-                  <td><?=$row->room_no?></td>
+                  <td><?=$row->room_type_name?></td> 
+                  <td><?=num_to_idr($row->room_type_charge)?></td> 
                   <td class="text-center">
                     <?php if ($row->is_active == 1): ?>
-                        <small class='label label-success'>Tersedia</small>
+                      <i class="fa fa-check cl-success"></i>
                     <?php else: ?>
-                        <small class='label label-danger'>Booked</small>
+                      <i class="fa fa-close cl-danger"></i>
                     <?php endif; ?>
                   </td>
                 </tr>
               <?php endforeach; ?>
             <?php else: ?>
               <tr>
-                <td class="text-center" colspan="7">Tidak ada data!</td>
+                <td class="text-center" colspan="5">Tidak ada data!</td>
               </tr>
             <?php endif; ?>
           </tbody>
@@ -100,7 +106,7 @@
     $("#modal_delete").modal('show');
 
     $("#btn_delete_action").click(function () {
-      window.location = "<?=base_url()?>hot_room/delete/"+id;
+      window.location = "<?=base_url()?>hot_room_type/delete/"+id;
     })
   }
 </script>

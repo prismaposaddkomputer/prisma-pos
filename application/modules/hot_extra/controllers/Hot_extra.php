@@ -70,7 +70,7 @@ class Hot_extra extends MY_Hotel {
     $data['access'] = $this->access;
     if ($id == null) {
       if ($this->access->_create == 1) {
-        $data['title'] = 'Tambah Extra';
+        $data['title'] = 'Tambah Data Extra';
         $data['action'] = 'insert';
         $data['extra_type'] = null;
         $this->view('hot_extra/form', $data);
@@ -79,7 +79,7 @@ class Hot_extra extends MY_Hotel {
       }
     }else{
       if ($this->access->_update == 1) {
-        $data['title'] = 'Ubah Jenis Biaya';
+        $data['title'] = 'Ubah Data Extra';
         $data['extra_type'] = $this->m_hot_extra->get_by_id($id);
         $data['action'] = 'update';
         $this->view('hot_extra/form', $data);

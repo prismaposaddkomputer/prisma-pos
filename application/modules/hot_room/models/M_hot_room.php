@@ -7,13 +7,15 @@ class M_hot_room extends CI_Model {
   {
 		if($search_term == null){
 			return $this->db
-				->where('is_deleted','0')
+				->where('hot_room.is_deleted','0')
+				->join('hot_room_type','hot_room.room_type_id = hot_room_type.room_type_id')
 				->get('hot_room',$number,$offset)
 				->result();
 		}else{
 			return $this->db
 				->like('room_name',$search_term,'both')
-				->where('is_deleted','0')
+				->where('hot_room.is_deleted','0')
+				->join('hot_room_type','hot_room.room_type_id = hot_room_type.room_type_id')
 				->get('hot_room',$number,$offset)
 				->result();
 		}

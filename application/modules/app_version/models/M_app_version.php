@@ -444,7 +444,20 @@ class M_app_version extends CI_Model {
         break;
 
       case '2.2.5':
-        # code...
+        // Room Type
+        $this->db->query("CREATE TABLE IF NOT EXISTS `hot_room_type` (
+          `room_type_id` int(11) NOT NULL AUTO_INCREMENT,
+          `room_type_name` varchar(128) NOT NULL,
+          `room_type_charge` float(10,2) NOT NULL,
+          `room_type_desc` varchar(128) NOT NULL,
+          `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          `created_by` varchar(128) NOT NULL DEFAULT 'System',
+          `updated` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+          `updated_by` varchar(128) NOT NULL,
+          `is_active` tinyint(1) NOT NULL DEFAULT '1',
+          `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+          PRIMARY KEY (`room_type_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=latin1");
         break;
     }
 
@@ -490,6 +503,7 @@ class M_app_version extends CI_Model {
     // Table hot_charge_type
     array_push($version, array("version_now"=>"2.2.4","version_release"=>"2018-08-21 10:20:00"));
     // Table hot_room_type
+    array_push($version, array("version_now"=>"2.2.5","version_release"=>"2018-08-21 10:20:00"));
     
     foreach ($version as $key => $val) {
       //check version
