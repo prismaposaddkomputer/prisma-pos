@@ -8,31 +8,20 @@
       <div class="col-md-6">
         <input class="form-control" type="hidden" name="room_id" value="<?php if($room != null){echo $room->room_id;}?>">
         <div class="form-group">
-          <label>Nama Kamar<small class="required-field">*</small></label>
-          <input class="form-control keyboard" type="text" name="room_name" value="<?php if($room != null){echo $room->room_name;}?>">
-        </div>
-        <div class="form-group">
           <label>Tipe Kamar<small class="required-field">*</small></label>
-          <select name="category_id" class="form-control" required>
-								<option></option>
-								<?php foreach($category as $t): ?>
-                <?php if($room != null):?>
-									<?php if($t->category_id==$room->category_id): ?>
-										<option value="<?php echo $t->category_id;?>" selected><?php echo $t->category_name;?></option>
-                    <?php EndIf; ?>
-                  <?php Else: ?>
-										<option value="<?php echo $t->category_id;?>"><?php echo $t->category_name;?></option>
-									<?php EndIf; ?>	
-								<?php EndForeach; ?>	
+          <select name="room_type_id" class="form-control select2" required>
+            <?php foreach ($room_type as $row) { ?>
+              <option value="<?=$row->room_type_id?>" <?php if($row->room_type_id == $room->room_type_id){echo 'selected';} ?>><?=$row->room_type_name;?></option>
+            <?php } ?>
 					</select>
         </div>
-        <div class="form-group">
-          <label>Nomor Kamar<small class="required-field">*</small></label>
-          <input class="form-control num" type="number" name="room_number" value="<?php if($room != null){echo $room->room_number;}?>">
-        </div>
-        <div class="form-group">
-          <label>Lantai<small class="required-field">*</small></label>
-          <input class="form-control num" type="number" name="room_floor" value="<?php if($room != null){echo $room->room_floor;}?>">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Nomor Kamar<small class="required-field">*</small></label>
+              <input class="form-control num" name="room_no" value="<?php if($room != null){echo $room->room_no;}?>">
+            </div>
+          </div>
         </div>
         <div class="form-group" style="display:none;">
           <label>Aktif?</label><br>
