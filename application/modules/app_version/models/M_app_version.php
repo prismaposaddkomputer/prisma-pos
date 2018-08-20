@@ -320,6 +320,132 @@ class M_app_version extends CI_Model {
           status int(155)
         ");
         break;
+
+      case '2.2.1':
+        // Make a new module for hotel
+        // Empty table
+        $this->db->query("DELETE FROM `hot_module`");
+        // Populate new menus
+        $this->db->query("INSERT INTO `hot_module` (`module_id`, `module_parent`, `module_name`, `module_folder`, `module_controller`, `module_url`, `module_icon`, `created`, `created_by`, `updated`, `updated_by`, `is_actived`, `is_deleted`) VALUES
+          ('01', '', 'Dashboard', 'hot_dashboard', 'hot_dashboard', 'index', 'dashboard', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0),
+          ('02', '', 'Master', '', '', '#', 'cubes', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0),
+          ('02.01', '02', 'Jenis Biaya', 'hot_charge_type', 'hot_charge_type', 'index', '', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0),
+          ('02.02', '02', 'Tipe Kamar', 'hot_room_type', 'hot_room_type', 'index', '', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0),
+          ('02.03', '02', 'Kamar', 'hot_room', 'hot_room', 'index', '', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0),
+          ('02.04', '02', 'Member', 'hot_member', 'hot_member', 'index', '', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0),
+          ('02.05', '02', 'Tamu', 'hot_guest', 'hot_guest', 'index', '', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0),
+          ('02.06', '02', 'Pelayanan', 'hot_service', 'hot_service', 'index', '', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0),
+          ('02.07', '02', 'Ekstra', 'hot_extra', 'hot_extra', 'index', '', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0),
+          ('02.08', '02', 'FnB', 'hot_fnb', 'hot_fnb', 'index', '', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0),
+          ('02.09', '02', 'Diskon', 'hot_discount', 'hot_discount', 'index', '', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0),
+          ('03', '', 'Reservasi', 'hot_reservation', 'hot_reservation', 'index', 'address-book-o', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0),
+          ('04', '', 'Laporan', '', '', '#', 'files-o', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0),
+          ('04.01', '04', 'Laporan Reservasi (semua)', 'hot_report_reservation', 'hot_report_reservation', 'index', '', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0),
+          ('04.02', '04', 'Laporan Reservasi  (resepsionis)', 'hot_report_receptionist', 'hot_report_receptionist', 'index', '', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0),
+          ('04.03', '04', 'Laporan Pembayaran', 'hot_report_payment', 'hot_report_payment', 'index', '', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0),
+          ('04.04', '04', 'Laporan Piutang', 'hot_report_credit', 'hot_report_credit', 'index', '', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0),
+          ('99', '', 'Pengaturan', '', '', '#', 'gears', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0),
+          ('99.01', '99', 'Modul', 'hot_module', 'hot_module', 'index', '', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0),
+          ('99.02', '99', 'Role', 'hot_role', 'hot_role', 'index', '', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0),
+          ('99.03', '99', 'Pengguna', 'hot_user', 'hot_user', 'index', '', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0),
+          ('99.04', '99', 'Hak Akses', 'hot_permission', 'hot_permission', 'index', '', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0),
+          ('99.05', '99', 'Client', 'hot_client', 'hot_client', 'index', '', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0)
+        ");
+        break;
+
+      case '2.2.2':
+        // Set permission for hotel role
+        // Empty table
+        $this->db->query("DELETE FROM `hot_permission`");
+        // Reset autoincrement
+        $this->db->query("ALTER TABLE `hot_permission` AUTO_INCREMENT=1");
+        // Insert rule
+        $this->db->query("INSERT INTO `hot_permission` (`permission_id`, `role_id`, `module_id`, `_create`, `_read`, `_update`, `_delete`, `created_by`) VALUES
+          (NULL, 0, '01', 1, 1, 1, 1, 'System'),
+          (NULL, 0, '02', 1, 1, 1, 1, 'System'),
+          (NULL, 0, '02.01', 1, 1, 1, 1, 'System'),
+          (NULL, 0, '02.02', 1, 1, 1, 1, 'System'),
+          (NULL, 0, '02.03', 1, 1, 1, 1, 'System'),
+          (NULL, 0, '02.04', 1, 1, 1, 1, 'System'),
+          (NULL, 0, '02.05', 1, 1, 1, 1, 'System'),
+          (NULL, 0, '02.06', 1, 1, 1, 1, 'System'),
+          (NULL, 0, '02.07', 1, 1, 1, 1, 'System'),
+          (NULL, 0, '02.08', 1, 1, 1, 1, 'System'),
+          (NULL, 0, '02.09', 1, 1, 1, 1, 'System'),
+          (NULL, 0, '03', 1, 1, 1, 1, 'System'),
+          (NULL, 0, '04', 1, 1, 1, 1, 'System'),
+          (NULL, 0, '04.01', 1, 1, 1, 1, 'System'),
+          (NULL, 0, '04.02', 1, 1, 1, 1, 'System'),
+          (NULL, 0, '04.03', 1, 1, 1, 1, 'System'),
+          (NULL, 0, '04.04', 1, 1, 1, 1, 'System'),
+          (NULL, 0, '99', 1, 1, 1, 1, 'System'),
+          (NULL, 0, '99.01', 1, 1, 1, 1, 'System'),
+          (NULL, 0, '99.02', 1, 1, 1, 1, 'System'),
+          (NULL, 0, '99.03', 1, 1, 1, 1, 'System'),
+          (NULL, 0, '99.04', 1, 1, 1, 1, 'System'),
+          (NULL, 0, '99.05', 1, 1, 1, 1, 'System'),
+          (NULL, 1, '01', 1, 1, 1, 1, 'System'),
+          (NULL, 1, '02', 1, 1, 1, 1, 'System'),
+          (NULL, 1, '02.01', 1, 1, 1, 1, 'System'),
+          (NULL, 1, '02.02', 1, 1, 1, 1, 'System'),
+          (NULL, 1, '02.03', 1, 1, 1, 1, 'System'),
+          (NULL, 1, '02.04', 1, 1, 1, 1, 'System'),
+          (NULL, 1, '02.05', 1, 1, 1, 1, 'System'),
+          (NULL, 1, '02.06', 1, 1, 1, 1, 'System'),
+          (NULL, 1, '02.07', 1, 1, 1, 1, 'System'),
+          (NULL, 1, '02.08', 1, 1, 1, 1, 'System'),
+          (NULL, 1, '02.09', 1, 1, 1, 1, 'System'),
+          (NULL, 1, '03', 1, 1, 1, 1, 'System'),
+          (NULL, 1, '04', 1, 1, 1, 1, 'System'),
+          (NULL, 1, '04.01', 1, 1, 1, 1, 'System'),
+          (NULL, 1, '04.02', 1, 1, 1, 1, 'System'),
+          (NULL, 1, '04.03', 1, 1, 1, 1, 'System'),
+          (NULL, 1, '04.04', 1, 1, 1, 1, 'System'),
+          (NULL, 1, '99', 1, 1, 1, 1, 'System'),
+          (NULL, 1, '99.03', 1, 1, 1, 1, 'System'),
+          (NULL, 1, '99.05', 1, 1, 1, 1, 'System'),
+          (NULL, 3, '01', 1, 1, 1, 1, 'System'),
+          (NULL, 3, '03', 1, 1, 1, 1, 'System')
+        ");
+        break;
+
+      case '2.2.3':
+        // Delete column 
+        $this->db->query("ALTER TABLE `hot_client`
+          DROP COLUMN `client_receipt_is_taxed`");
+        // Add new column
+        $this->db->query("ALTER TABLE `hot_client`
+	        ADD COLUMN `client_is_taxed` TINYINT(1) NOT NULL DEFAULT '1' AFTER `client_logo`");
+        break;
+
+      case '2.2.4':
+        // Create table charge type
+        $this->db->query("CREATE TABLE IF NOT EXISTS `hot_charge_type` (
+            `charge_type_id` int(11) NOT NULL AUTO_INCREMENT,
+            `charge_type_code` varchar(15) NOT NULL,
+            `charge_type_name` varchar(128) NOT NULL,
+            `charge_type_ratio` float(10,2) NOT NULL DEFAULT '0.00',
+            `charge_type_desc` varchar(128) NOT NULL,
+            `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            `created_by` varchar(128) NOT NULL DEFAULT 'System',
+            `updated` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+            `updated_by` varchar(128) NOT NULL DEFAULT 'System',
+            `is_active` tinyint(1) NOT NULL DEFAULT '1',
+            `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+            PRIMARY KEY (`charge_type_id`)
+          ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1"
+        );
+        // Empty table
+        $this->db->query("DELETE FROM `hot_charge_type`");
+        // insert table
+        $this->db->query("INSERT INTO `hot_charge_type` (`charge_type_id`, `charge_type_code`, `charge_type_name`, `charge_type_ratio`, `charge_type_desc`) VALUES
+          (1, '1.1.1.01.05', 'Pajak Hotel', 10.00, 'Pajak Daerah'),
+          (2, 'SRV', 'Servis Hotel', 10.00, 'Biaya Servis')");
+        break;
+
+      case '2.2.5':
+        # code...
+        break;
     }
 
     //insert new update history
@@ -354,7 +480,17 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"1.9","version_release"=>"2018-08-07 14:12:00"));
     array_push($version, array("version_now"=>"2.0","version_release"=>"2018-08-08 11:15:00"));
     array_push($version, array("version_now"=>"2.1","version_release"=>"2018-08-13 12:12:00"));
-
+    // Repairing hotel module
+    // Make new module
+    array_push($version, array("version_now"=>"2.2.1","version_release"=>"2018-08-18 09:00:00"));
+    // Set permission for certain role
+    array_push($version, array("version_now"=>"2.2.2","version_release"=>"2018-08-20 09:00:00"));
+    // Change table client_receipt_is_taxed to client_is_taxed
+    array_push($version, array("version_now"=>"2.2.3","version_release"=>"2018-08-21 09:40:00"));
+    // Table hot_charge_type
+    array_push($version, array("version_now"=>"2.2.4","version_release"=>"2018-08-21 10:20:00"));
+    // Table hot_room_type
+    
     foreach ($version as $key => $val) {
       //check version
       $check = null;
