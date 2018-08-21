@@ -10,7 +10,7 @@
 <div class="content-body">
   <div class="row">
     <div class="col-md-4">
-      <a class="btn btn-info" href="<?=base_url()?>hot_room_type/form"><i class="fa fa-plus"></i> Tambah Tipe Kamar</a>
+      <a class="btn btn-info" href="<?=base_url()?>hot_room_type/form"><i class="fa fa-plus"></i> Tambah Tipe Kamar (Kategori Kamar)</a>
     </div>
     <div class="col-md-4 pull-right">
       <form class="" action="<?=base_url()?>hot_room_type/index" method="post">
@@ -38,14 +38,18 @@
             <tr>
               <th class="text-center" width="50">No</th>
               <th class="text-center" width="70">Aksi</th>
-              <th class="text-center">Nama Tipe Kamar</th>
+              <th class="text-center">Nama Tipe Kamar (Kategori Kamar)</th>
+              <th class="text-center" width="150">Jumlah Kamar</th>
               <th class="text-center" width="150">Harga</th>
               <th class="text-center" width="80">Aktif</th>
             </tr>
           </thead>
           <tbody>
             <?php if ($room_type != null): ?>
-              <?php $i=1;foreach ($room_type as $row): ?>
+              <?php 
+              $i=1;foreach ($room_type as $row): 
+              $number_of_room = $this->m_hot_room_type->get_list_room_by_type_id($row->room_type_id);
+              ?>
                 <tr>
                   <td class="text-center"><?=$this->uri->segment('3')+$i++?></td>
                   <td class="text-center">
@@ -55,6 +59,7 @@
                     <?php endif; ?>
                   </td>
                   <td><?=$row->room_type_name?></td> 
+                  <td align="center"><?=$number_of_room?></td> 
                   <td><?=num_to_idr($row->room_type_charge)?></td> 
                   <td class="text-center">
                     <?php if ($row->is_active == 1): ?>

@@ -4,13 +4,13 @@
 <div class="content-body">
   <div class="row">
     <div class="col-md-4">
-      <a class="btn btn-info" href="<?=base_url()?>hot_room/form"><i class="fa fa-plus"></i> Tambah Kamar</a>
+      <!-- <a class="btn btn-info" href="<?=base_url()?>hot_room/form"><i class="fa fa-plus"></i> Tambah Kamar</a> -->
     </div>
     <div class="col-md-4 pull-right">
       <form class="" action="<?=base_url()?>hot_room/index" method="post">
         <div class="form-group">
           <div class="input-group">
-            <input type="text" class="form-control" name="search_term" placeholder="Pencarian..." value="<?php echo $this->session->userdata('search_term');?>">
+            <input type="text" class="form-control keyboard" name="search_term" placeholder="Pencarian..." value="<?php echo $this->session->userdata('search_term');?>">
             <span class="input-group-btn">
               <button class="btn btn-info" type="submit"><i class="fa fa-search"></i></button>
               <a class="btn btn-default" href="<?=base_url()?>hot_room/reset_search"><i class="fa fa-refresh"></i></a>
@@ -32,7 +32,8 @@
             <tr>
               <th class="text-center" width="50">No</th>
               <th class="text-center" width="70">Aksi</th>
-              <th class="text-center">Tipe Kamar</th>
+              <th class="text-center" width="380">Nama Kamar</th>
+              <th class="text-center">Tipe Kamar (Kategori Kamar)</th>
               <th class="text-center">Nomor</th>
               <th class="text-center" width="80">Status</th>
             </tr>
@@ -48,8 +49,9 @@
                       <button class="btn btn-xs btn-danger" onclick="del('<?=$row->room_id?>');"><i class="fa fa-trash"></i></button>
                     <?php endif; ?>
                   </td>
-                  <td><?=$row->room_type_name?></td>
-                  <td><?=$row->room_no?></td>
+                  <td><?=$row->room_name?></td>
+                  <td align="center"><?=$row->room_type_name?></td>
+                  <td align="center"><?=$row->room_no?></td>
                   <td class="text-center">
                     <?php if ($row->is_active == 1): ?>
                         <small class='label label-success'>Tersedia</small>
