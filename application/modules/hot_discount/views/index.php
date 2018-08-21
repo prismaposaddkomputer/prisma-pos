@@ -10,19 +10,16 @@
 <div class="content-body">
   <div class="row">
     <div class="col-md-4">
-      <a class="btn btn-info" href="<?=base_url()?>hot_charge_type/form"><i class="fa fa-plus"></i> Tambah Jenis Biaya</a>
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalInformation">
-        <i class="fa fa-question"></i> Informasi
-      </button>
+      <a class="btn btn-info" href="<?=base_url()?>hot_discount/form"><i class="fa fa-plus"></i> Tambah Diskon</a>
     </div>
     <div class="col-md-4 pull-right">
-      <form class="" action="<?=base_url()?>hot_charge_type/index" method="post">
+      <form class="" action="<?=base_url()?>hot_discount/index" method="post">
         <div class="form-group">
           <div class="input-group">
             <input type="text" class="form-control keyboard" name="search_term" placeholder="Pencarian..." value="<?php echo $this->session->userdata('search_term');?>">
             <span class="input-group-btn">
               <button class="btn btn-info" type="submit"><i class="fa fa-search"></i></button>
-              <a class="btn btn-default" href="<?=base_url()?>hot_charge_type/reset_search"><i class="fa fa-refresh"></i></a>
+              <a class="btn btn-default" href="<?=base_url()?>hot_discount/reset_search"><i class="fa fa-refresh"></i></a>
             </span>
           </div>
         </div>
@@ -41,27 +38,34 @@
             <tr>
               <th class="text-center" width="50">No</th>
               <th class="text-center" width="70">Aksi</th>
-              <th class="text-center">Nama Jenis Biaya</th>
-              <th class="text-center">Rasio</th>
+              <th class="text-center" width="500">Nama Diskon</th>
+              <th class="text-center" width="150">Tipe Diskon</th>
+              <th class="text-center" width="150">Jumlah</th>
               <th class="text-center" width="80">Aktif</th>
             </tr>
           </thead>
           <tbody>
-            <?php if ($charge_type != null): ?>
-              <?php $i=1;foreach ($charge_type as $row): ?>
+            <?php if ($discount != null): ?>
+              <?php $i=1;foreach ($discount as $row): ?>
                 <tr>
                   <td class="text-center"><?=$this->uri->segment('3')+$i++?></td>
                   <td class="text-center">
-                    <?php if($row->charge_type_id == 2): ?>
-                      <a class="btn btn-xs btn-warning" href="<?=base_url()?>hot_charge_type/form/<?=$row->charge_type_id?>"><i class="fa fa-pencil"></i></a>
-                    <?php endif; ?>
-                    <?php if ($row->charge_type_id > 2 ): ?>
-                      <a class="btn btn-xs btn-warning" href="<?=base_url()?>hot_charge_type/form/<?=$row->charge_type_id?>"><i class="fa fa-pencil"></i></a>
-                      <button class="btn btn-xs btn-danger" onclick="del('<?=$row->charge_type_id?>');"><i class="fa fa-trash"></i></button>
-                    <?php endif; ?>
+                      <a class="btn btn-xs btn-warning" href="<?=base_url()?>hot_discount/form/<?=$row->discount_id?>"><i class="fa fa-pencil"></i></a>
+                      <button class="btn btn-xs btn-danger" onclick="del('<?=$row->discount_id?>');"><i class="fa fa-trash"></i></button>
                   </td>
-                  <td><?=$row->charge_type_name?></td> 
-                  <td class="text-center"><?=$row->charge_type_ratio?>%</td>
+                  <td><?=$row->discount_name?></td> 
+                  <?php if ($row->discount_type == '1'): ?>
+                    <td class="text-center">Persentase (%)</td>
+                  <?php elseif($row->discount_type == '2'): ?>
+                    <td class="text-center">Nominal (Rp)</td>
+                  <?php endif; ?>
+
+                  <?php if ($row->discount_type == '1'): ?>
+                    <td class="text-center"><?=$row->discount_amount?> %</td>
+                  <?php elseif($row->discount_type == '2'): ?>
+                    <td><?=num_to_idr($row->discount_amount)?></td>
+                  <?php endif; ?>
+
                   <td class="text-center">
                     <?php if ($row->is_active == 1): ?>
                       <i class="fa fa-check cl-success"></i>
@@ -73,7 +77,7 @@
               <?php endforeach; ?>
             <?php else: ?>
               <tr>
-                <td class="text-center" colspan="4">Tidak ada data!</td>
+                <td class="text-center" colspan="6">Tidak ada data!</td>
               </tr>
             <?php endif; ?>
           </tbody>
@@ -112,25 +116,7 @@
     $("#modal_delete").modal('show');
 
     $("#btn_delete_action").click(function () {
-      window.location = "<?=base_url()?>hot_charge_type/delete/"+id;
+      window.location = "<?=base_url()?>hot_discount/delete/"+id;
     })
   }
 </script>
-
-<!-- Modal -->
-<div class="modal fade" id="modalInformation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Informasi Menu Jenis Biaya</h4>
-      </div>
-      <div class="modal-body" style="font-size: 15px;">
-        Menu ini digunakan untuk memanajemen jenis biaya seperti Pajak Hotel dll
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> <b>Tutup</b></button>
-      </div>
-    </div>
-  </div>
-</div>

@@ -32,7 +32,7 @@
         </div>
         <div class="form-group">
           <label>Dekripsi</label>
-          <textarea class="form-control" name="charge_type_desc"><?php if($charge_type != null){echo $charge_type->charge_type_desc;}?></textarea>
+          <textarea class="form-control keyboard" name="charge_type_desc"><?php if($charge_type != null){echo $charge_type->charge_type_desc;}?></textarea>
         </div>
         <div class="form-group">
           <label>Aktif?</label><br>

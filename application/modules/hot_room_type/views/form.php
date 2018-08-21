@@ -13,16 +13,29 @@
         </div>
         <h4>Tarif Kamar</h4>
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-5">
             <div class="form-group">
-              <label>Tarif Dasar <small class="required-field">*</small></label>
-                <input class="form-control autonumeric keyboard" type="text" name="room_type_charge" value="<?php if($room_type != null){echo $room_type->room_type_charge;}else{echo '0';}?>">
+              <label>Nominal (Rp) <small class="required-field">*</small></label>
+              <div class="input-group">
+                  <div class="input-group-addon"><b>Rp</b></div>
+                  <input class="form-control autonumeric num" type="text" name="room_type_charge" value="<?php if($room_type != null){echo $room_type->room_type_charge;}else{echo '0';}?>">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2">&nbsp;</div>
+          <div class="col-md-5">
+            <div class="form-group">
+              <label>Jumlah Kamar <small class="required-field">*</small></label>
+              <div class="input-group">
+                  <input class="form-control autonumeric num" type="text" name="room_type_charge" value="<?php if($room_type != null){echo $room_type->room_type_charge;}else{echo '0';}?>">
+                  <div class="input-group-addon"><b>Kamar</b></div>
+              </div>
             </div>
           </div>
         </div>
         <div class="form-group">
           <label>Dekripsi</label>
-          <textarea class="form-control" name="room_type_desc"><?php if($room_type != null){echo $room_type->room_type_desc;}?></textarea>
+          <textarea class="form-control keyboard" name="room_type_desc"><?php if($room_type != null){echo $room_type->room_type_desc;}?></textarea>
         </div>
         <div class="form-group">
           <label>Aktif?</label><br>

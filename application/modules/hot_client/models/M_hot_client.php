@@ -85,7 +85,8 @@ class M_hot_client extends CI_Model {
                 // $bagi_height = $height / 4;
                 //
                 $width_akhir = 300;
-                $height_akhir = ($width_akhir / $width_normal) * $height_normal;
+                // $height_akhir = ($width_akhir / $width_normal) * $height_normal;
+                $height_akhir = 150;
                 //Compress Image
                 $config['image_library']='gd2';
                 $config['source_image'] = $gbr['upload_data']['full_path'];
