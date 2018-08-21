@@ -10,16 +10,16 @@
 <div class="content-body">
   <div class="row">
     <div class="col-md-4">
-      <a class="btn btn-info" href="<?=base_url()?>hot_service/form"><i class="fa fa-plus"></i> Tambah Pelayanan Kamar</a>
+      <a class="btn btn-info" href="<?=base_url()?>hot_discount/form"><i class="fa fa-plus"></i> Tambah Diskon</a>
     </div>
     <div class="col-md-4 pull-right">
-      <form class="" action="<?=base_url()?>hot_service/index" method="post">
+      <form class="" action="<?=base_url()?>hot_discount/index" method="post">
         <div class="form-group">
           <div class="input-group">
             <input type="text" class="form-control keyboard" name="search_term" placeholder="Pencarian..." value="<?php echo $this->session->userdata('search_term');?>">
             <span class="input-group-btn">
               <button class="btn btn-info" type="submit"><i class="fa fa-search"></i></button>
-              <a class="btn btn-default" href="<?=base_url()?>hot_service/reset_search"><i class="fa fa-refresh"></i></a>
+              <a class="btn btn-default" href="<?=base_url()?>hot_discount/reset_search"><i class="fa fa-refresh"></i></a>
             </span>
           </div>
         </div>
@@ -38,24 +38,34 @@
             <tr>
               <th class="text-center" width="50">No</th>
               <th class="text-center" width="70">Aksi</th>
-              <th class="text-center">Nama Pelayanan Kamar</th>
-              <th class="text-center" width="150">Harga</th>
-              <th class="text-center" width="80">Status</th>
+              <th class="text-center" width="500">Nama Diskon</th>
+              <th class="text-center" width="150">Tipe Diskon</th>
+              <th class="text-center" width="150">Jumlah</th>
+              <th class="text-center" width="80">Aktif</th>
             </tr>
           </thead>
           <tbody>
-            <?php if ($service != null): ?>
-              <?php $i=1;foreach ($service as $row): ?>
+            <?php if ($discount != null): ?>
+              <?php $i=1;foreach ($discount as $row): ?>
                 <tr>
                   <td class="text-center"><?=$this->uri->segment('3')+$i++?></td>
                   <td class="text-center">
-                    <?php if ($row->service_id != 0 ): ?>
-                      <a class="btn btn-xs btn-warning" href="<?=base_url()?>hot_service/form/<?=$row->service_id?>"><i class="fa fa-pencil"></i></a>
-                      <button class="btn btn-xs btn-danger" onclick="del('<?=$row->service_id?>');"><i class="fa fa-trash"></i></button>
-                    <?php endif; ?>
+                      <a class="btn btn-xs btn-warning" href="<?=base_url()?>hot_discount/form/<?=$row->discount_id?>"><i class="fa fa-pencil"></i></a>
+                      <button class="btn btn-xs btn-danger" onclick="del('<?=$row->discount_id?>');"><i class="fa fa-trash"></i></button>
                   </td>
-                  <td><?=$row->service_name?></td>
-                  <td><?php echo num_to_idr ($row->service_charge) ?></td>
+                  <td><?=$row->discount_name?></td> 
+                  <?php if ($row->discount_type == '1'): ?>
+                    <td class="text-center">Persentase (%)</td>
+                  <?php elseif($row->discount_type == '2'): ?>
+                    <td class="text-center">Nominal (Rp)</td>
+                  <?php endif; ?>
+
+                  <?php if ($row->discount_type == '1'): ?>
+                    <td class="text-center"><?=$row->discount_amount?> %</td>
+                  <?php elseif($row->discount_type == '2'): ?>
+                    <td><?=num_to_idr($row->discount_amount)?></td>
+                  <?php endif; ?>
+
                   <td class="text-center">
                     <?php if ($row->is_active == 1): ?>
                       <i class="fa fa-check cl-success"></i>
@@ -67,7 +77,7 @@
               <?php endforeach; ?>
             <?php else: ?>
               <tr>
-                <td class="text-center" colspan="5">Tidak ada data!</td>
+                <td class="text-center" colspan="6">Tidak ada data!</td>
               </tr>
             <?php endif; ?>
           </tbody>
@@ -106,7 +116,7 @@
     $("#modal_delete").modal('show');
 
     $("#btn_delete_action").click(function () {
-      window.location = "<?=base_url()?>hot_service/delete/"+id;
+      window.location = "<?=base_url()?>hot_discount/delete/"+id;
     })
   }
 </script>

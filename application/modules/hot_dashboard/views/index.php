@@ -99,7 +99,7 @@
                   <td class="text-center">
                     <?php if ($row->cashed == 1): ?>
                         <?php if ($row->id != 0 ): ?>
-                          <a class="btn btn-xs btn-warning" href="<?=base_url()?>hot_payment/struk/<?=$row->booking_id?>"><i class="fa fa-print"></i></a>
+                          <a class="btn btn-xs btn-primary" href="<?=base_url()?>hot_payment/struk/<?=$row->booking_id?>"><i class="fa fa-print"></i></a>
                           
                         <?php endif; ?>
                     <?php else: ?>

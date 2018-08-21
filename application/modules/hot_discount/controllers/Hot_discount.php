@@ -1,58 +1,58 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Hot_service extends MY_Hotel {
+class Hot_discount extends MY_Hotel {
 
-  var $access, $service_id;
+  var $access, $discount_id;
 
   function __construct(){
     parent::__construct();
-    if($this->session->userdata('menu') != 'hot_service'){
-      $this->session->set_userdata(array('menu' => 'hot_service'));
+    if($this->session->userdata('menu') != 'hot_discount'){
+      $this->session->set_userdata(array('menu' => 'hot_discount'));
       $this->session->unset_userdata('search_term');
     }
     $this->load->model('app_config/m_hot_config');
 
     $this->role_id = $this->session->userdata('role_id');
-    $this->module_controller = 'hot_service';
+    $this->module_controller = 'hot_discount';
     $this->access = $this->m_hot_config->get_permission($this->role_id, $this->module_controller);
 
-    $this->load->model('m_hot_service');
+    $this->load->model('m_hot_discount');
   }
 
 	public function index()
   {
     if ($this->access->_read == 1) {
       $data['access'] = $this->access;
-      $data['title'] = 'Manajemen Pelayanan Kamar';
+      $data['title'] = 'Manajemen Diskon';
 
       if($this->input->post('search_term')){
         $search_term = $this->input->post('search_term');
         $this->session->set_userdata(array('search_term' => $search_term));
       }
 
-      $config['base_url'] = base_url().'hot_service/index/';
+      $config['base_url'] = base_url().'hot_discount/index/';
       $config['per_page'] = 10;
 
       $from = $this->uri->segment(3);
 
       if($this->session->userdata('search_term') == null){
-        $num_rows = $this->m_hot_service->num_rows();
+        $num_rows = $this->m_hot_discount->num_rows();
 
         $config['total_rows'] = $num_rows;
         $this->pagination->initialize($config);
 
-        $data['service'] = $this->m_hot_service->get_list($config['per_page'],$from,$search_term = null);
+        $data['discount'] = $this->m_hot_discount->get_list($config['per_page'],$from,$search_term = null);
       }else{
         $search_term = $this->session->userdata('search_term');
-        $num_rows = $this->m_hot_service->num_rows($search_term);
+        $num_rows = $this->m_hot_discount->num_rows($search_term);
         $config['total_rows'] = $num_rows;
         $this->pagination->initialize($config);
 
-        $data['service'] = $this->m_hot_service->get_list($config['per_page'],$from,$search_term);
+        $data['discount'] = $this->m_hot_discount->get_list($config['per_page'],$from,$search_term);
       }
 
-      $this->view('hot_service/index',$data);
+      $this->view('hot_discount/index',$data);
     } else {
       redirect(base_url().'app_error/error/403');
     }
@@ -62,7 +62,7 @@ class Hot_service extends MY_Hotel {
   public function reset_search()
   {
     $this->session->unset_userdata('search_term');
-    redirect(base_url().'hot_service/index');
+    redirect(base_url().'hot_discount/index');
   }
 
   public function form($id = null)
@@ -70,19 +70,19 @@ class Hot_service extends MY_Hotel {
     $data['access'] = $this->access;
     if ($id == null) {
       if ($this->access->_create == 1) {
-        $data['title'] = 'Tambah Pelayanan Kamar';
+        $data['title'] = 'Tambah Data Extra';
         $data['action'] = 'insert';
-        $data['service'] = null;
-        $this->view('hot_service/form', $data);
+        $data['discount'] = null;
+        $this->view('hot_discount/form', $data);
       } else {
         redirect(base_url().'app_error/error/403');
       }
     }else{
       if ($this->access->_update == 1) {
-        $data['title'] = 'Ubah Pelayanan Kamar';
-        $data['service'] = $this->m_hot_service->get_by_id($id);
+        $data['title'] = 'Ubah Data Extra';
+        $data['discount'] = $this->m_hot_discount->get_by_id($id);
         $data['action'] = 'update';
-        $this->view('hot_service/form', $data);
+        $this->view('hot_discount/form', $data);
       } else {
         redirect(base_url().'app_error/error/403');
       }
@@ -96,38 +96,42 @@ class Hot_service extends MY_Hotel {
     if(!isset($data['is_active'])){
       $data['is_active'] = 0;
     }
-    $data['service_charge']=price_to_num($data['service_charge']);
-    $this->m_hot_service->insert($data);
+    //
+    $data['discount_amount'] = price_to_num($data['discount_amount']);
+    //
+    $this->m_hot_discount->insert($data);
     $this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil ditambahkan!</div>');
-    redirect(base_url().'hot_service/index');
+    redirect(base_url().'hot_discount/index');
   }
 
   public function edit($id)
   {
-    $data['service']= $this->m_hot_service->get_specific($id);
-    $this->load->view('hot_service/update', $data);
+    $data['discount']= $this->m_hot_discount->get_specific($id);
+    $this->load->view('hot_discount/update', $data);
   }
 
   public function update()
   {
     $data = $_POST;
-    $id = $data['service_id'];
+    $id = $data['discount_id'];
     $data['updated_by'] = $this->session->userdata('user_realname');
     if(!isset($data['is_active'])){
       $data['is_active'] = 0;
     }
-    $data['service_charge']=price_to_num($data['service_charge']);
-    $this->m_hot_service->update($id,$data);
+    //
+    $data['discount_amount'] = price_to_num($data['discount_amount']);
+    //
+    $this->m_hot_discount->update($id,$data);
     $this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil diubah!</div>');
-    redirect(base_url().'hot_service/index');
+    redirect(base_url().'hot_discount/index');
   }
 
   public function delete($id)
   {
     if ($this->access->_delete == 1) {
-      $this->m_hot_service->delete($id);
+      $this->m_hot_discount->delete($id);
       $this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil dihapus!</div>');
-      redirect(base_url().'hot_service/index');
+      redirect(base_url().'hot_discount/index');
     } else {
       redirect(base_url().'app_error/error/403');
     }

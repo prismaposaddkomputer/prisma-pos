@@ -1,3 +1,9 @@
+<?php
+  function digit($inp = 0)
+  {
+      return number_format($inp, 0, ',', '.');
+  }
+?>
 <div class="content-header">
   <h4><i class="fa fa-<?=$access->module_icon?>"></i> <?=$title?></h4>
 </div>

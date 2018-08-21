@@ -11,12 +11,15 @@
   <div class="row">
     <div class="col-md-4">
       <a class="btn btn-info" href="<?=base_url()?>hot_charge_type/form"><i class="fa fa-plus"></i> Tambah Jenis Biaya</a>
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalInformation">
+        <i class="fa fa-question"></i> Informasi
+      </button>
     </div>
     <div class="col-md-4 pull-right">
       <form class="" action="<?=base_url()?>hot_charge_type/index" method="post">
         <div class="form-group">
           <div class="input-group">
-            <input type="text" class="form-control" name="search_term" placeholder="Pencarian..." value="<?php echo $this->session->userdata('search_term');?>">
+            <input type="text" class="form-control keyboard" name="search_term" placeholder="Pencarian..." value="<?php echo $this->session->userdata('search_term');?>">
             <span class="input-group-btn">
               <button class="btn btn-info" type="submit"><i class="fa fa-search"></i></button>
               <a class="btn btn-default" href="<?=base_url()?>hot_charge_type/reset_search"><i class="fa fa-refresh"></i></a>
@@ -113,3 +116,21 @@
     })
   }
 </script>
+
+<!-- Modal -->
+<div class="modal fade" id="modalInformation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Informasi Menu Jenis Biaya</h4>
+      </div>
+      <div class="modal-body" style="font-size: 15px;">
+        Menu ini digunakan untuk memanajemen jenis biaya seperti Pajak Hotel dll
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> <b>Tutup</b></button>
+      </div>
+    </div>
+  </div>
+</div>
