@@ -545,7 +545,7 @@ class M_app_version extends CI_Model {
         $this->db->query("DROP TABLE IF EXISTS `hot_extra`");
         // make new table
         $this->db->query("CREATE TABLE IF NOT EXISTS `hot_extra` (
-          `extra_id` int(11) NOT NULL,
+          `extra_id` int(11) NOT NULL AUTO_INCREMENT,
           `extra_name` varchar(128) NOT NULL,
           `extra_charge` float(10,2) NOT NULL,
           `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -556,6 +556,25 @@ class M_app_version extends CI_Model {
           `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
           PRIMARY KEY (`extra_id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT");
+        break;
+
+      case '2.3.1':
+        //Drop table
+        $this->db->query("DROP TABLE IF EXISTS `hot_discount`");
+        // make new table
+        $this->db->query("CREATE TABLE IF NOT EXISTS `hot_discount` (
+          `discount_id` int(11) NOT NULL AUTO_INCREMENT,
+          `discount_name` varchar(128) NOT NULL,
+          `discount_type` tinyint(1) NOT NULL DEFAULT '1',
+          `discount_amount` float(10,2) NOT NULL,
+          `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          `created_by` varchar(50) NOT NULL DEFAULT 'System',
+          `updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+          `updated_by` varchar(20) NOT NULL DEFAULT 'System',
+          `is_active` tinyint(1) NOT NULL DEFAULT '1',
+          `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+          PRIMARY KEY (`discount_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;");
         break;
     }
 
@@ -612,6 +631,8 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"2.2.9","version_release"=>"2018-08-21 15:13:00"));
     // table hot_extra
     array_push($version, array("version_now"=>"2.3.0","version_release"=>"2018-08-21 15:20:00"));
+    // table hot_discount
+    array_push($version, array("version_now"=>"2.3.1","version_release"=>"2018-08-22 08:30:00"));
 
     foreach ($version as $key => $val) {
       //check version
