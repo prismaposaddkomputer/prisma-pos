@@ -80,7 +80,7 @@ class M_hot_room_type extends CI_Model {
     $room_no = $hot_room['room_no'];
     //
     for ($i=0; $i < $room_no ; $i++) { 
-    	$hot_room['room_id'] = $last_id.str_pad($i+1, 1, '0', STR_PAD_LEFT);
+    	$hot_room['room_id'] = $last_id.str_pad($i+1, 2, '0', STR_PAD_LEFT);
     	$hot_room['room_type_id'] = $last_id;
     	$hot_room['room_name'] = $hot_room_type['room_type_name'].' - '.str_pad($i+1, 2, '0', STR_PAD_LEFT);
     	$hot_room['room_no'] = str_pad($i+1, 1, '0', STR_PAD_LEFT);

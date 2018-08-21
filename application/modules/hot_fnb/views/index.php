@@ -10,7 +10,7 @@
 <div class="content-body">
   <div class="row">
     <div class="col-md-4">
-      <a class="btn btn-info" href="<?=base_url()?>hot_fnb/form"><i class="fa fa-plus"></i> Tambah F&B</a>
+      <a class="btn btn-info" href="<?=base_url()?>hot_fnb/form"><i class="fa fa-plus"></i> Tambah FnB</a>
     </div>
     <div class="col-md-4 pull-right">
       <form class="" action="<?=base_url()?>hot_fnb/index" method="post">
@@ -38,7 +38,7 @@
             <tr>
               <th class="text-center" width="50">No</th>
               <th class="text-center" width="70">Aksi</th>
-              <th class="text-center">Nama Food and Beverage (F&B)</th>
+              <th class="text-center">Nama Food and Beverage (FnB)</th>
               <th class="text-center" width="150">Harga</th>
               <th class="text-center" width="80">Aktif</th>
             </tr>

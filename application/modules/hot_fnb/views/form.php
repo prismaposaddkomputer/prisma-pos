@@ -8,7 +8,7 @@
       <div class="col-md-6">
         <input class="form-control" type="hidden" name="fnb_id" value="<?php if($fnb_type != null){echo $fnb_type->fnb_id;}?>">
         <div class="form-group">
-          <label>Nama Food and Beverage (F&B) <small class="required-field">*</small></label>
+          <label>Nama Food and Beverage (FnB) <small class="required-field">*</small></label>
           <input class="form-control keyboard" type="text" name="fnb_name" value="<?php if($fnb_type != null){echo $fnb_type->fnb_name;}?>">
         </div>
         <div class="row">

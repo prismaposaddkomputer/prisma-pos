@@ -24,7 +24,7 @@ class Hot_fnb extends MY_Hotel {
   {
     if ($this->access->_read == 1) {
       $data['access'] = $this->access;
-      $data['title'] = 'Manajemen Food and Beverage';
+      $data['title'] = 'Manajemen Food and Beverage (FnB)';
 
       if($this->input->post('search_term')){
         $search_term = $this->input->post('search_term');
@@ -70,7 +70,7 @@ class Hot_fnb extends MY_Hotel {
     $data['access'] = $this->access;
     if ($id == null) {
       if ($this->access->_create == 1) {
-        $data['title'] = 'Tambah Data Food and Beverage (F&B)';
+        $data['title'] = 'Tambah Data Food and Beverage (FnB)';
         $data['action'] = 'insert';
         $data['fnb_type'] = null;
         $this->view('hot_fnb/form', $data);
@@ -79,7 +79,7 @@ class Hot_fnb extends MY_Hotel {
       }
     }else{
       if ($this->access->_update == 1) {
-        $data['title'] = 'Ubah Data Food and Beverage (F&B)';
+        $data['title'] = 'Ubah Data Food and Beverage (FnB)';
         $data['fnb_type'] = $this->m_hot_fnb->get_by_id($id);
         $data['action'] = 'update';
         $this->view('hot_fnb/form', $data);
