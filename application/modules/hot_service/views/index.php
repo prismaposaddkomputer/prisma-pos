@@ -39,7 +39,7 @@
               <th class="text-center" width="50">No</th>
               <th class="text-center" width="70">Aksi</th>
               <th class="text-center">Nama Pelayanan Kamar</th>
-              <th class="text-center">Harga</th>
+              <th class="text-center" width="150">Harga</th>
               <th class="text-center" width="80">Status</th>
             </tr>
           </thead>
@@ -55,7 +55,7 @@
                     <?php endif; ?>
                   </td>
                   <td><?=$row->service_name?></td>
-                  <td><?php echo num_to_idr ($row->service_price) ?></td>
+                  <td><?php echo num_to_idr ($row->service_charge) ?></td>
                   <td class="text-center">
                     <?php if ($row->is_active == 1): ?>
                       <i class="fa fa-check cl-success"></i>
