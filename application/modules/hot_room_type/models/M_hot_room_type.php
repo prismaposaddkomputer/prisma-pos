@@ -49,19 +49,12 @@ class M_hot_room_type extends CI_Model {
     return $this->db->order_by('room_type_id','desc')->get('hot_room_type')->row();
   }
 
-  public function insert()
+  public function insert($data)
   {
   	// insert ke tabel hot_room_type
-  	$hot_room_type = $_POST;
+  	$hot_room_type = $data;
   	// insert ke tabel hot_room
-  	$hot_room = $_POST;
-
-  	//hot_room_type
-    $hot_room_type['created_by'] = $this->session->userdata('user_realname');
-    if(!isset($hot_room_type['is_active'])){
-      $hot_room_type['is_active'] = 0;
-    }
-    $hot_room_type['room_type_charge'] = price_to_num($hot_room_type['room_type_charge']);
+  	$hot_room = $data;
 
     //unset data
     unset($hot_room_type['room_no']);

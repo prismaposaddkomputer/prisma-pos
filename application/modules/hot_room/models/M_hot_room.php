@@ -41,12 +41,17 @@ class M_hot_room extends CI_Model {
 
   public function get_by_id($id)
   {
-    return $this->db->where('room_id',$id)->get('hot_room')->row();
+		return $this->db
+			->join('hot_room_type','hot_room.room_type_id = hot_room_type.room_type_id')
+			->where('room_id',$id)
+			->get('hot_room')->row();
 	}
 	
 	public function get_by_room_type_id($id)
   {
-    return $this->db->where('room_type_id',$id)->get('hot_room')->result();
+		return $this->db
+			->where('room_type_id',$id)
+			->get('hot_room')->result();
   }
 
   public function get_last()

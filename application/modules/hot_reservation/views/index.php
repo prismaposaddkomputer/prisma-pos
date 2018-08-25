@@ -19,7 +19,7 @@
             <input type="text" class="form-control keyboard" name="search_term" placeholder="Pencarian..." value="<?php echo $this->session->userdata('search_term');?>">
             <span class="input-group-btn">
               <button class="btn btn-info" type="submit"><i class="fa fa-search"></i></button>
-              <a class="btn btn-default" href="<?=base_url()?>hot_reservation/reset_search"><i class="fa fa-refresh"></i></a>
+              <a class="btn btn-default" href="<?=base_url()?>hot_billing/reset_search"><i class="fa fa-refresh"></i></a>
             </span>
           </div>
         </div>
@@ -38,37 +38,43 @@
             <tr>
               <th class="text-center" width="50">No</th>
               <th class="text-center" width="70">Aksi</th>
+              <th class="text-center">No. Nota</th>
               <th class="text-center">Check In</th>
               <th class="text-center">Check Out</th>
               <th class="text-center">Tamu</th>
-              <th class="text-center">Kamar</th>
-              <th class="text-center" width="150">Harga</th>
-              <th class="text-center" width="80">Aktif</th>
+              <th class="text-center" width="150">Total</th>
+              <th class="text-center" width="80">Status</th>
             </tr>
           </thead>
           <tbody>
-            <?php if ($reservation_type != null): ?>
-              <?php $i=1;foreach ($reservation_type as $row): ?>
+            <?php if ($billing != null): ?>
+              <?php $i=1;foreach ($billing as $row): ?>
                 <tr>
                   <td class="text-center"><?=$this->uri->segment('3')+$i++?></td>
                   <td class="text-center">
-                    <a class="btn btn-xs btn-warning" href="<?=base_url()?>hot_reservation/form/<?=$row->reservation_id?>"><i class="fa fa-pencil"></i></a>
-                    <button class="btn btn-xs btn-danger" onclick="del('<?=$row->reservation_id?>');"><i class="fa fa-trash"></i></button>
+                    <a class="btn btn-xs btn-warning" href="<?=base_url()?>hot_reservation/form/<?=$row->billing_id?>"><i class="fa fa-pencil"></i></a>
+                    <a class="btn btn-xs btn-success" href=""><i class="fa fa-money"></i></a>
+                    <!-- <button class="btn btn-xs btn-danger" onclick="del('<?=$row->billing_id?>');"><i class="fa fa-trash"></i></button> -->
                   </td>
-                  <td><?=$row->reservation_name?></td> 
-                  <td><?=num_to_idr($row->reservation_charge)?></td>
+                  <td class="text-center">TRS-<?=$row->billing_receipt_no?></td> 
+                  <td class="text-center"><?=date_to_ind($row->billing_date_in).' '.$row->billing_time_in?></td>
+                  <td class="text-center"><?=date_to_ind($row->billing_date_out).' '.$row->billing_time_out?></td>
+                  <td><?=$row->guest_name?></td>
+                  <td><?=num_to_idr($row->billing_sub_total)?></td>
                   <td class="text-center">
-                    <?php if ($row->is_active == 1): ?>
-                      <i class="fa fa-check cl-success"></i>
-                    <?php else: ?>
-                      <i class="fa fa-close cl-danger"></i>
-                    <?php endif; ?>
+                    <?php if ($row->billing_status == -1){ ?>
+                      <span class="badge bg-danger">Dibatalkan</span>
+                    <?php }else if($row->billing_status == 0){ ?>
+                      <span class="badge bg-warning">Belum Dibayar</span>
+                    <?php }else if($row->billing_status == 1){ ?>
+                      <span class="badge bg-success">Sudah Dibayar</span>
+                    <?php }; ?>
                   </td>
                 </tr>
               <?php endforeach; ?>
             <?php else: ?>
               <tr>
-                <td class="text-center" colspan="5">Tidak ada data!</td>
+                <td class="text-center" colspan="8">Tidak ada data!</td>
               </tr>
             <?php endif; ?>
           </tbody>
@@ -107,7 +113,7 @@
     $("#modal_delete").modal('show');
 
     $("#btn_delete_action").click(function () {
-      window.location = "<?=base_url()?>hot_reservation/delete/"+id;
+      window.location = "<?=base_url()?>hot_billing/delete/"+id;
     })
   }
 </script>

@@ -47,6 +47,14 @@
           <tbody>
             <?php if ($room_type != null): ?>
               <?php 
+                $tot_ratio = 100;
+                if ($client->client_is_taxed == 1) {
+                  foreach ($charge_type as $row) {
+                    $tot_ratio += $row->charge_type_ratio;
+                  }
+                }
+              ?>
+              <?php 
               $i=1;foreach ($room_type as $row): 
               $number_of_room = $this->m_hot_room_type->get_list_room_by_type_id($row->room_type_id);
               ?>
@@ -59,8 +67,8 @@
                     <?php endif; ?>
                   </td>
                   <td><?=$row->room_type_name?></td> 
-                  <td align="center"><?=$number_of_room?></td> 
-                  <td><?=num_to_idr($row->room_type_charge)?></td> 
+                  <td class="text-center"><?=$number_of_room?></td> 
+                  <td><?=num_to_idr(($tot_ratio/100)*$row->room_type_charge)?></td> 
                   <td class="text-center">
                     <?php if ($row->is_active == 1): ?>
                       <i class="fa fa-check cl-success"></i>
