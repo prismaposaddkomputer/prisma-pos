@@ -18,7 +18,6 @@ class Kar_member extends MY_Karaoke {
     $this->access = $this->m_kar_config->get_permission($this->role_id, $this->module_controller);
 
     $this->load->model('m_kar_member');
-    $this->load->model('kar_member_type/m_kar_member_type');
   }
 
 	public function index()
@@ -43,14 +42,14 @@ class Kar_member extends MY_Karaoke {
         $config['total_rows'] = $num_rows;
         $this->pagination->initialize($config);
 
-        $data['member'] = $this->m_kar_member->get_list($config['per_page'],$from,$search_term = null);
+        $data['member_type'] = $this->m_kar_member->get_list($config['per_page'],$from,$search_term = null);
       }else{
         $search_term = $this->session->userdata('search_term');
         $num_rows = $this->m_kar_member->num_rows($search_term);
         $config['total_rows'] = $num_rows;
         $this->pagination->initialize($config);
 
-        $data['member'] = $this->m_kar_member->get_list($config['per_page'],$from,$search_term);
+        $data['member_type'] = $this->m_kar_member->get_list($config['per_page'],$from,$search_term);
       }
 
       $this->view('kar_member/index',$data);
@@ -69,12 +68,11 @@ class Kar_member extends MY_Karaoke {
   public function form($id = null)
   {
     $data['access'] = $this->access;
-    $data['member_type'] = $this->m_kar_member_type->get_all();
     if ($id == null) {
       if ($this->access->_create == 1) {
         $data['title'] = 'Tambah Member';
         $data['action'] = 'insert';
-        $data['member'] = null;
+        $data['member_type'] = null;
         $this->view('kar_member/form', $data);
       } else {
         redirect(base_url().'app_error/error/403');
@@ -82,7 +80,7 @@ class Kar_member extends MY_Karaoke {
     }else{
       if ($this->access->_update == 1) {
         $data['title'] = 'Ubah Member';
-        $data['member'] = $this->m_kar_member->get_by_id($id);
+        $data['member_type'] = $this->m_kar_member->get_by_id($id);
         $data['action'] = 'update';
         $this->view('kar_member/form', $data);
       } else {
@@ -105,7 +103,7 @@ class Kar_member extends MY_Karaoke {
 
   public function edit($id)
   {
-    $data['member']= $this->m_kar_member->get_specific($id);
+    $data['member_type']= $this->m_kar_member->get_specific($id);
     $this->load->view('kar_member/update', $data);
   }
 

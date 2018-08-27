@@ -1,16 +1,19 @@
 <?php
-  function digit($inp = 0)
-  {
-      return number_format($inp, 0, ',', '.');
-  }
+	function digit($inp = 0)
+	{
+	    return number_format($inp, 0, ',', '.');
+	}
 ?>
 <div class="content-header">
   <h4><i class="fa fa-<?=$access->module_icon?>"></i> <?=$title?></h4>
 </div>
 <div class="content-body">
   <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-5">
       <a class="btn btn-info" href="<?=base_url()?>kar_member/form"><i class="fa fa-plus"></i> Tambah Member</a>
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalInformation">
+        <i class="fa fa-question"></i> Informasi
+      </button>
     </div>
     <div class="col-md-4 pull-right">
       <form class="" action="<?=base_url()?>kar_member/index" method="post">
@@ -36,30 +39,34 @@
         <table class="table table-striped table-bordered table-condensed">
           <thead>
             <tr>
-              <th class="text-center" width="50">No</th>
-              <th class="text-center" width="70">Aksi</th>
-              <th class="text-center">Nama Member</th>
-              <th class="text-center">Tipe Member</th>
-              <th class="text-center">Telepon</th>
-              <th class="text-center">Email</th>
+              <th class="text-center" width="30">No</th>
+              <th class="text-center" width="50">Aksi</th>
+              <th class="text-center" width="200">Nama Member</th>
+              <th class="text-center" width="120">Jenis Kelamin</th>
+              <th class="text-center" width="120">No Telpon</th>
               <th class="text-center" width="80">Aktif</th>
             </tr>
           </thead>
           <tbody>
-            <?php if ($member != null): ?>
-              <?php $i=1;foreach ($member as $row): ?>
+            <?php if ($member_type != null): ?>
+              <?php $i=1;foreach ($member_type as $row): ?>
                 <tr>
                   <td class="text-center"><?=$this->uri->segment('3')+$i++?></td>
                   <td class="text-center">
-                    <a class="btn btn-xs btn-warning" href="<?=base_url()?>kar_member/form/<?=$row->member_id?>"><i class="fa fa-pencil"></i></a>
-                    <?php if ($row->member_id != 0 ): ?>
+                      <a class="btn btn-xs btn-warning" href="<?=base_url()?>kar_member/form/<?=$row->member_id?>"><i class="fa fa-pencil"></i></a>
                       <button class="btn btn-xs btn-danger" onclick="del('<?=$row->member_id?>');"><i class="fa fa-trash"></i></button>
-                    <?php endif; ?>
                   </td>
-                  <td><?=$row->member_name?></td>
-                  <td><?=$row->member_type_name?></td>
-                  <td><?=$row->member_phone?></td>
-                  <td><?=$row->member_email?></td>
+                  <td><?=$row->member_name?></td> 
+                  <?php if ($row->member_gender == 'L'): ?>
+                  <td class="text-center">Laki - Laki</td>
+                  <?php elseif ($row->member_gender == 'P'): ?>
+                  <td class="text-center">Perempuan</td>
+                  <?php endif; ?>
+                  <?php if ($row->member_phone !=''): ?>
+                  <td class="text-center"><?=$row->member_phone?></td>
+                  <?php else: ?>
+                  <td class="text-center">-</td>
+                  <?php endif; ?>
                   <td class="text-center">
                     <?php if ($row->is_active == 1): ?>
                       <i class="fa fa-check cl-success"></i>
@@ -114,3 +121,24 @@
     })
   }
 </script>
+
+<!-- Modal -->
+<div class="modal fade" id="modalInformation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Informasi Menu Member</h4>
+      </div>
+      <div class="modal-body" style="font-size: 15px;">
+        <ul style="margin-left: -22px;">
+          <li>Menu ini digunakan untuk memanajemen Member</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> <b>Tutup</b></button>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,22 +1,28 @@
+<?php
+	function digit($inp = 0)
+	{
+	    return number_format($inp, 0, ',', '.');
+	}
+?>
 <div class="content-header">
   <h4><i class="fa fa-<?=$access->module_icon?>"></i> <?=$title?></h4>
 </div>
 <div class="content-body">
   <div class="row">
     <div class="col-md-4">
-      <!-- <a class="btn btn-info" href="<?=base_url()?>kar_room/form"><i class="fa fa-plus"></i> Tambah Ruang</a> -->
+      <!-- <a class="btn btn-info" href="<?=base_url()?>kar_charge_type/form"><i class="fa fa-plus"></i> Tambah Jenis Biaya</a> -->
       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalInformation">
         <i class="fa fa-question"></i> Informasi
       </button>
     </div>
     <div class="col-md-4 pull-right">
-      <form class="" action="<?=base_url()?>kar_room/index" method="post">
+      <form class="" action="<?=base_url()?>kar_charge_type/index" method="post">
         <div class="form-group">
           <div class="input-group">
             <input type="text" class="form-control keyboard" name="search_term" placeholder="Pencarian..." value="<?php echo $this->session->userdata('search_term');?>">
             <span class="input-group-btn">
               <button class="btn btn-info" type="submit"><i class="fa fa-search"></i></button>
-              <a class="btn btn-default" href="<?=base_url()?>kar_room/reset_search"><i class="fa fa-refresh"></i></a>
+              <a class="btn btn-default" href="<?=base_url()?>kar_charge_type/reset_search"><i class="fa fa-refresh"></i></a>
             </span>
           </div>
         </div>
@@ -35,38 +41,35 @@
             <tr>
               <th class="text-center" width="50">No</th>
               <th class="text-center" width="70">Aksi</th>
-              <th class="text-center" width="380">Nama Ruang</th>
-              <th class="text-center">Tipe Ruang (Kategori Ruang)</th>
-              <th class="text-center">Nomor</th>
-              <th class="text-center" width="80">Status</th>
+              <th class="text-center">Nama Jenis Biaya</th>
+              <th class="text-center">Rasio</th>
+              <th class="text-center" width="80">Aktif</th>
             </tr>
           </thead>
           <tbody>
-            <?php if ($room != null): ?>
-              <?php $i=1;foreach ($room as $row): ?>
+            <?php if ($charge_type != null): ?>
+              <?php $i=1;foreach ($charge_type as $row): ?>
                 <tr>
                   <td class="text-center"><?=$this->uri->segment('3')+$i++?></td>
                   <td class="text-center">
-                    <?php if ($row->room_id != 0 ): ?>
-                      <a class="btn btn-xs btn-warning" href="<?=base_url()?>kar_room/form/<?=$row->room_id?>"><i class="fa fa-pencil"></i></a>
-                      <button class="btn btn-xs btn-danger" onclick="del('<?=$row->room_id?>');"><i class="fa fa-trash"></i></button>
+                    <?php if($row->charge_type_id >= 2): ?>
+                      <a class="btn btn-xs btn-warning" href="<?=base_url()?>kar_charge_type/form/<?=$row->charge_type_id?>"><i class="fa fa-pencil"></i></a>
                     <?php endif; ?>
                   </td>
-                  <td><?=$row->room_name?></td>
-                  <td align="center"><?=$row->room_type_name?></td>
-                  <td align="center"><?=$row->room_no?></td>
+                  <td><?=$row->charge_type_name?></td> 
+                  <td class="text-center"><?=$row->charge_type_ratio?>%</td>
                   <td class="text-center">
                     <?php if ($row->is_active == 1): ?>
-                        <small class='label label-success'>Tersedia</small>
+                      <i class="fa fa-check cl-success"></i>
                     <?php else: ?>
-                        <small class='label label-danger'>Booked</small>
+                      <i class="fa fa-close cl-danger"></i>
                     <?php endif; ?>
                   </td>
                 </tr>
               <?php endforeach; ?>
             <?php else: ?>
               <tr>
-                <td class="text-center" colspan="7">Tidak ada data!</td>
+                <td class="text-center" colspan="4">Tidak ada data!</td>
               </tr>
             <?php endif; ?>
           </tbody>
@@ -105,7 +108,7 @@
     $("#modal_delete").modal('show');
 
     $("#btn_delete_action").click(function () {
-      window.location = "<?=base_url()?>kar_room/delete/"+id;
+      window.location = "<?=base_url()?>kar_charge_type/delete/"+id;
     })
   }
 </script>
@@ -116,13 +119,12 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Informasi Menu Ruang</h4>
+        <h4 class="modal-title" id="myModalLabel">Informasi Menu Jenis Biaya</h4>
       </div>
       <div class="modal-body" style="font-size: 15px;">
         <ul style="margin-left: -22px;">
-          <li>Menu ini digunakan untuk memanajemen Ruang</li>
-          <li>Ketika Anda ingin menambah Ruang silahkan ke menu Tipe Ruang kemudian edit Jumlah Ruang yang diinginkan</li>
-          <li>Nama Ruang bisa diubah, silahkan klik tombol pencil untuk mengubah nama Ruang</li>
+          <li>Menu ini digunakan untuk memanajemen jenis biaya seperti Pajak Karaoke dll</li>
+          <li>Jika <b>Servis Karaoke</b> dan/atau <b>Biaya Lain-Lain</b> tidak digunakan silahkan non aktifkan <b>Servis Karaoke</b> dan/atau <b>Biaya Lain-Lain</b>, dengan klik tombol pensil kemudian uncheck (jangan di cek) kolom Aktif</li>
         </ul>
       </div>
       <div class="modal-footer">
