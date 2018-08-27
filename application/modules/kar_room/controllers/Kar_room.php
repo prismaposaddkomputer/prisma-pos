@@ -69,13 +69,12 @@ class Kar_room extends MY_Karaoke {
   public function form($id = null)
   {
     $data['access'] = $this->access;
-    $data['room_type'] = $this->m_kar_room_type->get_all();
-
     if ($id == null) {
       if ($this->access->_create == 1) {
         $data['title'] = 'Tambah Ruang';
         $data['action'] = 'insert';
         $data['room'] = null;
+        $data['room_type'] = $this->m_kar_room_type->get_all();
         $this->view('kar_room/form', $data);
       } else {
         redirect(base_url().'app_error/error/403');
@@ -84,6 +83,7 @@ class Kar_room extends MY_Karaoke {
       if ($this->access->_update == 1) {
         $data['title'] = 'Ubah Ruang';
         $data['room'] = $this->m_kar_room->get_by_id($id);
+        $data['room_type'] = $this->m_kar_room_type->get_all();
         $data['action'] = 'update';
         $this->view('kar_room/form', $data);
       } else {

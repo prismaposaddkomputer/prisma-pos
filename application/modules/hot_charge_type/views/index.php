@@ -122,7 +122,10 @@
         <h4 class="modal-title" id="myModalLabel">Informasi Menu Jenis Biaya</h4>
       </div>
       <div class="modal-body" style="font-size: 15px;">
-        Menu ini digunakan untuk memanajemen jenis biaya seperti Pajak Hotel dll
+        <ul style="margin-left: -22px;">
+          <li>Menu ini digunakan untuk memanajemen jenis biaya seperti Pajak Hotel dll</li>
+          <li>Jika <b>Servis Hotel</b> dan/atau <b>Biaya Lain-Lain</b> tidak digunakan silahkan non aktifkan <b>Servis Hotel</b> dan/atau <b>Biaya Lain-Lain</b>, dengan klik tombol pensil kemudian uncheck (jangan di cek) kolom Aktif</li>
+        </ul>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> <b>Tutup</b></button>

@@ -9,8 +9,11 @@
 </div>
 <div class="content-body">
   <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-5">
       <a class="btn btn-info" href="<?=base_url()?>hot_member/form"><i class="fa fa-plus"></i> Tambah Member (Tamu Langganan)</a>
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalInformation">
+        <i class="fa fa-question"></i> Informasi
+      </button>
     </div>
     <div class="col-md-4 pull-right">
       <form class="" action="<?=base_url()?>hot_member/index" method="post">
@@ -118,3 +121,24 @@
     })
   }
 </script>
+
+<!-- Modal -->
+<div class="modal fade" id="modalInformation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Informasi Menu Member (Tamu Langganan)</h4>
+      </div>
+      <div class="modal-body" style="font-size: 15px;">
+        <ul style="margin-left: -22px;">
+          <li>Menu ini digunakan untuk memanajemen Member (Tamu Langganan)</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> <b>Tutup</b></button>
+      </div>
+    </div>
+  </div>
+</div>
+

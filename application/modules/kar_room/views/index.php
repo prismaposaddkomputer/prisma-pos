@@ -4,7 +4,10 @@
 <div class="content-body">
   <div class="row">
     <div class="col-md-4">
-      <a class="btn btn-info" href="<?=base_url()?>kar_room/form"><i class="fa fa-plus"></i> Tambah Ruang</a>
+      <!-- <a class="btn btn-info" href="<?=base_url()?>kar_room/form"><i class="fa fa-plus"></i> Tambah Ruang</a> -->
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalInformation">
+        <i class="fa fa-question"></i> Informasi
+      </button>
     </div>
     <div class="col-md-4 pull-right">
       <form class="" action="<?=base_url()?>kar_room/index" method="post">
@@ -32,9 +35,10 @@
             <tr>
               <th class="text-center" width="50">No</th>
               <th class="text-center" width="70">Aksi</th>
-              <th class="text-center">Nama Ruang</th>
-              <th class="text-center">Tipe</th>
-              <th class="text-center" width="80">Aktif</th>
+              <th class="text-center" width="380">Nama Ruang</th>
+              <th class="text-center">Tipe Ruang (Kategori Ruang)</th>
+              <th class="text-center">Nomor</th>
+              <th class="text-center" width="80">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -49,19 +53,20 @@
                     <?php endif; ?>
                   </td>
                   <td><?=$row->room_name?></td>
-                  <td><?=$row->room_type_name?></td>
+                  <td align="center"><?=$row->room_type_name?></td>
+                  <td align="center"><?=$row->room_no?></td>
                   <td class="text-center">
                     <?php if ($row->is_active == 1): ?>
-                      <i class="fa fa-check cl-success"></i>
+                        <small class='label label-success'>Tersedia</small>
                     <?php else: ?>
-                      <i class="fa fa-close cl-danger"></i>
+                        <small class='label label-danger'>Booked</small>
                     <?php endif; ?>
                   </td>
                 </tr>
               <?php endforeach; ?>
             <?php else: ?>
               <tr>
-                <td class="text-center" colspan="4">Tidak ada data!</td>
+                <td class="text-center" colspan="7">Tidak ada data!</td>
               </tr>
             <?php endif; ?>
           </tbody>
@@ -104,3 +109,25 @@
     })
   }
 </script>
+
+<!-- Modal -->
+<div class="modal fade" id="modalInformation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Informasi Menu Ruang</h4>
+      </div>
+      <div class="modal-body" style="font-size: 15px;">
+        <ul style="margin-left: -22px;">
+          <li>Menu ini digunakan untuk memanajemen Ruang</li>
+          <li>Ketika Anda ingin menambah Ruang silahkan ke menu Tipe Ruang kemudian edit Jumlah Ruang yang diinginkan</li>
+          <li>Nama Ruang bisa diubah, silahkan klik tombol pencil untuk mengubah nama Ruang</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> <b>Tutup</b></button>
+      </div>
+    </div>
+  </div>
+</div>

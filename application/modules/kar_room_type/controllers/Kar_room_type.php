@@ -18,15 +18,17 @@ class Kar_room_type extends MY_Karaoke {
     $this->access = $this->m_kar_config->get_permission($this->role_id, $this->module_controller);
 
     $this->load->model('m_kar_room_type');
-    $this->load->model('kar_time/m_kar_time');
+    $this->load->model('kar_client/m_kar_client');
+    $this->load->model('kar_charge_type/m_kar_charge_type');
   }
 
 	public function index()
   {
     if ($this->access->_read == 1) {
       $data['access'] = $this->access;
-      $data['title'] = 'Manajemen Tipe';
-
+      $data['title'] = 'Manajemen Tipe Ruang (Kategori Ruang)';
+      $data['charge_type'] = $this->m_kar_charge_type->get_all();
+    
       if($this->input->post('search_term')){
         $search_term = $this->input->post('search_term');
         $this->session->set_userdata(array('search_term' => $search_term));
@@ -69,10 +71,11 @@ class Kar_room_type extends MY_Karaoke {
   public function form($id = null)
   {
     $data['access'] = $this->access;
-    $data['time'] = $this->m_kar_time->get_all();
+    $data['charge_type'] = $this->m_kar_charge_type->get_all();
+    $client = $this->m_kar_client->get_all();
     if ($id == null) {
       if ($this->access->_create == 1) {
-        $data['title'] = 'Tambah Tipe';
+        $data['title'] = 'Tambah Tipe Ruang (Kategori Ruang)';
         $data['action'] = 'insert';
         $data['room_type'] = null;
         $this->view('kar_room_type/form', $data);
@@ -81,9 +84,18 @@ class Kar_room_type extends MY_Karaoke {
       }
     }else{
       if ($this->access->_update == 1) {
-        $data['title'] = 'Ubah Tipe';
+        $data['title'] = 'Ubah Tipe Ruang (Kategori Ruang)';
         $data['room_type'] = $this->m_kar_room_type->get_by_id($id);
+        $data['number_of_room'] = $this->m_kar_room_type->get_list_room_by_type_id($id);
         $data['action'] = 'update';
+        $client = $this->m_kar_client->get_all();
+        $tot_ratio = 100;
+        if ($client->client_is_taxed == 1) {
+          foreach ($data['charge_type'] as $row) {
+            $tot_ratio += $row->charge_type_ratio;
+          }
+          $data['room_type']->room_type_charge = round(($tot_ratio/100)*$data['room_type']->room_type_charge,2);
+        }
         $this->view('kar_room_type/form', $data);
       } else {
         redirect(base_url().'app_error/error/403');
@@ -94,16 +106,19 @@ class Kar_room_type extends MY_Karaoke {
   public function insert()
   {
     $data = $_POST;
-    $data['created_by'] = $this->session->userdata('user_realname');
-    if(!isset($data['is_active'])){
-      $data['is_active'] = 0;
+    
+    $data['room_type_charge'] = price_to_num($data['room_type_charge']);
+
+    $charge_type = $this->m_kar_charge_type->get_all();
+    $client = $this->m_kar_client->get_all();
+    $tot_ratio = 100;
+    if ($client->client_is_taxed == 1) {
+      foreach ($charge_type as $row) {
+        $tot_ratio += $row->charge_type_ratio;
+      }
+      $data['room_type_charge'] = round((100/$tot_ratio)*$data['room_type_charge'],2);
     }
-    $data['weekday_happy_hours'] = price_to_num($data['weekday_happy_hours']);
-    $data['weekday_business_hours'] = price_to_num($data['weekday_business_hours']);
-    $data['weekend_happy_hours'] = price_to_num($data['weekend_happy_hours']);
-    $data['weekend_business_hours'] = price_to_num($data['weekend_business_hours']);
-    $data['holiday_happy_hours'] = price_to_num($data['holiday_happy_hours']);
-    $data['holiday_business_hours'] = price_to_num($data['holiday_business_hours']);
+
     $this->m_kar_room_type->insert($data);
     $this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil ditambahkan!</div>');
     redirect(base_url().'kar_room_type/index');
@@ -117,19 +132,7 @@ class Kar_room_type extends MY_Karaoke {
 
   public function update()
   {
-    $data = $_POST;
-    $id = $data['room_type_id'];
-    $data['updated_by'] = $this->session->userdata('user_realname');
-    if(!isset($data['is_active'])){
-      $data['is_active'] = 0;
-    }
-    $data['weekday_happy_hours'] = price_to_num($data['weekday_happy_hours']);
-    $data['weekday_business_hours'] = price_to_num($data['weekday_business_hours']);
-    $data['weekend_happy_hours'] = price_to_num($data['weekend_happy_hours']);
-    $data['weekend_business_hours'] = price_to_num($data['weekend_business_hours']);
-    $data['holiday_happy_hours'] = price_to_num($data['holiday_happy_hours']);
-    $data['holiday_business_hours'] = price_to_num($data['holiday_business_hours']);
-    $this->m_kar_room_type->update($id,$data);
+    $this->m_kar_room_type->update();
     $this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil diubah!</div>');
     redirect(base_url().'kar_room_type/index');
   }
