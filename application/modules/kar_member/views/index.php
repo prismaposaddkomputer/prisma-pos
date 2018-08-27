@@ -10,7 +10,7 @@
 <div class="content-body">
   <div class="row">
     <div class="col-md-5">
-      <a class="btn btn-info" href="<?=base_url()?>kar_member/form"><i class="fa fa-plus"></i> Tambah Member</a>
+      <a class="btn btn-info" href="<?=base_url()?>kar_member/form"><i class="fa fa-plus"></i> Tambah Tamu</a>
       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalInformation">
         <i class="fa fa-question"></i> Informasi
       </button>
@@ -43,7 +43,7 @@
               <th class="text-center" width="50">Aksi</th>
               <th class="text-center" width="200">Nama Member</th>
               <th class="text-center" width="120">Jenis Kelamin</th>
-              <th class="text-center" width="120">No Telpon</th>
+              <th class="text-center" width="120">Tipe Tamu</th>
               <th class="text-center" width="80">Aktif</th>
             </tr>
           </thead>
@@ -62,10 +62,10 @@
                   <?php elseif ($row->member_gender == 'P'): ?>
                   <td class="text-center">Perempuan</td>
                   <?php endif; ?>
-                  <?php if ($row->member_phone !=''): ?>
-                  <td class="text-center"><?=$row->member_phone?></td>
-                  <?php else: ?>
-                  <td class="text-center">-</td>
+                  <?php if ($row->member_type == '0'): ?>
+                  <td class="text-center">Reguler (Biasa)</td>
+                  <?php elseif ($row->member_type == '1'): ?>
+                  <td class="text-center">Member (Langganan)</td>
                   <?php endif; ?>
                   <td class="text-center">
                     <?php if ($row->is_active == 1): ?>
@@ -128,11 +128,11 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Informasi Menu Member</h4>
+        <h4 class="modal-title" id="myModalLabel">Informasi Menu Tamu</h4>
       </div>
       <div class="modal-body" style="font-size: 15px;">
         <ul style="margin-left: -22px;">
-          <li>Menu ini digunakan untuk memanajemen Member</li>
+          <li>Menu ini digunakan untuk memanajemen Tamu</li>
         </ul>
       </div>
       <div class="modal-footer">

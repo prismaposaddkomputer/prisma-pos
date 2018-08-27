@@ -12,6 +12,14 @@
           <input class="form-control keyboard" type="text" name="discount_name" value="<?php if($discount != null){echo $discount->discount_name;}?>">
         </div>
         <div class="form-group">
+          <label>Pilih Tipe Diskon <small class="required-field">*</small></label>
+          <select class="form-control select2" name="discount_group" id="select-get-value">
+            <option value="1" <?php if($discount != null){if($discount->discount_group == '1'){echo 'selected';}}?>>Diskon Ruangan</option>
+            <option value="2" <?php if($discount != null){if($discount->discount_group == '2'){echo 'selected';}}?>>Diskon Member</option>
+            <option value="3" <?php if($discount != null){if($discount->discount_group == '3'){echo 'selected';}}?>>Diskon Total</option>
+          </select>
+        </div>
+        <div class="form-group">
           <label>Pilih Jenis Diskon <small class="required-field">*</small></label>
           <br>
             <label class="radio-inline">

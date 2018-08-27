@@ -8,6 +8,17 @@
       <div class="col-md-6">
         <input class="form-control" type="hidden" name="member_id" value="<?php if($member_type != null){echo $member_type->member_id;}?>">
         <div class="form-group">
+          <label>Jenis Tamu <small class="required-field">*</small></label>
+          <br>
+            <label class="radio-inline">
+               <input type="radio" name="member_type" value="0" <?php if($member_type != null){if($member_type->member_type == '0'){echo 'checked';}}else{echo 'checked';}?>/> Reguler (Biasa)
+            </label>
+            &nbsp;&nbsp;&nbsp;
+            <label class="radio-inline">
+               <input type="radio" name="member_type" value="1" <?php if($member_type != null){if($member_type->member_type == '1'){echo 'checked';}}?>/> Member (Langganan)
+            </label>
+        </div>
+        <div class="form-group">
           <label>Nama Tamu / Plat Nomor Kendaraan <small class="required-field">*</small></label>
           <input class="form-control keyboard" type="text" name="member_name" value="<?php if($member_type != null){echo $member_type->member_name;}?>">
         </div>
@@ -101,6 +112,9 @@
         },
         'member_gender': {
           required: true
+        },
+        'member_type': {
+          required: true
         }
       },
       messages: {
@@ -108,6 +122,9 @@
           required: '<i style="color:red">Wajib diisi!</i>'
         },
         'member_gender': {
+          required: '<i style="color:red">Wajib diisi!</i>'
+        },
+        'member_type': {
           required: '<i style="color:red">Wajib diisi!</i>'
         }
       }
