@@ -134,6 +134,7 @@
   function price_to_num($v)
   {
     $res = str_replace('.', '', $v);
+    $res = str_replace(',', '.', $res);
     return $res;
   }
 

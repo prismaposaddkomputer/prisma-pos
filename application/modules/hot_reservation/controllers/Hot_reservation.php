@@ -18,6 +18,7 @@ class Hot_reservation extends MY_Hotel {
     $this->access = $this->m_hot_config->get_permission($this->role_id, $this->module_controller);
 
     $this->load->model('hot_billing/m_hot_billing');
+    $this->load->model('m_hot_reservation');
     $this->load->model('hot_member/m_hot_member');
     $this->load->model('hot_room_type/m_hot_room_type');
     $this->load->model('hot_room/m_hot_room');
@@ -95,18 +96,34 @@ class Hot_reservation extends MY_Hotel {
         if ($last_billing == null) {
           $data['billing_id'] = 1;
           $data['billing_receipt_no'] = date('ymd').'000001';
-          $data['billing_id_name'] = 'TXS-'.$data['billing_receipt_no'];
         }else{
-          $data['billing_id'] = $last_billing->billing_id+1;
-          if ($last_billing->billing_date_in != date('Y-m-d')) {
-            $data['billing_receipt_no'] = date('ymd').'000001';
-          }else{
-            $number = substr($last_billing->billing_receipt_no,6,12);
-            $number = intval($number)+1;
-            $data['billing_receipt_no'] = date('ymd').str_pad($number, 6, '0', STR_PAD_LEFT);
+          // status billing
+          // -1 cancel
+          // 0 empty
+          // 1 proses
+          // 2 pending
+          // 3 complete
+          if ($last_billing->billing_status == 0) {
+            $data['billing_id'] = $last_billing->billing_id;
+            $data['billing_receipt_no'] = $last_billing->billing_receipt_no;
+            // empty detail billing
+            $this->m_hot_reservation->empty_detail($data['billing_id']);
+          } else {
+            // get new last billing
+            $data['billing_id'] = $last_billing->billing_id+1;
+            if (date('Y-m-d', strtotime($last_billing->created)) != date('Y-m-d')) {
+              $data['billing_receipt_no'] = date('ymd').'000001';
+            }else{
+              $number = substr($last_billing->billing_receipt_no,6,12);
+              $number = intval($number)+1;
+              $data['billing_receipt_no'] = date('ymd').str_pad($number, 6, '0', STR_PAD_LEFT);
+            }
+            
+            // insert new billing
+            $this->m_hot_reservation->new_billing($data['billing_receipt_no']);
           }
-          $data['billing_id_name'] = 'TXS-'.$data['billing_receipt_no'];
         }
+        $data['billing_id_name'] = 'TXS-'.$data['billing_receipt_no'];    
 
         $this->view('hot_reservation/form', $data);
       } else {
@@ -259,17 +276,110 @@ class Hot_reservation extends MY_Hotel {
   {
     $room_type_id = $this->input->post('room_type_id');
     $raw = $this->m_hot_room->get_by_room_type_id($room_type_id);
-    $data = array();
+    $room_type = $this->m_hot_room_type->get_by_id($room_type_id);
+
+    $data = array(
+      'room' => array(),
+      'room_type' => $room_type
+    );
 
     if ($raw == null) {
-      array_push($data, array('id' => '0', 'text' => '-- Pilih --'));
+      array_push($data['room'], array('id' => '0', 'text' => '-- Pilih Kamar --'));
     } else {
-      array_push($data, array('id' => '0', 'text' => '-- Pilih --'));
+      array_push($data['room'], array('id' => '0', 'text' => '-- Pilih Kamar --'));
       foreach ($raw as $row) {
-        array_push($data, array('id' => $row->room_id, 'text' => $row->room_name));
+        array_push($data['room'], array('id' => $row->room_id, 'text' => $row->room_name));
       }
     }
     
+    echo json_encode($data);
+  }
+
+  public function add_room()
+  {
+    $data = $_POST;
+    $room = $this->m_hot_reservation->room_detail($data['room_id']);
+
+    $data_room = array(
+      'billing_id' => $data['billing_id'],
+      'room_id' => $room->room_id,
+      'room_name' => $room->room_name,
+      'room_type_id' => $room->room_type_id,
+      'room_type_name' => $room->room_type_name,
+      'room_type_charge' => price_to_num($data['room_type_charge']),
+      'created_by' => $this->session->userdata('user_realname')
+    );
+    $this->m_hot_reservation->add_room($data_room);
+  }
+
+  public function room_list()
+  {
+    $billing_id = $this->input->post('billing_id');
+    $data = $this->m_hot_reservation->room_list($billing_id);
+
+    echo json_encode($data);  
+  }
+
+  public function get_billing_room()
+  {
+    $billing_id = $this->input->post('billing_id');
+    $data = $this->m_hot_reservation->get_billing_room($billing_id);
+
+    echo json_encode($data);
+  }
+
+  public function delete_room()
+  {
+    $id = $this->input->post('billing_room_id');
+    $this->m_hot_reservation->delete_room($id);
+  }
+
+  public function get_extra()
+  {
+    $extra_id = $this->input->post('extra_id');
+    $data = $this->m_hot_extra->get_by_id($extra_id);
+
+    echo json_encode($data);
+  }
+
+  public function add_extra()
+  {
+    $data = $_POST;
+    $extra = $this->m_hot_extra->get_by_id($data['extra_id']);
+
+    $data_extra = array(
+      'billing_id' => $data['billing_id'],
+      'extra_id' => $extra->extra_id,
+      'extra_name' => $extra->extra_name,
+      'extra_charge' => $extra->extra_charge,
+      'extra_amount' => $data['extra_amount'],
+      'extra_total' => $data['extra_amount']*$extra->extra_charge,
+      'created_by' => $this->session->userdata('user_realname')
+    );
+    $this->m_hot_reservation->add_extra($data_extra);
+  }
+
+  public function get_billing_extra()
+  {
+    $billing_id = $this->input->post('billing_id');
+    $data = $this->m_hot_reservation->get_billing_extra($billing_id);
+
+    echo json_encode($data);
+  }
+
+  public function delete_extra()
+  {
+    $id = $this->input->post('billing_extra_id');
+    $this->m_hot_reservation->delete_extra($id);
+  }
+
+  public function get_count()
+  {
+    $billing_id = $this->input->post('billing_id');
+    
+    $data['count_room'] = $this->m_hot_reservation->count_room($billing_id);
+    $data['count_extra'] = $this->m_hot_reservation->count_extra($billing_id);
+
     echo json_encode($data);
   }
 

@@ -27,37 +27,100 @@ class M_hot_reservation extends CI_Model {
 			->get('hot_billing')->result();
 	}
 
-  public function get_by_id($id)
-  {
-    return $this->db->where('reservation_id',$id)->get('hot_billing')->row();
-  }
+	public function new_billing($billing_receipt_no)
+	{
+		$data = array(
+			'billing_id' => NULL,
+			'billing_receipt_no' => $billing_receipt_no
+		);
+		$this->db->insert('hot_billing', $data);
+	}
 
-  public function get_last()
-  {
-    return $this->db->order_by('reservation_id','desc')->get('hot_billing')->row();
-  }
+	public function empty_detail($billing_id)
+	{
+		$this->db->where('billing_id',$billing_id)->delete('hot_billing_room');
+		$this->db->where('billing_id',$billing_id)->delete('hot_billing_extra');
+		$this->db->where('billing_id',$billing_id)->delete('hot_billing_service');
+		$this->db->where('billing_id',$billing_id)->delete('hot_billing_fnb');
+	}
 
-  public function insert($data)
-  {
-    $this->db->insert('hot_billing',$data);
-  }
+	public function room_detail($room_id)
+	{
+		return $this->db->query(
+			"SELECT * FROM hot_room a
+			JOIN hot_room_type b ON a.room_type_id = b.room_type_id
+			WHERE a.room_id = '$room_id'"
+		)->row();
+	}
 
-  public function update($id,$data)
-  {
-    $this->db->where('reservation_id',$id)->update('hot_billing',$data);
-  }
+	public function add_room($data)
+	{
+		$this->db->insert('hot_billing_room', $data);
+	}
 
-  public function delete($id)
-  {
-    $this->db->where('reservation_id',$id)->update('hot_billing',array('is_deleted' => '1'));
-  }
+	public function room_list($billing_id)
+	{
+		return $this->db
+			->where('billing_id',$billing_id)
+			->get('hot_billing_room')->result();
+	}
 
-	function num_rows($search_term = null){
-		if($search_term == null){
-			return $this->db->get('hot_billing')->num_rows();
-		}else{
-			return $this->db->like('reservation_name',$search_term,'both')->get('hot_billing')->num_rows();
-		}
+	public function get_billing_room($billing_id)
+	{
+		return $this->db
+			->where('billing_id',$billing_id)
+			->get('hot_billing_room')->result();
+	}
+
+	public function delete_room($id)
+	{
+		$this->db->where('billing_room_id',$id)->delete('hot_billing_room');
+	}
+
+	public function count_room($billing_id)
+	{
+		$data = $this->db->query(
+			"SELECT COUNT(*) AS count_room 
+			FROM hot_billing_room 
+			WHERE billing_id = '$billing_id'"
+		)->row();
+
+		return $data->count_room;
+	}
+
+	public function add_extra($data)
+	{
+		$this->db->insert('hot_billing_extra', $data);
+	}
+
+	public function extra_list($billing_id)
+	{
+		return $this->db
+			->where('billing_id',$billing_id)
+			->get('hot_billing_extra')->result();
+	}
+
+	public function get_billing_extra($billing_id)
+	{
+		return $this->db
+			->where('billing_id',$billing_id)
+			->get('hot_billing_extra')->result();
+	}
+
+	public function delete_extra($id)
+	{
+		$this->db->where('billing_extra_id',$id)->delete('hot_billing_extra');
+	}
+
+	public function count_extra($billing_id)
+	{
+		$data = $this->db->query(
+			"SELECT COUNT(*) AS count_extra 
+			FROM hot_billing_extra 
+			WHERE billing_id = '$billing_id'"
+		)->row();
+
+		return $data->count_extra;
 	}
 
 }

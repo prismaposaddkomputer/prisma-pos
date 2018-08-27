@@ -1,9 +1,3 @@
-<?php
-	function digit($inp = 0)
-	{
-	    return number_format($inp, 0, ',', '.');
-	}
-?>
 <div class="content-header">
   <h4><i class="fa fa-<?=$access->module_icon?>"></i> <?=$title?></h4>
 </div>
@@ -16,7 +10,7 @@
       <form class="" action="<?=base_url()?>hot_guest/index" method="post">
         <div class="form-group">
           <div class="input-group">
-            <input type="text" class="form-control" name="search_term" placeholder="Pencarian..." value="<?php echo $this->session->userdata('search_term');?>">
+            <input type="text" class="form-control keyboard" name="search_term" placeholder="Pencarian..." value="<?php echo $this->session->userdata('search_term');?>">
             <span class="input-group-btn">
               <button class="btn btn-info" type="submit"><i class="fa fa-search"></i></button>
               <a class="btn btn-default" href="<?=base_url()?>hot_guest/reset_search"><i class="fa fa-refresh"></i></a>
@@ -36,38 +30,58 @@
         <table class="table table-striped table-bordered table-condensed">
           <thead>
             <tr>
-              <th class="text-center" width="50">No</th>
-              <th class="text-center" width="70">Aksi</th>
-              <th class="text-center">Nama Tamu</th>
-              <th class="text-center">Gender</th>
-              <th class="text-center">Telepon</th>
+              <th class="text-center" width="30">No</th>
+              <th class="text-center" width="50">Aksi</th>
+              <th class="text-center" width="200">Nama Tamu</th>
+              <th class="text-center" width="100">Jenis</th>
+              <th class="text-center" width="120">Jenis Kelamin</th>
+              <th class="text-center" width="120">No Telpon</th>
+              <th class="text-center" width="80">Aktif</th>
             </tr>
           </thead>
           <tbody>
-            <?php if ($guest != null): ?>
-              <?php $i=1;foreach ($guest as $row): ?>
+            <?php if ($guest_type != null): ?>
+              <?php $i=1;foreach ($guest_type as $row): ?>
                 <tr>
                   <td class="text-center"><?=$this->uri->segment('3')+$i++?></td>
                   <td class="text-center">
-                    <?php if ($row->guest_id != 0 ): ?>
                       <a class="btn btn-xs btn-warning" href="<?=base_url()?>hot_guest/form/<?=$row->guest_id?>"><i class="fa fa-pencil"></i></a>
                       <button class="btn btn-xs btn-danger" onclick="del('<?=$row->guest_id?>');"><i class="fa fa-trash"></i></button>
-                    <?php endif; ?>
                   </td>
                   <td><?=$row->guest_name?></td>
-                  <td>
-                    <?php if($row->guest_gender=='P'): ?>
+                  <td class="text-center">
+                    <?php if ($row->guest_type == 0): ?>
+                      Regular
+                    <?php elseif ($row->guest_type == 1): ?>
+                      Member
+                    <?php endif; ?>
+                  </td> 
+                  <td class="text-center">
+                    <?php if ($row->guest_gender == 'L'): ?>
+                      Laki - Laki
+                    <?php elseif ($row->guest_gender == 'P'): ?>
                       Perempuan
-                    <?php Else: ?>
-                      Laki-laki
-                    <?php EndIf; ?>
+                    <?php endif; ?>
                   </td>
-                  <td><?=$row->guest_phone?></td>
+                  <td class="text-center">
+                    <?php if ($row->guest_phone !=''): ?>
+                      <?=$row->guest_phone?>
+                    <?php else: ?>
+                      -
+                    <?php endif; ?>
+                  </td>
+                  <td class="text-center">
+                    <?php if ($row->is_active == 1): ?>
+                      <i class="fa fa-check cl-success"></i>
+                    <?php else: ?>
+                      <i class="fa fa-close cl-danger"></i>
+                    <?php endif; ?>
+                  </td>
                 </tr>
               <?php endforeach; ?>
             <?php else: ?>
               <tr>
-                <td class="text-center" colspan="8">Tidak ada data!</td>
+                <td class="text-center" colspan="6">Tidak ada data!</td>
               </tr>
             <?php endif; ?>
           </tbody>

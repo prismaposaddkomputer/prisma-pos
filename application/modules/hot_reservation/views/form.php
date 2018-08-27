@@ -7,7 +7,7 @@
     <h4><i class="fa fa-file-o"></i> Data Reservasi</h4>
     <div class="row">
       <div class="col-md-6">
-        <input class="form-control" type="hidden" name="billing_id" id="billing_id" value="<?php if($billing != null){echo $billing->billing_id;}?>">
+        <input class="form-control" type="hidden" name="billing_id" id="billing_id" value="<?php if($billing != null){echo $billing->billing_id;}else{echo $billing_id;}?>">
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
@@ -54,27 +54,20 @@
             </div>
           </div>
         </div>
+        <button class="btn btn-info" id="btn_room_list" type="button"><i class="fa fa-bed"></i> Kamar <span class="badge" id="lbl_count_room">0</span></button>
+        <button class="btn btn-info" id="btn_extra_list" type="button"><i class="fa fa-plus-square"></i> Ekstra <span class="badge" id="lbl_count_extra">0</span></button>
       </div>
       <div class="col-md-6">
         <div class="form-group">
           <label>Jenis Tamu <small class="required-field">*</small></label>
           <br>
           <label class="radio-inline">
-            <input type="radio" name="guest_type" id="guest_type" value="0"/> Tamu Baru
+            <input type="radio" name="guest_type" id="guest_type" value="0" checked/> Tamu Baru
           </label>
           &nbsp;&nbsp;&nbsp;
           <label class="radio-inline">
             <input type="radio" name="guest_type" id="guest_type" value="1"/> Tamu Langganan (guest)
           </label>
-        </div>
-        <div class="form-group" id="member_div"> 
-          <label>Nama Member</label>
-          <select class="form-control select2" id="member_list">
-            <option value="0">--- Pilih Member ---</option>
-            <?php foreach ($member as $row): ?>
-              <option value="<?=$row->member_id?>"><?=$row->member_name?></option>
-            <?php endforeach;?>
-          </select>
         </div>
         <div class="form-group" id="guest_name_div">
           <label>Nama Tamu / Plat Nomor Kendaraan <small class="required-field">*</small></label>
@@ -84,11 +77,11 @@
           <label>Jenis Kelamin <small class="required-field">*</small></label>
           <br>
             <label class="radio-inline">
-               <input type="radio" name="guest_gender" value="L" checked/> Laki-laki
+              <input type="radio" name="guest_gender" value="L" checked/> Laki-laki
             </label>
             &nbsp;&nbsp;&nbsp;
             <label class="radio-inline">
-               <input type="radio" name="guest_gender" value="P"/> Perempuan
+              <input type="radio" name="guest_gender" value="P"/> Perempuan
             </label>
         </div>
         <div class="form-group">
@@ -112,137 +105,6 @@
     </div>
     <hr>
     <div class="row">
-      <div class="col-md-6">
-        <h4><i class="fa fa-bed"></i> Kamar</h4>
-        <div class="row">
-          <div class="col-md-6">
-            <label>Tipe Kamar</label>
-            <select class="form-control select2" id="room_type_id">
-              <option value="0">-- Pilih --</option>
-              <?php foreach ($room_type as $row): ?>
-                <option value="<?=$row->room_type_id?>"><?=$row->room_type_name;?> (<?=num_to_price($row->room_type_charge)?>)</option>
-              <?php endforeach;?>
-            </select>
-          </div>
-          <div class="col-md-4">
-            <label>Kamar</label>
-            <select class="form-control select2" id="room_id">
-              <option value="0">-- Pilih --</option>
-            </select>
-          </div>
-          <div class="col-md-2">
-            <label>&nbsp;</label>
-            <button class="btn btn-info form-control" type="button" id="btn_add_room"><i class="fa fa-plus"></i></button>
-          </div>
-        </div>
-        <br>
-        <table id="tbl_room" class="table table-bordered table-striped table-condensed">
-          <thead>
-            <tr>
-              <th>Jenis Kamar</th>
-              <th>Kamar</th>
-              <th width="50">Aksi</th>
-            </tr>
-          </thead>
-          <tbody id="room_list">
-
-          </tbody>
-        </table>
-      </div>
-      <div class="col-md-6">
-        <h4><i class="fa fa-plus-square"></i> Ekstra</h4>
-        <div class="row">
-          <div class="col-md-10">
-            <label>Item Ekstra</label>
-            <select class="form-control select2" id="extra_id">
-              <option value="0">-- Pilih --</option>
-              <?php foreach ($extra as $row): ?>
-                <option value="<?=$row->extra_id?>"><?=$row->extra_name;?> (<?=num_to_price($row->extra_charge)?>)</option>
-              <?php endforeach;?>
-            </select>
-          </div>
-          <div class="col-md-2">
-            <label>&nbsp;</label>
-            <button class="btn btn-info form-control" type="button" id="btn_add_extra"><i class="fa fa-plus"></i></button>
-          </div>
-        </div>
-        <br>
-        <table id="tbl_extra" class="table table-bordered table-striped table-condensed">
-          <thead>
-            <tr>
-              <th>Item Ekstra</th>
-              <th width="50">Aksi</th>
-            </tr>
-          </thead>
-          <tbody id="extra_list">
-
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-6">
-        <h4><i class="fa fa-bell"></i> Pelayanan (Biaya Lain-lain)</h4>
-        <div class="row">
-          <div class="col-md-10">
-            <label>Item Pelayanan (Biaya Lain-lain)</label>
-            <select class="form-control select2" id="service_id">
-              <option value="0">-- Pilih --</option>
-              <?php foreach ($service as $row): ?>
-                <option value="<?=$row->service_id?>"><?=$row->service_name;?> (<?=num_to_price($row->service_charge)?>)</option>
-              <?php endforeach;?>
-            </select>
-          </div>
-          <div class="col-md-2">
-            <label>&nbsp;</label>
-            <button class="btn btn-info form-control" type="button" id="btn_add_service"><i class="fa fa-plus"></i></button>
-          </div>
-        </div>
-        <br>
-        <table id="tbl_service" class="table table-bordered table-striped table-condensed">
-          <thead>
-            <tr>
-              <th>Item Pelayanan (Biaya Lain-lain)</th>
-              <th width="50">Aksi</th>
-            </tr>
-          </thead>
-          <tbody id="service_list">
-
-          </tbody>
-        </table>
-      </div>
-      <div class="col-md-6">
-        <h4><i class="fa fa-cutlery"></i> Food and Beverage</h4>
-        <div class="row">
-          <div class="col-md-10">
-            <label>Item FnB</label>
-            <select class="form-control select2" id="fnb_id">
-              <option value="0">-- Pilih --</option>
-              <?php foreach ($fnb as $row): ?>
-                <option value="<?=$row->fnb_id?>"><?=$row->fnb_name;?> (<?=num_to_price($row->fnb_charge)?>)</option>
-              <?php endforeach;?>
-            </select>
-          </div>
-          <div class="col-md-2">
-            <label>&nbsp;</label>
-            <button class="btn btn-info form-control" type="button" id="btn_add_fnb"><i class="fa fa-plus"></i></button>
-          </div>
-        </div>
-        <br>
-        <table id="tbl_fnb" class="table table-bordered table-striped table-condensed">
-          <thead>
-            <tr>
-              <th>Item FnB</th>
-              <th width="50">Aksi</th>
-            </tr>
-          </thead>
-          <tbody id="fnb_list">
-
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div class="row">
       <div class="col-md-12">
         <div class="form-group pull-right">
           <a class="btn btn-default" href="<?=base_url()?>hot_room/index"><i class="fa fa-close"></i> Batal</a>
@@ -252,70 +114,155 @@
     </div>
   </form>
 </div>
+
+<!-- Modals -->
+<!-- Room List -->
+<div id="modal_room_list" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_room_list">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="title_room_list">Pesanan Kamar</h4>
+      </div>
+      <div class="modal-body">
+        <button class="btn btn-info" id="btn_room"><i class="fa fa-plus"></i> Tambah Kamar</button>
+        <br><br>
+        <table id="tbl_room_list" class="table table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th class="text-center">Jenis Kamar</th>
+              <th class="text-center">Kamar</th>
+              <th class="text-center" width="150">Harga</th>
+              <th class="text-center" width="50">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="row_room_list">
+
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-check"></i> Selesai</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Room -->
+<div id="modal_room" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_room">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="title_room_list">Pilih Kamar</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Tipe Kamar</label>
+          <select class="form-control select2" id="room_type_id">
+            <option value="0">-- Pilih Tipe Kamar --</option>
+            <?php foreach ($room_type as $row): ?>
+              <option value="<?=$row->room_type_id?>"><?=$row->room_type_name?></option>
+            <?php endforeach;?>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Kamar</label>
+          <select class="form-control select2" id="room_id">
+            <option value="0">-- Pilih Kamar --</option>
+          </select>
+        </div>
+        <div class="form_group">
+          <label>Harga</label>
+          <input class="form-control autonumeric" id="room_type_charge" type="text" value="0">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
+        <button type="button" class="btn btn-info" id="btn_add_room"><i class="fa fa-plus"></i> Tambah</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Extra List -->
+<div id="modal_extra_list" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_extra_list">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="title_extra_list">Pesanan Ekstra</h4>
+      </div>
+      <div class="modal-body">
+        <button class="btn btn-info" id="btn_extra"><i class="fa fa-plus"></i> Tambah Ekstra</button>
+        <br><br>
+        <table id="tbl_extra_list" class="table table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th class="text-center">Nama Extra</th>
+              <th class="text-center">Harga Satuan</th>
+              <th class="text-center">Banyak</th>
+              <th class="text-center" width="150">Total</th>
+              <th class="text-center" width="50">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="row_extra_list">
+
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-check"></i> Selesai</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Extra -->
+<div id="modal_extra" class="modal fade" role="dialog" aria-labelledby="modal_extra">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="title_extra_list">Pilih Kamar</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Ekstra</label>
+          <select class="form-control select2" id="extra_id">
+            <option value="0">-- Pilih Ekstra --</option>
+            <?php foreach ($extra as $row): ?>
+              <option value="<?=$row->extra_id?>"><?=$row->extra_name?></option>
+            <?php endforeach;?>
+          </select>
+        </div>
+        <div class="row">
+          <div class="col-md-8">
+            <div class="form-group">
+              <label>Harga</label>
+              <input class="form-control autonumeric num" id="extra_charge" type="text" value="0" readonly>
+            </div>
+          </div>
+          <div class="col-md-4">  
+            <div class="form-group">
+              <label>Banyak</label>
+              <input class="form-control autonumeric num" id="extra_amount" type="text" value="0" onchange="calc_extra()">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Total</label>
+          <input class="form-control autonumeric num" id="extra_total" type="text" value="0" readonly>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
+        <button type="button" class="btn btn-info" id="btn_add_extra"><i class="fa fa-plus"></i> Tambah</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script type="text/javascript">
   $(document).ready(function () {
-    //initial on page is loaded
-    $('#member_div').hide();
-    
-    $('#form #guest_type').on('change', function() {
-      var guest_type = $('#guest_type:checked', '#form').val();
-      if (guest_type == '0') {
-        $('#member_div').hide();
-        $('#guest_name').prop('readonly', false);
-        $('#guest_name_div').show();
-        $('#guest_phone').prop('readonly', false);
-        // $("#guest_id_type").select2({'disabled':'readonly'});
-        $('#guest_id_no').prop('readonly', false);
-      }else if (guest_type == '1') {
-        $('#member_div').show();
-        $('#guest_name').prop('readonly', true);
-        $('#guest_name_div').hide();
-        $('#guest_phone').prop('readonly', true);
-        // $("#guest_id_type").select2().readonly(true);
-        $('#guest_id_no').prop('readonly', true);
-      }
-    });
-
-    $('#member_list').on('change', function() {
-      get_member(this.value);
-    });
-
-    $('#room_type_id').on('change', function() {
-      get_room(this.value);
-    });
-
-    $('#btn_add_room').click(function () {
-      add_room();
-    });
-
-    $("#tbl_room").on('click', '.btn_remove_room', function () {
-      $(this).closest('tr').remove();
-    });
-
-    $('#btn_add_extra').click(function () {
-      add_extra();
-    });
-
-    $("#tbl_extra").on('click', '.btn_remove_extra', function () {
-      $(this).closest('tr').remove();
-    });
-
-    $('#btn_add_service').click(function () {
-      add_service();
-    });
-
-    $("#tbl_service").on('click', '.btn_remove_service', function () {
-      $(this).closest('tr').remove();
-    });
-
-    $('#btn_add_fnb').click(function () {
-      add_fnb();
-    });
-
-    $("#tbl_fnb").on('click', '.btn_remove_fnb', function () {
-      $(this).closest('tr').remove();
-    });
-
     $("#form").validate({
       rules: {
         'billing_date_in': {
@@ -366,34 +313,51 @@
         }
       }
     });
-  });
+    
+    //Room
+    $('#btn_room_list').click(function () {
+      $('#modal_room_list').modal('show');
+    });
 
-  $('[name=status]').change(function(){
-		if($(this).val()==1){
-			$('[name=before_tax]').prop('readonly',true);
-      $('[name=after_tax]').prop('readonly',false);
-     
-    }else{
-			$('[name=before_tax]').prop('readonly',false);
-      $('[name=after_tax]').prop('readonly',true);	
-		}
+    $('#btn_room').click(function () {
+      $('#room_type_id').val('0').trigger('change');
+      get_room(0);
+      $('#room_type_charge').val(0);
+      $('#modal_room').modal('show');
+      $('#modal_room_list').modal('hide');
+    });
+    
+    $('#room_type_id').on('change', function() {
+      get_room(this.value);
+    });
+
+    $('#btn_add_room').click(function () {
+      add_room();
+    });
+
+    //Extra
+    $('#btn_extra_list').click(function () {
+      $('#modal_extra_list').modal('show');
+    });
+
+    $('#btn_extra').click(function () {
+      $('#extra_id').val(0).trigger('change');
+      $('#extra_charge').val(0);
+      $('#extra_amount').val(0);
+      $('#extra_total').val(0);
+      $('#modal_extra').modal('show');
+      $('#modal_extra_list').modal('hide');
+    });
+
+    $('#extra_id').on('change', function() {
+      get_extra(this.value);
+    });
+
+    $('#btn_add_extra').click(function () {
+      add_extra();
+    });
+
   });
-  
-  function get_member(member_id) {
-    $.ajax({
-      type : 'post',
-      url : '<?=base_url()?>hot_reservation/get_member',
-      data : 'member_id='+member_id,
-      dataType : 'json',
-      success : function (data) {
-        $('#guest_name').val(data.member_name);
-        $('#guest_phone').val(data.member_phone);
-        $('#form').find(':radio[name=guest_gender][value="'+data.member_gender+'"]').prop('checked', true);
-        $('#guest_id_type').val(data.member_id_type).trigger('change');
-        $('#guest_id_no').val(data.member_id_no);
-      }
-    })
-  }
 
   function get_room(room_type_id) {
     $.ajax({
@@ -406,90 +370,153 @@
           $(this).remove();
         });
         $("#room_id").select2({
-          data: data
+          data: data.room
         }).trigger('change');
+        // console.log(data.room_type.room_type_charge);
+        $('#room_type_charge').val(sys_to_ind(data.room_type.room_type_charge));
       }
     })
   }
 
   function add_room() {
-    var room_type_id = $("#room_type_id").val();
-    var room_type_name = $('#room_type_id option:selected').text();
-    var room_id = $("#room_id").val();
-    var room_name = $('#room_id option:selected').text();
-    
-    if (room_type_id == 0) {
-      alert('Pilih Tipe Kamar!');
-    } else if(room_id == 0) {
-      alert('Pilih Kamar!');
-    } else {
-      var row = '<tr>'+
-          '<td>'+room_type_name+'</td>'+
-          '<td>'+room_name+'</td>'+
-          '<td class="text-center">'+
-            '<input type="hidden" name="room_id[]" value="'+room_id+'">'+
-            '<button class="btn btn-xs btn-danger btn_remove_room" type="button"><i class="fa fa-trash"></i></button>'+
-          '</td>'+
-        '</tr>';
-    }
-    
-    $('#room_list').append(row);
+    var room_id = $('#room_id').val();
+    var room_type_charge = $('#room_type_charge').val();
+    var billing_id = $('#billing_id').val();
+
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>hot_reservation/add_room',
+      data : 'billing_id='+billing_id+'&room_id='+room_id+'&room_type_charge='+room_type_charge,
+      success : function (data) {
+        $('#modal_room_list').modal('show');
+        $('#modal_room').modal('hide');
+        get_billing_room();
+      }
+    })
+  }
+
+  function get_billing_room() {
+    var billing_id = $('#billing_id').val();
+
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>hot_reservation/get_billing_room',
+      data : 'billing_id='+billing_id,
+      dataType : 'json',
+      success : function (data) {
+        $("#row_room_list").html('');
+        $.each(data, function(i, item) {
+          var row = '<tr>'+
+            '<td>'+item.room_type_name+'</td>'+
+            '<td>'+item.room_name+'</td>'+
+            '<td>'+sys_to_cur(item.room_type_charge)+'</td>'+
+            '<td class="text-center">'+
+              '<button class="btn btn-xs btn-danger" onclick="delete_room('+item.billing_room_id+')"><i class="fa fa-trash"></i></button>'+
+            '</td>'+
+          '</tr>';
+          $("#row_room_list").append(row);
+        })
+        get_count();
+      }
+    })
+  }
+
+  function delete_room(id) {
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>hot_reservation/delete_room',
+      data : 'billing_room_id='+id,
+      success : function () {
+        get_billing_room();
+      }
+    })
+  }
+
+  function get_extra(extra_id) {
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>hot_reservation/get_extra',
+      data : 'extra_id='+extra_id,
+      dataType : 'json',
+      success : function (data) {
+        $('#extra_charge').val(sys_to_ind(data.extra_charge));
+      }
+    })
+  }
+
+  function calc_extra() {
+    var extra_charge = ind_to_sys($('#extra_charge').val());
+    var extra_amount = $('#extra_amount').val();
+    $('#extra_total').val(sys_to_ind(extra_amount*extra_charge));
   }
 
   function add_extra() {
-    var extra_id = $("#extra_id").val();
-    var extra_name = $('#extra_id option:selected').text();
-    
-    if(extra_id == 0) {
-      alert('Pilih Ekstra!');
-    } else {
-      var row = '<tr>'+
-          '<td>'+extra_name+'</td>'+
-          '<td class="text-center">'+
-            '<input type="hidden" name="extra_id[]" value="'+extra_id+'">'+
-            '<button class="btn btn-xs btn-danger btn_remove_extra" type="button"><i class="fa fa-trash"></i></button>'+
-          '</td>'+
-        '</tr>';
-    }
-    
-    $('#extra_list').append(row);
+    var billing_id = $('#billing_id').val();
+    var extra_id = $('#extra_id').val();
+    var extra_amount = $('#extra_amount').val();
+
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>hot_reservation/add_extra',
+      data : 'billing_id='+billing_id+'&extra_id='+extra_id+'&extra_amount='+extra_amount,
+      success : function (data) {
+        $('#modal_extra_list').modal('show');
+        $('#modal_extra').modal('hide');
+        get_billing_extra();
+      }
+    })
   }
 
-  function add_service() {
-    var service_id = $("#service_id").val();
-    var service_name = $('#service_id option:selected').text();
-    
-    if(service_id == 0) {
-      alert('Pilih Pelayanan (Biaya Lain-lain)!');
-    } else {
-      var row = '<tr>'+
-          '<td>'+service_name+'</td>'+
-          '<td class="text-center">'+
-            '<input type="hidden" name="service_id[]" value="'+service_id+'">'+
-            '<button class="btn btn-xs btn-danger btn_remove_service" type="button"><i class="fa fa-trash"></i></button>'+
-          '</td>'+
-        '</tr>';
-    }
-    
-    $('#service_list').append(row);
+  function get_billing_extra() {
+    var billing_id = $('#billing_id').val();
+
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>hot_reservation/get_billing_extra',
+      data : 'billing_id='+billing_id,
+      dataType : 'json',
+      success : function (data) {
+        $("#row_extra_list").html('');
+        $.each(data, function(i, item) {
+          var row = '<tr>'+
+            '<td>'+item.extra_name+'</td>'+
+            '<td>'+sys_to_cur(item.extra_charge)+'</td>'+
+            '<td class="text-right">'+item.extra_amount+'</td>'+
+            '<td>'+sys_to_cur(item.extra_total)+'</td>'+
+            '<td class="text-center">'+
+              '<button class="btn btn-xs btn-danger" onclick="delete_extra('+item.billing_extra_id+')"><i class="fa fa-trash"></i></button>'+
+            '</td>'+
+          '</tr>';
+          $("#row_extra_list").append(row);
+        })
+        get_count();
+      }
+    })
   }
 
-  function add_fnb() {
-    var fnb_id = $("#fnb_id").val();
-    var fnb_name = $('#fnb_id option:selected').text();
-    
-    if(fnb_id == 0) {
-      alert('Pilih Pelayanan (Biaya Lain-lain)!');
-    } else {
-      var row = '<tr>'+
-          '<td>'+fnb_name+'</td>'+
-          '<td class="text-center">'+
-            '<input type="hidden" name="fnb_id[]" value="'+fnb_id+'">'+
-            '<button class="btn btn-xs btn-danger btn_remove_fnb" type="button"><i class="fa fa-trash"></i></button>'+
-          '</td>'+
-        '</tr>';
-    }
-    
-    $('#fnb_list').append(row);
+  function delete_extra(id) {
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>hot_reservation/delete_extra',
+      data : 'billing_extra_id='+id,
+      success : function () {
+        get_billing_extra();
+      }
+    })
+  }
+
+  function get_count() {
+    var billing_id = $('#billing_id').val();
+
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>hot_reservation/get_count',
+      data : 'billing_id='+billing_id,
+      dataType : 'json',
+      success : function (data) {
+        $('#lbl_count_room').html(data.count_room);
+        $('#lbl_count_extra').html(data.count_extra);
+      }
+    })
   }
 </script>
