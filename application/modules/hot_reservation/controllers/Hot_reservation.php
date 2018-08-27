@@ -101,8 +101,7 @@ class Hot_reservation extends MY_Hotel {
           // -1 cancel
           // 0 empty
           // 1 proses
-          // 2 pending
-          // 3 complete
+          // 2 complete          
           if ($last_billing->billing_status == 0) {
             $data['billing_id'] = $last_billing->billing_id;
             $data['billing_receipt_no'] = $last_billing->billing_receipt_no;

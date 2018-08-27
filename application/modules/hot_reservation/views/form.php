@@ -316,6 +316,7 @@
     
     //Room
     $('#btn_room_list').click(function () {
+      get_billing_room();
       $('#modal_room_list').modal('show');
     });
 
@@ -337,6 +338,7 @@
 
     //Extra
     $('#btn_extra_list').click(function () {
+      get_billing_extra();
       $('#modal_extra_list').modal('show');
     });
 
@@ -405,17 +407,24 @@
       dataType : 'json',
       success : function (data) {
         $("#row_room_list").html('');
-        $.each(data, function(i, item) {
+        if (data == null || data == '') {
           var row = '<tr>'+
-            '<td>'+item.room_type_name+'</td>'+
-            '<td>'+item.room_name+'</td>'+
-            '<td>'+sys_to_cur(item.room_type_charge)+'</td>'+
-            '<td class="text-center">'+
-              '<button class="btn btn-xs btn-danger" onclick="delete_room('+item.billing_room_id+')"><i class="fa fa-trash"></i></button>'+
-            '</td>'+
+            '<td class="text-center" colspan="4">Data tidak ada!</td>'+
           '</tr>';
           $("#row_room_list").append(row);
-        })
+        } else {
+          $.each(data, function(i, item) {
+            var row = '<tr>'+
+              '<td>'+item.room_type_name+'</td>'+
+              '<td>'+item.room_name+'</td>'+
+              '<td>'+sys_to_cur(item.room_type_charge)+'</td>'+
+              '<td class="text-center">'+
+                '<button class="btn btn-xs btn-danger" onclick="delete_room('+item.billing_room_id+')"><i class="fa fa-trash"></i></button>'+
+              '</td>'+
+            '</tr>';
+            $("#row_room_list").append(row);
+          })
+        }
         get_count();
       }
     })
@@ -476,19 +485,27 @@
       data : 'billing_id='+billing_id,
       dataType : 'json',
       success : function (data) {
-        $("#row_extra_list").html('');
-        $.each(data, function(i, item) {
+        if (data == null || data == '') {
+          $("#row_extra_list").html('');
           var row = '<tr>'+
-            '<td>'+item.extra_name+'</td>'+
-            '<td>'+sys_to_cur(item.extra_charge)+'</td>'+
-            '<td class="text-right">'+item.extra_amount+'</td>'+
-            '<td>'+sys_to_cur(item.extra_total)+'</td>'+
-            '<td class="text-center">'+
-              '<button class="btn btn-xs btn-danger" onclick="delete_extra('+item.billing_extra_id+')"><i class="fa fa-trash"></i></button>'+
-            '</td>'+
+            '<td class="text-center" colspan="5">Data tidak ada!</td>'+
           '</tr>';
           $("#row_extra_list").append(row);
-        })
+        } else {
+          $("#row_extra_list").html('');
+          $.each(data, function(i, item) {
+            var row = '<tr>'+
+              '<td>'+item.extra_name+'</td>'+
+              '<td>'+sys_to_cur(item.extra_charge)+'</td>'+
+              '<td class="text-right">'+item.extra_amount+'</td>'+
+              '<td>'+sys_to_cur(item.extra_total)+'</td>'+
+              '<td class="text-center">'+
+                '<button class="btn btn-xs btn-danger" onclick="delete_extra('+item.billing_extra_id+')"><i class="fa fa-trash"></i></button>'+
+              '</td>'+
+            '</tr>';
+            $("#row_extra_list").append(row);
+          })
+        }
         get_count();
       }
     })
