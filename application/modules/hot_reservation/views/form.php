@@ -56,6 +56,8 @@
         </div>
         <button class="btn btn-info" id="btn_room_list" type="button"><i class="fa fa-bed"></i> Kamar <span class="badge" id="lbl_count_room">0</span></button>
         <button class="btn btn-info" id="btn_extra_list" type="button"><i class="fa fa-plus-square"></i> Ekstra <span class="badge" id="lbl_count_extra">0</span></button>
+        <button class="btn btn-info" id="btn_service_list" type="button"><i class="fa fa-plus-square"></i> Pelayanan <span class="badge" id="lbl_count_service">0</span></button>
+        <button class="btn btn-info" id="btn_fnb_list" type="button"><i class="fa fa-cutlery"></i> F&B <span class="badge" id="lbl_count_fnb">0</span></button>
       </div>
       <div class="col-md-6">
         <div class="form-group">
@@ -108,7 +110,7 @@
       <div class="col-md-12">
         <div class="form-group pull-right">
           <a class="btn btn-default" href="<?=base_url()?>hot_room/index"><i class="fa fa-close"></i> Batal</a>
-          <button class="btn btn-info" type="submit"><i class="fa fa-save"></i> Simpan</button>
+          <button class="btn btn-success" type="submit">Simpan & Lanjut Pembayaran <i class="fa fa-arrow-right"></i></button>
         </div>
       </div>
     </div>
@@ -222,7 +224,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="title_extra_list">Pilih Kamar</h4>
+        <h4 class="modal-title" id="title_extra_list">Pilih Extra</h4>
       </div>
       <div class="modal-body">
         <div class="form-group">
@@ -256,6 +258,159 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
         <button type="button" class="btn btn-info" id="btn_add_extra"><i class="fa fa-plus"></i> Tambah</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Service List -->
+<div id="modal_service_list" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_service_list">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="title_service_list">Pesanan Layanan</h4>
+      </div>
+      <div class="modal-body">
+        <button class="btn btn-info" id="btn_service"><i class="fa fa-plus"></i> Tambah Layanan</button>
+        <br><br>
+        <table id="tbl_service_list" class="table table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th class="text-center">Nama Layanan</th>
+              <th class="text-center">Harga Satuan</th>
+              <th class="text-center">Banyak</th>
+              <th class="text-center" width="150">Total</th>
+              <th class="text-center" width="50">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="row_service_list">
+
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-check"></i> Selesai</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Service -->
+<div id="modal_service" class="modal fade" role="dialog" aria-labelledby="modal_service">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="title_service_list">Pilih Layanan</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Layanan</label>
+          <select class="form-control select2" id="service_id">
+            <option value="0">-- Pilih Layanan --</option>
+            <?php foreach ($service as $row): ?>
+              <option value="<?=$row->service_id?>"><?=$row->service_name?></option>
+            <?php endforeach;?>
+          </select>
+        </div>
+        <div class="row">
+          <div class="col-md-8">
+            <div class="form-group">
+              <label>Harga</label>
+              <input class="form-control autonumeric num" id="service_charge" type="text" value="0" readonly>
+            </div>
+          </div>
+          <div class="col-md-4">  
+            <div class="form-group">
+              <label>Banyak</label>
+              <input class="form-control autonumeric num" id="service_amount" type="text" value="0" onchange="calc_service()">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Total</label>
+          <input class="form-control autonumeric num" id="service_total" type="text" value="0" readonly>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
+        <button type="button" class="btn btn-info" id="btn_add_service"><i class="fa fa-plus"></i> Tambah</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Fnb List -->
+<div id="modal_fnb_list" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_fnb_list">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="title_fnb_list">Pesanan F&B</h4>
+      </div>
+      <div class="modal-body">
+        <button class="btn btn-info" id="btn_fnb"><i class="fa fa-plus"></i> Tambah F&B</button>
+        <br><br>
+        <table id="tbl_fnb_list" class="table table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th class="text-center">Nama F&B</th>
+              <th class="text-center">Harga Satuan</th>
+              <th class="text-center">Banyak</th>
+              <th class="text-center" width="150">Total</th>
+              <th class="text-center" width="50">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="row_fnb_list">
+
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-check"></i> Selesai</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Service -->
+<div id="modal_fnb" class="modal fade" role="dialog" aria-labelledby="modal_fnb">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="title_fnb_list">Pilih F&B</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>F&B</label>
+          <select class="form-control select2" id="fnb_id">
+            <option value="0">-- Pilih F&B --</option>
+            <?php foreach ($fnb as $row): ?>
+              <option value="<?=$row->fnb_id?>"><?=$row->fnb_name?></option>
+            <?php endforeach;?>
+          </select>
+        </div>
+        <div class="row">
+          <div class="col-md-8">
+            <div class="form-group">
+              <label>Harga</label>
+              <input class="form-control autonumeric num" id="fnb_charge" type="text" value="0" readonly>
+            </div>
+          </div>
+          <div class="col-md-4">  
+            <div class="form-group">
+              <label>Banyak</label>
+              <input class="form-control autonumeric num" id="fnb_amount" type="text" value="0" onchange="calc_fnb()">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Total</label>
+          <input class="form-control autonumeric num" id="fnb_total" type="text" value="0" readonly>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
+        <button type="button" class="btn btn-info" id="btn_add_fnb"><i class="fa fa-plus"></i> Tambah</button>
       </div>
     </div>
   </div>
@@ -357,6 +512,52 @@
 
     $('#btn_add_extra').click(function () {
       add_extra();
+    });
+
+    // Service
+    $('#btn_service_list').click(function () {
+      get_billing_service();
+      $('#modal_service_list').modal('show');
+    });
+
+    $('#btn_service').click(function () {
+      $('#service_id').val(0).trigger('change');
+      $('#service_charge').val(0);
+      $('#service_amount').val(0);
+      $('#service_total').val(0);
+      $('#modal_service').modal('show');
+      $('#modal_service_list').modal('hide');
+    });
+
+    // Service
+    $('#service_id').on('change', function() {
+      get_service(this.value);
+    });
+
+    $('#btn_add_service').click(function () {
+      add_service();
+    });
+    
+    $('#btn_fnb_list').click(function () {
+      get_billing_fnb();
+      $('#modal_fnb_list').modal('show');
+    });
+
+    $('#btn_fnb').click(function () {
+      $('#fnb_id').val(0).trigger('change');
+      $('#fnb_charge').val(0);
+      $('#fnb_amount').val(0);
+      $('#fnb_total').val(0);
+      $('#modal_fnb').modal('show');
+      $('#modal_fnb_list').modal('hide');
+    });
+
+    $('#fnb_id').on('change', function() {
+      get_fnb(this.value);
+    });
+
+    $('#btn_add_fnb').click(function () {
+      add_fnb();
     });
 
   });
@@ -522,6 +723,168 @@
     })
   }
 
+  function get_service(service_id) {
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>hot_reservation/get_service',
+      data : 'service_id='+service_id,
+      dataType : 'json',
+      success : function (data) {
+        $('#service_charge').val(sys_to_ind(data.service_charge));
+      }
+    })
+  }
+
+  function calc_service() {
+    var service_charge = ind_to_sys($('#service_charge').val());
+    var service_amount = $('#service_amount').val();
+    $('#service_total').val(sys_to_ind(service_amount*service_charge));
+  }
+
+  function add_service() {
+    var billing_id = $('#billing_id').val();
+    var service_id = $('#service_id').val();
+    var service_amount = $('#service_amount').val();
+
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>hot_reservation/add_service',
+      data : 'billing_id='+billing_id+'&service_id='+service_id+'&service_amount='+service_amount,
+      success : function (data) {
+        $('#modal_service_list').modal('show');
+        $('#modal_service').modal('hide');
+        get_billing_service();
+      }
+    })
+  }
+
+  function get_billing_service() {
+    var billing_id = $('#billing_id').val();
+
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>hot_reservation/get_billing_service',
+      data : 'billing_id='+billing_id,
+      dataType : 'json',
+      success : function (data) {
+        if (data == null || data == '') {
+          $("#row_service_list").html('');
+          var row = '<tr>'+
+            '<td class="text-center" colspan="5">Data tidak ada!</td>'+
+          '</tr>';
+          $("#row_service_list").append(row);
+        } else {
+          $("#row_service_list").html('');
+          $.each(data, function(i, item) {
+            var row = '<tr>'+
+              '<td>'+item.service_name+'</td>'+
+              '<td>'+sys_to_cur(item.service_charge)+'</td>'+
+              '<td class="text-right">'+item.service_amount+'</td>'+
+              '<td>'+sys_to_cur(item.service_total)+'</td>'+
+              '<td class="text-center">'+
+                '<button class="btn btn-xs btn-danger" onclick="delete_service('+item.billing_service_id+')"><i class="fa fa-trash"></i></button>'+
+              '</td>'+
+            '</tr>';
+            $("#row_service_list").append(row);
+          })
+        }
+        get_count();
+      }
+    })
+  }
+
+  function delete_service(id) {
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>hot_reservation/delete_service',
+      data : 'billing_service_id='+id,
+      success : function () {
+        get_billing_service();
+      }
+    })
+  }
+
+  function get_fnb(fnb_id) {
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>hot_reservation/get_fnb',
+      data : 'fnb_id='+fnb_id,
+      dataType : 'json',
+      success : function (data) {
+        $('#fnb_charge').val(sys_to_ind(data.fnb_charge));
+      }
+    })
+  }
+
+  function calc_fnb() {
+    var fnb_charge = ind_to_sys($('#fnb_charge').val());
+    var fnb_amount = $('#fnb_amount').val();
+    $('#fnb_total').val(sys_to_ind(fnb_amount*fnb_charge));
+  }
+
+  function add_fnb() {
+    var billing_id = $('#billing_id').val();
+    var fnb_id = $('#fnb_id').val();
+    var fnb_amount = $('#fnb_amount').val();
+
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>hot_reservation/add_fnb',
+      data : 'billing_id='+billing_id+'&fnb_id='+fnb_id+'&fnb_amount='+fnb_amount,
+      success : function (data) {
+        $('#modal_fnb_list').modal('show');
+        $('#modal_fnb').modal('hide');
+        get_billing_fnb();
+      }
+    })
+  }
+
+  function get_billing_fnb() {
+    var billing_id = $('#billing_id').val();
+
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>hot_reservation/get_billing_fnb',
+      data : 'billing_id='+billing_id,
+      dataType : 'json',
+      success : function (data) {
+        if (data == null || data == '') {
+          $("#row_fnb_list").html('');
+          var row = '<tr>'+
+            '<td class="text-center" colspan="5">Data tidak ada!</td>'+
+          '</tr>';
+          $("#row_fnb_list").append(row);
+        } else {
+          $("#row_fnb_list").html('');
+          $.each(data, function(i, item) {
+            var row = '<tr>'+
+              '<td>'+item.fnb_name+'</td>'+
+              '<td>'+sys_to_cur(item.fnb_charge)+'</td>'+
+              '<td class="text-right">'+item.fnb_amount+'</td>'+
+              '<td>'+sys_to_cur(item.fnb_total)+'</td>'+
+              '<td class="text-center">'+
+                '<button class="btn btn-xs btn-danger" onclick="delete_fnb('+item.billing_fnb_id+')"><i class="fa fa-trash"></i></button>'+
+              '</td>'+
+            '</tr>';
+            $("#row_fnb_list").append(row);
+          })
+        }
+        get_count();
+      }
+    })
+  }
+
+  function delete_fnb(id) {
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>hot_reservation/delete_fnb',
+      data : 'billing_fnb_id='+id,
+      success : function () {
+        get_billing_fnb();
+      }
+    })
+  }
+
   function get_count() {
     var billing_id = $('#billing_id').val();
 
@@ -533,6 +896,8 @@
       success : function (data) {
         $('#lbl_count_room').html(data.count_room);
         $('#lbl_count_extra').html(data.count_extra);
+        $('#lbl_count_service').html(data.count_service);
+        $('#lbl_count_fnb').html(data.count_fnb);
       }
     })
   }

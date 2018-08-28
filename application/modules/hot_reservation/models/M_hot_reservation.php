@@ -27,6 +27,17 @@ class M_hot_reservation extends CI_Model {
 			->get('hot_billing')->result();
 	}
 
+	public function get_billing($id)
+	{
+		$data = $this->db->where('billing_id',$id)->get('hot_billing')->row();
+		$data->room = $this->db->where('billing_id',$id)->get('hot_billing_room')->result();
+		$data->extra = $this->db->where('billing_id',$id)->get('hot_billing_extra')->result();
+		$data->service = $this->db->where('billing_id',$id)->get('hot_billing_service')->result();
+		$data->fnb = $this->db->where('billing_id',$id)->get('hot_billing_fnb')->result();
+		
+		return $data;
+	}
+
 	public function new_billing($billing_receipt_no)
 	{
 		$data = array(
@@ -34,6 +45,11 @@ class M_hot_reservation extends CI_Model {
 			'billing_receipt_no' => $billing_receipt_no
 		);
 		$this->db->insert('hot_billing', $data);
+	}
+
+	public function update($billing_id,$data)
+	{
+		$this->db->where('billing_id',$billing_id)->update('hot_billing',$data);
 	}
 
 	public function empty_detail($billing_id)
@@ -121,6 +137,76 @@ class M_hot_reservation extends CI_Model {
 		)->row();
 
 		return $data->count_extra;
+	}
+
+	public function add_service($data)
+	{
+		$this->db->insert('hot_billing_service', $data);
+	}
+
+	public function service_list($billing_id)
+	{
+		return $this->db
+			->where('billing_id',$billing_id)
+			->get('hot_billing_service')->result();
+	}
+
+	public function get_billing_service($billing_id)
+	{
+		return $this->db
+			->where('billing_id',$billing_id)
+			->get('hot_billing_service')->result();
+	}
+
+	public function delete_service($id)
+	{
+		$this->db->where('billing_service_id',$id)->delete('hot_billing_service');
+	}
+
+	public function count_service($billing_id)
+	{
+		$data = $this->db->query(
+			"SELECT COUNT(*) AS count_service 
+			FROM hot_billing_service 
+			WHERE billing_id = '$billing_id'"
+		)->row();
+
+		return $data->count_service;
+	}
+
+	public function add_fnb($data)
+	{
+		$this->db->insert('hot_billing_fnb', $data);
+	}
+
+	public function fnb_list($billing_id)
+	{
+		return $this->db
+			->where('billing_id',$billing_id)
+			->get('hot_billing_fnb')->result();
+	}
+
+	public function get_billing_fnb($billing_id)
+	{
+		return $this->db
+			->where('billing_id',$billing_id)
+			->get('hot_billing_fnb')->result();
+	}
+
+	public function delete_fnb($id)
+	{
+		$this->db->where('billing_fnb_id',$id)->delete('hot_billing_fnb');
+	}
+
+	public function count_fnb($billing_id)
+	{
+		$data = $this->db->query(
+			"SELECT COUNT(*) AS count_fnb 
+			FROM hot_billing_fnb 
+			WHERE billing_id = '$billing_id'"
+		)->row();
+
+		return $data->count_fnb;
 	}
 
 }

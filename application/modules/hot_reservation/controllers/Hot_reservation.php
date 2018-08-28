@@ -96,6 +96,7 @@ class Hot_reservation extends MY_Hotel {
         if ($last_billing == null) {
           $data['billing_id'] = 1;
           $data['billing_receipt_no'] = date('ymd').'000001';
+          $this->m_hot_reservation->new_billing($data['billing_receipt_no']);
         }else{
           // status billing
           // -1 cancel
@@ -143,90 +144,23 @@ class Hot_reservation extends MY_Hotel {
   public function insert()
   {
     $data = $_POST;
-
-    //get last billing
-    $last = $this->m_hot_billing->get_last();
-    if ($last == null) {
-      $billing_id = 1;
-    }else{
-      $billing_id = $last->billing_id+1;
-    }
-
-    $tot_room = 0;
-    if (isset($data['room_id'])) {
-      foreach ($data['room_id'] as $key => $val) {
-        $room = $this->m_hot_room->get_by_id($val);
-        $data_room = array(
-          'billing_id' => $billing_id,
-          'room_id' => $room->room_id,
-          'room_name' => $room->room_name,
-          'room_type_id' => $room->room_type_id,
-          'room_type_name' => $room->room_type_name,
-          'room_type_charge' => $room->room_type_charge
-        );
-        $this->m_hot_billing_room->insert($data_room);
-        $tot_room += $room->room_type_charge;
-      }
-    }
-
-    $tot_extra = 0;
-    if (isset($data['extra_id'])) {
-      foreach ($data['extra_id'] as $key => $val) {
-        $extra = $this->m_hot_extra->get_by_id($val);
-        $data_extra = array(
-          'billing_id' => $billing_id,
-          'extra_id' => $extra->extra_id,
-          'extra_name' => $extra->extra_name,
-          'extra_charge' => $extra->extra_charge
-        );
-        $this->m_hot_billing_extra->insert($data_extra);
-        $tot_extra += $extra->extra_charge;
-      }
-    }
-    
-    $tot_service = 0;
-    if (isset($data['service_id'])) {
-      foreach ($data['service_id'] as $key => $val) {
-        $service = $this->m_hot_service->get_by_id($val);
-        $data_service = array(
-          'billing_id' => $billing_id,
-          'service_id' => $service->service_id,
-          'service_name' => $service->service_name,
-          'service_charge' => $service->service_charge
-        );
-        $this->m_hot_billing_service->insert($data_service);
-        $tot_service += $service->service_charge;
-      }
-    }
-
-    $tot_fnb = 0;
-    if (isset($data['fnb_id'])) {
-      foreach ($data['fnb_id'] as $key => $val) {
-        $fnb = $this->m_hot_fnb->get_by_id($val);
-        $data_fnb = array(
-          'billing_id' => $billing_id,
-          'fnb_id' => $fnb->fnb_id,
-          'fnb_name' => $fnb->fnb_name,
-          'fnb_charge' => $fnb->fnb_charge
-        );
-        $this->m_hot_billing_fnb->insert($data_fnb);
-        $tot_fnb += $fnb->fnb_charge;
-      }
-    }
-
-    unset($data['room_id'],$data['extra_id'],$data['service_id'],$data['fnb_id']);
-
+    $data['billing_status'] = 1;
     $data['billing_date_in'] = ind_to_date($data['billing_date_in']);
     $data['billing_date_out'] = ind_to_date($data['billing_date_out']);
-    $data['billing_down_payment'] = price_to_num($data['billing_down_payment']);
-    $data['billing_sub_total'] = $tot_room + $tot_extra + $tot_service + $tot_fnb;
-    $data['user_id'] = $this->session->userdata('user_id');
-    $data['user_realname'] = $this->session->userdata('user_realname');
-    $data['created_by'] = $this->session->userdata('user_realname');
-
-    $this->m_hot_billing->insert($data);
+    $data['billing_num_day'] = dateDiff($data['billing_date_out'],$data['billing_date_in'])+1;
+    
+    $this->m_hot_reservation->update($data['billing_id'],$data);
     $this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil ditambahkan!</div>');
-    redirect(base_url().'hot_reservation/index');
+    redirect(base_url().'hot_reservation/payment/'.$data['billing_id']);
+  }
+
+  public function payment($id)
+  {
+    $data['access'] = $this->access;
+    $data['title'] = 'Pembayaran';
+    $data['billing'] = $this->m_hot_reservation->get_billing($id);
+
+    $this->view('hot_reservation/payment',$data);
   }
 
   public function edit($id)
@@ -372,12 +306,92 @@ class Hot_reservation extends MY_Hotel {
     $this->m_hot_reservation->delete_extra($id);
   }
 
+  public function get_service()
+  {
+    $service_id = $this->input->post('service_id');
+    $data = $this->m_hot_service->get_by_id($service_id);
+
+    echo json_encode($data);
+  }
+
+  public function add_service()
+  {
+    $data = $_POST;
+    $service = $this->m_hot_service->get_by_id($data['service_id']);
+
+    $data_service = array(
+      'billing_id' => $data['billing_id'],
+      'service_id' => $service->service_id,
+      'service_name' => $service->service_name,
+      'service_charge' => $service->service_charge,
+      'service_amount' => $data['service_amount'],
+      'service_total' => $data['service_amount']*$service->service_charge,
+      'created_by' => $this->session->userdata('user_realname')
+    );
+    $this->m_hot_reservation->add_service($data_service);
+  }
+
+  public function get_billing_service()
+  {
+    $billing_id = $this->input->post('billing_id');
+    $data = $this->m_hot_reservation->get_billing_service($billing_id);
+
+    echo json_encode($data);
+  }
+
+  public function delete_service()
+  {
+    $id = $this->input->post('billing_service_id');
+    $this->m_hot_reservation->delete_service($id);
+  }
+
+  public function get_fnb()
+  {
+    $fnb_id = $this->input->post('fnb_id');
+    $data = $this->m_hot_fnb->get_by_id($fnb_id);
+
+    echo json_encode($data);
+  }
+
+  public function add_fnb()
+  {
+    $data = $_POST;
+    $fnb = $this->m_hot_fnb->get_by_id($data['fnb_id']);
+
+    $data_fnb = array(
+      'billing_id' => $data['billing_id'],
+      'fnb_id' => $fnb->fnb_id,
+      'fnb_name' => $fnb->fnb_name,
+      'fnb_charge' => $fnb->fnb_charge,
+      'fnb_amount' => $data['fnb_amount'],
+      'fnb_total' => $data['fnb_amount']*$fnb->fnb_charge,
+      'created_by' => $this->session->userdata('user_realname')
+    );
+    $this->m_hot_reservation->add_fnb($data_fnb);
+  }
+
+  public function get_billing_fnb()
+  {
+    $billing_id = $this->input->post('billing_id');
+    $data = $this->m_hot_reservation->get_billing_fnb($billing_id);
+
+    echo json_encode($data);
+  }
+
+  public function delete_fnb()
+  {
+    $id = $this->input->post('billing_fnb_id');
+    $this->m_hot_reservation->delete_fnb($id);
+  }
+
   public function get_count()
   {
     $billing_id = $this->input->post('billing_id');
     
     $data['count_room'] = $this->m_hot_reservation->count_room($billing_id);
     $data['count_extra'] = $this->m_hot_reservation->count_extra($billing_id);
+    $data['count_service'] = $this->m_hot_reservation->count_service($billing_id);
+    $data['count_fnb'] = $this->m_hot_reservation->count_fnb($billing_id);
 
     echo json_encode($data);
   }

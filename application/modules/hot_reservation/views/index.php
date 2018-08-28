@@ -64,9 +64,9 @@
                   <td class="text-center">
                     <?php if ($row->billing_status == -1){ ?>
                       <span class="badge bg-danger">Dibatalkan</span>
-                    <?php }else if($row->billing_status == 0){ ?>
-                      <span class="badge bg-warning">Belum Dibayar</span>
                     <?php }else if($row->billing_status == 1){ ?>
+                      <span class="badge bg-warning">Belum Dibayar</span>
+                    <?php }else if($row->billing_status == 2){ ?>
                       <span class="badge bg-success">Sudah Dibayar</span>
                     <?php }; ?>
                   </td>
