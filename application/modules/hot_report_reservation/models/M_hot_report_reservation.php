@@ -9,11 +9,11 @@ class M_hot_report_reservation extends CI_Model {
 			"SELECT
 				MONTH(billing_date_in) AS tx_month,
 				YEAR(billing_date_in) AS tx_year,
-				SUM(billing_sub_total) AS billing_sub_total,
-				SUM(billing_grand_total) AS billing_grand_total,
-				SUM(billing_down_payment) AS billing_down_payment,
-				SUM(billing_payment) AS billing_payment,
-				SUM(billing_change) AS billing_change
+				SUM(billing_subtotal) AS billing_subtotal,
+				SUM(billing_tax) AS billing_tax,
+				SUM(billing_service) AS billing_service,
+				SUM(billing_other) AS billing_other,
+				SUM(billing_total) AS billing_total
 			FROM hot_billing
 			WHERE
 				billing_date_in LIKE '$year%' AND
@@ -30,11 +30,11 @@ class M_hot_report_reservation extends CI_Model {
 		$billing = $this->db->query(
 			"SELECT
 				billing_date_in,
-				SUM(billing_sub_total) AS billing_sub_total,
-				SUM(billing_grand_total) AS billing_grand_total,
-				SUM(billing_down_payment) AS billing_down_payment,
-				SUM(billing_payment) AS billing_payment,
-				SUM(billing_change) AS billing_change
+				SUM(billing_subtotal) AS billing_subtotal,
+				SUM(billing_tax) AS billing_tax,
+				SUM(billing_service) AS billing_service,
+				SUM(billing_other) AS billing_other,
+				SUM(billing_total) AS billing_total
 			FROM hot_billing
 			WHERE
 				billing_date_in LIKE '$month%' AND
@@ -51,11 +51,11 @@ class M_hot_report_reservation extends CI_Model {
 		$billing = $this->db->query(
 			"SELECT
 				billing_date_in,
-				SUM(billing_sub_total) AS billing_sub_total,
-				SUM(billing_grand_total) AS billing_grand_total,
-				SUM(billing_down_payment) AS billing_down_payment,
-				SUM(billing_payment) AS billing_payment,
-				SUM(billing_change) AS billing_change
+				SUM(billing_subtotal) AS billing_subtotal,
+				SUM(billing_tax) AS billing_tax,
+				SUM(billing_service) AS billing_service,
+				SUM(billing_other) AS billing_other,
+				SUM(billing_total) AS billing_total
 			FROM hot_billing
 			WHERE
 				billing_date_in >= '$date_start' AND
@@ -88,11 +88,11 @@ class M_hot_report_reservation extends CI_Model {
 		$billing = $this->db->query(
 			"SELECT
 				billing_date_in,
-				SUM(billing_sub_total) AS billing_sub_total,
-				SUM(billing_grand_total) AS billing_grand_total,
-				SUM(billing_down_payment) AS billing_down_payment,
-				SUM(billing_payment) AS billing_payment,
-				SUM(billing_change) AS billing_change
+				SUM(billing_subtotal) AS billing_subtotal,
+				SUM(billing_tax) AS billing_tax,
+				SUM(billing_service) AS billing_service,
+				SUM(billing_other) AS billing_other,
+				SUM(billing_total) AS billing_total
 			FROM hot_billing
 			WHERE
 				billing_date_in >= '$date_start' AND

@@ -196,6 +196,9 @@ class Hot_reservation extends MY_Hotel {
     $data['billing_service'] = $billing_service;
     $data['billing_other'] = $billing_other;
     $data['billing_total'] = $billing_total;
+
+    $data['user_id'] = $this->session->userdata('user_id');
+    $data['user_realname'] = $this->session->userdata('user_realname');
     
     $this->m_hot_reservation->update($data['billing_id'],$data);
     $this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil ditambahkan!</div>');

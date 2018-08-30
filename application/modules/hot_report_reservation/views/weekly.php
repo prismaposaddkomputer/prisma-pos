@@ -10,17 +10,13 @@
       <table class="table table-striped table-bordered table-condensed">
         <thead>
           <tr>
-            <th class="text-center" width="85">Tanggal</th>
+            <th class="text-center" width="85">Bulan</th>
             <th class="text-center" width="50">Aksi</th>
             <th class="text-center">Sub Total</th>
             <th class="text-center">Diskon</th>
 
             <?php 
             foreach ($charge_type as $data): 
-            //
-            $no = $data['charge_type_id'];
-            $grand_down_total_tax[$no] = 0;
-            //
             ?>
             <th class="text-center"><?=$data['charge_type_name']?></th>
             <?php endforeach ?>
@@ -53,8 +49,14 @@
         </thead>
         <tbody>
           <?php
-            $billing_sub_total = 0;
-            $grand_total_all = 0;
+            $billing_subtotal = 0;
+            $billing_tax = 0;
+            $billing_service = 0;
+            $billing_other = 0;
+            $total_tax = 0;
+            $total_service = 0;
+            $total_other = 0;
+            $billing_total = 0;
           ?>
           <?php if ($weekly != null): ?>
             <?php $i=1;foreach ($weekly as $row): ?>
@@ -63,8 +65,8 @@
                 <td class="text-center">
                   <a href="<?=base_url()?>hot_report_reservation/daily/<?=$row->billing_date_in?>" class="btn btn-xs btn-success"><i class="fa fa-list"></i> </a>
                 </td>
-                <td><?=num_to_idr($row->billing_sub_total)?></td>
-                  <?php $billing_sub_total += $row->billing_sub_total;?>
+                <td><?=num_to_idr($row->billing_subtotal)?></td>
+                  <?php $billing_subtotal += $row->billing_subtotal;?>
 
                 <!-- Diskon -->
                 <td>0</td>
@@ -72,25 +74,27 @@
 
                 <!-- Charge Type -->
                 <?php 
-                  $grand_total_tax = 0;
                   foreach ($charge_type as $data): 
-                  $no = $data['charge_type_id'];
-                  $total_tax[$no] = 0;
-                  $total_tax[$no] = ($row->billing_sub_total - 0) * $data_charge_type[$no]['charge_type_ratio'] / 100;
-                  //
-                  $grand_total_tax += $total_tax[$no];
+                  if ($data['charge_type_id'] == '1') {
+                    $billing_charge_type = $row->billing_tax;
+                  }else if ($data['charge_type_id'] == '2') {
+                    $billing_charge_type = $row->billing_service;
+                  }else if ($data['charge_type_id'] == '3') {
+                    $billing_charge_type = $row->billing_other;
+                  }
                 ?>
-                <td><?=num_to_idr($total_tax[$no])?></td>
-                  <?php $grand_down_total_tax[$no] += $total_tax[$no]; ?>
-                <?php endforeach; ?>  
+                <td><?=num_to_idr($billing_charge_type)?></td>
+                <?php 
+                endforeach; 
+                $total_tax += $row->billing_tax;
+                $total_service += $row->billing_service;
+                $total_other += $row->billing_other;
+                ?>  
                 <!-- End Charge Type -->
 
                 <!-- Grand Total -->
-                <?php
-                $grand_total = ($row->billing_sub_total - 0) + $grand_total_tax;
-                ?>
-                <td><?=num_to_idr($grand_total)?></td>
-                <?php $grand_total_all += $grand_total; ?>
+                <td><?=num_to_idr($row->billing_total)?></td>
+                  <?php $billing_total += $row->billing_total;?>
                 <!-- End Grand Total -->
                   
               </tr>
@@ -104,14 +108,21 @@
         <tfoot>
           <tr>
             <th class="text-center" colspan="2">Total</th>
-            <th><?=num_to_idr($billing_sub_total)?></th>
+            <th><?=num_to_idr($billing_subtotal)?></th>
             <th>0</th>
-            <?php foreach ($charge_type as $data): 
-              $no = $data['charge_type_id'];
+            <?php 
+            foreach ($charge_type as $data): 
+            if ($data['charge_type_id'] == '1') {
+              $total_charge_type = $total_tax;
+            }else if ($data['charge_type_id'] == '2') {
+              $total_charge_type = $total_service;
+            }else if ($data['charge_type_id'] == '3') {
+              $total_charge_type = $total_other;
+            }
             ?>
-            <th><?=num_to_idr($grand_down_total_tax[$no])?></th>
+            <th><?=num_to_idr($total_charge_type)?></th>
             <?php endforeach; ?> 
-            <th><?=num_to_idr($grand_total_all)?></th> 
+            <th><?=num_to_idr($billing_total)?></th> 
           </tr>
         </tfoot>
       </table>
