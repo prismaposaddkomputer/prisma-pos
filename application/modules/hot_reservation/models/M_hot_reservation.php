@@ -62,11 +62,13 @@ class M_hot_reservation extends CI_Model {
 
 	public function room_detail($room_id)
 	{
-		return $this->db->query(
+		$room = $this->db->query(
 			"SELECT * FROM hot_room a
 			JOIN hot_room_type b ON a.room_type_id = b.room_type_id
 			WHERE a.room_id = '$room_id'"
 		)->row();
+
+		return $room;
 	}
 
 	public function add_room($data)

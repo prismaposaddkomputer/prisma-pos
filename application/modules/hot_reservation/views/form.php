@@ -142,6 +142,19 @@
 
           </tbody>
         </table>
+        <em>
+          <small>
+            get_billing_extra 
+            <?php if ($client->client_is_taxed == 0): ?>
+              Harga belum termasuk 
+            <?php else: ?>
+              Harga sudah termasuk 
+            <?php endif;?>
+            <?php foreach ($charge_type as $row){
+              echo $row->charge_type_name.',';
+            }?>
+          </small>
+        </em>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-check"></i> Selesai</button>
@@ -177,6 +190,20 @@
           <label>Harga</label>
           <input class="form-control autonumeric" id="room_type_charge" type="text" value="0">
         </div>
+        <br>
+        <em>
+          <small>
+            NB: 
+            <?php if ($client->client_is_taxed == 0): ?>
+              Harga belum termasuk 
+            <?php else: ?>
+              Harga sudah termasuk 
+            <?php endif;?>
+            <?php foreach ($charge_type as $row){
+              echo $row->charge_type_name.',';
+            }?>
+          </small>
+        </em>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
@@ -211,6 +238,17 @@
 
           </tbody>
         </table>
+        <em>
+          <small>
+            NB: 
+            <?php if ($client->client_is_taxed == 0): ?>
+              Harga belum termasuk 
+            <?php else: ?>
+              Harga sudah termasuk 
+            <?php endif;?>
+            Pajak Hotel
+          </small>
+        </em>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-check"></i> Selesai</button>
@@ -254,6 +292,18 @@
           <label>Total</label>
           <input class="form-control autonumeric num" id="extra_total" type="text" value="0" readonly>
         </div>
+        <br>
+        <em>
+          <small>
+            NB: 
+            <?php if ($client->client_is_taxed == 0): ?>
+              Harga belum termasuk 
+            <?php else: ?>
+              Harga sudah termasuk 
+            <?php endif;?>
+            Pajak Hotel
+          </small>
+        </em>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
@@ -608,23 +658,37 @@
       dataType : 'json',
       success : function (data) {
         $("#row_room_list").html('');
-        if (data == null || data == '') {
+        if (data.room == null || data.room == '') {
           var row = '<tr>'+
             '<td class="text-center" colspan="4">Data tidak ada!</td>'+
           '</tr>';
           $("#row_room_list").append(row);
         } else {
-          $.each(data, function(i, item) {
-            var row = '<tr>'+
-              '<td>'+item.room_type_name+'</td>'+
-              '<td>'+item.room_name+'</td>'+
-              '<td>'+sys_to_cur(item.room_type_charge)+'</td>'+
-              '<td class="text-center">'+
-                '<button class="btn btn-xs btn-danger" onclick="delete_room('+item.billing_room_id+')"><i class="fa fa-trash"></i></button>'+
-              '</td>'+
-            '</tr>';
-            $("#row_room_list").append(row);
-          })
+          if (data.client_is_taxed == 0) {  
+            $.each(data.room, function(i, item) {
+              var row = '<tr>'+
+                '<td>'+item.room_type_name+'</td>'+
+                '<td>'+item.room_name+'</td>'+
+                '<td>'+sys_to_cur(item.room_type_charge)+'</td>'+
+                '<td class="text-center">'+
+                  '<button class="btn btn-xs btn-danger" onclick="delete_room('+item.billing_room_id+')"><i class="fa fa-trash"></i></button>'+
+                '</td>'+
+              '</tr>';
+              $("#row_room_list").append(row);
+            })
+          }else{
+             $.each(data.room, function(i, item) {
+              var row = '<tr>'+
+                '<td>'+item.room_type_name+'</td>'+
+                '<td>'+item.room_name+'</td>'+
+                '<td>'+sys_to_cur(item.room_type_total)+'</td>'+
+                '<td class="text-center">'+
+                  '<button class="btn btn-xs btn-danger" onclick="delete_room('+item.billing_room_id+')"><i class="fa fa-trash"></i></button>'+
+                '</td>'+
+              '</tr>';
+              $("#row_room_list").append(row);
+            })
+          }
         }
         get_count();
       }
@@ -686,7 +750,7 @@
       data : 'billing_id='+billing_id,
       dataType : 'json',
       success : function (data) {
-        if (data == null || data == '') {
+        if (data.extra == null || data.extra == '') {
           $("#row_extra_list").html('');
           var row = '<tr>'+
             '<td class="text-center" colspan="5">Data tidak ada!</td>'+
@@ -694,18 +758,33 @@
           $("#row_extra_list").append(row);
         } else {
           $("#row_extra_list").html('');
-          $.each(data, function(i, item) {
-            var row = '<tr>'+
-              '<td>'+item.extra_name+'</td>'+
-              '<td>'+sys_to_cur(item.extra_charge)+'</td>'+
-              '<td class="text-right">'+item.extra_amount+'</td>'+
-              '<td>'+sys_to_cur(item.extra_total)+'</td>'+
-              '<td class="text-center">'+
-                '<button class="btn btn-xs btn-danger" onclick="delete_extra('+item.billing_extra_id+')"><i class="fa fa-trash"></i></button>'+
-              '</td>'+
-            '</tr>';
-            $("#row_extra_list").append(row);
-          })
+          if (data.client_is_taxed == 0) {
+            $.each(data.extra, function(i, item) {
+              var row = '<tr>'+
+                '<td>'+item.extra_name+'</td>'+
+                '<td>'+sys_to_cur(item.extra_charge)+'</td>'+
+                '<td class="text-right">'+item.extra_amount+'</td>'+
+                '<td>'+sys_to_cur(item.extra_subtotal)+'</td>'+
+                '<td class="text-center">'+
+                  '<button class="btn btn-xs btn-danger" onclick="delete_extra('+item.billing_extra_id+')"><i class="fa fa-trash"></i></button>'+
+                '</td>'+
+              '</tr>';
+              $("#row_extra_list").append(row);
+            })
+          }else{
+            $.each(data.extra, function(i, item) {
+              var row = '<tr>'+
+                '<td>'+item.extra_name+'</td>'+
+                '<td>'+sys_to_cur(parseFloat(item.extra_charge)+(parseFloat(item.extra_tax)/parseFloat(item.extra_amount)))+'</td>'+
+                '<td class="text-right">'+item.extra_amount+'</td>'+
+                '<td>'+sys_to_cur(item.extra_total)+'</td>'+
+                '<td class="text-center">'+
+                  '<button class="btn btn-xs btn-danger" onclick="delete_extra('+item.billing_extra_id+')"><i class="fa fa-trash"></i></button>'+
+                '</td>'+
+              '</tr>';
+              $("#row_extra_list").append(row);
+            })
+          }
         }
         get_count();
       }
@@ -775,18 +854,33 @@
           $("#row_service_list").append(row);
         } else {
           $("#row_service_list").html('');
-          $.each(data, function(i, item) {
-            var row = '<tr>'+
-              '<td>'+item.service_name+'</td>'+
-              '<td>'+sys_to_cur(item.service_charge)+'</td>'+
-              '<td class="text-right">'+item.service_amount+'</td>'+
-              '<td>'+sys_to_cur(item.service_total)+'</td>'+
-              '<td class="text-center">'+
-                '<button class="btn btn-xs btn-danger" onclick="delete_service('+item.billing_service_id+')"><i class="fa fa-trash"></i></button>'+
-              '</td>'+
-            '</tr>';
-            $("#row_service_list").append(row);
-          })
+          if (data.client_is_taxed == 0) {
+            $.each(data.service, function(i, item) {
+              var row = '<tr>'+
+                '<td>'+item.service_name+'</td>'+
+                '<td>'+sys_to_cur(item.service_charge)+'</td>'+
+                '<td class="text-right">'+item.service_amount+'</td>'+
+                '<td>'+sys_to_cur(item.service_subtotal)+'</td>'+
+                '<td class="text-center">'+
+                  '<button class="btn btn-xs btn-danger" onclick="delete_service('+item.billing_service_id+')"><i class="fa fa-trash"></i></button>'+
+                '</td>'+
+              '</tr>';
+              $("#row_service_list").append(row);
+            })
+          }else{
+            $.each(data.service, function(i, item) {
+              var row = '<tr>'+
+                '<td>'+item.service_name+'</td>'+
+                '<td>'+sys_to_cur(parseFloat(item.service_charge)+(parseFloat(item.service_tax)/parseFloat(item.service_amount)))+'</td>'+
+                '<td class="text-right">'+item.service_amount+'</td>'+
+                '<td>'+sys_to_cur(item.service_total)+'</td>'+
+                '<td class="text-center">'+
+                  '<button class="btn btn-xs btn-danger" onclick="delete_service('+item.billing_service_id+')"><i class="fa fa-trash"></i></button>'+
+                '</td>'+
+              '</tr>';
+              $("#row_service_list").append(row);
+            })
+          }
         }
         get_count();
       }
@@ -856,18 +950,33 @@
           $("#row_fnb_list").append(row);
         } else {
           $("#row_fnb_list").html('');
-          $.each(data, function(i, item) {
-            var row = '<tr>'+
-              '<td>'+item.fnb_name+'</td>'+
-              '<td>'+sys_to_cur(item.fnb_charge)+'</td>'+
-              '<td class="text-right">'+item.fnb_amount+'</td>'+
-              '<td>'+sys_to_cur(item.fnb_total)+'</td>'+
-              '<td class="text-center">'+
-                '<button class="btn btn-xs btn-danger" onclick="delete_fnb('+item.billing_fnb_id+')"><i class="fa fa-trash"></i></button>'+
-              '</td>'+
-            '</tr>';
-            $("#row_fnb_list").append(row);
-          })
+          if (data.client_is_taxed == 0) {
+            $.each(data.fnb, function(i, item) {
+              var row = '<tr>'+
+                '<td>'+item.fnb_name+'</td>'+
+                '<td>'+sys_to_cur(item.fnb_charge)+'</td>'+
+                '<td class="text-right">'+item.fnb_amount+'</td>'+
+                '<td>'+sys_to_cur(item.fnb_subtotal)+'</td>'+
+                '<td class="text-center">'+
+                  '<button class="btn btn-xs btn-danger" onclick="delete_fnb('+item.billing_fnb_id+')"><i class="fa fa-trash"></i></button>'+
+                '</td>'+
+              '</tr>';
+              $("#row_fnb_list").append(row);
+            })
+          }else{
+            $.each(data.fnb, function(i, item) {
+              var row = '<tr>'+
+                '<td>'+item.fnb_name+'</td>'+
+                '<td>'+sys_to_cur(parseFloat(item.fnb_charge)+(parseFloat(item.fnb_tax)/parseFloat(item.fnb_amount)))+'</td>'+
+                '<td class="text-right">'+item.fnb_amount+'</td>'+
+                '<td>'+sys_to_cur(item.fnb_total)+'</td>'+
+                '<td class="text-center">'+
+                  '<button class="btn btn-xs btn-danger" onclick="delete_fnb('+item.billing_fnb_id+')"><i class="fa fa-trash"></i></button>'+
+                '</td>'+
+              '</tr>';
+              $("#row_fnb_list").append(row);
+            })
+          }
         }
         get_count();
       }
