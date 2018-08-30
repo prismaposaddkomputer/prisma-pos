@@ -147,10 +147,55 @@ class Hot_reservation extends MY_Hotel {
   public function insert()
   {
     $data = $_POST;
+
+    $room = $this->m_hot_reservation->get_billing_room($data['billing_id']);
+    $extra = $this->m_hot_reservation->get_billing_extra($data['billing_id']);
+    $service = $this->m_hot_reservation->get_billing_service($data['billing_id']);
+    $fnb = $this->m_hot_reservation->get_billing_fnb($data['billing_id']);
+
     $data['billing_status'] = 1;
     $data['billing_date_in'] = ind_to_date($data['billing_date_in']);
     $data['billing_date_out'] = ind_to_date($data['billing_date_out']);
     $data['billing_num_day'] = dateDiff($data['billing_date_out'],$data['billing_date_in'])+1;
+    $data['billing_down_payment'] = price_to_num($data['billing_down_payment']);
+
+    $billing_subtotal = 0;
+    $billing_tax = 0;
+    $billing_service = 0;
+    $billing_other = 0;
+    $billing_total = 0;
+
+    foreach ($room as $row) {
+      $billing_subtotal += $row->room_type_subtotal;
+      $billing_tax += $row->room_type_tax;
+      $billing_service += $row->room_type_service;
+      $billing_other += $row->room_type_other;
+      $billing_total += $row->room_type_total;
+    }
+
+    foreach ($extra as $row) {
+      $billing_subtotal += $row->extra_subtotal;
+      $billing_tax += $row->extra_tax;
+      $billing_total += $row->extra_total;
+    }
+
+    foreach ($service as $row) {
+      $billing_subtotal += $row->service_subtotal;
+      $billing_tax += $row->service_tax;
+      $billing_total += $row->service_total;
+    }
+
+    foreach ($fnb as $row) {
+      $billing_subtotal += $row->fnb_subtotal;
+      $billing_tax += $row->fnb_tax;
+      $billing_total += $row->fnb_total;
+    }
+
+    $data['billing_subtotal'] = $billing_subtotal;
+    $data['billing_tax'] = $billing_tax;
+    $data['billing_service'] = $billing_service;
+    $data['billing_other'] = $billing_other;
+    $data['billing_total'] = $billing_total;
     
     $this->m_hot_reservation->update($data['billing_id'],$data);
     $this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil ditambahkan!</div>');
@@ -246,6 +291,7 @@ class Hot_reservation extends MY_Hotel {
   {
     $data = $_POST;
     $client = $this->m_hot_client->get_all();
+    $room_type_duration = dateDiff($data['billing_date_out'],$data['billing_date_in'])+1;
     
     $room = $this->m_hot_reservation->room_detail($data['room_id']);
     $tax = $this->m_hot_charge_type->get_by_id(1);
@@ -255,22 +301,23 @@ class Hot_reservation extends MY_Hotel {
     if ($client->client_is_taxed == 0) {
       // Setingan harga sebelum pajak
       $room_type_charge = price_to_num($data['room_type_charge']);
-      $room_type_tax = $tax->charge_type_ratio*$room_type_charge/100;
+      $room_subtotal = $room_type_charge*$room_type_duration;
+      $room_type_tax = $tax->charge_type_ratio*$room_type_subtotal/100;
   
       $room_type_service = 0;
       if ($service->is_active == 1) {
-        $sub_service = $service->charge_type_ratio*$room_type_charge/100;
+        $room_type_service = $service->charge_type_ratio*$room_type_subtotal/100;
       }
   
       $room_type_other = 0;
       if ($other->is_active == 1) {
-        $sub_other = $other->charge_type_ratio*$room_type_charge/100;
+        $room_type_other = $other->charge_type_ratio*$room_type_subtotal/100;
       }
   
       $room_type_total = $data['room_type_charge']+$room_type_tax+$room_type_service+$room_type_other;
     } else {
       // Settingan harga setelah pajak
-      $room_type_total = price_to_num($data['room_type_charge']);
+      $room_type_total = price_to_num($data['room_type_charge'])*$room_type_duration;
       // hitung persen semua setelah pajak
       $tot_ratio = 100+$tax->charge_type_ratio;
       if ($service->is_active == 1) {
@@ -289,7 +336,8 @@ class Hot_reservation extends MY_Hotel {
       if ($other->is_active == 1) {
         $room_type_other = ($other->charge_type_ratio/$tot_ratio)*$room_type_total;
       }
-      $room_type_charge = (100/$tot_ratio)*$room_type_total;
+      $room_type_subtotal = (100/$tot_ratio)*$room_type_total;
+      $room_type_charge = $room_type_subtotal/$room_type_duration;
     }
 
     $data_room = array(
@@ -299,6 +347,8 @@ class Hot_reservation extends MY_Hotel {
       'room_type_id' => $room->room_type_id,
       'room_type_name' => $room->room_type_name,
       'room_type_charge' => $room_type_charge,
+      'room_type_duration' => $room_type_duration,
+      'room_type_subtotal' => $room_type_subtotal,
       'room_type_tax' => $room_type_tax,
       'room_type_service' => $room_type_service,
       'room_type_other' => $room_type_other,

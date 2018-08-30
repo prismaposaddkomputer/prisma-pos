@@ -133,7 +133,7 @@
                 <td><?=num_to_idr($row->extra_charge)?></td>
                 <td class="text-center"><?=$billing->billing_num_day?></td>
                 <td><?=num_to_idr($row->extra_charge*$row->extra_amount)?></td>
-                <?php $tot_extra += $row->extra_charge*$billing->billing_num_day;?>
+                <?php $tot_extra += $row->extra_charge*$row->extra_amount;?>
               </tr>
             <?php endforeach;?>
           <?php else: ?>
@@ -173,7 +173,7 @@
                 <td><?=num_to_idr($row->service_charge)?></td>
                 <td class="text-center"><?=$billing->billing_num_day?></td>
                 <td><?=num_to_idr($row->service_charge*$row->service_amount)?></td>
-                <?php $tot_service += $row->service_charge*$billing->billing_num_day;?>
+                <?php $tot_service += $row->service_charge*$row->service_amount;?>
               </tr>
             <?php endforeach;?>
           <?php else: ?>
@@ -211,7 +211,7 @@
                 <td><?=num_to_idr($row->fnb_charge)?></td>
                 <td class="text-center"><?=$billing->billing_num_day?></td>
                 <td><?=num_to_idr($row->fnb_charge*$row->fnb_amount)?></td>
-                <?php $tot_fnb += $row->fnb_charge*$billing->billing_num_day;?>
+                <?php $tot_fnb += $row->fnb_charge*$row->fnb_amount;?>
               </tr>
             <?php endforeach;?>
           <?php else: ?>
@@ -235,10 +235,32 @@
     </div>
     <div class="col-md-6">
       <h4><b><i class="fa fa-list"></i></b> Total</h4>
-      <table class="table">
+      <table class="table table-condensed">
         <tbody>
           <tr>
-            <td>Hoow</td>
+            <td width="300">Subtotal</td>
+            <td width="20">:</td>
+            <td><?=num_to_idr($billing->billing_subtotal)?></td>
+          </tr>
+          <tr>
+            <td width="300">Pajak Hotel</td>
+            <td width="20">:</td>
+            <td><?=num_to_idr($billing->billing_tax)?></td>
+          </tr>
+          <tr>
+            <td width="300">Service Charge</td>
+            <td width="20">:</td>
+            <td><?=num_to_idr($billing->billing_service)?></td>
+          </tr>
+          <tr>
+            <td width="300">Biaya Lain-lain</td>
+            <td width="20">:</td>
+            <td><?=num_to_idr($billing->billing_other)?></td>
+          </tr>
+          <tr>
+            <th width="300">Total</th>
+            <th width="20">:</th>
+            <th><?=num_to_idr($billing->billing_total)?></th>
           </tr>
         </tbody>
       </table>

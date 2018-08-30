@@ -144,7 +144,6 @@
         </table>
         <em>
           <small>
-            get_billing_extra 
             <?php if ($client->client_is_taxed == 0): ?>
               Harga belum termasuk 
             <?php else: ?>
@@ -338,6 +337,17 @@
 
           </tbody>
         </table>
+        <em>
+          <small>
+            NB: 
+            <?php if ($client->client_is_taxed == 0): ?>
+              Harga belum termasuk 
+            <?php else: ?>
+              Harga sudah termasuk 
+            <?php endif;?>
+            Pajak Hotel
+          </small>
+        </em>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-check"></i> Selesai</button>
@@ -381,6 +391,17 @@
           <label>Total</label>
           <input class="form-control autonumeric num" id="service_total" type="text" value="0" readonly>
         </div>
+        <em>
+          <small>
+            NB: 
+            <?php if ($client->client_is_taxed == 0): ?>
+              Harga belum termasuk 
+            <?php else: ?>
+              Harga sudah termasuk 
+            <?php endif;?>
+            Pajak Hotel
+          </small>
+        </em>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
@@ -414,6 +435,17 @@
 
           </tbody>
         </table>
+        <em>
+          <small>
+            NB: 
+            <?php if ($client->client_is_taxed == 0): ?>
+              Harga belum termasuk 
+            <?php else: ?>
+              Harga sudah termasuk 
+            <?php endif;?>
+            Pajak Hotel
+          </small>
+        </em>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-check"></i> Selesai</button>
@@ -457,6 +489,17 @@
           <label>Total</label>
           <input class="form-control autonumeric num" id="fnb_total" type="text" value="0" readonly>
         </div>
+        <em>
+          <small>
+            NB: 
+            <?php if ($client->client_is_taxed == 0): ?>
+              Harga belum termasuk 
+            <?php else: ?>
+              Harga sudah termasuk 
+            <?php endif;?>
+            Pajak Hotel
+          </small>
+        </em>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
@@ -633,13 +676,16 @@
 
   function add_room() {
     var room_id = $('#room_id').val();
+    var billing_date_in = $('#billing_date_in').val();
+    var billing_date_out = $('#billing_date_out').val();
     var room_type_charge = $('#room_type_charge').val();
     var billing_id = $('#billing_id').val();
 
     $.ajax({
       type : 'post',
       url : '<?=base_url()?>hot_reservation/add_room',
-      data : 'billing_id='+billing_id+'&room_id='+room_id+'&room_type_charge='+room_type_charge,
+      data : 'billing_id='+billing_id+'&room_id='+room_id+'&room_type_charge='+room_type_charge+
+              '&billing_date_in='+billing_date_in+'&billing_date_out='+billing_date_out,
       success : function (data) {
         $('#modal_room_list').modal('show');
         $('#modal_room').modal('hide');
@@ -846,7 +892,7 @@
       data : 'billing_id='+billing_id,
       dataType : 'json',
       success : function (data) {
-        if (data == null || data == '') {
+        if (data.service == null || data.service == '') {
           $("#row_service_list").html('');
           var row = '<tr>'+
             '<td class="text-center" colspan="5">Data tidak ada!</td>'+
@@ -942,7 +988,7 @@
       data : 'billing_id='+billing_id,
       dataType : 'json',
       success : function (data) {
-        if (data == null || data == '') {
+        if (data.fnb == null || data.fnb == '') {
           $("#row_fnb_list").html('');
           var row = '<tr>'+
             '<td class="text-center" colspan="5">Data tidak ada!</td>'+
