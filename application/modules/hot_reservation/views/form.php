@@ -669,7 +669,7 @@
           data: data.room
         }).trigger('change');
         // console.log(data.room_type.room_type_charge);
-        $('#room_type_charge').val(sys_to_ind(data.room_type.room_type_charge));
+        $('#room_type_charge').val(sys_to_ind(Math.ceil(data.room_type.room_type_charge)));
       }
     })
   }
