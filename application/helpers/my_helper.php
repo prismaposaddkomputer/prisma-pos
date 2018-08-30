@@ -159,3 +159,33 @@
   
     return $interval->format($differenceFormat);
   }
+
+  function rata_kanan($nominal, $right)
+  {
+    $jml_nominal = strlen($nominal);
+    $jml_spasi = $right - $jml_nominal;
+    $spasi = "";
+    for ($i=0; $i < $jml_spasi ; $i++) { 
+      $spasi .= " ";
+    }
+    //
+    return $spasi.$nominal;
+  }
+
+  function print_justify($leftCol, $rightCol, $leftWidth, $rightWidth, $space = 4)
+  {
+    $rightCol = rata_kanan($rightCol, $rightWidth);
+
+    $leftWrapped = wordwrap($leftCol, $leftWidth, "\n", true);
+    $rightWrapped = wordwrap($rightCol, $rightWidth, "\n", true);
+
+    $leftLines = explode("\n", $leftWrapped);
+    $rightLines = explode("\n", $rightWrapped);
+    $allLines = array();
+    for ($i = 0; $i < max(count($leftLines), count($rightLines)); $i ++) {
+        $leftPart = str_pad(isset($leftLines[$i]) ? $leftLines[$i] : "", $leftWidth, " ");
+        $rightPart = str_pad(isset($rightLines[$i]) ? $rightLines[$i] : "", $rightWidth, " ");
+        $allLines[] = $leftPart . str_repeat(" ", $space) . $rightPart;
+    }
+    return implode($allLines, "\n") . "\n";
+  }
