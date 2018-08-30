@@ -141,7 +141,7 @@ CREATE TABLE IF NOT EXISTS `hot_billing` (
 DELETE FROM `hot_billing`;
 /*!40000 ALTER TABLE `hot_billing` DISABLE KEYS */;
 INSERT INTO `hot_billing` (`billing_id`, `billing_receipt_no`, `guest_type`, `guest_id`, `guest_name`, `guest_gender`, `guest_phone`, `guest_id_type`, `guest_id_no`, `user_id`, `user_realname`, `billing_date_in`, `billing_time_in`, `billing_date_out`, `billing_time_out`, `billing_num_day`, `billing_subtotal`, `billing_tax`, `billing_service`, `billing_other`, `billing_total`, `billing_payment_type`, `billing_down_payment`, `billing_payment`, `billing_change`, `billing_cancel_note`, `billing_status`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
-	(1, '180830000001', 0, 0, '', '', '', 0, '', 0, '', '0000-00-00', '00:00:00', '0000-00-00', '00:00:00', 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, '', 0, '2018-08-30 15:06:05', 'System', '0000-00-00 00:00:00', '', 1, 0);
+	(1, '180830000001', 0, 0, 'Handoko', 'L', '', 1, '', 0, '', '2018-08-30', '15:20:48', '2018-08-30', '15:20:48', 1, 166666.66, 16666.66, 16666.66, 0.00, 200000.00, 0, 0.00, 0.00, 0.00, '', 1, '2018-08-30 15:20:48', 'System', '0000-00-00 00:00:00', '', 1, 0);
 /*!40000 ALTER TABLE `hot_billing` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_billing_extra
@@ -219,11 +219,14 @@ CREATE TABLE IF NOT EXISTS `hot_billing_room` (
   `is_active` tinyint(1) NOT NULL DEFAULT '1',
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`billing_room_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- Dumping data for table prisma_pos.hot_billing_room: ~0 rows (approximately)
 DELETE FROM `hot_billing_room`;
 /*!40000 ALTER TABLE `hot_billing_room` DISABLE KEYS */;
+INSERT INTO `hot_billing_room` (`billing_room_id`, `billing_id`, `room_id`, `room_name`, `room_type_id`, `room_type_name`, `room_type_charge`, `room_type_duration`, `room_type_subtotal`, `room_type_tax`, `room_type_service`, `room_type_other`, `room_type_total`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
+	(1, 1, 103, 'Melati - 03', 1, 'Melati', 83333.33, 1.00, 83333.33, 8333.33, 8333.33, 0.00, 100000.00, '2018-08-30 15:20:55', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0),
+	(2, 1, 101, 'Melati - 01', 1, 'Melati', 83333.33, 1.00, 83333.33, 8333.33, 8333.33, 0.00, 100000.00, '2018-08-30 15:21:00', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0);
 /*!40000 ALTER TABLE `hot_billing_room` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_billing_service
@@ -831,6 +834,12 @@ CREATE TABLE IF NOT EXISTS `hot_room` (
 -- Dumping data for table prisma_pos.hot_room: ~0 rows (approximately)
 DELETE FROM `hot_room`;
 /*!40000 ALTER TABLE `hot_room` DISABLE KEYS */;
+INSERT INTO `hot_room` (`room_id`, `room_name`, `room_type_id`, `room_no`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
+	('101', 'Melati - 01', 1, '1', '2018-08-30 15:20:44', 'Super Hotel', NULL, 'System', 1, 0),
+	('102', 'Melati - 02', 1, '2', '2018-08-30 15:20:44', 'Super Hotel', NULL, 'System', 1, 0),
+	('103', 'Melati - 03', 1, '3', '2018-08-30 15:20:45', 'Super Hotel', NULL, 'System', 1, 0),
+	('104', 'Melati - 04', 1, '4', '2018-08-30 15:20:45', 'Super Hotel', NULL, 'System', 1, 0),
+	('105', 'Melati - 05', 1, '5', '2018-08-30 15:20:45', 'Super Hotel', NULL, 'System', 1, 0);
 /*!40000 ALTER TABLE `hot_room` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_room_type
@@ -853,7 +862,7 @@ CREATE TABLE IF NOT EXISTS `hot_room_type` (
 DELETE FROM `hot_room_type`;
 /*!40000 ALTER TABLE `hot_room_type` DISABLE KEYS */;
 INSERT INTO `hot_room_type` (`room_type_id`, `room_type_name`, `room_type_charge`, `room_type_desc`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
-	(1, 'Melati', 83333.33, '', '2018-08-30 15:06:00', 'System', NULL, '', 1, 0);
+	(1, 'Melati', 83333.33, '', '2018-08-30 15:20:44', 'System', NULL, '', 1, 0);
 /*!40000 ALTER TABLE `hot_room_type` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_service

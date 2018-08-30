@@ -60,7 +60,7 @@
                   <td class="text-center"><?=date_to_ind($row->billing_date_in).' '.$row->billing_time_in?></td>
                   <td class="text-center"><?=date_to_ind($row->billing_date_out).' '.$row->billing_time_out?></td>
                   <td><?=$row->guest_name?></td>
-                  <td><?=num_to_idr($row->billing_sub_total)?></td>
+                  <td><?=num_to_idr($row->billing_subtotal)?></td>
                   <td class="text-center">
                     <?php if ($row->billing_status == -1){ ?>
                       <span class="badge bg-danger">Dibatalkan</span>
