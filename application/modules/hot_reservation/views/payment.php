@@ -92,10 +92,32 @@
               <tr>
                 <td class="text-center"><?=$i++?></td>
                 <td><?=$row->room_name?></td>
-                <td><?=num_to_idr($row->room_type_charge)?></td>
+                <td>
+                  <?php 
+                    if ($client->client_is_taxed == 0) {
+                      echo num_to_idr($row->room_type_charge);
+                    }else{
+                      echo num_to_idr($row->room_type_total/$row->room_type_duration);
+                    }
+                  ?>
+                </td>
                 <td class="text-center"><?=$billing->billing_num_day?> Hari</td>
-                <td><?=num_to_idr($row->room_type_charge*$billing->billing_num_day)?></td>
-                <?php $tot_room += $row->room_type_charge*$billing->billing_num_day;?>
+                <td>
+                  <?php 
+                    if ($client->client_is_taxed == 0) {
+                      echo num_to_idr($row->room_type_subtotal);
+                    }else{
+                      echo num_to_idr($row->room_type_total);
+                    }
+                  ?>
+                </td>
+                <?php 
+                  if ($client->client_is_taxed == 0) {
+                    $tot_room += $row->room_type_subtotal;
+                  }else{
+                    $tot_room += $row->room_type_total;
+                  }
+                ?>
               </tr>
             <?php endforeach;?>
           <?php else: ?>
@@ -130,10 +152,32 @@
               <tr>
                 <td class="text-center"><?=$i++?></td>
                 <td><?=$row->extra_name?></td>
-                <td><?=num_to_idr($row->extra_charge)?></td>
-                <td class="text-center"><?=$billing->billing_num_day?></td>
-                <td><?=num_to_idr($row->extra_charge*$row->extra_amount)?></td>
-                <?php $tot_extra += $row->extra_charge*$row->extra_amount;?>
+                <td>
+                  <?php 
+                    if ($client->client_is_taxed == 0) {
+                      echo num_to_idr($row->extra_charge);
+                    }else{
+                      echo num_to_idr($row->extra_total/$row->extra_amount);
+                    }
+                  ?>
+                </td>
+                <td class="text-center"><?=$row->extra_amount?></td>
+                <td>
+                  <?php 
+                    if ($client->client_is_taxed == 0) {
+                      echo num_to_idr($row->extra_subtotal);
+                    }else{
+                      echo num_to_idr($row->extra_total);
+                    }
+                  ?>
+                </td>
+                <?php 
+                  if ($client->client_is_taxed == 0) {
+                    $tot_extra += $row->extra_subtotal;
+                  }else{
+                    $tot_extra += $row->extra_total;
+                  }
+                ?>
               </tr>
             <?php endforeach;?>
           <?php else: ?>
@@ -170,10 +214,32 @@
               <tr>
                 <td class="text-center"><?=$i++?></td>
                 <td><?=$row->service_name?></td>
-                <td><?=num_to_idr($row->service_charge)?></td>
-                <td class="text-center"><?=$billing->billing_num_day?></td>
-                <td><?=num_to_idr($row->service_charge*$row->service_amount)?></td>
-                <?php $tot_service += $row->service_charge*$row->service_amount;?>
+                <td>
+                  <?php 
+                    if ($client->client_is_taxed == 0) {
+                      echo num_to_idr($row->service_charge);
+                    }else{
+                      echo num_to_idr($row->service_total/$row->service_amount);
+                    }
+                  ?>
+                </td>
+                <td class="text-center"><?=$row->service_amount?></td>
+                <td>
+                  <?php 
+                    if ($client->client_is_taxed == 0) {
+                      echo num_to_idr($row->service_subtotal);
+                    }else{
+                      echo num_to_idr($row->service_total);
+                    }
+                  ?>
+                </td>
+                <?php 
+                  if ($client->client_is_taxed == 0) {
+                    $tot_service += $row->service_subtotal;
+                  }else{
+                    $tot_service += $row->service_total;
+                  }
+                ?>
               </tr>
             <?php endforeach;?>
           <?php else: ?>
@@ -208,10 +274,32 @@
               <tr>
                 <td class="text-center"><?=$i++?></td>
                 <td><?=$row->fnb_name?></td>
-                <td><?=num_to_idr($row->fnb_charge)?></td>
-                <td class="text-center"><?=$billing->billing_num_day?></td>
-                <td><?=num_to_idr($row->fnb_charge*$row->fnb_amount)?></td>
-                <?php $tot_fnb += $row->fnb_charge*$row->fnb_amount;?>
+                <td>
+                  <?php 
+                    if ($client->client_is_taxed == 0) {
+                      echo num_to_idr($row->fnb_charge);
+                    }else{
+                      echo num_to_idr($row->fnb_total/$row->fnb_amount);
+                    }
+                  ?>
+                </td>
+                <td class="text-center"><?=$row->fnb_amount?></td>
+                <td>
+                  <?php 
+                    if ($client->client_is_taxed == 0) {
+                      echo num_to_idr($row->fnb_subtotal);
+                    }else{
+                      echo num_to_idr($row->fnb_total);
+                    }
+                  ?>
+                </td>
+                <?php 
+                  if ($client->client_is_taxed == 0) {
+                    $tot_fnb += $row->fnb_subtotal;
+                  }else{
+                    $tot_fnb += $row->fnb_total;
+                  }
+                ?>
               </tr>
             <?php endforeach;?>
           <?php else: ?>
@@ -231,39 +319,102 @@
   </div>
   <div class="row">
     <div class="col-md-6">
-      
-    </div>
-    <div class="col-md-6">
       <h4><b><i class="fa fa-list"></i></b> Total</h4>
       <table class="table table-condensed">
         <tbody>
+          <?php if ($client->client_is_taxed == 0): ?>  
+            <tr>
+              <td width="300">Subtotal</td>
+              <td width="20">:</td>
+              <td><?=num_to_idr($billing->billing_subtotal)?></td>
+            </tr>
+            <tr>
+              <td width="300">Pajak Hotel</td>
+              <td width="20">:</td>
+              <td><?=num_to_idr($billing->billing_tax)?></td>
+            </tr>
+            <tr>
+              <td width="300">Service Charge</td>
+              <td width="20">:</td>
+              <td><?=num_to_idr($billing->billing_service)?></td>
+            </tr>
+            <tr>
+              <td width="300">Biaya Lain-lain</td>
+              <td width="20">:</td>
+              <td><?=num_to_idr($billing->billing_other)?></td>
+            </tr>
+            <tr>
+              <th width="300">Total</th>
+              <th width="20">:</th>
+              <th><?=num_to_idr($billing->billing_total)?></th>
+            </tr>
+          <?php else: ?>
+            <tr>
+              <th width="300">Total</th>
+              <th width="20">:</th>
+              <th><?=num_to_idr($billing->billing_total)?></th>
+            </tr>
+          <?php endif;?>
+        </tbody>
+      </table>
+      <em>
+        <small>
+          <?php if ($client->client_is_taxed == 0): ?>
+            Harga belum termasuk 
+          <?php else: ?>
+            Harga sudah termasuk 
+          <?php endif;?>
+          <?php foreach ($charge_type as $row){
+            echo $row->charge_type_name.',';
+          }?>
+        </small>
+      </em>
+    </div>
+    <div class="col-md-6">
+      <h4><b><i class="fa fa-money"></i></b> Pembayaran</h4>
+      <table class="table table-condensed">
+        <tbody>
           <tr>
-            <td width="300">Subtotal</td>
+            <td width="300">Total</td>
             <td width="20">:</td>
-            <td><?=num_to_idr($billing->billing_subtotal)?></td>
+            <td><?=num_to_idr($billing->billing_total)?></td>
+            <input id="billing_total" type="text" value="<?=$billing->billing_total?>">
           </tr>
           <tr>
-            <td width="300">Pajak Hotel</td>
+            <td width="300">Uang Muka</td>
             <td width="20">:</td>
-            <td><?=num_to_idr($billing->billing_tax)?></td>
+            <td><?=num_to_idr($billing->billing_down_payment)?></td>
           </tr>
           <tr>
-            <td width="300">Service Charge</td>
+            <td width="300">Kekurangan</td>
             <td width="20">:</td>
-            <td><?=num_to_idr($billing->billing_service)?></td>
+            <td><?=num_to_idr($billing->billing_total-$billing->billing_down_payment)?></td>
           </tr>
           <tr>
-            <td width="300">Biaya Lain-lain</td>
+            <td width="300">Pembayaran</td>
             <td width="20">:</td>
-            <td><?=num_to_idr($billing->billing_other)?></td>
+            <td>
+              <input id="billing_payment" style="width:100%" class="autonumeric" type="text" value="0" dir="rtl" onchange="calc_change()">
+            </td>
           </tr>
           <tr>
-            <th width="300">Total</th>
+            <th width="300">Kembalian</th>
             <th width="20">:</th>
-            <th><?=num_to_idr($billing->billing_total)?></th>
+            <th>
+              <input id="billing_change" style="width:100%" class="autonumeric" type="text" value="0" dir="rtl" readonly>
+            </th>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
 </div>
+<script>
+  function calc_change() {
+    var billing_total = $('#billing_total').val();
+    var billing_payment = ind_to_sys($('#billing_payment').val());
+    var billing_change = billing_payment;
+    console.log(billing_change);
+    $('#billing_change').val(sys_to_ind(billing_change.toFixed(2)));
+  }
+</script>

@@ -571,6 +571,7 @@
     $('#btn_room').click(function () {
       $('#room_type_id').val('0').trigger('change');
       get_room(0);
+      $('#room_id').val(0).trigger('change');
       $('#room_type_charge').val(0);
       $('#modal_room').modal('show');
       $('#modal_room_list').modal('hide');
