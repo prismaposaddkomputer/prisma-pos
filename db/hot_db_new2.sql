@@ -12,6 +12,7 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 -- Dumping structure for table prisma_pos.hot_billing
+DROP TABLE IF EXISTS `hot_billing`;
 CREATE TABLE IF NOT EXISTS `hot_billing` (
   `billing_id` int(11) NOT NULL AUTO_INCREMENT,
   `billing_receipt_no` varchar(50) NOT NULL,
@@ -47,10 +48,11 @@ CREATE TABLE IF NOT EXISTS `hot_billing` (
   `is_active` tinyint(1) NOT NULL DEFAULT '1',
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`billing_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
 -- Dumping structure for table prisma_pos.hot_billing_extra
+DROP TABLE IF EXISTS `hot_billing_extra`;
 CREATE TABLE IF NOT EXISTS `hot_billing_extra` (
   `billing_extra_id` int(11) NOT NULL AUTO_INCREMENT,
   `billing_id` int(11) NOT NULL DEFAULT '0',
@@ -68,10 +70,11 @@ CREATE TABLE IF NOT EXISTS `hot_billing_extra` (
   `is_active` tinyint(1) NOT NULL DEFAULT '1',
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`billing_extra_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- Data exporting was unselected.
 -- Dumping structure for table prisma_pos.hot_billing_fnb
+DROP TABLE IF EXISTS `hot_billing_fnb`;
 CREATE TABLE IF NOT EXISTS `hot_billing_fnb` (
   `billing_fnb_id` int(11) NOT NULL AUTO_INCREMENT,
   `billing_id` int(11) NOT NULL DEFAULT '0',
@@ -89,10 +92,11 @@ CREATE TABLE IF NOT EXISTS `hot_billing_fnb` (
   `is_active` tinyint(1) NOT NULL DEFAULT '1',
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`billing_fnb_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- Data exporting was unselected.
 -- Dumping structure for table prisma_pos.hot_billing_room
+DROP TABLE IF EXISTS `hot_billing_room`;
 CREATE TABLE IF NOT EXISTS `hot_billing_room` (
   `billing_room_id` int(11) NOT NULL AUTO_INCREMENT,
   `billing_id` int(11) NOT NULL DEFAULT '0',
@@ -114,10 +118,11 @@ CREATE TABLE IF NOT EXISTS `hot_billing_room` (
   `is_active` tinyint(1) NOT NULL DEFAULT '1',
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`billing_room_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- Data exporting was unselected.
 -- Dumping structure for table prisma_pos.hot_billing_service
+DROP TABLE IF EXISTS `hot_billing_service`;
 CREATE TABLE IF NOT EXISTS `hot_billing_service` (
   `billing_service_id` int(11) NOT NULL AUTO_INCREMENT,
   `billing_id` int(11) NOT NULL DEFAULT '0',
@@ -135,7 +140,7 @@ CREATE TABLE IF NOT EXISTS `hot_billing_service` (
   `is_active` tinyint(1) NOT NULL DEFAULT '1',
   `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`billing_service_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- Data exporting was unselected.
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
