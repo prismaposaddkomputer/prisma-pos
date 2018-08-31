@@ -4,9 +4,9 @@
 <div class="content-body">
   <div class="row">
     <div class="col-md-12">
-      <a href="<?=base_url()?>hot_report_reservation/monthly/<?=$month?>" class="btn btn-success"><i class="fa fa-arrow-left"></i> Kembali</a>
-      <a class="btn btn-primary" href="<?=base_url()?>hot_report_reservation/daily_pdf/<?=$date?>" target="_blank"><i class="fa fa-print"></i> Download PDF</a>
-      <a href="<?=base_url()?>hot_report_reservation/daily_print/<?=$date?>" class="btn btn-warning"><i class="fa fa-print"></i> Print Laporan</a>
+      <a href="<?=base_url()?>hot_report_payment/monthly/<?=$month?>" class="btn btn-success"><i class="fa fa-arrow-left"></i> Kembali</a>
+      <a class="btn btn-primary" href="<?=base_url()?>hot_report_payment/daily_pdf/<?=$date?>" target="_blank"><i class="fa fa-print"></i> Download PDF</a>
+      <a href="<?=base_url()?>hot_report_payment/daily_print/<?=$date?>" class="btn btn-warning"><i class="fa fa-print"></i> Print Laporan</a>
       <br><br>
       <table class="table table-condensed table-bordered table-striped">
         <thead>
@@ -28,6 +28,7 @@
             <th class="text-center"><?=$data['charge_type_name']?></th>
             <?php endforeach ?>
 
+            <th class="text-center">DP</th>
             <th class="text-center">Total</th>
           </tr>
         </thead>
@@ -41,13 +42,14 @@
             $total_service = 0;
             $total_other = 0;
             $billing_total = 0;
+            $billing_down_payment = 0;
           ?>
           <?php if ($daily != null): ?>
             <?php foreach ($daily as $row): ?>
               <tr>
                 <td class="text-center">TRS - <?=$row->billing_receipt_no?></td>
                 <td class="text-center">
-                  <a href="<?=base_url()?>hot_report_reservation/detail/<?=$row->billing_id?>" class="btn btn-xs btn-success"><i class="fa fa-list"></i> </a>
+                  <a href="<?=base_url()?>hot_report_payment/detail/<?=$row->billing_id?>" class="btn btn-xs btn-success"><i class="fa fa-list"></i> </a>
                 </td>
                 <td class="text-center"><?=$row->guest_name?></td>
                 <td class="text-center">
@@ -92,6 +94,11 @@
                 ?>  
                 <!-- End Charge Type -->
 
+                <!-- DP -->
+                <td><?=num_to_idr($row->billing_down_payment)?></td>
+                  <?php $billing_down_payment += $row->billing_down_payment ?>
+                <!-- End DP -->
+
                 <!-- Grand Total -->
                 <td><?=num_to_idr($row->billing_total)?></td>
                   <?php $billing_total += $row->billing_total;?>
@@ -121,6 +128,7 @@
             ?>
             <th><?=num_to_idr($total_charge_type)?></th>
             <?php endforeach; ?> 
+            <th><?=num_to_idr($billing_down_payment)?></th>
             <th><?=num_to_idr($billing_total)?></th> 
           </tr>
         </tfoot>

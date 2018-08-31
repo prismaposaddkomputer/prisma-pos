@@ -81,7 +81,7 @@ class M_hot_report_receptionist extends CI_Model {
 				billing_date_in = '$date' AND
 				user_id = '$user_id' AND
 				billing_status != '0'
-			ORDER BY billing_id DESC"
+			ORDER BY billing_receipt_no ASC"
 		)->result();
 
 		return $billing;

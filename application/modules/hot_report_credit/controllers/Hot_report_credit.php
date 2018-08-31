@@ -1,14 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Hot_report_payment extends MY_Hotel {
+class hot_report_credit extends MY_Hotel {
 
   var $access, $report_selling_id;
 
   function __construct(){
     parent::__construct();
-    if($this->session->userdata('menu') != 'hot_report_payment'){
-      $this->session->set_userdata(array('menu' => 'hot_report_payment'));
+    if($this->session->userdata('menu') != 'hot_report_credit'){
+      $this->session->set_userdata(array('menu' => 'hot_report_credit'));
       $this->session->unset_userdata('search_stock');
       $this->session->unset_userdata('search_selling');
       $this->session->unset_userdata('search_profit_daily');
@@ -17,10 +17,10 @@ class Hot_report_payment extends MY_Hotel {
     $this->load->model('app_config/m_hot_config');
 
     $this->role_id = $this->session->userdata('role_id');
-    $this->module_controller = 'hot_report_payment';
+    $this->module_controller = 'hot_report_credit';
     $this->access = $this->m_hot_config->get_permission($this->role_id, $this->module_controller);
 
-    $this->load->model('m_hot_report_payment');
+    $this->load->model('m_hot_report_credit');
     $this->load->model('hot_client/m_hot_client');
     //
     $this->load->model('hot_charge_type/m_hot_charge_type');
@@ -30,9 +30,9 @@ class Hot_report_payment extends MY_Hotel {
   {
     if ($this->access->_read == 1) {
       $data['access'] = $this->access;
-      $data['title'] = 'Laporan Pembayaran';
+      $data['title'] = 'Laporan Piutang';
 
-      $this->view('hot_report_payment/index',$data);
+      $this->view('hot_report_credit/index',$data);
     } else {
       redirect(base_url().'app_error/error/403');
     }
@@ -46,29 +46,29 @@ class Hot_report_payment extends MY_Hotel {
 
       case 'annual':
         $year = $data['year'];
-        redirect(base_url().'hot_report_payment/annual/'.$year);
+        redirect(base_url().'hot_report_credit/annual/'.$year);
         break;
 
       case 'monthly':
         $month = ind_to_month($data['month']);
-        redirect(base_url().'hot_report_payment/monthly/'.$month);
+        redirect(base_url().'hot_report_credit/monthly/'.$month);
         break;
 
       case 'weekly':
         $week = $data['week'];
         $week = str_replace(' - ', '/', $week);
-        redirect(base_url().'hot_report_payment/weekly/'.$week);
+        redirect(base_url().'hot_report_credit/weekly/'.$week);
         break;
 
       case 'daily':
         $date = ind_to_date($data['date']);
-        redirect(base_url().'hot_report_payment/daily/'.$date);
+        redirect(base_url().'hot_report_credit/daily/'.$date);
         break;
 
       case 'range':
         $range = $data['range'];
         $range = str_replace(' - ', '/', $range);
-        redirect(base_url().'hot_report_payment/range/'.$range);
+        redirect(base_url().'hot_report_credit/range/'.$range);
         break;
 
     }
@@ -77,10 +77,10 @@ class Hot_report_payment extends MY_Hotel {
   public function annual($year)
   {
     $data['access'] = $this->access;
-    $data['title'] = 'Laporan Pembayaran Tahun '.$year;
+    $data['title'] = 'Laporan Piutang Tahun '.$year;
     $data['year'] = $year;
     //
-    $data['annual'] = $this->m_hot_report_payment->annual($year);
+    $data['annual'] = $this->m_hot_report_credit->annual($year);
     $data['charge_type'] = $this->m_hot_charge_type->list_data_except_tax_hotel();
     //
     $this->view('annual', $data);
@@ -88,8 +88,8 @@ class Hot_report_payment extends MY_Hotel {
 
   public function annual_pdf($year)
   {
-    $data['title'] = 'Laporan Pembayaran Tahun '.$year;
-    $data['annual'] = $this->m_hot_report_payment->annual($year);
+    $data['title'] = 'Laporan Piutang Tahun '.$year;
+    $data['annual'] = $this->m_hot_report_credit->annual($year);
     $data['client'] = $this->m_hot_client->get_all();
 
     $this->load->library('pdf');
@@ -100,10 +100,10 @@ class Hot_report_payment extends MY_Hotel {
 
   public function annual_print($year)
   {
-    $title = 'Laporan Pembayaran Tahun '.$year;
+    $title = 'Laporan Piutang Tahun '.$year;
     $client = $this->m_hot_client->get_all();
     //
-    $annual = $this->m_hot_report_payment->annual($year);
+    $annual = $this->m_hot_report_credit->annual($year);
     $charge_type = $this->m_hot_charge_type->list_data_except_tax_hotel();
     //
 
@@ -222,7 +222,7 @@ class Hot_report_payment extends MY_Hotel {
       echo "Couldn't print to this printer: " . $e -> getMessage() . "\n";
     }
     //
-    redirect(base_url().'hot_report_payment/annual/'.$year);
+    redirect(base_url().'hot_report_credit/annual/'.$year);
   }
 
   public function monthly($month)
@@ -233,10 +233,10 @@ class Hot_report_payment extends MY_Hotel {
     $data['year'] = $raw[0];
 
     $data['access'] = $this->access;
-    $data['title'] = 'Laporan Pembayaran Bulan '.month_name_ind($num_month).' '.$raw[0];
+    $data['title'] = 'Laporan Piutang Bulan '.month_name_ind($num_month).' '.$raw[0];
     $data['month'] = $month;
 
-    $data['monthly'] = $this->m_hot_report_payment->monthly($month);
+    $data['monthly'] = $this->m_hot_report_credit->monthly($month);
     $data['charge_type'] = $this->m_hot_charge_type->list_data_except_tax_hotel();
     //
     $this->view('monthly', $data);
@@ -247,8 +247,8 @@ class Hot_report_payment extends MY_Hotel {
     $raw = $raw = explode("-", $month);
     $num_month = $raw[1];
 
-    $data['title'] = 'Laporan Pembayaran Bulan '.month_name_ind($num_month).' '.$raw[0];
-    $data['monthly'] = $this->m_hot_report_payment->monthly($month);
+    $data['title'] = 'Laporan Piutang Bulan '.month_name_ind($num_month).' '.$raw[0];
+    $data['monthly'] = $this->m_hot_report_credit->monthly($month);
     $data['client'] = $this->m_hot_client->get_all();
 
     $this->load->library('pdf');
@@ -262,10 +262,10 @@ class Hot_report_payment extends MY_Hotel {
     $raw = $raw = explode("-", $month);
     $num_month = $raw[1];
     //
-    $title = "Laporan Pembayaran Bulan ".month_name_ind($num_month)."\n".$raw[0];
+    $title = "Laporan Piutang Bulan ".month_name_ind($num_month)."\n".$raw[0];
     $client = $this->m_hot_client->get_all();
     //
-    $monthly = $this->m_hot_report_payment->monthly($month);
+    $monthly = $this->m_hot_report_credit->monthly($month);
     $charge_type = $this->m_hot_charge_type->list_data_except_tax_hotel();
     //
 
@@ -384,17 +384,17 @@ class Hot_report_payment extends MY_Hotel {
       echo "Couldn't print to this printer: " . $e -> getMessage() . "\n";
     }
     //
-    redirect(base_url().'hot_report_payment/monthly/'.$month);
+    redirect(base_url().'hot_report_credit/monthly/'.$month);
   }
 
   public function weekly($date_start, $date_end)
   {
     $data['access'] = $this->access;
-    $data['title'] = 'Laporan Pembayaran Mingguan ('.$date_start.' - '.$date_end.')';
+    $data['title'] = 'Laporan Piutang Mingguan ('.$date_start.' - '.$date_end.')';
     $data['date_start'] = $date_start;
     $data['date_end'] = $date_end;
 
-    $data['weekly'] = $this->m_hot_report_payment->weekly(ind_to_date($date_start),ind_to_date($date_end));
+    $data['weekly'] = $this->m_hot_report_credit->weekly(ind_to_date($date_start),ind_to_date($date_end));
     $data['charge_type'] = $this->m_hot_charge_type->list_data_except_tax_hotel();
     //
     $this->view('weekly', $data);
@@ -402,8 +402,8 @@ class Hot_report_payment extends MY_Hotel {
 
   public function weekly_pdf($date_start, $date_end)
   {
-    $data['title'] = 'Laporan Pembayaran Mingguan ('.$date_start.' - '.$date_end.')';
-    $data['weekly'] = $this->m_hot_report_payment->weekly(ind_to_date($date_start),ind_to_date($date_end));
+    $data['title'] = 'Laporan Piutang Mingguan ('.$date_start.' - '.$date_end.')';
+    $data['weekly'] = $this->m_hot_report_credit->weekly(ind_to_date($date_start),ind_to_date($date_end));
     $data['client'] = $this->m_hot_client->get_all();
 
     $this->load->library('pdf');
@@ -414,10 +414,10 @@ class Hot_report_payment extends MY_Hotel {
 
   public function weekly_print($date_start, $date_end)
   {
-    $title = "Laporan Pembayaran Mingguan \n (".$date_start." - ".$date_end.")";
+    $title = "Laporan Piutang Mingguan \n (".$date_start." - ".$date_end.")";
     $client = $this->m_hot_client->get_all();
     //
-    $weekly = $this->m_hot_report_payment->weekly(ind_to_date($date_start),ind_to_date($date_end));
+    $weekly = $this->m_hot_report_credit->weekly(ind_to_date($date_start),ind_to_date($date_end));
     $charge_type = $this->m_hot_charge_type->list_data_except_tax_hotel();
     //
 
@@ -536,20 +536,20 @@ class Hot_report_payment extends MY_Hotel {
       echo "Couldn't print to this printer: " . $e -> getMessage() . "\n";
     }
     //
-    redirect(base_url().'hot_report_payment/weekly/'.$date_start.'/'.$date_end);
+    redirect(base_url().'hot_report_credit/weekly/'.$date_start.'/'.$date_end);
   }
 
   public function daily($date)
   {
     $data['access'] = $this->access;
-    $data['title'] = 'Laporan Pembayaran Tanggal '.date_to_ind($date);
+    $data['title'] = 'Laporan Piutang Tanggal '.date_to_ind($date);
     $data['date'] = $date;
     //
     $raw = $raw = explode("-", $date);
     $data['month'] = $raw[0].'-'.$raw[1];
     //
 
-    $data['daily'] = $this->m_hot_report_payment->daily($date);
+    $data['daily'] = $this->m_hot_report_credit->daily($date);
     $data['charge_type'] = $this->m_hot_charge_type->list_data_except_tax_hotel();
     //
     $this->view('daily', $data);
@@ -557,8 +557,8 @@ class Hot_report_payment extends MY_Hotel {
 
   public function daily_pdf($date)
   {
-    $data['title'] = 'Laporan Pembayaran Tanggal '.date_to_ind($date);
-    $data['daily'] = $this->m_hot_report_payment->daily($date);
+    $data['title'] = 'Laporan Piutang Tanggal '.date_to_ind($date);
+    $data['daily'] = $this->m_hot_report_credit->daily($date);
     $data['client'] = $this->m_hot_client->get_all();
 
     $this->load->library('pdf');
@@ -569,10 +569,10 @@ class Hot_report_payment extends MY_Hotel {
 
   public function daily_print($date)
   {
-    $title = "Laporan Pembayaran Tanggal \n".date_to_ind($date);
+    $title = "Laporan Piutang Tanggal \n".date_to_ind($date);
     $client = $this->m_hot_client->get_all();
     //
-    $daily = $this->m_hot_report_payment->daily($date);
+    $daily = $this->m_hot_report_credit->daily($date);
     $charge_type = $this->m_hot_charge_type->list_data_except_tax_hotel();
     //
 
@@ -711,17 +711,17 @@ class Hot_report_payment extends MY_Hotel {
       echo "Couldn't print to this printer: " . $e -> getMessage() . "\n";
     }
     //
-    redirect(base_url().'hot_report_payment/daily/'.$date);
+    redirect(base_url().'hot_report_credit/daily/'.$date);
   }
 
   public function range($date_start, $date_end)
   {
     $data['access'] = $this->access;
-    $data['title'] = 'Laporan Pembayaran Tanggal '.$date_start.' - '.$date_end;
+    $data['title'] = 'Laporan Piutang Tanggal '.$date_start.' - '.$date_end;
     $data['date_start'] = $date_start;
     $data['date_end'] = $date_end;
 
-    $data['range'] = $this->m_hot_report_payment->range(ind_to_date($date_start),ind_to_date($date_end));
+    $data['range'] = $this->m_hot_report_credit->range(ind_to_date($date_start),ind_to_date($date_end));
     $data['charge_type'] = $this->m_hot_charge_type->list_data_except_tax_hotel();
     //
     $this->view('range', $data);
@@ -729,8 +729,8 @@ class Hot_report_payment extends MY_Hotel {
 
   public function range_pdf($date_start, $date_end)
   {
-    $data['title'] = 'Laporan Pembayaran Tanggal ('.$date_start.' - '.$date_end.')';
-    $data['range'] = $this->m_hot_report_payment->range(ind_to_date($date_start),ind_to_date($date_end));
+    $data['title'] = 'Laporan Piutang Tanggal ('.$date_start.' - '.$date_end.')';
+    $data['range'] = $this->m_hot_report_credit->range(ind_to_date($date_start),ind_to_date($date_end));
     $data['client'] = $this->m_hot_client->get_all();
 
     $this->load->library('pdf');
@@ -741,10 +741,10 @@ class Hot_report_payment extends MY_Hotel {
 
   public function range_print($date_start, $date_end)
   {
-    $title = "Laporan Pembayaran Tanggal \n ".$date_start." - ".$date_end;
+    $title = "Laporan Piutang Tanggal \n ".$date_start." - ".$date_end;
     $client = $this->m_hot_client->get_all();
     //
-    $range = $this->m_hot_report_payment->range(ind_to_date($date_start),ind_to_date($date_end));
+    $range = $this->m_hot_report_credit->range(ind_to_date($date_start),ind_to_date($date_end));
     $charge_type = $this->m_hot_charge_type->list_data_except_tax_hotel();
     //
 
@@ -863,7 +863,7 @@ class Hot_report_payment extends MY_Hotel {
       echo "Couldn't print to this printer: " . $e -> getMessage() . "\n";
     }
     //
-    redirect(base_url().'hot_report_payment/range/'.$date_start.'/'.$date_end);
+    redirect(base_url().'hot_report_credit/range/'.$date_start.'/'.$date_end);
   }
 
   public function detail($tx_id)
@@ -871,7 +871,7 @@ class Hot_report_payment extends MY_Hotel {
     $data['access'] = $this->access;
     $data['title'] = 'Detail Transaksi';
 
-    $data['billing'] = $this->m_hot_report_payment->detail($tx_id);
+    $data['billing'] = $this->m_hot_report_credit->detail($tx_id);
     $this->view('detail', $data);
 
   }

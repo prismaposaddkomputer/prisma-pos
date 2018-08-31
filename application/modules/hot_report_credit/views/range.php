@@ -4,9 +4,8 @@
 <div class="content-body">
   <div class="row">
     <div class="col-md-12">
-      <a href="<?=base_url()?>hot_report_payment/annual/<?=$year?>" class="btn btn-success"><i class="fa fa-arrow-left"></i> Kembali</a>
-      <a class="btn btn-primary" href="<?=base_url()?>hot_report_payment/monthly_pdf/<?=$month?>" target="_blank"><i class="fa fa-print"></i> Download PDF</a>
-      <a href="<?=base_url()?>hot_report_payment/monthly_print/<?=$month?>" class="btn btn-warning"><i class="fa fa-print"></i> Print Laporan</a>
+      <a class="btn btn-primary" href="<?=base_url()?>hot_report_credit/range_pdf/<?=$date_start?>/<?=$date_end?>" target="_blank"><i class="fa fa-print"></i> Download PDF</a>
+      <a href="<?=base_url()?>hot_report_credit/range_print/<?=$date_start?>/<?=$date_end?>" class="btn btn-warning"><i class="fa fa-print"></i> Print Laporan</a>
       <br><br>
       <table class="table table-striped table-bordered table-condensed">
         <thead>
@@ -54,12 +53,12 @@
             $billing_total = 0;
             $billing_down_payment = 0;
           ?>
-          <?php if ($monthly != null): ?>
-            <?php $i=1;foreach ($monthly as $row): ?>
+          <?php if ($range != null): ?>
+            <?php $i=1;foreach ($range as $row): ?>
               <tr>
                 <td class="text-center"><?=date_to_ind($row->billing_date_in)?></td>
                 <td class="text-center">
-                  <a href="<?=base_url()?>hot_report_payment/daily/<?=$row->billing_date_in?>" class="btn btn-xs btn-success"><i class="fa fa-list"></i> </a>
+                  <a href="<?=base_url()?>hot_report_credit/daily/<?=$row->billing_date_in?>" class="btn btn-xs btn-success"><i class="fa fa-list"></i> </a>
                 </td>
                 <td><?=num_to_idr($row->billing_subtotal)?></td>
                   <?php $billing_subtotal += $row->billing_subtotal;?>
@@ -86,11 +85,11 @@
                 $total_service += $row->billing_service;
                 $total_other += $row->billing_other;
                 ?>  
-                <!-- End Charge Type -->  
+                <!-- End Charge Type -->
 
                 <!-- DP -->
                 <td><?=num_to_idr($row->billing_down_payment)?></td>
-                  <?php $billing_down_payment += $row->billing_down_payment; ?>
+                  <?php $billing_down_payment += $row->billing_down_payment ?>
                 <!-- End DP -->
 
                 <!-- Grand Total -->

@@ -4,42 +4,32 @@
 <div class="content-body">
   <div class="row">
     <div class="col-md-12">
-      <a href="<?=base_url()?>hot_report_payment/annual/<?=$year?>" class="btn btn-success"><i class="fa fa-arrow-left"></i> Kembali</a>
-      <a class="btn btn-primary" href="<?=base_url()?>hot_report_payment/monthly_pdf/<?=$month?>" target="_blank"><i class="fa fa-print"></i> Download PDF</a>
-      <a href="<?=base_url()?>hot_report_payment/monthly_print/<?=$month?>" class="btn btn-warning"><i class="fa fa-print"></i> Print Laporan</a>
+      <a href="<?=base_url()?>hot_report_credit/monthly/<?=$month?>" class="btn btn-success"><i class="fa fa-arrow-left"></i> Kembali</a>
+      <a class="btn btn-primary" href="<?=base_url()?>hot_report_credit/daily_pdf/<?=$date?>" target="_blank"><i class="fa fa-print"></i> Download PDF</a>
+      <a href="<?=base_url()?>hot_report_credit/daily_print/<?=$date?>" class="btn btn-warning"><i class="fa fa-print"></i> Print Laporan</a>
       <br><br>
-      <table class="table table-striped table-bordered table-condensed">
+      <table class="table table-condensed table-bordered table-striped">
         <thead>
           <tr>
-            <th class="text-center" width="85">Bulan</th>
-            <th class="text-center" width="50">Aksi</th>
+            <th class="text-center">No Nota</th>
+            <th class="text-center">Aksi</th>
+            <th class="text-center">Nama Tamu</th>
+            <th class="text-center">Status</th>
             <th class="text-center">Sub Total</th>
             <th class="text-center">Diskon</th>
 
             <?php 
             foreach ($charge_type as $data): 
+            //
+            $no = $data['charge_type_id'];
+            $grand_down_total_tax[$no] = 0;
+            //
             ?>
             <th class="text-center"><?=$data['charge_type_name']?></th>
             <?php endforeach ?>
 
             <th class="text-center">DP</th>
             <th class="text-center">Total</th>
-          </tr>
-          <tr>
-            <td class="text-center" style="padding:0px;">1</td>
-            <td class="text-center" style="padding:0px;">2</td>
-            <td class="text-center" style="padding:0px;">3</td>
-            <td class="text-center" style="padding:0px;">4</td>
-
-            <?php 
-            $no_awal = 5;
-            $no_akhir = $no_awal+count($charge_type);
-            for ($i=5; $i < $no_akhir ; $i++): 
-            ?>
-            <td class="text-center" style="padding:0px;"><?=$i?></td>
-            <?php endfor; ?>
-            <td class="text-center" style="padding:0px;"><?=$i?></td>
-            <td class="text-center" style="padding:0px;"><?=$i+1?></td>
           </tr>
         </thead>
         <tbody>
@@ -54,12 +44,28 @@
             $billing_total = 0;
             $billing_down_payment = 0;
           ?>
-          <?php if ($monthly != null): ?>
-            <?php $i=1;foreach ($monthly as $row): ?>
+          <?php if ($daily != null): ?>
+            <?php foreach ($daily as $row): ?>
               <tr>
-                <td class="text-center"><?=date_to_ind($row->billing_date_in)?></td>
+                <td class="text-center">TRS - <?=$row->billing_receipt_no?></td>
                 <td class="text-center">
-                  <a href="<?=base_url()?>hot_report_payment/daily/<?=$row->billing_date_in?>" class="btn btn-xs btn-success"><i class="fa fa-list"></i> </a>
+                  <a href="<?=base_url()?>hot_report_credit/detail/<?=$row->billing_id?>" class="btn btn-xs btn-success"><i class="fa fa-list"></i> </a>
+                </td>
+                <td class="text-center"><?=$row->guest_name?></td>
+                <td class="text-center">
+                  <?php switch ($row->billing_status) {
+                    case '-1':
+                      echo '<span class="badge bg-danger">Batal</span>';
+                      break;
+
+                    case '1':
+                      echo '<span class="badge bg-warning">Proses</span>';
+                      break;
+
+                    case '2':
+                      echo '<span class="badge bg-success">Selesai</span>';
+                      break;
+                  } ?>
                 </td>
                 <td><?=num_to_idr($row->billing_subtotal)?></td>
                   <?php $billing_subtotal += $row->billing_subtotal;?>
@@ -67,7 +73,7 @@
                 <!-- Diskon -->
                 <td>0</td>
                 <!-- End Diskon -->
-
+                
                 <!-- Charge Type -->
                 <?php 
                   foreach ($charge_type as $data): 
@@ -86,29 +92,28 @@
                 $total_service += $row->billing_service;
                 $total_other += $row->billing_other;
                 ?>  
-                <!-- End Charge Type -->  
+                <!-- End Charge Type -->
 
                 <!-- DP -->
                 <td><?=num_to_idr($row->billing_down_payment)?></td>
-                  <?php $billing_down_payment += $row->billing_down_payment; ?>
+                  <?php $billing_down_payment += $row->billing_down_payment ?>
                 <!-- End DP -->
 
                 <!-- Grand Total -->
                 <td><?=num_to_idr($row->billing_total)?></td>
                   <?php $billing_total += $row->billing_total;?>
                 <!-- End Grand Total -->
-                  
               </tr>
             <?php endforeach; ?>
           <?php else: ?>
             <tr>
-              <td class="text-center" colspan="9">Tidak ada data!</td>
+              <td class="text-center" colspan="11">Tidak ada data</td>
             </tr>
           <?php endif; ?>
         </tbody>
         <tfoot>
           <tr>
-            <th class="text-center" colspan="2">Total</th>
+            <th class="text-center" colspan="4">Total</th>
             <th><?=num_to_idr($billing_subtotal)?></th>
             <th>0</th>
             <?php 

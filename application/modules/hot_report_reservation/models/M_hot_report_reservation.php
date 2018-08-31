@@ -77,7 +77,7 @@ class M_hot_report_reservation extends CI_Model {
 			WHERE
 				billing_date_in = '$date' AND
 				billing_status != '0'
-			ORDER BY billing_id DESC"
+			ORDER BY billing_receipt_no ASC"
 		)->result();
 
 		return $billing;
