@@ -189,3 +189,15 @@
     }
     return implode($allLines, "\n") . "\n";
   }
+
+  function convert_date($tgl) {
+    $tanggal = substr($tgl, 8, 2);
+    $jam = substr($tgl, 11, 8);
+    $bulan = substr($tgl, 5, 2);
+    $tahun = substr($tgl, 0, 4);
+    if($jam != '') {
+        return $tanggal . '-' . $bulan . '-' . $tahun . ' ' . $jam;
+    } else {
+        return $tanggal . '-' . $bulan . '-' . $tahun;
+    }    
+  }

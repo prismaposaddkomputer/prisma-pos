@@ -30,7 +30,7 @@ class Hot_report_reservation extends MY_Hotel {
   {
     if ($this->access->_read == 1) {
       $data['access'] = $this->access;
-      $data['title'] = 'Laporan Penjualan';
+      $data['title'] = 'Laporan Reservasi';
 
       $this->view('hot_report_reservation/index',$data);
     } else {
@@ -77,7 +77,7 @@ class Hot_report_reservation extends MY_Hotel {
   public function annual($year)
   {
     $data['access'] = $this->access;
-    $data['title'] = 'Laporan Penjualan Tahun '.$year;
+    $data['title'] = 'Laporan Reservasi Tahun '.$year;
     $data['year'] = $year;
     //
     $data['annual'] = $this->m_hot_report_reservation->annual($year);
@@ -88,7 +88,7 @@ class Hot_report_reservation extends MY_Hotel {
 
   public function annual_pdf($year)
   {
-    $data['title'] = 'Laporan Penjualan Tahun '.$year;
+    $data['title'] = 'Laporan Reservasi Tahun '.$year;
     $data['annual'] = $this->m_hot_report_reservation->annual($year);
     $data['client'] = $this->m_hot_client->get_all();
 
@@ -100,7 +100,7 @@ class Hot_report_reservation extends MY_Hotel {
 
   public function annual_print($year)
   {
-    $title = 'Laporan Penjualan Tahun '.$year;
+    $title = 'Laporan Reservasi Tahun '.$year;
     $client = $this->m_hot_client->get_all();
     //
     $annual = $this->m_hot_report_reservation->annual($year);
@@ -229,7 +229,7 @@ class Hot_report_reservation extends MY_Hotel {
     $data['year'] = $raw[0];
 
     $data['access'] = $this->access;
-    $data['title'] = 'Laporan Penjualan Bulan '.month_name_ind($num_month).' '.$raw[0];
+    $data['title'] = 'Laporan Reservasi Bulan '.month_name_ind($num_month).' '.$raw[0];
     $data['month'] = $month;
 
     $data['monthly'] = $this->m_hot_report_reservation->monthly($month);
@@ -243,7 +243,7 @@ class Hot_report_reservation extends MY_Hotel {
     $raw = $raw = explode("-", $month);
     $num_month = $raw[1];
 
-    $data['title'] = 'Laporan Penjualan Bulan '.month_name_ind($num_month).' '.$raw[0];
+    $data['title'] = 'Laporan Reservasi Bulan '.month_name_ind($num_month).' '.$raw[0];
     $data['monthly'] = $this->m_hot_report_reservation->monthly($month);
     $data['client'] = $this->m_hot_client->get_all();
 
@@ -258,7 +258,7 @@ class Hot_report_reservation extends MY_Hotel {
     $raw = $raw = explode("-", $month);
     $num_month = $raw[1];
     //
-    $title = "Laporan Penjualan Bulan ".month_name_ind($num_month)."\n".$raw[0];
+    $title = "Laporan Reservasi Bulan ".month_name_ind($num_month)."\n".$raw[0];
     $client = $this->m_hot_client->get_all();
     //
     $monthly = $this->m_hot_report_reservation->monthly($month);
@@ -382,7 +382,7 @@ class Hot_report_reservation extends MY_Hotel {
   public function weekly($date_start, $date_end)
   {
     $data['access'] = $this->access;
-    $data['title'] = 'Laporan Penjualan Mingguan ('.$date_start.' - '.$date_end.')';
+    $data['title'] = 'Laporan Reservasi Mingguan ('.$date_start.' - '.$date_end.')';
     $data['date_start'] = $date_start;
     $data['date_end'] = $date_end;
 
@@ -394,7 +394,7 @@ class Hot_report_reservation extends MY_Hotel {
 
   public function weekly_pdf($date_start, $date_end)
   {
-    $data['title'] = 'Laporan Penjualan Mingguan ('.$date_start.' - '.$date_end.')';
+    $data['title'] = 'Laporan Reservasi Mingguan ('.$date_start.' - '.$date_end.')';
     $data['weekly'] = $this->m_hot_report_reservation->weekly(ind_to_date($date_start),ind_to_date($date_end));
     $data['client'] = $this->m_hot_client->get_all();
 
@@ -406,7 +406,7 @@ class Hot_report_reservation extends MY_Hotel {
 
   public function weekly_print($date_start, $date_end)
   {
-    $title = "Laporan Penjualan Mingguan \n (".$date_start." - ".$date_end.")";
+    $title = "Laporan Reservasi Mingguan \n (".$date_start." - ".$date_end.")";
     $client = $this->m_hot_client->get_all();
     //
     $weekly = $this->m_hot_report_reservation->weekly(ind_to_date($date_start),ind_to_date($date_end));
@@ -530,7 +530,7 @@ class Hot_report_reservation extends MY_Hotel {
   public function daily($date)
   {
     $data['access'] = $this->access;
-    $data['title'] = 'Laporan Penjualan Tanggal '.date_to_ind($date);
+    $data['title'] = 'Laporan Reservasi Tanggal '.date_to_ind($date);
     $data['date'] = $date;
     //
     $raw = $raw = explode("-", $date);
@@ -545,7 +545,7 @@ class Hot_report_reservation extends MY_Hotel {
 
   public function daily_pdf($date)
   {
-    $data['title'] = 'Laporan Penjualan Tanggal '.date_to_ind($date);
+    $data['title'] = 'Laporan Reservasi Tanggal '.date_to_ind($date);
     $data['daily'] = $this->m_hot_report_reservation->daily($date);
     $data['client'] = $this->m_hot_client->get_all();
 
@@ -557,7 +557,7 @@ class Hot_report_reservation extends MY_Hotel {
 
   public function daily_print($date)
   {
-    $title = "Laporan Penjualan Tanggal \n".date_to_ind($date);
+    $title = "Laporan Reservasi Tanggal \n".date_to_ind($date);
     $client = $this->m_hot_client->get_all();
     //
     $daily = $this->m_hot_report_reservation->daily($date);
@@ -701,7 +701,7 @@ class Hot_report_reservation extends MY_Hotel {
   public function range($date_start, $date_end)
   {
     $data['access'] = $this->access;
-    $data['title'] = 'Laporan Penjualan Tanggal '.$date_start.' - '.$date_end;
+    $data['title'] = 'Laporan Reservasi Tanggal '.$date_start.' - '.$date_end;
     $data['date_start'] = $date_start;
     $data['date_end'] = $date_end;
 
@@ -713,7 +713,7 @@ class Hot_report_reservation extends MY_Hotel {
 
   public function range_pdf($date_start, $date_end)
   {
-    $data['title'] = 'Laporan Penjualan Tanggal ('.$date_start.' - '.$date_end.')';
+    $data['title'] = 'Laporan Reservasi Tanggal ('.$date_start.' - '.$date_end.')';
     $data['range'] = $this->m_hot_report_reservation->range(ind_to_date($date_start),ind_to_date($date_end));
     $data['client'] = $this->m_hot_client->get_all();
 
@@ -725,7 +725,7 @@ class Hot_report_reservation extends MY_Hotel {
 
   public function range_print($date_start, $date_end)
   {
-    $title = "Laporan Penjualan Tanggal \n ".$date_start." - ".$date_end;
+    $title = "Laporan Reservasi Tanggal \n ".$date_start." - ".$date_end;
     $client = $this->m_hot_client->get_all();
     //
     $range = $this->m_hot_report_reservation->range(ind_to_date($date_start),ind_to_date($date_end));

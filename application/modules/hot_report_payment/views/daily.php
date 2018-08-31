@@ -4,9 +4,9 @@
 <div class="content-body">
   <div class="row">
     <div class="col-md-12">
-      <a href="<?=base_url()?>hot_report_receptionist/monthly/<?=$month?>/<?=$user_id?>" class="btn btn-success"><i class="fa fa-arrow-left"></i> Kembali</a>
-      <a class="btn btn-primary" href="<?=base_url()?>hot_report_receptionist/daily_pdf/<?=$date?>/<?=$user_id?>" target="_blank"><i class="fa fa-print"></i> Download PDF</a>
-      <a href="<?=base_url()?>hot_report_receptionist/daily_print/<?=$date?>/<?=$user_id?>" class="btn btn-warning"><i class="fa fa-print"></i> Print Laporan</a>
+      <a href="<?=base_url()?>hot_report_reservation/monthly/<?=$month?>" class="btn btn-success"><i class="fa fa-arrow-left"></i> Kembali</a>
+      <a class="btn btn-primary" href="<?=base_url()?>hot_report_reservation/daily_pdf/<?=$date?>" target="_blank"><i class="fa fa-print"></i> Download PDF</a>
+      <a href="<?=base_url()?>hot_report_reservation/daily_print/<?=$date?>" class="btn btn-warning"><i class="fa fa-print"></i> Print Laporan</a>
       <br><br>
       <table class="table table-condensed table-bordered table-striped">
         <thead>
@@ -47,7 +47,7 @@
               <tr>
                 <td class="text-center">TRS - <?=$row->billing_receipt_no?></td>
                 <td class="text-center">
-                  <a href="<?=base_url()?>hot_report_receptionist/detail/<?=$row->billing_id?>/<?=$user_id?>" class="btn btn-xs btn-success"><i class="fa fa-list"></i> </a>
+                  <a href="<?=base_url()?>hot_report_reservation/detail/<?=$row->billing_id?>" class="btn btn-xs btn-success"><i class="fa fa-list"></i> </a>
                 </td>
                 <td class="text-center"><?=$row->guest_name?></td>
                 <td class="text-center">

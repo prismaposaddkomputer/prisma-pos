@@ -373,6 +373,8 @@
     <div class="col-md-6">
       <h4><b><i class="fa fa-money"></i></b> Pembayaran</h4>
       <table class="table table-condensed">
+        <form id="form" class="" action="<?=base_url()?>hot_reservation/<?=$action?>" method="post">
+        <input type="text" name="billing_id" value="<?=$id?>">
         <tbody>
           <tr>
             <td width="300">Total</td>
@@ -394,7 +396,7 @@
             <td width="300">Pembayaran</td>
             <td width="20">:</td>
             <td>
-              <input id="billing_payment" style="width:100%" class="autonumeric" type="text" value="0" dir="rtl" onchange="calc_change()">
+              <input id="billing_payment" name="billing_payment" style="width:100%" class="autonumeric" type="text" value="0" dir="rtl" onchange="calc_change()">
             </td>
           </tr>
           <tr>
@@ -404,7 +406,15 @@
               <input id="billing_change" style="width:100%" class="autonumeric" type="text" value="0" dir="rtl" readonly>
             </th>
           </tr>
+          <tr>
+            <th width="300"></th>
+            <th width="20"></th>
+            <th class="text-right">
+              <button type="submit" class="btn btn-success">Simpan <i class="fa fa-arrow-right"></i></button>
+            </th>
+          </tr>
         </tbody>
+        </form>
       </table>
     </div>
   </div>

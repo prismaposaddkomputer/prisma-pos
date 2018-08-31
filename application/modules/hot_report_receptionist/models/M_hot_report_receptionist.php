@@ -16,11 +16,11 @@ class M_hot_report_receptionist extends CI_Model {
 				SUM(billing_total) AS billing_total
 			FROM hot_billing
 			WHERE
-				user_id = $user_id AND
+				user_id = '$user_id' AND
 				billing_date_in LIKE '$year%' AND
 				billing_status != '0'
-			GROUP BY YEAR(billing_date_in)
-			ORDER BY billing_date_in DESC"
+			GROUP BY MONTH(billing_date_in)
+			ORDER BY billing_date_in ASC"
 		)->result();
 
 		return $billing;
@@ -38,7 +38,7 @@ class M_hot_report_receptionist extends CI_Model {
 				SUM(billing_total) AS billing_total
 			FROM hot_billing
 			WHERE
-				user_id = $user_id AND
+				user_id = '$user_id' AND
 				billing_date_in LIKE '$month%' AND
 				billing_status != '0'
 			GROUP BY billing_date_in
@@ -60,7 +60,7 @@ class M_hot_report_receptionist extends CI_Model {
 				SUM(billing_total) AS billing_total
 			FROM hot_billing
 			WHERE
-				user_id = $user_id AND
+				user_id = '$user_id' AND
 				billing_date_in >= '$date_start' AND
 				billing_date_in <= '$date_end' AND
 				billing_status != '0'
@@ -99,7 +99,7 @@ class M_hot_report_receptionist extends CI_Model {
 				SUM(billing_total) AS billing_total
 			FROM hot_billing
 			WHERE
-				user_id = $user_id AND
+				user_id = '$user_id' AND
 				billing_date_in >= '$date_start' AND
 				billing_date_in <= '$date_end' AND
 				billing_status != '0'

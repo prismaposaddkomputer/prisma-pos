@@ -87,12 +87,6 @@ class Hot_report_receptionist extends MY_Hotel {
 
     $data['charge_type'] = $this->m_hot_charge_type->list_data_except_tax_hotel();
     //
-    foreach ($data['charge_type'] as $list) {
-      $data['data_charge_type'][$list['charge_type_id']] = $this->m_hot_charge_type->get_data_hot_charge_type($list['charge_type_id']);
-      $data['data_charge_type'][$list['charge_type_id']] = $this->m_hot_charge_type->get_data_hot_charge_type($list['charge_type_id']);
-      $data['data_charge_type'][$list['charge_type_id']] = $this->m_hot_charge_type->get_data_hot_charge_type($list['charge_type_id']);
-    }
-    //
 
     $this->view('annual', $data);
   }
@@ -120,12 +114,6 @@ class Hot_report_receptionist extends MY_Hotel {
     //
     $annual = $this->m_hot_report_receptionist->annual($year,$user_id);
     $charge_type = $this->m_hot_charge_type->list_data_except_tax_hotel();
-    //
-    foreach ($charge_type as $list) {
-      $data_charge_type[$list['charge_type_id']] = $this->m_hot_charge_type->get_data_hot_charge_type($list['charge_type_id']);
-      $data_charge_type[$list['charge_type_id']] = $this->m_hot_charge_type->get_data_hot_charge_type($list['charge_type_id']);
-      $data_charge_type[$list['charge_type_id']] = $this->m_hot_charge_type->get_data_hot_charge_type($list['charge_type_id']);
-    }
 
     //print
     $this->load->library("EscPos.php");
@@ -161,8 +149,14 @@ class Hot_report_receptionist extends MY_Hotel {
       $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
       $printer -> text('--------------------------------');
 
-      $billing_sub_total = 0;
-      $grand_total_all = 0;
+      $billing_subtotal = 0;
+      $billing_tax = 0;
+      $billing_service = 0;
+      $billing_other = 0;
+      $total_tax = 0;
+      $total_service = 0;
+      $total_other = 0;
+      $billing_total = 0;
       $i=1;
       foreach ($annual as $row){
         $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
@@ -173,7 +167,7 @@ class Hot_report_receptionist extends MY_Hotel {
 
         //
         $sub_total_left = "Sub Total";
-        $sub_total_right = num_to_price($row->billing_sub_total);
+        $sub_total_right = num_to_price($row->billing_subtotal);
         $printer -> text(print_justify($sub_total_left, $sub_total_right, 16, 13, 3));
         //
         $diskon_left = "Diskon";
@@ -183,33 +177,34 @@ class Hot_report_receptionist extends MY_Hotel {
         $grand_total_tax = 0;
         foreach ($charge_type as $data){
           //
-          $no = $data['charge_type_id'];
-          $total_tax[$no] = 0;
-          $total_tax[$no] = ($row->billing_sub_total - 0) * $data_charge_type[$no]['charge_type_ratio'] / 100;
-          $grand_total_tax += $total_tax[$no];
+          if ($data['charge_type_id'] == '1') {
+            $billing_charge_type = $row->billing_tax;
+          }else if ($data['charge_type_id'] == '2') {
+            $billing_charge_type = $row->billing_service;
+          }else if ($data['charge_type_id'] == '3') {
+            $billing_charge_type = $row->billing_other;
+          }
           //
-          $charge_type_left[$no] = $data['charge_type_name'];
-          $charge_type_right[$no] = num_to_price($total_tax[$no]);
-          $printer -> text(print_justify($charge_type_left[$no], $charge_type_right[$no], 16, 13, 3));
+          $charge_type_left = $data['charge_type_name'];
+          $charge_type_right = num_to_price($billing_charge_type);
+          $printer -> text(print_justify($charge_type_left, $charge_type_right, 16, 13, 3));
         }
-        //
-        $grand_total = ($row->billing_sub_total - 0) + $grand_total_tax;
         //
         $printer -> text('--------------------------------');
         $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
         $total_left = "Total";
-        $total_right = num_to_price($grand_total);
+        $total_right = num_to_price($row->billing_total);
         $printer -> text(print_justify($total_left, $total_right, 16, 13, 3));
         $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
         $printer -> text('--------------------------------');
         //
-        $grand_total_all += $grand_total;
+        $billing_total += $row->billing_total;
       }
 
       $printer -> text('--------------------------------');
       $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
       $total_left = "Total Kasir\n'".$user->user_realname."'";
-      $total_right = num_to_price($grand_total_all);
+      $total_right = num_to_price($billing_total);
       $printer -> text(print_justify($total_left, $total_right, 16, 13, 3));
       $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
       $printer -> text('--------------------------------');
@@ -250,12 +245,6 @@ class Hot_report_receptionist extends MY_Hotel {
     $data['monthly'] = $this->m_hot_report_receptionist->monthly($month,$user_id);
     $data['charge_type'] = $this->m_hot_charge_type->list_data_except_tax_hotel();
     //
-    foreach ($data['charge_type'] as $list) {
-      $data['data_charge_type'][$list['charge_type_id']] = $this->m_hot_charge_type->get_data_hot_charge_type($list['charge_type_id']);
-      $data['data_charge_type'][$list['charge_type_id']] = $this->m_hot_charge_type->get_data_hot_charge_type($list['charge_type_id']);
-      $data['data_charge_type'][$list['charge_type_id']] = $this->m_hot_charge_type->get_data_hot_charge_type($list['charge_type_id']);
-    }
-    //
     $this->view('monthly', $data);
   }
 
@@ -288,12 +277,6 @@ class Hot_report_receptionist extends MY_Hotel {
     //
     $monthly = $this->m_hot_report_receptionist->monthly($month,$user_id);
     $charge_type = $this->m_hot_charge_type->list_data_except_tax_hotel();
-    //
-    foreach ($charge_type as $list) {
-      $data_charge_type[$list['charge_type_id']] = $this->m_hot_charge_type->get_data_hot_charge_type($list['charge_type_id']);
-      $data_charge_type[$list['charge_type_id']] = $this->m_hot_charge_type->get_data_hot_charge_type($list['charge_type_id']);
-      $data_charge_type[$list['charge_type_id']] = $this->m_hot_charge_type->get_data_hot_charge_type($list['charge_type_id']);
-    }
 
     //print
     $this->load->library("EscPos.php");
@@ -329,9 +312,15 @@ class Hot_report_receptionist extends MY_Hotel {
       $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
       $printer -> text('--------------------------------');
 
+      $billing_subtotal = 0;
+      $billing_tax = 0;
+      $billing_service = 0;
+      $billing_other = 0;
+      $total_tax = 0;
+      $total_service = 0;
+      $total_other = 0;
+      $billing_total = 0;
       $i=1;
-      $billing_sub_total = 0;
-      $grand_total_all = 0;
       foreach ($monthly as $row){
         $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
         $printer -> text(date_to_ind($row->billing_date_in));
@@ -341,7 +330,7 @@ class Hot_report_receptionist extends MY_Hotel {
 
         //
         $sub_total_left = "Sub Total";
-        $sub_total_right = num_to_price($row->billing_sub_total);
+        $sub_total_right = num_to_price($row->billing_subtotal);
         $printer -> text(print_justify($sub_total_left, $sub_total_right, 16, 13, 3));
         //
         $diskon_left = "Diskon";
@@ -351,33 +340,34 @@ class Hot_report_receptionist extends MY_Hotel {
         $grand_total_tax = 0;
         foreach ($charge_type as $data){
           //
-          $no = $data['charge_type_id'];
-          $total_tax[$no] = 0;
-          $total_tax[$no] = ($row->billing_sub_total - 0) * $data_charge_type[$no]['charge_type_ratio'] / 100;
-          $grand_total_tax += $total_tax[$no];
+          if ($data['charge_type_id'] == '1') {
+            $billing_charge_type = $row->billing_tax;
+          }else if ($data['charge_type_id'] == '2') {
+            $billing_charge_type = $row->billing_service;
+          }else if ($data['charge_type_id'] == '3') {
+            $billing_charge_type = $row->billing_other;
+          }
           //
-          $charge_type_left[$no] = $data['charge_type_name'];
-          $charge_type_right[$no] = num_to_price($total_tax[$no]);
-          $printer -> text(print_justify($charge_type_left[$no], $charge_type_right[$no], 16, 13, 3));
+          $charge_type_left = $data['charge_type_name'];
+          $charge_type_right = num_to_price($billing_charge_type);
+          $printer -> text(print_justify($charge_type_left, $charge_type_right, 16, 13, 3));
         }
-        //
-        $grand_total = ($row->billing_sub_total - 0) + $grand_total_tax;
         //
         $printer -> text('--------------------------------');
         $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
         $total_left = "Total";
-        $total_right = num_to_price($grand_total);
+        $total_right = num_to_price($row->billing_total);
         $printer -> text(print_justify($total_left, $total_right, 16, 13, 3));
         $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
         $printer -> text('--------------------------------');
         //
-        $grand_total_all += $grand_total;
+        $billing_total += $row->billing_total;
       }
 
       $printer -> text('--------------------------------');
       $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
       $total_left = "Total Kasir\n'".$user->user_realname."'";
-      $total_right = num_to_price($grand_total_all);
+      $total_right = num_to_price($billing_total);
       $printer -> text(print_justify($total_left, $total_right, 16, 13, 3));
       $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
       $printer -> text('--------------------------------');
@@ -414,12 +404,6 @@ class Hot_report_receptionist extends MY_Hotel {
     $data['weekly'] = $this->m_hot_report_receptionist->weekly(ind_to_date($date_start),ind_to_date($date_end),$user_id);
     $data['charge_type'] = $this->m_hot_charge_type->list_data_except_tax_hotel();
     //
-    foreach ($data['charge_type'] as $list) {
-      $data['data_charge_type'][$list['charge_type_id']] = $this->m_hot_charge_type->get_data_hot_charge_type($list['charge_type_id']);
-      $data['data_charge_type'][$list['charge_type_id']] = $this->m_hot_charge_type->get_data_hot_charge_type($list['charge_type_id']);
-      $data['data_charge_type'][$list['charge_type_id']] = $this->m_hot_charge_type->get_data_hot_charge_type($list['charge_type_id']);
-    }
-    //
     $this->view('weekly', $data);
   }
 
@@ -446,12 +430,6 @@ class Hot_report_receptionist extends MY_Hotel {
     //
     $weekly = $this->m_hot_report_receptionist->weekly(ind_to_date($date_start),ind_to_date($date_end),$user_id);
     $charge_type = $this->m_hot_charge_type->list_data_except_tax_hotel();
-    //
-    foreach ($charge_type as $list) {
-      $data_charge_type[$list['charge_type_id']] = $this->m_hot_charge_type->get_data_hot_charge_type($list['charge_type_id']);
-      $data_charge_type[$list['charge_type_id']] = $this->m_hot_charge_type->get_data_hot_charge_type($list['charge_type_id']);
-      $data_charge_type[$list['charge_type_id']] = $this->m_hot_charge_type->get_data_hot_charge_type($list['charge_type_id']);
-    }
 
     //print
     $this->load->library("EscPos.php");
@@ -487,9 +465,15 @@ class Hot_report_receptionist extends MY_Hotel {
       $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
       $printer -> text('--------------------------------');
 
+      $billing_subtotal = 0;
+      $billing_tax = 0;
+      $billing_service = 0;
+      $billing_other = 0;
+      $total_tax = 0;
+      $total_service = 0;
+      $total_other = 0;
+      $billing_total = 0;
       $i=1;
-      $billing_sub_total = 0;
-      $grand_total_all = 0;
       foreach ($weekly as $row){
         $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
         $printer -> text(date_to_ind($row->billing_date_in));
@@ -499,7 +483,7 @@ class Hot_report_receptionist extends MY_Hotel {
 
         //
         $sub_total_left = "Sub Total";
-        $sub_total_right = num_to_price($row->billing_sub_total);
+        $sub_total_right = num_to_price($row->billing_subtotal);
         $printer -> text(print_justify($sub_total_left, $sub_total_right, 16, 13, 3));
         //
         $diskon_left = "Diskon";
@@ -509,33 +493,33 @@ class Hot_report_receptionist extends MY_Hotel {
         $grand_total_tax = 0;
         foreach ($charge_type as $data){
           //
-          $no = $data['charge_type_id'];
-          $total_tax[$no] = 0;
-          $total_tax[$no] = ($row->billing_sub_total - 0) * $data_charge_type[$no]['charge_type_ratio'] / 100;
-          $grand_total_tax += $total_tax[$no];
-          //
-          $charge_type_left[$no] = $data['charge_type_name'];
-          $charge_type_right[$no] = num_to_price($total_tax[$no]);
-          $printer -> text(print_justify($charge_type_left[$no], $charge_type_right[$no], 16, 13, 3));
+          if ($data['charge_type_id'] == '1') {
+            $billing_charge_type = $row->billing_tax;
+          }else if ($data['charge_type_id'] == '2') {
+            $billing_charge_type = $row->billing_service;
+          }else if ($data['charge_type_id'] == '3') {
+            $billing_charge_type = $row->billing_other;
+          }          //
+          $charge_type_left = $data['charge_type_name'];
+          $charge_type_right = num_to_price($billing_charge_type);
+          $printer -> text(print_justify($charge_type_left, $charge_type_right, 16, 13, 3));
         }
-        //
-        $grand_total = ($row->billing_sub_total - 0) + $grand_total_tax;
         //
         $printer -> text('--------------------------------');
         $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
         $total_left = "Total";
-        $total_right = num_to_price($grand_total);
+        $total_right = num_to_price($row->billing_total);
         $printer -> text(print_justify($total_left, $total_right, 16, 13, 3));
         $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
         $printer -> text('--------------------------------');
         //
-        $grand_total_all += $grand_total;
+        $billing_total += $row->billing_total;
       }
 
       $printer -> text('--------------------------------');
       $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
       $total_left = "Total Kasir\n'".$user->user_realname."'";
-      $total_right = num_to_price($grand_total_all);
+      $total_right = num_to_price($billing_total);
       $printer -> text(print_justify($total_left, $total_right, 16, 13, 3));
       $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
       $printer -> text('--------------------------------');
@@ -574,12 +558,6 @@ class Hot_report_receptionist extends MY_Hotel {
     $data['daily'] = $this->m_hot_report_receptionist->daily($date, $user_id);
     $data['charge_type'] = $this->m_hot_charge_type->list_data_except_tax_hotel();
     //
-    foreach ($data['charge_type'] as $list) {
-      $data['data_charge_type'][$list['charge_type_id']] = $this->m_hot_charge_type->get_data_hot_charge_type($list['charge_type_id']);
-      $data['data_charge_type'][$list['charge_type_id']] = $this->m_hot_charge_type->get_data_hot_charge_type($list['charge_type_id']);
-      $data['data_charge_type'][$list['charge_type_id']] = $this->m_hot_charge_type->get_data_hot_charge_type($list['charge_type_id']);
-    }
-    //
     $this->view('daily', $data);
   }
 
@@ -606,12 +584,6 @@ class Hot_report_receptionist extends MY_Hotel {
     //
     $daily = $this->m_hot_report_receptionist->daily($date, $user_id);
     $charge_type = $this->m_hot_charge_type->list_data_except_tax_hotel();
-    //
-    foreach ($charge_type as $list) {
-      $data_charge_type[$list['charge_type_id']] = $this->m_hot_charge_type->get_data_hot_charge_type($list['charge_type_id']);
-      $data_charge_type[$list['charge_type_id']] = $this->m_hot_charge_type->get_data_hot_charge_type($list['charge_type_id']);
-      $data_charge_type[$list['charge_type_id']] = $this->m_hot_charge_type->get_data_hot_charge_type($list['charge_type_id']);
-    }
 
     //print
     $this->load->library("EscPos.php");
@@ -647,9 +619,15 @@ class Hot_report_receptionist extends MY_Hotel {
       $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
       $printer -> text('--------------------------------');
 
+      $billing_subtotal = 0;
+      $billing_tax = 0;
+      $billing_service = 0;
+      $billing_other = 0;
+      $total_tax = 0;
+      $total_service = 0;
+      $total_other = 0;
+      $billing_total = 0;
       $i=1;
-      $billing_sub_total = 0;
-      $grand_total_all = 0;
       foreach ($daily as $row){
         $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
         $printer -> text("TRS - ".$row->billing_receipt_no);
@@ -679,7 +657,7 @@ class Hot_report_receptionist extends MY_Hotel {
         $printer -> text(print_justify($status_left, $status_right, 16, 13, 3));
         //
         $sub_total_left = "Sub Total";
-        $sub_total_right = num_to_price($row->billing_sub_total);
+        $sub_total_right = num_to_price($row->billing_subtotal);
         $printer -> text(print_justify($sub_total_left, $sub_total_right, 16, 13, 3));
         //
         $diskon_left = "Diskon";
@@ -689,33 +667,34 @@ class Hot_report_receptionist extends MY_Hotel {
         $grand_total_tax = 0;
         foreach ($charge_type as $data){
           //
-          $no = $data['charge_type_id'];
-          $total_tax[$no] = 0;
-          $total_tax[$no] = ($row->billing_sub_total - 0) * $data_charge_type[$no]['charge_type_ratio'] / 100;
-          $grand_total_tax += $total_tax[$no];
+          if ($data['charge_type_id'] == '1') {
+            $billing_charge_type = $row->billing_tax;
+          }else if ($data['charge_type_id'] == '2') {
+            $billing_charge_type = $row->billing_service;
+          }else if ($data['charge_type_id'] == '3') {
+            $billing_charge_type = $row->billing_other;
+          }
           //
-          $charge_type_left[$no] = $data['charge_type_name'];
-          $charge_type_right[$no] = num_to_price($total_tax[$no]);
-          $printer -> text(print_justify($charge_type_left[$no], $charge_type_right[$no], 16, 13, 3));
+          $charge_type_left = $data['charge_type_name'];
+          $charge_type_right = num_to_price($billing_charge_type);
+          $printer -> text(print_justify($charge_type_left, $charge_type_right, 16, 13, 3));
         }
-        //
-        $grand_total = ($row->billing_sub_total - 0) + $grand_total_tax;
         //
         $printer -> text('--------------------------------');
         $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
         $total_left = "Total";
-        $total_right = num_to_price($grand_total);
+        $total_right = num_to_price($row->billing_total);
         $printer -> text(print_justify($total_left, $total_right, 16, 13, 3));
         $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
         $printer -> text('--------------------------------');
         //
-        $grand_total_all += $grand_total;
+        $billing_total += $row->billing_total;
       }
 
       $printer -> text('--------------------------------');
       $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
       $total_left = "Total Kasir\n'".$user->user_realname."'";
-      $total_right = num_to_price($grand_total_all);
+      $total_right = num_to_price($billing_total);
       $printer -> text(print_justify($total_left, $total_right, 16, 13, 3));
       $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
       $printer -> text('--------------------------------');
@@ -751,12 +730,6 @@ class Hot_report_receptionist extends MY_Hotel {
 
     $data['range'] = $this->m_hot_report_receptionist->range(ind_to_date($date_start),ind_to_date($date_end),$user_id);
     $data['charge_type'] = $this->m_hot_charge_type->list_data_except_tax_hotel();
-    //
-    foreach ($data['charge_type'] as $list) {
-      $data['data_charge_type'][$list['charge_type_id']] = $this->m_hot_charge_type->get_data_hot_charge_type($list['charge_type_id']);
-      $data['data_charge_type'][$list['charge_type_id']] = $this->m_hot_charge_type->get_data_hot_charge_type($list['charge_type_id']);
-      $data['data_charge_type'][$list['charge_type_id']] = $this->m_hot_charge_type->get_data_hot_charge_type($list['charge_type_id']);
-    }
     //
     $this->view('range', $data);
   }
@@ -794,12 +767,6 @@ class Hot_report_receptionist extends MY_Hotel {
     //
     $range = $this->m_hot_report_receptionist->range(ind_to_date($date_start),ind_to_date($date_end),$user_id);
     $charge_type = $this->m_hot_charge_type->list_data_except_tax_hotel();
-    //
-    foreach ($charge_type as $list) {
-      $data_charge_type[$list['charge_type_id']] = $this->m_hot_charge_type->get_data_hot_charge_type($list['charge_type_id']);
-      $data_charge_type[$list['charge_type_id']] = $this->m_hot_charge_type->get_data_hot_charge_type($list['charge_type_id']);
-      $data_charge_type[$list['charge_type_id']] = $this->m_hot_charge_type->get_data_hot_charge_type($list['charge_type_id']);
-    }
 
     //print
     $this->load->library("EscPos.php");
@@ -835,9 +802,15 @@ class Hot_report_receptionist extends MY_Hotel {
       $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
       $printer -> text('--------------------------------');
 
+      $billing_subtotal = 0;
+      $billing_tax = 0;
+      $billing_service = 0;
+      $billing_other = 0;
+      $total_tax = 0;
+      $total_service = 0;
+      $total_other = 0;
+      $billing_total = 0;
       $i=1;
-      $billing_sub_total = 0;
-      $grand_total_all = 0;
       foreach ($range as $row){
         $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
         $printer -> text(date_to_ind($row->billing_date_in));
@@ -847,7 +820,7 @@ class Hot_report_receptionist extends MY_Hotel {
 
         //
         $sub_total_left = "Sub Total";
-        $sub_total_right = num_to_price($row->billing_sub_total);
+        $sub_total_right = num_to_price($row->billing_subtotal);
         $printer -> text(print_justify($sub_total_left, $sub_total_right, 16, 13, 3));
         //
         $diskon_left = "Diskon";
@@ -857,33 +830,34 @@ class Hot_report_receptionist extends MY_Hotel {
         $grand_total_tax = 0;
         foreach ($charge_type as $data){
           //
-          $no = $data['charge_type_id'];
-          $total_tax[$no] = 0;
-          $total_tax[$no] = ($row->billing_sub_total - 0) * $data_charge_type[$no]['charge_type_ratio'] / 100;
-          $grand_total_tax += $total_tax[$no];
+          if ($data['charge_type_id'] == '1') {
+            $billing_charge_type = $row->billing_tax;
+          }else if ($data['charge_type_id'] == '2') {
+            $billing_charge_type = $row->billing_service;
+          }else if ($data['charge_type_id'] == '3') {
+            $billing_charge_type = $row->billing_other;
+          }
           //
-          $charge_type_left[$no] = $data['charge_type_name'];
-          $charge_type_right[$no] = num_to_price($total_tax[$no]);
-          $printer -> text(print_justify($charge_type_left[$no], $charge_type_right[$no], 16, 13, 3));
+          $charge_type_left = $data['charge_type_name'];
+          $charge_type_right = num_to_price($billing_charge_type);
+          $printer -> text(print_justify($charge_type_left, $charge_type_right, 16, 13, 3));
         }
-        //
-        $grand_total = ($row->billing_sub_total - 0) + $grand_total_tax;
         //
         $printer -> text('--------------------------------');
         $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
         $total_left = "Total";
-        $total_right = num_to_price($grand_total);
+        $total_right = num_to_price($row->billing_total);
         $printer -> text(print_justify($total_left, $total_right, 16, 13, 3));
         $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
         $printer -> text('--------------------------------');
         //
-        $grand_total_all += $grand_total;
+        $billing_total += $row->billing_total;
       }
 
       $printer -> text('--------------------------------');
       $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
       $total_left = "Total Kasir\n'".$user->user_realname."'";
-      $total_right = num_to_price($grand_total_all);
+      $total_right = num_to_price($billing_total);
       $printer -> text(print_justify($total_left, $total_right, 16, 13, 3));
       $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
       $printer -> text('--------------------------------');
