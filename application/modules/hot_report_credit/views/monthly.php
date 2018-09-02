@@ -11,7 +11,7 @@
       <table class="table table-striped table-bordered table-condensed">
         <thead>
           <tr>
-            <th class="text-center" width="85">Bulan</th>
+            <th class="text-center" width="85">Tanggal</th>
             <th class="text-center" width="50">Aksi</th>
             <th class="text-center">Sub Total</th>
             <th class="text-center">Diskon</th>

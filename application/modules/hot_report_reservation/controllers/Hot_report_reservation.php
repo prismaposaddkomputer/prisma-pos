@@ -91,6 +91,7 @@ class Hot_report_reservation extends MY_Hotel {
     $data['title'] = 'Laporan Reservasi Tahun '.$year;
     $data['annual'] = $this->m_hot_report_reservation->annual($year);
     $data['client'] = $this->m_hot_client->get_all();
+    $data['charge_type'] = $this->m_hot_charge_type->list_data_except_tax_hotel();
 
     $this->load->library('pdf');
     $this->pdf->setPaper('A4', 'potrait');
@@ -246,6 +247,7 @@ class Hot_report_reservation extends MY_Hotel {
     $data['title'] = 'Laporan Reservasi Bulan '.month_name_ind($num_month).' '.$raw[0];
     $data['monthly'] = $this->m_hot_report_reservation->monthly($month);
     $data['client'] = $this->m_hot_client->get_all();
+    $data['charge_type'] = $this->m_hot_charge_type->list_data_except_tax_hotel();
 
     $this->load->library('pdf');
     $this->pdf->setPaper('A4', 'potrait');
@@ -397,6 +399,7 @@ class Hot_report_reservation extends MY_Hotel {
     $data['title'] = 'Laporan Reservasi Mingguan ('.$date_start.' - '.$date_end.')';
     $data['weekly'] = $this->m_hot_report_reservation->weekly(ind_to_date($date_start),ind_to_date($date_end));
     $data['client'] = $this->m_hot_client->get_all();
+    $data['charge_type'] = $this->m_hot_charge_type->list_data_except_tax_hotel();
 
     $this->load->library('pdf');
     $this->pdf->setPaper('A4', 'potrait');
@@ -548,6 +551,7 @@ class Hot_report_reservation extends MY_Hotel {
     $data['title'] = 'Laporan Reservasi Tanggal '.date_to_ind($date);
     $data['daily'] = $this->m_hot_report_reservation->daily($date);
     $data['client'] = $this->m_hot_client->get_all();
+    $data['charge_type'] = $this->m_hot_charge_type->list_data_except_tax_hotel();
 
     $this->load->library('pdf');
     $this->pdf->setPaper('A4', 'potrait');
@@ -716,6 +720,7 @@ class Hot_report_reservation extends MY_Hotel {
     $data['title'] = 'Laporan Reservasi Tanggal ('.$date_start.' - '.$date_end.')';
     $data['range'] = $this->m_hot_report_reservation->range(ind_to_date($date_start),ind_to_date($date_end));
     $data['client'] = $this->m_hot_client->get_all();
+    $data['charge_type'] = $this->m_hot_charge_type->list_data_except_tax_hotel();
 
     $this->load->library('pdf');
     $this->pdf->setPaper('A4', 'potrait');

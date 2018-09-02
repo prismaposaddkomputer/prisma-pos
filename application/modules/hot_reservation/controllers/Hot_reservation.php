@@ -347,9 +347,9 @@ class Hot_reservation extends MY_Hotel {
           $printer -> feed();
         }
       }
-      $printer -> text('--------------------------------');
       // Extra
       if ($billing->extra != null){
+        $printer -> text('--------------------------------');
         $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
         $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
         $printer -> text("Extra :");
@@ -377,9 +377,9 @@ class Hot_reservation extends MY_Hotel {
           $printer -> feed();
         }
       }
-      $printer -> text('--------------------------------');
       // Pelayanan
       if ($billing->service != null){
+        $printer -> text('--------------------------------');
         $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
         $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
         $printer -> text("Pelayanan :");
@@ -407,9 +407,9 @@ class Hot_reservation extends MY_Hotel {
           $printer -> feed();
         }
       }
-      $printer -> text('--------------------------------');
       // F&B
       if ($billing->fnb != null){
+        $printer -> text('--------------------------------');
         $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
         $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
         $printer -> text("F&B :");
