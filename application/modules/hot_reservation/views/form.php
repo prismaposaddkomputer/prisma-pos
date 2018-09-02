@@ -64,7 +64,7 @@
           <label>Jenis Tamu <small class="required-field">*</small></label>
           <br>
           <label class="radio-inline">
-            <input type="radio" name="guest_type" id="guest_type" value="0" checked/> Tamu Baru
+            <input type="radio" name="guest_type" id="guest_type" value="0"  checked/> Tamu Baru
           </label>
           &nbsp;&nbsp;&nbsp;
           <label class="radio-inline">
@@ -73,22 +73,22 @@
         </div>
         <div class="form-group" id="guest_name_div">
           <label>Nama Tamu / Plat Nomor Kendaraan <small class="required-field">*</small></label>
-          <input class="form-control keyboard " type="text" name="guest_name" id="guest_name" value="">
+          <input class="form-control keyboard " type="text" name="guest_name" id="guest_name" value="<?php if($billing != null){echo $billing->guest_name;} ?>">
         </div>
         <div class="form-group">
           <label>Jenis Kelamin <small class="required-field">*</small></label>
           <br>
             <label class="radio-inline">
-              <input type="radio" name="guest_gender" value="L" checked/> Laki-laki
+              <input type="radio" name="guest_gender" value="L" <?php if($billing != null){if($billing->guest_gender == 'L'){echo 'checked';}}else{echo 'checked';}?>/> Laki-laki
             </label>
             &nbsp;&nbsp;&nbsp;
             <label class="radio-inline">
-              <input type="radio" name="guest_gender" value="P"/> Perempuan
+              <input type="radio" name="guest_gender" value="P" <?php if($billing != null){if($billing->guest_gender == 'P'){echo 'checked';}}?> /> Perempuan
             </label>
         </div>
         <div class="form-group">
           <label>No Telpon <small class="cl-warning">&nbsp;&nbsp;(Tidak Wajib Diisi)</small></label>
-          <input class="form-control num " type="text" name="guest_phone" id="guest_phone" value="">
+          <input class="form-control num " type="text" name="guest_phone" id="guest_phone" value="<?php if($billing != null){echo $billing->guest_phone;} ?>">
         </div>
         <div class="form-group">
           <label>Pilih Identitas <small class="cl-warning">&nbsp;&nbsp;(Tidak Wajib Diisi)</small></label>
@@ -101,7 +101,7 @@
         </div>
         <div class="form-group" id="no">
           <label>No Identitas <span id="label"></span> <small class="cl-warning">&nbsp;&nbsp;(Tidak Wajib Diisi)</small></label>
-          <input class="form-control num " type="text" name="guest_id_no" id="guest_id_no" value="">
+          <input class="form-control num " type="text" name="guest_id_no" id="guest_id_no" value="<?php if($billing != null){echo $billing->guest_id_no;} ?>">
         </div>
       </div>
     </div>
@@ -139,7 +139,6 @@
             </tr>
           </thead>
           <tbody id="row_room_list">
-
           </tbody>
         </table>
         <em>
@@ -511,6 +510,7 @@
 
 <script type="text/javascript">
   $(document).ready(function () {
+    
     $("#form").validate({
       rules: {
         'billing_date_in': {
@@ -561,6 +561,9 @@
         }
       }
     });
+
+    //
+    get_count();
     
     //Room
     $('#btn_room_list').click(function () {

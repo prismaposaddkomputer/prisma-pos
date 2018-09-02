@@ -137,6 +137,7 @@ class Hot_reservation extends MY_Hotel {
         $data['title'] = 'Ubah Data Extra';
         $data['billing'] = $this->m_hot_billing->get_by_id($id);
         $data['action'] = 'update';
+        $data['billing_room'] = $this->m_hot_reservation->get_billing_room($id);
         $this->view('hot_reservation/form', $data);
       } else {
         redirect(base_url().'app_error/error/403');
@@ -243,9 +244,10 @@ class Hot_reservation extends MY_Hotel {
     $data['billing_status'] = 2;
     //
     $this->m_hot_billing->update($id,$data);
+    $this->reservation_print($id);
     $this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil diubah!</div>');
     // redirect(base_url().'hot_reservation/index');
-    redirect(base_url().'hot_reservation/reservation_print/'.$id);
+    redirect(base_url().'hot_reservation/index');
   }
 
   public function reservation_print($billing_id)
@@ -497,7 +499,7 @@ class Hot_reservation extends MY_Hotel {
       echo "Couldn't print to this printer: " . $e -> getMessage() . "\n";
     }
     //
-    redirect(base_url().'hot_reservation/payment/'.$billing_id);
+    // redirect(base_url().'hot_reservation/payment/'.$billing_id);
   }
 
   public function delete($id)
