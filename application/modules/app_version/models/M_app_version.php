@@ -775,6 +775,12 @@ class M_app_version extends CI_Model {
           PRIMARY KEY (`non_tax_id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT");
         break;
+      
+      case '2.4.0':
+        // add auto increment 
+        $this->db->query("ALTER TABLE `hot_extra`
+	        CHANGE COLUMN `extra_id` `extra_id` INT(11) NOT NULL AUTO_INCREMENT FIRST");
+        break;
     }
 
     //insert new update history
@@ -848,7 +854,8 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"2.3.8","version_release"=>"2018-09-02 08:51:00"));
     // Non tax
     array_push($version, array("version_now"=>"2.3.9","version_release"=>"2018-09-02 08:56:00"));
-
+    // autoincrement
+    array_push($version, array("version_now"=>"2.4.0","version_release"=>"2018-09-02 12:19:00"));
 
     foreach ($version as $key => $val) {
       //check version
