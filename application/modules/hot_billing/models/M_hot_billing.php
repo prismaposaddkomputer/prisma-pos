@@ -8,12 +8,16 @@ class M_hot_billing extends CI_Model {
 		if($search_term == null){
 			return $this->db
 				->where('is_deleted','0')
+				->where('billing_status !=','0')
+				->order_by('billing_id','desc')
 				->get('hot_billing',$number,$offset)
 				->result();
 		}else{
 			return $this->db
 				->like('billing_name',$search_term,'both')
 				->where('is_deleted','0')
+				->where('billing_status !=','0')
+				->order_by('billing_id','desc')
 				->get('hot_billing',$number,$offset)
 				->result();
 		}

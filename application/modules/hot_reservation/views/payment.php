@@ -374,13 +374,13 @@
       <h4><b><i class="fa fa-money"></i></b> Pembayaran</h4>
       <table class="table table-condensed">
         <form id="form" class="" action="<?=base_url()?>hot_reservation/<?=$action?>" method="post">
-        <input type="text" name="billing_id" value="<?=$id?>">
+        <input type="hidden" name="billing_id" value="<?=$id?>">
         <tbody>
           <tr>
             <td width="300">Total</td>
             <td width="20">:</td>
             <td><?=num_to_idr($billing->billing_total)?></td>
-            <input id="billing_total" type="text" value="<?=$billing->billing_total?>">
+            <input id="billing_total" type="hidden" value="<?=$billing->billing_total?>">
           </tr>
           <tr>
             <td width="300">Uang Muka</td>
@@ -423,7 +423,7 @@
   function calc_change() {
     var billing_total = $('#billing_total').val();
     var billing_payment = ind_to_sys($('#billing_payment').val());
-    var billing_change = billing_payment;
+    var billing_change = billing_payment-billing_total;
     console.log(billing_change);
     $('#billing_change').val(sys_to_ind(billing_change.toFixed(2)));
   }
