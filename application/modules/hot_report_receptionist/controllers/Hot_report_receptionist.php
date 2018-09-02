@@ -98,6 +98,7 @@ class Hot_report_receptionist extends MY_Hotel {
     $data['client'] = $this->m_hot_client->get_all();
     $user = $this->m_hot_user->get_by_id($user_id);
     $data['user'] = $user;
+    $data['charge_type'] = $this->m_hot_charge_type->list_data_except_tax_hotel();
 
     $this->load->library('pdf');
     $this->pdf->setPaper('A4', 'potrait');
@@ -258,6 +259,7 @@ class Hot_report_receptionist extends MY_Hotel {
     $data['client'] = $this->m_hot_client->get_all();
     $user = $this->m_hot_user->get_by_id($user_id);
     $data['user'] = $user;
+    $data['charge_type'] = $this->m_hot_charge_type->list_data_except_tax_hotel();
 
     $this->load->library('pdf');
     $this->pdf->setPaper('A4', 'potrait');
@@ -414,6 +416,7 @@ class Hot_report_receptionist extends MY_Hotel {
     $data['client'] = $this->m_hot_client->get_all();
     $user = $this->m_hot_user->get_by_id($user_id);
     $data['user'] = $user;
+    $data['charge_type'] = $this->m_hot_charge_type->list_data_except_tax_hotel();
 
     $this->load->library('pdf');
     $this->pdf->setPaper('A4', 'potrait');
@@ -568,6 +571,7 @@ class Hot_report_receptionist extends MY_Hotel {
     $data['client'] = $this->m_hot_client->get_all();
     $user = $this->m_hot_user->get_by_id($user_id);
     $data['user'] = $user;
+    $data['charge_type'] = $this->m_hot_charge_type->list_data_except_tax_hotel();
 
     $this->load->library('pdf');
     $this->pdf->setPaper('A4', 'potrait');
@@ -741,6 +745,7 @@ class Hot_report_receptionist extends MY_Hotel {
     $data['client'] = $this->m_hot_client->get_all();
     $user = $this->m_hot_user->get_by_id($user_id);
     $data['user'] = $user;
+    $data['charge_type'] = $this->m_hot_charge_type->list_data_except_tax_hotel();
 
     $this->load->library('pdf');
     $this->pdf->setPaper('A4', 'potrait');

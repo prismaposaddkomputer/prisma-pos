@@ -4,13 +4,13 @@
 <div class="content-body">
   <div class="row">
     <div class="col-md-12">
-      <a class="btn btn-primary" href="<?=base_url()?>res_report_selling/range_pdf/<?=$date_start?>/<?=$date_end?>" target="_blank"><i class="fa fa-print"></i> Download PDF</a>
+      <a class="btn btn-primary" href="<?=base_url()?>hot_report_reservation/range_pdf/<?=$date_start?>/<?=$date_end?>" target="_blank"><i class="fa fa-print"></i> Download PDF</a>
       <a href="<?=base_url()?>hot_report_reservation/range_print/<?=$date_start?>/<?=$date_end?>" class="btn btn-warning"><i class="fa fa-print"></i> Print Laporan</a>
       <br><br>
       <table class="table table-striped table-bordered table-condensed">
         <thead>
           <tr>
-            <th class="text-center" width="85">Bulan</th>
+            <th class="text-center" width="85">Tanggal</th>
             <th class="text-center" width="50">Aksi</th>
             <th class="text-center">Sub Total</th>
             <th class="text-center">Diskon</th>
