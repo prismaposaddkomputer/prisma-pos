@@ -407,11 +407,10 @@
             </th>
           </tr>
           <tr>
-            <th width="300"></th>
-            <th width="20"></th>
-            <th class="text-right">
-              <button type="submit" class="btn btn-success">Simpan <i class="fa fa-arrow-right"></i></button>
-            </th>
+            <td colspan="3" class="text-right">
+              <button type="submit" name="save_print" value="print_pdf" class="btn btn-primary">Simpan & Cetak PDF <i class="fa fa-file-pdf-o"></i></button>
+              <button type="submit" name="save_print" value="print_struk" class="btn btn-success">Simpan & Cetak Struk <i class="fa fa-print"></i></button>
+            </td>
           </tr>
         </tbody>
         </form>

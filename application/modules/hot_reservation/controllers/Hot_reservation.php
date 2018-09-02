@@ -236,6 +236,9 @@ class Hot_reservation extends MY_Hotel {
       $data['is_active'] = 0;
     }
     //
+    $save_print = $data['save_print'];
+    unset($data['save_print']);
+    //
     $billing = $this->m_hot_reservation->get_billing($id);
     $billing_total = $billing->billing_total - $billing->billing_down_payment;
     //
@@ -244,13 +247,33 @@ class Hot_reservation extends MY_Hotel {
     $data['billing_status'] = 2;
     //
     $this->m_hot_billing->update($id,$data);
-    $this->reservation_print($id);
+    if ($save_print == 'print_pdf') {
+      $this->reservation_print_pdf($id);
+    }else if($save_print == 'print_struk'){
+      $this->reservation_print_struk($id);
+    }
     $this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil diubah!</div>');
     // redirect(base_url().'hot_reservation/index');
     redirect(base_url().'hot_reservation/index');
   }
 
-  public function reservation_print($billing_id)
+  public function reservation_print_pdf($billing_id)
+  {
+    $data['title'] = "Laporan Reservasi Pembayaran";
+    $data['client'] = $this->m_hot_client->get_all();
+    //
+    $data['billing'] = $this->m_hot_reservation->get_billing($billing_id);
+    $data['charge_type'] = $this->m_hot_charge_type->get_all();
+    $data['date_now'] = date("Y-m-d");
+    $data['time_now'] = date("H:i:s");
+
+    $this->load->library('pdf');
+    $this->pdf->setPaper('A4', 'potrait');
+    $this->pdf->filename = "laporan-reservasi-pembayaran-".$data['billing']->billing_receipt_no.".pdf";
+    $this->pdf->load_view('print_pdf', $data);
+  }
+
+  public function reservation_print_struk($billing_id)
   {
     $title = "Laporan Reservasi Pembayaran";
     $client = $this->m_hot_client->get_all();
@@ -830,5 +853,6 @@ class Hot_reservation extends MY_Hotel {
 
     echo json_encode($data);
   }
+
 
 }
