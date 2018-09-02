@@ -42,14 +42,14 @@ class Hot_guest extends MY_Hotel {
         $config['total_rows'] = $num_rows;
         $this->pagination->initialize($config);
 
-        $data['guest'] = $this->m_hot_guest->get_list($config['per_page'],$from,$search_term = null);
+        $data['guest_type'] = $this->m_hot_guest->get_list($config['per_page'],$from,$search_term = null);
       }else{
         $search_term = $this->session->userdata('search_term');
         $num_rows = $this->m_hot_guest->num_rows($search_term);
         $config['total_rows'] = $num_rows;
         $this->pagination->initialize($config);
 
-        $data['guest'] = $this->m_hot_guest->get_list($config['per_page'],$from,$search_term);
+        $data['guest_type'] = $this->m_hot_guest->get_list($config['per_page'],$from,$search_term);
       }
 
       $this->view('hot_guest/index',$data);
@@ -72,15 +72,15 @@ class Hot_guest extends MY_Hotel {
       if ($this->access->_create == 1) {
         $data['title'] = 'Tambah Tamu';
         $data['action'] = 'insert';
-        $data['guest'] = null;
+        $data['guest_type'] = null;
         $this->view('hot_guest/form', $data);
       } else {
         redirect(base_url().'app_error/error/403');
       }
     }else{
       if ($this->access->_update == 1) {
-        $data['title'] = 'Ubah Tamu';
-        $data['guest'] = $this->m_hot_guest->get_by_id($id);
+        $data['title'] = 'Ubah Member (Tamu Langganan)';
+        $data['guest_type'] = $this->m_hot_guest->get_by_id($id);
         $data['action'] = 'update';
         $this->view('hot_guest/form', $data);
       } else {
@@ -103,7 +103,7 @@ class Hot_guest extends MY_Hotel {
 
   public function edit($id)
   {
-    $data['guest']= $this->m_hot_guest->get_specific($id);
+    $data['guest_type']= $this->m_hot_guest->get_specific($id);
     $this->load->view('hot_guest/update', $data);
   }
 

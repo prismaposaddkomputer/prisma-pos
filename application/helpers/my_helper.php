@@ -134,6 +134,7 @@
   function price_to_num($v)
   {
     $res = str_replace('.', '', $v);
+    $res = str_replace(',', '.', $res);
     return $res;
   }
 
@@ -147,4 +148,56 @@
   {
     $res = num_to_price($v);
     return 'Rp <span class="pull-right">'.$res.'</span>';
+  }
+
+  function dateDiff($date_1 , $date_2 , $differenceFormat = '%a' )
+  {
+    $datetime1 = date_create($date_1);
+    $datetime2 = date_create($date_2);
+  
+    $interval = date_diff($datetime1, $datetime2);
+  
+    return $interval->format($differenceFormat);
+  }
+
+  function rata_kanan($nominal, $right)
+  {
+    $jml_nominal = strlen($nominal);
+    $jml_spasi = $right - $jml_nominal;
+    $spasi = "";
+    for ($i=0; $i < $jml_spasi ; $i++) { 
+      $spasi .= " ";
+    }
+    //
+    return $spasi.$nominal;
+  }
+
+  function print_justify($leftCol, $rightCol, $leftWidth, $rightWidth, $space = 4)
+  {
+    $rightCol = rata_kanan($rightCol, $rightWidth);
+
+    $leftWrapped = wordwrap($leftCol, $leftWidth, "\n", true);
+    $rightWrapped = wordwrap($rightCol, $rightWidth, "\n", true);
+
+    $leftLines = explode("\n", $leftWrapped);
+    $rightLines = explode("\n", $rightWrapped);
+    $allLines = array();
+    for ($i = 0; $i < max(count($leftLines), count($rightLines)); $i ++) {
+        $leftPart = str_pad(isset($leftLines[$i]) ? $leftLines[$i] : "", $leftWidth, " ");
+        $rightPart = str_pad(isset($rightLines[$i]) ? $rightLines[$i] : "", $rightWidth, " ");
+        $allLines[] = $leftPart . str_repeat(" ", $space) . $rightPart;
+    }
+    return implode($allLines, "\n") . "\n";
+  }
+
+  function convert_date($tgl) {
+    $tanggal = substr($tgl, 8, 2);
+    $jam = substr($tgl, 11, 8);
+    $bulan = substr($tgl, 5, 2);
+    $tahun = substr($tgl, 0, 4);
+    if($jam != '') {
+        return $tanggal . '-' . $bulan . '-' . $tahun . ' ' . $jam;
+    } else {
+        return $tanggal . '-' . $bulan . '-' . $tahun;
+    }    
   }

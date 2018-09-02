@@ -9,8 +9,11 @@
 </div>
 <div class="content-body">
   <div class="row">
-    <div class="col-md-4">
-      <a class="btn btn-info" href="<?=base_url()?>hot_room_type/form"><i class="fa fa-plus"></i> Tambah Tipe Kamar</a>
+    <div class="col-md-5">
+      <a class="btn btn-info" href="<?=base_url()?>hot_room_type/form"><i class="fa fa-plus"></i> Tambah Tipe Kamar (Kategori Kamar)</a>
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalInformation">
+        <i class="fa fa-question"></i> Informasi
+      </button>
     </div>
     <div class="col-md-4 pull-right">
       <form class="" action="<?=base_url()?>hot_room_type/index" method="post">
@@ -38,14 +41,26 @@
             <tr>
               <th class="text-center" width="50">No</th>
               <th class="text-center" width="70">Aksi</th>
-              <th class="text-center">Nama Tipe Kamar</th>
+              <th class="text-center">Nama Tipe Kamar (Kategori Kamar)</th>
+              <th class="text-center" width="150">Jumlah Kamar</th>
               <th class="text-center" width="150">Harga</th>
               <th class="text-center" width="80">Aktif</th>
             </tr>
           </thead>
           <tbody>
             <?php if ($room_type != null): ?>
-              <?php $i=1;foreach ($room_type as $row): ?>
+              <?php 
+                $tot_ratio = 100;
+                if ($client->client_is_taxed == 1) {
+                  foreach ($charge_type as $row) {
+                    $tot_ratio += $row->charge_type_ratio;
+                  }
+                }
+              ?>
+              <?php 
+              $i=1;foreach ($room_type as $row): 
+              $number_of_room = $this->m_hot_room_type->get_list_room_by_type_id($row->room_type_id);
+              ?>
                 <tr>
                   <td class="text-center"><?=$this->uri->segment('3')+$i++?></td>
                   <td class="text-center">
@@ -55,7 +70,8 @@
                     <?php endif; ?>
                   </td>
                   <td><?=$row->room_type_name?></td> 
-                  <td><?=num_to_idr($row->room_type_charge)?></td> 
+                  <td class="text-center"><?=$number_of_room?></td> 
+                  <td><?=num_to_idr(($tot_ratio/100)*$row->room_type_charge)?></td> 
                   <td class="text-center">
                     <?php if ($row->is_active == 1): ?>
                       <i class="fa fa-check cl-success"></i>
@@ -110,3 +126,24 @@
     })
   }
 </script>
+
+<!-- Modal -->
+<div class="modal fade" id="modalInformation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Informasi Menu Tipe Kamar (Kategori Kamar)</h4>
+      </div>
+      <div class="modal-body" style="font-size: 15px;">
+        <ul style="margin-left: -22px;">
+          <li>Menu ini digunakan untuk memanajemen Tipe Kamar (Kategori Kamar)</li>
+          <li>Ketika Anda mengisi kolom Jumlah Kamar di Form Tambah Tipe Kamar maka di menu Kamar akan otomatis terisi sama dengan Jumlah Kamar yang Anda isikan</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> <b>Tutup</b></button>
+      </div>
+    </div>
+  </div>
+</div>

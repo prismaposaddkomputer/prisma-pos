@@ -10,7 +10,7 @@
 <div class="content-body">
   <div class="row">
     <div class="col-md-4">
-      <a class="btn btn-info" href="<?=base_url()?>hot_charge_type/form"><i class="fa fa-plus"></i> Tambah Jenis Biaya</a>
+      <!-- <a class="btn btn-info" href="<?=base_url()?>hot_charge_type/form"><i class="fa fa-plus"></i> Tambah Jenis Biaya</a> -->
       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalInformation">
         <i class="fa fa-question"></i> Informasi
       </button>
@@ -52,12 +52,8 @@
                 <tr>
                   <td class="text-center"><?=$this->uri->segment('3')+$i++?></td>
                   <td class="text-center">
-                    <?php if($row->charge_type_id == 2): ?>
+                    <?php if($row->charge_type_id >= 2): ?>
                       <a class="btn btn-xs btn-warning" href="<?=base_url()?>hot_charge_type/form/<?=$row->charge_type_id?>"><i class="fa fa-pencil"></i></a>
-                    <?php endif; ?>
-                    <?php if ($row->charge_type_id > 2 ): ?>
-                      <a class="btn btn-xs btn-warning" href="<?=base_url()?>hot_charge_type/form/<?=$row->charge_type_id?>"><i class="fa fa-pencil"></i></a>
-                      <button class="btn btn-xs btn-danger" onclick="del('<?=$row->charge_type_id?>');"><i class="fa fa-trash"></i></button>
                     <?php endif; ?>
                   </td>
                   <td><?=$row->charge_type_name?></td> 
@@ -126,7 +122,10 @@
         <h4 class="modal-title" id="myModalLabel">Informasi Menu Jenis Biaya</h4>
       </div>
       <div class="modal-body" style="font-size: 15px;">
-        Menu ini digunakan untuk memanajemen jenis biaya seperti Pajak Hotel dll
+        <ul style="margin-left: -22px;">
+          <li>Menu ini digunakan untuk memanajemen jenis biaya seperti Pajak Hotel dll</li>
+          <li>Jika <b>Servis Hotel</b> dan/atau <b>Biaya Lain-Lain</b> tidak digunakan silahkan non aktifkan <b>Servis Hotel</b> dan/atau <b>Biaya Lain-Lain</b>, dengan klik tombol pensil kemudian uncheck (jangan di cek) kolom Aktif</li>
+        </ul>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> <b>Tutup</b></button>

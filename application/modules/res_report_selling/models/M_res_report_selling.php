@@ -21,7 +21,7 @@ class M_res_report_selling extends CI_Model {
 			WHERE
 				tx_date LIKE '$year%' AND
 				tx_status = 1
-			GROUP BY YEAR(tx_date)
+			GROUP BY MONTH(tx_date)
 			ORDER BY tx_date DESC"
 		)->result();
 

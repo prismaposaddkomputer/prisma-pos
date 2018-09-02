@@ -7,19 +7,11 @@
     <form id="form" class="" action="<?=base_url()?>hot_room/<?=$action?>" method="post">
       <div class="col-md-6">
         <input class="form-control" type="hidden" name="room_id" value="<?php if($room != null){echo $room->room_id;}?>">
-        <div class="form-group">
-          <label>Tipe Kamar<small class="required-field">*</small></label>
-          <select name="room_type_id" class="form-control select2" required>
-            <?php foreach ($room_type as $row) { ?>
-              <option value="<?=$row->room_type_id?>" <?php if($row->room_type_id == $room->room_type_id){echo 'selected';} ?>><?=$row->room_type_name;?></option>
-            <?php } ?>
-					</select>
-        </div>
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-12">
             <div class="form-group">
-              <label>Nomor Kamar<small class="required-field">*</small></label>
-              <input class="form-control num" name="room_no" value="<?php if($room != null){echo $room->room_no;}?>">
+              <label>Nama Kamar <small class="required-field">*</small></label>
+              <input class="form-control keyboard" name="room_name" value="<?php if($room != null){echo $room->room_name;}?>">
             </div>
           </div>
         </div>
@@ -39,17 +31,11 @@
   $(document).ready(function () {
     $("#form").validate({
       rules: {
-        'room_id': {
-          required: true
-        },
         'room_name': {
           required: true
         }
       },
       messages: {
-        'room_id': {
-          required: '<i style="color:red">Wajib diisi!</i>'
-        },
         'room_name': {
           required: '<i style="color:red">Wajib diisi!</i>'
         }

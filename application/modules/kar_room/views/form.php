@@ -6,26 +6,18 @@
   <div class="row">
     <form id="form" class="" action="<?=base_url()?>kar_room/<?=$action?>" method="post">
       <div class="col-md-6">
-        <input class="form-control keyboard" type="hidden" name="room_id" value="<?php if($room != null){echo $room->room_id;}?>">
-        <div class="form-group">
-          <label>Kode <small class="required-field">*</small></label>
-          <input class="form-control keyboard" type="text" name="room_code" value="<?php if($room != null){echo $room->room_code;}?>">
+        <input class="form-control" type="hidden" name="room_id" value="<?php if($room != null){echo $room->room_id;}?>">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label>Nama Ruang <small class="required-field">*</small></label>
+              <input class="form-control keyboard" name="room_name" value="<?php if($room != null){echo $room->room_name;}?>">
+            </div>
+          </div>
         </div>
-        <div class="form-group">
-          <label>Nama <small class="required-field">*</small></label>
-          <input class="form-control keyboard" type="text" name="room_name" value="<?php if($room != null){echo $room->room_name;}?>">
-        </div>
-        <div class="form-group">
-          <label>Tipe <small class="required-field">*</small></label>
-          <select class="form-control keyboard select2" name="room_type_id">
-            <?php foreach ($room_type as $row): ?>
-              <option value="<?=$row->room_type_id?>" <?php if($room != null){if($room->room_type_id == $row->room_type_id){echo 'selected';};}?>><?=$row->room_type_name?></option>
-            <?php endforeach; ?>
-          </select>
-        </div>
-        <div class="form-group">
+        <div class="form-group" style="display:none;">
           <label>Aktif?</label><br>
-          <input class="" type="checkbox" name="is_active" value="1" <?php if($room != null){if($room->is_active == 1){echo 'checked';}}else{echo 'checked';}?>>
+          <input class="" type="hidden" name="is_active" value="1">
         </div>
         <div class="form-group pull-right">
           <a class="btn btn-default" href="<?=base_url()?>kar_room/index"><i class="fa fa-close"></i> Batal</a>
@@ -39,17 +31,11 @@
   $(document).ready(function () {
     $("#form").validate({
       rules: {
-        'room_id': {
-          required: true
-        },
         'room_name': {
           required: true
         }
       },
       messages: {
-        'room_id': {
-          required: '<i style="color:red">Wajib diisi!</i>'
-        },
         'room_name': {
           required: '<i style="color:red">Wajib diisi!</i>'
         }

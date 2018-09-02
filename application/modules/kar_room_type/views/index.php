@@ -1,10 +1,19 @@
+<?php
+	function digit($inp = 0)
+	{
+	    return number_format($inp, 0, ',', '.');
+	}
+?>
 <div class="content-header">
   <h4><i class="fa fa-<?=$access->module_icon?>"></i> <?=$title?></h4>
 </div>
 <div class="content-body">
   <div class="row">
-    <div class="col-md-4">
-      <a class="btn btn-info" href="<?=base_url()?>kar_room_type/form"><i class="fa fa-plus"></i> Tambah Tipe</a>
+    <div class="col-md-5">
+      <a class="btn btn-info" href="<?=base_url()?>kar_room_type/form"><i class="fa fa-plus"></i> Tambah Tipe Ruang (Kategori Ruang)</a>
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalInformation">
+        <i class="fa fa-question"></i> Informasi
+      </button>
     </div>
     <div class="col-md-4 pull-right">
       <form class="" action="<?=base_url()?>kar_room_type/index" method="post">
@@ -30,41 +39,39 @@
         <table class="table table-striped table-bordered table-condensed">
           <thead>
             <tr>
-              <th class="text-center" width="50" rowspan="2">No</th>
-              <th class="text-center" width="70" rowspan="2">Aksi</th>
-              <th class="text-center" rowspan="2">Nama</th>
-              <th class="text-center" colspan="2">Weekday</th>
-              <th class="text-center" colspan="2">Weekend</th>
-              <th class="text-center" colspan="2">Holiday</th>
-              <th class="text-center" width="80" rowspan="2">Aktif</th>
-            </tr>
-            <tr>
-              <th class="text-center">Happy Hours</th>
-              <th class="text-center">Business Hours</th>
-              <th class="text-center">Happy Hours</th>
-              <th class="text-center">Business Hours</th>
-              <th class="text-center">Happy Hours</th>
-              <th class="text-center">Business Hours</th>
+              <th class="text-center" width="50">No</th>
+              <th class="text-center" width="70">Aksi</th>
+              <th class="text-center">Nama Tipe Ruang (Kategori Ruang)</th>
+              <th class="text-center" width="150">Jumlah Ruang</th>
+              <th class="text-center" width="150">Harga</th>
+              <th class="text-center" width="80">Aktif</th>
             </tr>
           </thead>
           <tbody>
             <?php if ($room_type != null): ?>
-              <?php $i=1;foreach ($room_type as $row): ?>
+              <?php 
+                $tot_ratio = 100;
+                if ($client->client_is_taxed == 1) {
+                  foreach ($charge_type as $row) {
+                    $tot_ratio += $row->charge_type_ratio;
+                  }
+                }
+              ?>
+              <?php 
+              $i=1;foreach ($room_type as $row): 
+              $number_of_room = $this->m_kar_room_type->get_list_room_by_type_id($row->room_type_id);
+              ?>
                 <tr>
                   <td class="text-center"><?=$this->uri->segment('3')+$i++?></td>
                   <td class="text-center">
-                    <?php if ($row->room_type_id != 0 ): ?>
+                    <?php if ($row->room_type_id > 0 ): ?>
                       <a class="btn btn-xs btn-warning" href="<?=base_url()?>kar_room_type/form/<?=$row->room_type_id?>"><i class="fa fa-pencil"></i></a>
                       <button class="btn btn-xs btn-danger" onclick="del('<?=$row->room_type_id?>');"><i class="fa fa-trash"></i></button>
                     <?php endif; ?>
                   </td>
-                  <td><?=$row->room_type_name?></td>
-                  <td><?=num_to_idr($row->weekday_happy_hours)?></td>
-                  <td><?=num_to_idr($row->weekday_business_hours)?></td>
-                  <td><?=num_to_idr($row->weekend_happy_hours)?></td>
-                  <td><?=num_to_idr($row->weekend_business_hours)?></td>
-                  <td><?=num_to_idr($row->holiday_happy_hours)?></td>
-                  <td><?=num_to_idr($row->holiday_business_hours)?></td>
+                  <td><?=$row->room_type_name?></td> 
+                  <td class="text-center"><?=$number_of_room?></td> 
+                  <td><?=num_to_idr(($tot_ratio/100)*$row->room_type_charge)?></td> 
                   <td class="text-center">
                     <?php if ($row->is_active == 1): ?>
                       <i class="fa fa-check cl-success"></i>
@@ -76,7 +83,7 @@
               <?php endforeach; ?>
             <?php else: ?>
               <tr>
-                <td class="text-center" colspan="4">Tidak ada data!</td>
+                <td class="text-center" colspan="6">Tidak ada data!</td>
               </tr>
             <?php endif; ?>
           </tbody>
@@ -119,3 +126,24 @@
     })
   }
 </script>
+
+<!-- Modal -->
+<div class="modal fade" id="modalInformation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Informasi Menu Tipe Ruang (Kategori Ruang)</h4>
+      </div>
+      <div class="modal-body" style="font-size: 15px;">
+        <ul style="margin-left: -22px;">
+          <li>Menu ini digunakan untuk memanajemen Tipe Ruang (Kategori Ruang)</li>
+          <li>Ketika Anda mengisi kolom Jumlah Ruang di Form Tambah Tipe Ruang maka di menu Ruang akan otomatis terisi sama dengan Jumlah Ruang yang Anda isikan</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> <b>Tutup</b></button>
+      </div>
+    </div>
+  </div>
+</div>

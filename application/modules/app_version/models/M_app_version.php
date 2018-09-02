@@ -545,7 +545,7 @@ class M_app_version extends CI_Model {
         $this->db->query("DROP TABLE IF EXISTS `hot_extra`");
         // make new table
         $this->db->query("CREATE TABLE IF NOT EXISTS `hot_extra` (
-          `extra_id` int(11) NOT NULL,
+          `extra_id` int(11) NOT NULL AUTO_INCREMENT,
           `extra_name` varchar(128) NOT NULL,
           `extra_charge` float(10,2) NOT NULL,
           `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -556,6 +556,230 @@ class M_app_version extends CI_Model {
           `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
           PRIMARY KEY (`extra_id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT");
+        break;
+
+      case '2.3.1':
+        //Drop table
+        $this->db->query("DROP TABLE IF EXISTS `hot_discount`");
+        // make new table
+        $this->db->query("CREATE TABLE IF NOT EXISTS `hot_discount` (
+          `discount_id` int(11) NOT NULL AUTO_INCREMENT,
+          `discount_name` varchar(128) NOT NULL,
+          `discount_type` tinyint(1) NOT NULL DEFAULT '1',
+          `discount_amount` float(10,2) NOT NULL,
+          `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          `created_by` varchar(50) NOT NULL DEFAULT 'System',
+          `updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+          `updated_by` varchar(20) NOT NULL DEFAULT 'System',
+          `is_active` tinyint(1) NOT NULL DEFAULT '1',
+          `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+          PRIMARY KEY (`discount_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;");
+        break;
+
+      case '2.3.2':
+        // Delete menu for member add menu for non-pajak
+        $this->db->query("DELETE FROM hot_module WHERE module_id = '02.04'");
+        // Add menu for non-tax
+        $this->db->query("INSERT INTO `prisma_pos`.`hot_module` (`module_id`, `module_parent`, `module_name`, `module_folder`, `module_controller`, `module_url`) VALUES ('02.10', '02', 'Non Pajak', 'hot_non_tax', 'hot_non_tax', 'index')");
+        // Add permission for superhotel
+        $this->db->query("INSERT INTO `hot_permission` (`permission_id`, `role_id`, `module_id`, `_create`, `_read`, `_update`, `_delete`, `created_by`) VALUES
+          (NULL, 0, '02.10', 1, 1, 1, 1, 'System'),
+          (NULL, 1, '02.10', 1, 1, 1, 1, 'System')
+        ");
+        break;
+
+      case '2.3.3':
+        // Add biaya lain lain
+        $this->db->query("INSERT INTO `prisma_pos`.`hot_charge_type` (`charge_type_code`, `charge_type_name`, `charge_type_ratio`, `charge_type_desc`) VALUES ('OTH', 'Biaya Lain-lain', '1', 'Biaya Lain-lain')");
+        break;
+      
+      case '2.3.4':
+        // Alter table room
+        $this->db->query("ALTER TABLE `hot_room`
+          ADD COLUMN `room_name` VARCHAR(50) NOT NULL DEFAULT '0' AFTER `room_type_id`
+        ");
+        break;
+
+      case '2.3.5':
+        $this->db->query("ALTER TABLE `hot_guest`
+          ADD COLUMN `guest_type` TINYINT(1) NOT NULL DEFAULT '0' AFTER `guest_id`");
+        $this->db->query("ALTER TABLE `hot_guest`
+	        ADD COLUMN `guest_gender` CHAR(1) NOT NULL AFTER `guest_name`");
+        break;
+
+      case '2.3.6':
+        // drop database hot_fnb
+        $this->db->query("DROP TABLE IF EXISTS `hot_fnb`");
+        //create database
+        $this->db->query("CREATE TABLE IF NOT EXISTS `hot_fnb` (
+            `fnb_id` int(11) NOT NULL AUTO_INCREMENT,
+            `fnb_name` varchar(128) NOT NULL,
+            `fnb_charge` float(10,2) NOT NULL,
+            `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            `created_by` varchar(32) NOT NULL DEFAULT 'System',
+            `updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+            `updated_by` varchar(32) NOT NULL DEFAULT 'System',
+            `is_active` tinyint(1) NOT NULL DEFAULT '1',
+            `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+            PRIMARY KEY (`fnb_id`)
+          ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT
+        ");
+        break;
+      
+      case '2.3.7':
+        // make guest autoincrement
+        $this->db->query("ALTER TABLE `hot_guest`
+	        CHANGE COLUMN `guest_id` `guest_id` INT(11) NOT NULL AUTO_INCREMENT FIRST");
+        break;
+
+      case '2.3.8':
+        // Make hot_billing
+        $this->db->query("DROP TABLE IF EXISTS `hot_billing`");
+        $this->db->query("CREATE TABLE IF NOT EXISTS `hot_billing` (
+          `billing_id` int(11) NOT NULL AUTO_INCREMENT,
+          `billing_receipt_no` varchar(50) NOT NULL,
+          `guest_type` tinyint(1) NOT NULL DEFAULT '0',
+          `guest_id` int(11) NOT NULL,
+          `guest_name` varchar(128) NOT NULL,
+          `guest_gender` char(1) NOT NULL,
+          `guest_phone` varchar(15) NOT NULL,
+          `guest_id_type` tinyint(1) NOT NULL,
+          `guest_id_no` varchar(20) NOT NULL,
+          `user_id` int(11) NOT NULL,
+          `user_realname` varchar(128) NOT NULL,
+          `billing_date_in` date NOT NULL,
+          `billing_time_in` time NOT NULL,
+          `billing_date_out` date NOT NULL,
+          `billing_time_out` time NOT NULL,
+          `billing_num_day` int(11) NOT NULL,
+          `billing_subtotal` float(10,2) NOT NULL,
+          `billing_tax` float(10,2) NOT NULL,
+          `billing_service` float(10,2) NOT NULL,
+          `billing_other` float(10,2) NOT NULL,
+          `billing_total` float(10,2) NOT NULL,
+          `billing_payment_type` tinyint(1) NOT NULL,
+          `billing_down_payment` float(10,2) NOT NULL,
+          `billing_payment` float(10,2) NOT NULL,
+          `billing_change` float(10,2) NOT NULL,
+          `billing_cancel_note` varchar(128) NOT NULL,
+          `billing_status` tinyint(1) NOT NULL,
+          `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          `created_by` varchar(50) NOT NULL DEFAULT 'System',
+          `updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+          `updated_by` varchar(50) NOT NULL,
+          `is_active` tinyint(1) NOT NULL DEFAULT '1',
+          `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+          PRIMARY KEY (`billing_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=latin1");
+        // make billing_room
+        $this->db->query("DROP TABLE IF EXISTS `hot_billing_room`");
+        $this->db->query("CREATE TABLE IF NOT EXISTS `hot_billing_room` (
+          `billing_room_id` int(11) NOT NULL AUTO_INCREMENT,
+          `billing_id` int(11) NOT NULL DEFAULT '0',
+          `room_id` int(11) NOT NULL,
+          `room_name` varchar(128) NOT NULL,
+          `room_type_id` int(11) NOT NULL,
+          `room_type_name` varchar(128) NOT NULL,
+          `room_type_charge` float(10,2) NOT NULL,
+          `room_type_duration` float(10,2) NOT NULL,
+          `room_type_subtotal` float(10,2) NOT NULL,
+          `room_type_tax` float(10,2) NOT NULL,
+          `room_type_service` float(10,2) NOT NULL,
+          `room_type_other` float(10,2) NOT NULL,
+          `room_type_total` float(10,2) NOT NULL,
+          `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          `created_by` varchar(50) NOT NULL DEFAULT 'System',
+          `updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+          `updated_by` varchar(20) NOT NULL DEFAULT 'System',
+          `is_active` tinyint(1) NOT NULL DEFAULT '1',
+          `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+          PRIMARY KEY (`billing_room_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+        ");
+        // billing extra
+        $this->db->query("DROP TABLE IF EXISTS `hot_billing_extra`");
+        $this->db->query("CREATE TABLE IF NOT EXISTS `hot_billing_extra` (
+          `billing_extra_id` int(11) NOT NULL AUTO_INCREMENT,
+          `billing_id` int(11) NOT NULL DEFAULT '0',
+          `extra_id` int(11) NOT NULL,
+          `extra_name` varchar(128) NOT NULL,
+          `extra_charge` float(10,2) NOT NULL,
+          `extra_amount` float(10,2) NOT NULL,
+          `extra_subtotal` float(10,2) NOT NULL,
+          `extra_tax` float(10,2) NOT NULL,
+          `extra_total` float(10,2) NOT NULL,
+          `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          `created_by` varchar(50) NOT NULL DEFAULT 'System',
+          `updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+          `updated_by` varchar(20) NOT NULL DEFAULT 'System',
+          `is_active` tinyint(1) NOT NULL DEFAULT '1',
+          `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+          PRIMARY KEY (`billing_extra_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;");
+        // billing_service
+        $this->db->query("DROP TABLE IF EXISTS `hot_billing_service`");
+        $this->db->query("CREATE TABLE IF NOT EXISTS `hot_billing_service` (
+          `billing_service_id` int(11) NOT NULL AUTO_INCREMENT,
+          `billing_id` int(11) NOT NULL DEFAULT '0',
+          `service_id` int(11) NOT NULL,
+          `service_name` varchar(128) NOT NULL,
+          `service_charge` float(10,2) NOT NULL,
+          `service_amount` float(10,2) NOT NULL,
+          `service_subtotal` float(10,2) NOT NULL,
+          `service_tax` float(10,2) NOT NULL,
+          `service_total` float(10,2) NOT NULL,
+          `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          `created_by` varchar(50) NOT NULL DEFAULT 'System',
+          `updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+          `updated_by` varchar(20) NOT NULL DEFAULT 'System',
+          `is_active` tinyint(1) NOT NULL DEFAULT '1',
+          `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+          PRIMARY KEY (`billing_service_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;");
+        // billing_fnb
+        $this->db->query("DROP TABLE IF EXISTS `hot_billing_fnb`");
+        $this->db->query("CREATE TABLE IF NOT EXISTS `hot_billing_fnb` (
+          `billing_fnb_id` int(11) NOT NULL AUTO_INCREMENT,
+          `billing_id` int(11) NOT NULL DEFAULT '0',
+          `fnb_id` int(11) NOT NULL,
+          `fnb_name` varchar(128) NOT NULL,
+          `fnb_charge` float(10,2) NOT NULL,
+          `fnb_amount` float(10,2) NOT NULL,
+          `fnb_subtotal` float(10,2) NOT NULL,
+          `fnb_tax` float(10,2) NOT NULL,
+          `fnb_total` float(10,2) NOT NULL,
+          `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          `created_by` varchar(50) NOT NULL DEFAULT 'System',
+          `updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+          `updated_by` varchar(20) NOT NULL DEFAULT 'System',
+          `is_active` tinyint(1) NOT NULL DEFAULT '1',
+          `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+          PRIMARY KEY (`billing_fnb_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT");
+        break;
+
+      case '2.3.9':
+        // Non tax
+        $this->db->query("DROP TABLE IF EXISTS `hot_non_tax`");
+        $this->db->query("CREATE TABLE IF NOT EXISTS `hot_non_tax` (
+          `non_tax_id` int(11) NOT NULL AUTO_INCREMENT,
+          `non_tax_name` varchar(128) NOT NULL,
+          `non_tax_charge` float(10,2) NOT NULL,
+          `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          `created_by` varchar(32) NOT NULL DEFAULT 'System',
+          `updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+          `updated_by` varchar(32) NOT NULL DEFAULT 'System',
+          `is_active` tinyint(1) NOT NULL DEFAULT '1',
+          `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+          PRIMARY KEY (`non_tax_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT");
+        break;
+      
+      case '2.4.0':
+        // add auto increment 
+        $this->db->query("ALTER TABLE `hot_extra`
+	        CHANGE COLUMN `extra_id` `extra_id` INT(11) NOT NULL AUTO_INCREMENT FIRST");
         break;
     }
 
@@ -612,6 +836,26 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"2.2.9","version_release"=>"2018-08-21 15:13:00"));
     // table hot_extra
     array_push($version, array("version_now"=>"2.3.0","version_release"=>"2018-08-21 15:20:00"));
+    // table hot_discount
+    array_push($version, array("version_now"=>"2.3.1","version_release"=>"2018-08-22 08:30:00"));
+    // new menu and add permission for non-tax and member
+    array_push($version, array("version_now"=>"2.3.2","version_release"=>"2018-09-02 07:01:00"));
+    // biaya lain-lain
+    array_push($version, array("version_now"=>"2.3.3","version_release"=>"2018-09-02 07:58:00"));
+    // alter room_name
+    array_push($version, array("version_now"=>"2.3.4","version_release"=>"2018-09-02 08:07:00"));
+    // alter guest_type
+    array_push($version, array("version_now"=>"2.3.5","version_release"=>"2018-09-02 08:15:00"));
+    // make table fnb
+    array_push($version, array("version_now"=>"2.3.6","version_release"=>"2018-09-02 08:24:00"));
+    // make table autoincrement
+    array_push($version, array("version_now"=>"2.3.7","version_release"=>"2018-09-02 08:28:00"));
+    // billing database
+    array_push($version, array("version_now"=>"2.3.8","version_release"=>"2018-09-02 08:51:00"));
+    // Non tax
+    array_push($version, array("version_now"=>"2.3.9","version_release"=>"2018-09-02 08:56:00"));
+    // autoincrement
+    array_push($version, array("version_now"=>"2.4.0","version_release"=>"2018-09-02 12:19:00"));
 
     foreach ($version as $key => $val) {
       //check version

@@ -18,14 +18,17 @@ class Hot_room_type extends MY_Hotel {
     $this->access = $this->m_hot_config->get_permission($this->role_id, $this->module_controller);
 
     $this->load->model('m_hot_room_type');
+    $this->load->model('hot_client/m_hot_client');
+    $this->load->model('hot_charge_type/m_hot_charge_type');
   }
 
 	public function index()
   {
     if ($this->access->_read == 1) {
       $data['access'] = $this->access;
-      $data['title'] = 'Manajemen Tipe Kamar';
-
+      $data['title'] = 'Manajemen Tipe Kamar (Kategori Kamar)';
+      $data['charge_type'] = $this->m_hot_charge_type->get_all();
+    
       if($this->input->post('search_term')){
         $search_term = $this->input->post('search_term');
         $this->session->set_userdata(array('search_term' => $search_term));
@@ -68,9 +71,11 @@ class Hot_room_type extends MY_Hotel {
   public function form($id = null)
   {
     $data['access'] = $this->access;
+    $data['charge_type'] = $this->m_hot_charge_type->get_all();
+    $client = $this->m_hot_client->get_all();
     if ($id == null) {
       if ($this->access->_create == 1) {
-        $data['title'] = 'Tambah Tipe Kamar';
+        $data['title'] = 'Tambah Tipe Kamar (Kategori Kamar)';
         $data['action'] = 'insert';
         $data['room_type'] = null;
         $this->view('hot_room_type/form', $data);
@@ -79,9 +84,18 @@ class Hot_room_type extends MY_Hotel {
       }
     }else{
       if ($this->access->_update == 1) {
-        $data['title'] = 'Ubah Tipe Kamar';
+        $data['title'] = 'Ubah Tipe Kamar (Kategori Kamar)';
         $data['room_type'] = $this->m_hot_room_type->get_by_id($id);
+        $data['number_of_room'] = $this->m_hot_room_type->get_list_room_by_type_id($id);
         $data['action'] = 'update';
+        $client = $this->m_hot_client->get_all();
+        $tot_ratio = 100;
+        if ($client->client_is_taxed == 1) {
+          foreach ($data['charge_type'] as $row) {
+            $tot_ratio += $row->charge_type_ratio;
+          }
+          $data['room_type']->room_type_charge = round(($tot_ratio/100)*$data['room_type']->room_type_charge,2);
+        }
         $this->view('hot_room_type/form', $data);
       } else {
         redirect(base_url().'app_error/error/403');
@@ -92,11 +106,19 @@ class Hot_room_type extends MY_Hotel {
   public function insert()
   {
     $data = $_POST;
-    $data['created_by'] = $this->session->userdata('user_realname');
-    if(!isset($data['is_active'])){
-      $data['is_active'] = 0;
-    }
+    
     $data['room_type_charge'] = price_to_num($data['room_type_charge']);
+
+    $charge_type = $this->m_hot_charge_type->get_all();
+    $client = $this->m_hot_client->get_all();
+    $tot_ratio = 100;
+    if ($client->client_is_taxed == 1) {
+      foreach ($charge_type as $row) {
+        $tot_ratio += $row->charge_type_ratio;
+      }
+      $data['room_type_charge'] = round((100/$tot_ratio)*$data['room_type_charge'],2);
+    }
+
     $this->m_hot_room_type->insert($data);
     $this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil ditambahkan!</div>');
     redirect(base_url().'hot_room_type/index');
@@ -110,14 +132,7 @@ class Hot_room_type extends MY_Hotel {
 
   public function update()
   {
-    $data = $_POST;
-    $id = $data['room_type_id'];
-    $data['updated_by'] = $this->session->userdata('user_realname');
-    if(!isset($data['is_active'])){
-      $data['is_active'] = 0;
-    }
-    $data['room_type_charge'] = price_to_num($data['room_type_charge']);
-    $this->m_hot_room_type->update($id,$data);
+    $this->m_hot_room_type->update();
     $this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil diubah!</div>');
     redirect(base_url().'hot_room_type/index');
   }

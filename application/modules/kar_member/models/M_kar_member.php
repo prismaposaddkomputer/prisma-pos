@@ -7,15 +7,13 @@ class M_kar_member extends CI_Model {
   {
 		if($search_term == null){
 			return $this->db
-				->join('kar_member_type','ON kar_member.member_type_id=kar_member_type.member_type_id')
-				->where('kar_member.is_deleted','0')
+				->where('is_deleted','0')
 				->get('kar_member',$number,$offset)
 				->result();
 		}else{
 			return $this->db
-				->join('kar_member_type','ON kar_member.member_type_id=kar_member_type.member_type_id')
 				->like('member_name',$search_term,'both')
-				->where('kar_member.is_deleted','0')
+				->where('is_deleted','0')
 				->get('kar_member',$number,$offset)
 				->result();
 		}
@@ -38,11 +36,6 @@ class M_kar_member extends CI_Model {
   {
     return $this->db->order_by('member_id','desc')->get('kar_member')->row();
   }
-
-	public function get_first()
-	{
-		return $this->db->order_by('member_id','asc')->get('kar_member')->row();
-	}
 
   public function insert($data)
   {

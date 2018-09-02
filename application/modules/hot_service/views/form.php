@@ -8,12 +8,19 @@
       <div class="col-md-6">
         <input class="form-control" type="hidden" name="service_id" value="<?php if($service != null){echo $service->service_id;}?>">
         <div class="form-group">
-          <label>Nama Pelayanan Kamar<small class="required-field">*</small></label>
+          <label>Nama Pelayanan Kamar <small class="required-field">*</small></label>
           <input class="form-control keyboard" type="text" name="service_name" value="<?php if($service != null){echo $service->service_name;}?>">
         </div>
-        <div class="form-group">
-          <label>Harga<small class="required-field">*</small></label>
-          <input class="form-control autonumeric num" type="text" name="service_charge" value="<?php if($service != null){echo $service->service_charge;}?>">
+        <div class="row">
+          <div class="col-md-5">
+            <div class="form-group">
+              <label>Harga <small class="required-field">*</small></label>
+              <div class="input-group">
+                <div class="input-group-addon"><b>Rp</b></div>
+                <input class="form-control autonumeric num" type="text" name="service_charge" value="<?php if($service != null){echo $service->service_charge;}?>">
+              </div>
+            </div>
+          </div>
         </div>
         <div class="form-group">
           <label>Tersedia?</label><br>
@@ -36,6 +43,9 @@
         },
         'service_name': {
           required: true
+        },
+        'service_charge': {
+          required: true
         }
       },
       messages: {
@@ -43,6 +53,9 @@
           required: '<i style="color:red">Wajib diisi!</i>'
         },
         'service_name': {
+          required: '<i style="color:red">Wajib diisi!</i>'
+        },
+        'service_charge': {
           required: '<i style="color:red">Wajib diisi!</i>'
         }
       }

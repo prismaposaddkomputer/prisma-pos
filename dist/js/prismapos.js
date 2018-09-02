@@ -3,7 +3,7 @@ function ind_to_cur(x) {
 }
 
 function ind_to_sys(x) {
-  x = x.replace('.','');
+  x = x.replace(/\./g, "");
   x = x.replace(',','.');
   return x;
 }
