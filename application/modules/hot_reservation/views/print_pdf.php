@@ -110,7 +110,7 @@
         <div>Indonesia</div>
       </div>
     <?php endif; ?>
-    <div style="border-bottom: 1px solid black; margin-top: 15px;"></div>
+    <div style="border-bottom: double; margin-top: 15px;"></div>
     <div class="description-print">
       <div class="bill-to">
         <div>Detail Tamu : </div>
@@ -168,7 +168,6 @@
           </tr>
         </table>
       </div>
-      <div style="border-bottom: 1px solid black; margin-top: 127px;"></div>
     </div>
     <div style="padding-top: 150px;">
       <table id="main" class="table table-striped table-bordered table-condensed">
