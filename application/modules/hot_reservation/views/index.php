@@ -52,12 +52,12 @@
                 <tr>
                   <td class="text-center"><?=$this->uri->segment('3')+$i++?></td>
                   <td class="text-center">
-                    <?php if ($row->billing_status == 1): ?>
+                    <!-- <?php if ($row->billing_status == 1): ?> -->
                       <a class="btn btn-xs btn-warning" href="<?=base_url()?>hot_reservation/form/<?=$row->billing_id?>"><i class="fa fa-pencil"></i></a>
                       <a class="btn btn-xs btn-success" href="<?=base_url()?>hot_reservation/payment/<?=$row->billing_id?>"><i class="fa fa-money"></i></a>
-                    <?php else: ?>
-                      <a class="btn btn-xs btn-default" href="<?=base_url()?>hot_reservation/detail/<?=$row->billing_id?>"><i class="fa fa-list"></i></a>
-                    <?php endif;?>
+                    <!-- <?php else: ?> -->
+                      <!-- <a class="btn btn-xs btn-default" href="<?=base_url()?>hot_reservation/detail/<?=$row->billing_id?>"><i class="fa fa-list"></i></a> -->
+                    <!-- <?php endif;?> -->
                   </td>
                   <td class="text-center">TRS-<?=$row->billing_receipt_no?></td> 
                   <td class="text-center"><?=date_to_ind($row->billing_date_in).' '.$row->billing_time_in?></td>
