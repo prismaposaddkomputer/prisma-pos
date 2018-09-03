@@ -396,7 +396,7 @@
             <td width="300">Pembayaran</td>
             <td width="20">:</td>
             <td>
-              <input id="billing_payment" name="billing_payment" style="width:100%" class="autonumeric" type="text" value="0" dir="rtl" onchange="calc_change()">
+              <input id="billing_payment" name="billing_payment" style="width:100%" class="autonumeric num" type="text" value="" dir="rtl" onchange="calc_change()">
             </td>
           </tr>
           <tr>
