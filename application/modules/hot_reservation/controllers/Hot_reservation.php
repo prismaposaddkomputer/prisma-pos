@@ -522,7 +522,7 @@ class Hot_reservation extends MY_Hotel {
       echo "Couldn't print to this printer: " . $e -> getMessage() . "\n";
     }
     //
-    // redirect(base_url().'hot_reservation/payment/'.$billing_id);
+    redirect(base_url().'hot_reservation');
   }
 
   public function delete($id)
