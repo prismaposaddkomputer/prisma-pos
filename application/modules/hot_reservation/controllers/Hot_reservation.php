@@ -592,7 +592,7 @@ class Hot_reservation extends MY_Hotel {
     if ($client->client_is_taxed == 0) {
       // Setingan harga sebelum pajak
       $room_type_charge = price_to_num($data['room_type_charge']);
-      $room_subtotal = $room_type_charge*$room_type_duration;
+      $room_type_subtotal = $room_type_charge*$room_type_duration;
       $room_type_tax = $tax->charge_type_ratio*$room_type_subtotal/100;
   
       $room_type_service = 0;

@@ -12,7 +12,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 -- Dumping structure for table prisma_pos.app_install
-DROP TABLE IF EXISTS `app_install`;
 CREATE TABLE IF NOT EXISTS `app_install` (
   `install_id` int(11) NOT NULL AUTO_INCREMENT,
   `type_id` int(1) NOT NULL DEFAULT '0',
@@ -34,7 +33,6 @@ INSERT INTO `app_install` (`install_id`, `type_id`, `install_status`, `created`,
 /*!40000 ALTER TABLE `app_install` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.app_type
-DROP TABLE IF EXISTS `app_type`;
 CREATE TABLE IF NOT EXISTS `app_type` (
   `type_id` int(11) NOT NULL AUTO_INCREMENT,
   `type_name` varchar(32) NOT NULL,
@@ -60,7 +58,6 @@ INSERT INTO `app_type` (`type_id`, `type_name`, `type_icon`, `created`, `created
 /*!40000 ALTER TABLE `app_type` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.app_version
-DROP TABLE IF EXISTS `app_version`;
 CREATE TABLE IF NOT EXISTS `app_version` (
   `version_id` int(11) NOT NULL AUTO_INCREMENT,
   `version_now` varchar(10) NOT NULL DEFAULT '0',
@@ -108,7 +105,6 @@ INSERT INTO `app_version` (`version_id`, `version_now`, `version_release`, `vers
 /*!40000 ALTER TABLE `app_version` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_billing
-DROP TABLE IF EXISTS `hot_billing`;
 CREATE TABLE IF NOT EXISTS `hot_billing` (
   `billing_id` int(11) NOT NULL AUTO_INCREMENT,
   `billing_receipt_no` varchar(50) NOT NULL,
@@ -149,12 +145,9 @@ CREATE TABLE IF NOT EXISTS `hot_billing` (
 -- Dumping data for table prisma_pos.hot_billing: ~0 rows (approximately)
 DELETE FROM `hot_billing`;
 /*!40000 ALTER TABLE `hot_billing` DISABLE KEYS */;
-INSERT INTO `hot_billing` (`billing_id`, `billing_receipt_no`, `guest_type`, `guest_id`, `guest_name`, `guest_gender`, `guest_phone`, `guest_id_type`, `guest_id_no`, `user_id`, `user_realname`, `billing_date_in`, `billing_time_in`, `billing_date_out`, `billing_time_out`, `billing_num_day`, `billing_subtotal`, `billing_tax`, `billing_service`, `billing_other`, `billing_total`, `billing_payment_type`, `billing_down_payment`, `billing_payment`, `billing_change`, `billing_cancel_note`, `billing_status`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
-	(1, '180903000001', 0, 0, 'jkk', 'L', '', 1, '', 1, 'Super Hotel', '2018-09-03', '08:01:20', '2018-09-03', '08:01:20', 1, 82644.63, 8264.46, 8264.46, 826.45, 100000.00, 0, 0.00, 0.00, -100000.00, '', 2, '2018-09-03 08:01:00', 'System', '0000-00-00 00:00:00', 'Super Hotel', 0, 0);
 /*!40000 ALTER TABLE `hot_billing` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_billing_extra
-DROP TABLE IF EXISTS `hot_billing_extra`;
 CREATE TABLE IF NOT EXISTS `hot_billing_extra` (
   `billing_extra_id` int(11) NOT NULL AUTO_INCREMENT,
   `billing_id` int(11) NOT NULL DEFAULT '0',
@@ -180,7 +173,6 @@ DELETE FROM `hot_billing_extra`;
 /*!40000 ALTER TABLE `hot_billing_extra` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_billing_fnb
-DROP TABLE IF EXISTS `hot_billing_fnb`;
 CREATE TABLE IF NOT EXISTS `hot_billing_fnb` (
   `billing_fnb_id` int(11) NOT NULL AUTO_INCREMENT,
   `billing_id` int(11) NOT NULL DEFAULT '0',
@@ -206,7 +198,6 @@ DELETE FROM `hot_billing_fnb`;
 /*!40000 ALTER TABLE `hot_billing_fnb` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_billing_room
-DROP TABLE IF EXISTS `hot_billing_room`;
 CREATE TABLE IF NOT EXISTS `hot_billing_room` (
   `billing_room_id` int(11) NOT NULL AUTO_INCREMENT,
   `billing_id` int(11) NOT NULL DEFAULT '0',
@@ -233,12 +224,9 @@ CREATE TABLE IF NOT EXISTS `hot_billing_room` (
 -- Dumping data for table prisma_pos.hot_billing_room: ~0 rows (approximately)
 DELETE FROM `hot_billing_room`;
 /*!40000 ALTER TABLE `hot_billing_room` DISABLE KEYS */;
-INSERT INTO `hot_billing_room` (`billing_room_id`, `billing_id`, `room_id`, `room_name`, `room_type_id`, `room_type_name`, `room_type_charge`, `room_type_duration`, `room_type_subtotal`, `room_type_tax`, `room_type_service`, `room_type_other`, `room_type_total`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
-	(1, 1, 102, 'Super - 02', 1, 'Super', 82644.63, 1.00, 82644.63, 8264.46, 8264.46, 826.45, 100000.00, '2018-09-03 08:01:49', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0);
 /*!40000 ALTER TABLE `hot_billing_room` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_billing_service
-DROP TABLE IF EXISTS `hot_billing_service`;
 CREATE TABLE IF NOT EXISTS `hot_billing_service` (
   `billing_service_id` int(11) NOT NULL AUTO_INCREMENT,
   `billing_id` int(11) NOT NULL DEFAULT '0',
@@ -264,7 +252,6 @@ DELETE FROM `hot_billing_service`;
 /*!40000 ALTER TABLE `hot_billing_service` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_booking
-DROP TABLE IF EXISTS `hot_booking`;
 CREATE TABLE IF NOT EXISTS `hot_booking` (
   `booking_id` int(11) NOT NULL AUTO_INCREMENT,
   `booking_code` varchar(128) NOT NULL,
@@ -291,7 +278,6 @@ DELETE FROM `hot_booking`;
 /*!40000 ALTER TABLE `hot_booking` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_booking_diskon
-DROP TABLE IF EXISTS `hot_booking_diskon`;
 CREATE TABLE IF NOT EXISTS `hot_booking_diskon` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `booking_id` int(155) NOT NULL,
@@ -312,7 +298,6 @@ DELETE FROM `hot_booking_diskon`;
 /*!40000 ALTER TABLE `hot_booking_diskon` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_booking_room
-DROP TABLE IF EXISTS `hot_booking_room`;
 CREATE TABLE IF NOT EXISTS `hot_booking_room` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `booking_id` int(155) NOT NULL,
@@ -333,7 +318,6 @@ DELETE FROM `hot_booking_room`;
 /*!40000 ALTER TABLE `hot_booking_room` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_booking_service
-DROP TABLE IF EXISTS `hot_booking_service`;
 CREATE TABLE IF NOT EXISTS `hot_booking_service` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `booking_id` int(155) NOT NULL,
@@ -354,7 +338,6 @@ DELETE FROM `hot_booking_service`;
 /*!40000 ALTER TABLE `hot_booking_service` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_category
-DROP TABLE IF EXISTS `hot_category`;
 CREATE TABLE IF NOT EXISTS `hot_category` (
   `category_id` int(11) NOT NULL AUTO_INCREMENT,
   `category_name` varchar(128) NOT NULL,
@@ -380,7 +363,6 @@ DELETE FROM `hot_category`;
 /*!40000 ALTER TABLE `hot_category` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_charge_type
-DROP TABLE IF EXISTS `hot_charge_type`;
 CREATE TABLE IF NOT EXISTS `hot_charge_type` (
   `charge_type_id` int(11) NOT NULL AUTO_INCREMENT,
   `charge_type_code` varchar(15) NOT NULL,
@@ -406,7 +388,6 @@ INSERT INTO `hot_charge_type` (`charge_type_id`, `charge_type_code`, `charge_typ
 /*!40000 ALTER TABLE `hot_charge_type` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_client
-DROP TABLE IF EXISTS `hot_client`;
 CREATE TABLE IF NOT EXISTS `hot_client` (
   `client_id` varchar(32) NOT NULL,
   `client_name` varchar(32) NOT NULL,
@@ -446,7 +427,6 @@ INSERT INTO `hot_client` (`client_id`, `client_name`, `client_brand`, `client_st
 /*!40000 ALTER TABLE `hot_client` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_discount
-DROP TABLE IF EXISTS `hot_discount`;
 CREATE TABLE IF NOT EXISTS `hot_discount` (
   `discount_id` int(11) NOT NULL AUTO_INCREMENT,
   `discount_name` varchar(128) NOT NULL,
@@ -467,7 +447,6 @@ DELETE FROM `hot_discount`;
 /*!40000 ALTER TABLE `hot_discount` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_diskon
-DROP TABLE IF EXISTS `hot_diskon`;
 CREATE TABLE IF NOT EXISTS `hot_diskon` (
   `diskon_id` int(11) NOT NULL AUTO_INCREMENT,
   `diskon_name` varchar(128) NOT NULL,
@@ -488,7 +467,6 @@ DELETE FROM `hot_diskon`;
 /*!40000 ALTER TABLE `hot_diskon` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_extra
-DROP TABLE IF EXISTS `hot_extra`;
 CREATE TABLE IF NOT EXISTS `hot_extra` (
   `extra_id` int(11) NOT NULL AUTO_INCREMENT,
   `extra_name` varchar(128) NOT NULL,
@@ -508,7 +486,6 @@ DELETE FROM `hot_extra`;
 /*!40000 ALTER TABLE `hot_extra` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_fnb
-DROP TABLE IF EXISTS `hot_fnb`;
 CREATE TABLE IF NOT EXISTS `hot_fnb` (
   `fnb_id` int(11) NOT NULL AUTO_INCREMENT,
   `fnb_name` varchar(128) NOT NULL,
@@ -528,7 +505,6 @@ DELETE FROM `hot_fnb`;
 /*!40000 ALTER TABLE `hot_fnb` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_guest
-DROP TABLE IF EXISTS `hot_guest`;
 CREATE TABLE IF NOT EXISTS `hot_guest` (
   `guest_id` int(11) NOT NULL AUTO_INCREMENT,
   `guest_type` tinyint(1) NOT NULL DEFAULT '0',
@@ -553,7 +529,6 @@ DELETE FROM `hot_guest`;
 /*!40000 ALTER TABLE `hot_guest` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_log
-DROP TABLE IF EXISTS `hot_log`;
 CREATE TABLE IF NOT EXISTS `hot_log` (
   `log_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
@@ -562,9 +537,9 @@ CREATE TABLE IF NOT EXISTS `hot_log` (
   `log_date` date NOT NULL,
   `log_time` time NOT NULL,
   PRIMARY KEY (`log_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
--- Dumping data for table prisma_pos.hot_log: ~0 rows (approximately)
+-- Dumping data for table prisma_pos.hot_log: ~1 rows (approximately)
 DELETE FROM `hot_log`;
 /*!40000 ALTER TABLE `hot_log` DISABLE KEYS */;
 INSERT INTO `hot_log` (`log_id`, `user_id`, `user_realname`, `log_type`, `log_date`, `log_time`) VALUES
@@ -572,7 +547,6 @@ INSERT INTO `hot_log` (`log_id`, `user_id`, `user_realname`, `log_type`, `log_da
 /*!40000 ALTER TABLE `hot_log` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_member
-DROP TABLE IF EXISTS `hot_member`;
 CREATE TABLE IF NOT EXISTS `hot_member` (
   `member_id` int(11) NOT NULL,
   `member_name` varchar(128) NOT NULL,
@@ -595,7 +569,6 @@ DELETE FROM `hot_member`;
 /*!40000 ALTER TABLE `hot_member` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_module
-DROP TABLE IF EXISTS `hot_module`;
 CREATE TABLE IF NOT EXISTS `hot_module` (
   `module_id` varchar(15) NOT NULL,
   `module_parent` varchar(15) NOT NULL,
@@ -643,7 +616,6 @@ INSERT INTO `hot_module` (`module_id`, `module_parent`, `module_name`, `module_f
 /*!40000 ALTER TABLE `hot_module` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_non_tax
-DROP TABLE IF EXISTS `hot_non_tax`;
 CREATE TABLE IF NOT EXISTS `hot_non_tax` (
   `non_tax_id` int(11) NOT NULL AUTO_INCREMENT,
   `non_tax_name` varchar(128) NOT NULL,
@@ -663,7 +635,6 @@ DELETE FROM `hot_non_tax`;
 /*!40000 ALTER TABLE `hot_non_tax` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_payment
-DROP TABLE IF EXISTS `hot_payment`;
 CREATE TABLE IF NOT EXISTS `hot_payment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `booking_id` int(155) NOT NULL,
@@ -691,7 +662,6 @@ DELETE FROM `hot_payment`;
 /*!40000 ALTER TABLE `hot_payment` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_permission
-DROP TABLE IF EXISTS `hot_permission`;
 CREATE TABLE IF NOT EXISTS `hot_permission` (
   `permission_id` int(11) NOT NULL AUTO_INCREMENT,
   `role_id` int(11) NOT NULL,
@@ -759,7 +729,6 @@ INSERT INTO `hot_permission` (`permission_id`, `role_id`, `module_id`, `_create`
 /*!40000 ALTER TABLE `hot_permission` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_role
-DROP TABLE IF EXISTS `hot_role`;
 CREATE TABLE IF NOT EXISTS `hot_role` (
   `role_id` int(11) NOT NULL AUTO_INCREMENT,
   `role_name` varchar(255) NOT NULL,
@@ -782,7 +751,6 @@ INSERT INTO `hot_role` (`role_id`, `role_name`, `created`, `created_by`, `update
 /*!40000 ALTER TABLE `hot_role` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_room
-DROP TABLE IF EXISTS `hot_room`;
 CREATE TABLE IF NOT EXISTS `hot_room` (
   `room_id` int(11) NOT NULL AUTO_INCREMENT,
   `room_type_id` int(11) NOT NULL DEFAULT '0',
@@ -800,18 +768,9 @@ CREATE TABLE IF NOT EXISTS `hot_room` (
 -- Dumping data for table prisma_pos.hot_room: ~0 rows (approximately)
 DELETE FROM `hot_room`;
 /*!40000 ALTER TABLE `hot_room` DISABLE KEYS */;
-INSERT INTO `hot_room` (`room_id`, `room_type_id`, `room_name`, `room_no`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
-	(101, 1, 'Super - 01', '1', '2018-09-03 08:00:54', 'Super Hotel', NULL, 'System', 1, 0),
-	(102, 1, 'Super - 02', '2', '2018-09-03 08:00:54', 'Super Hotel', NULL, 'System', 1, 0),
-	(103, 1, 'Super - 03', '3', '2018-09-03 08:00:54', 'Super Hotel', NULL, 'System', 1, 0),
-	(104, 1, 'Super - 04', '4', '2018-09-03 08:00:54', 'Super Hotel', NULL, 'System', 1, 0),
-	(105, 1, 'Super - 05', '5', '2018-09-03 08:00:55', 'Super Hotel', NULL, 'System', 1, 0),
-	(106, 1, 'Super - 06', '6', '2018-09-03 08:00:55', 'Super Hotel', NULL, 'System', 1, 0),
-	(107, 1, 'Super - 07', '7', '2018-09-03 08:00:55', 'Super Hotel', NULL, 'System', 1, 0);
 /*!40000 ALTER TABLE `hot_room` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_room_type
-DROP TABLE IF EXISTS `hot_room_type`;
 CREATE TABLE IF NOT EXISTS `hot_room_type` (
   `room_type_id` int(11) NOT NULL AUTO_INCREMENT,
   `room_type_name` varchar(128) NOT NULL,
@@ -829,12 +788,9 @@ CREATE TABLE IF NOT EXISTS `hot_room_type` (
 -- Dumping data for table prisma_pos.hot_room_type: ~0 rows (approximately)
 DELETE FROM `hot_room_type`;
 /*!40000 ALTER TABLE `hot_room_type` DISABLE KEYS */;
-INSERT INTO `hot_room_type` (`room_type_id`, `room_type_name`, `room_type_charge`, `room_type_desc`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
-	(1, 'Super', 82644.63, '', '2018-09-03 08:00:54', 'System', NULL, '', 1, 0);
 /*!40000 ALTER TABLE `hot_room_type` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_service
-DROP TABLE IF EXISTS `hot_service`;
 CREATE TABLE IF NOT EXISTS `hot_service` (
   `service_id` int(11) NOT NULL AUTO_INCREMENT,
   `service_name` varchar(128) NOT NULL,
@@ -854,7 +810,6 @@ DELETE FROM `hot_service`;
 /*!40000 ALTER TABLE `hot_service` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_tax
-DROP TABLE IF EXISTS `hot_tax`;
 CREATE TABLE IF NOT EXISTS `hot_tax` (
   `tax_id` int(11) NOT NULL AUTO_INCREMENT,
   `tax_code` varchar(15) NOT NULL,
@@ -877,7 +832,6 @@ INSERT INTO `hot_tax` (`tax_id`, `tax_code`, `tax_name`, `tax_ratio`, `created`,
 /*!40000 ALTER TABLE `hot_tax` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.hot_user
-DROP TABLE IF EXISTS `hot_user`;
 CREATE TABLE IF NOT EXISTS `hot_user` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_name` varchar(32) NOT NULL,
@@ -903,7 +857,6 @@ INSERT INTO `hot_user` (`user_id`, `user_name`, `role_id`, `user_password`, `use
 /*!40000 ALTER TABLE `hot_user` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.kar_bank
-DROP TABLE IF EXISTS `kar_bank`;
 CREATE TABLE IF NOT EXISTS `kar_bank` (
   `bank_id` int(11) NOT NULL AUTO_INCREMENT,
   `payment_type_id` int(11) NOT NULL,
@@ -923,7 +876,6 @@ DELETE FROM `kar_bank`;
 /*!40000 ALTER TABLE `kar_bank` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.kar_billing
-DROP TABLE IF EXISTS `kar_billing`;
 CREATE TABLE IF NOT EXISTS `kar_billing` (
   `tx_id` int(11) NOT NULL AUTO_INCREMENT,
   `tx_receipt_no` varchar(12) NOT NULL DEFAULT '0',
@@ -968,7 +920,6 @@ DELETE FROM `kar_billing`;
 /*!40000 ALTER TABLE `kar_billing` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.kar_billing_service_charge
-DROP TABLE IF EXISTS `kar_billing_service_charge`;
 CREATE TABLE IF NOT EXISTS `kar_billing_service_charge` (
   `tx_service_charge_id` int(11) NOT NULL AUTO_INCREMENT,
   `tx_id` int(11) NOT NULL,
@@ -992,7 +943,6 @@ DELETE FROM `kar_billing_service_charge`;
 /*!40000 ALTER TABLE `kar_billing_service_charge` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.kar_client
-DROP TABLE IF EXISTS `kar_client`;
 CREATE TABLE IF NOT EXISTS `kar_client` (
   `client_id` varchar(32) NOT NULL,
   `client_name` varchar(32) NOT NULL,
@@ -1032,7 +982,6 @@ INSERT INTO `kar_client` (`client_id`, `client_name`, `client_brand`, `client_st
 /*!40000 ALTER TABLE `kar_client` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.kar_log
-DROP TABLE IF EXISTS `kar_log`;
 CREATE TABLE IF NOT EXISTS `kar_log` (
   `log_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
@@ -1049,7 +998,6 @@ DELETE FROM `kar_log`;
 /*!40000 ALTER TABLE `kar_log` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.kar_member
-DROP TABLE IF EXISTS `kar_member`;
 CREATE TABLE IF NOT EXISTS `kar_member` (
   `member_id` int(11) NOT NULL AUTO_INCREMENT,
   `member_type_id` int(11) NOT NULL DEFAULT '0',
@@ -1073,7 +1021,6 @@ DELETE FROM `kar_member`;
 /*!40000 ALTER TABLE `kar_member` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.kar_member_type
-DROP TABLE IF EXISTS `kar_member_type`;
 CREATE TABLE IF NOT EXISTS `kar_member_type` (
   `member_type_id` int(11) NOT NULL AUTO_INCREMENT,
   `member_type_name` varchar(128) NOT NULL DEFAULT '0',
@@ -1092,7 +1039,6 @@ DELETE FROM `kar_member_type`;
 /*!40000 ALTER TABLE `kar_member_type` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.kar_module
-DROP TABLE IF EXISTS `kar_module`;
 CREATE TABLE IF NOT EXISTS `kar_module` (
   `module_id` varchar(15) NOT NULL,
   `module_parent` varchar(15) NOT NULL,
@@ -1141,7 +1087,6 @@ INSERT INTO `kar_module` (`module_id`, `module_parent`, `module_name`, `module_f
 /*!40000 ALTER TABLE `kar_module` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.kar_payment_type
-DROP TABLE IF EXISTS `kar_payment_type`;
 CREATE TABLE IF NOT EXISTS `kar_payment_type` (
   `payment_type_id` int(11) NOT NULL AUTO_INCREMENT,
   `payment_type_name` varchar(32) NOT NULL,
@@ -1164,7 +1109,6 @@ INSERT INTO `kar_payment_type` (`payment_type_id`, `payment_type_name`, `created
 /*!40000 ALTER TABLE `kar_payment_type` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.kar_permission
-DROP TABLE IF EXISTS `kar_permission`;
 CREATE TABLE IF NOT EXISTS `kar_permission` (
   `permission_id` int(11) NOT NULL AUTO_INCREMENT,
   `role_id` int(11) NOT NULL,
@@ -1209,7 +1153,6 @@ INSERT INTO `kar_permission` (`permission_id`, `role_id`, `module_id`, `_create`
 /*!40000 ALTER TABLE `kar_permission` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.kar_role
-DROP TABLE IF EXISTS `kar_role`;
 CREATE TABLE IF NOT EXISTS `kar_role` (
   `role_id` int(11) NOT NULL AUTO_INCREMENT,
   `role_name` varchar(255) NOT NULL,
@@ -1233,7 +1176,6 @@ INSERT INTO `kar_role` (`role_id`, `role_name`, `created`, `created_by`, `update
 /*!40000 ALTER TABLE `kar_role` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.kar_room
-DROP TABLE IF EXISTS `kar_room`;
 CREATE TABLE IF NOT EXISTS `kar_room` (
   `room_id` int(11) NOT NULL AUTO_INCREMENT,
   `room_code` varchar(128) NOT NULL,
@@ -1255,7 +1197,6 @@ DELETE FROM `kar_room`;
 /*!40000 ALTER TABLE `kar_room` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.kar_room_type
-DROP TABLE IF EXISTS `kar_room_type`;
 CREATE TABLE IF NOT EXISTS `kar_room_type` (
   `room_type_id` int(11) NOT NULL AUTO_INCREMENT,
   `room_type_name` varchar(128) NOT NULL,
@@ -1281,7 +1222,6 @@ DELETE FROM `kar_room_type`;
 /*!40000 ALTER TABLE `kar_room_type` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.kar_service_charge
-DROP TABLE IF EXISTS `kar_service_charge`;
 CREATE TABLE IF NOT EXISTS `kar_service_charge` (
   `service_charge_id` int(11) NOT NULL AUTO_INCREMENT,
   `service_charge_name` varchar(128) NOT NULL DEFAULT '0',
@@ -1301,7 +1241,6 @@ DELETE FROM `kar_service_charge`;
 /*!40000 ALTER TABLE `kar_service_charge` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.kar_shift
-DROP TABLE IF EXISTS `kar_shift`;
 CREATE TABLE IF NOT EXISTS `kar_shift` (
   `shift_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
@@ -1364,7 +1303,6 @@ INSERT INTO `kar_shift` (`shift_id`, `user_id`, `user_realname`, `shift_in_statu
 /*!40000 ALTER TABLE `kar_shift` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.kar_tax
-DROP TABLE IF EXISTS `kar_tax`;
 CREATE TABLE IF NOT EXISTS `kar_tax` (
   `tax_id` int(11) NOT NULL AUTO_INCREMENT,
   `tax_code` varchar(15) NOT NULL,
@@ -1387,7 +1325,6 @@ INSERT INTO `kar_tax` (`tax_id`, `tax_code`, `tax_name`, `tax_ratio`, `created`,
 /*!40000 ALTER TABLE `kar_tax` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.kar_time
-DROP TABLE IF EXISTS `kar_time`;
 CREATE TABLE IF NOT EXISTS `kar_time` (
   `time_id` int(11) NOT NULL AUTO_INCREMENT,
   `time_name` varchar(128) NOT NULL,
@@ -1411,7 +1348,6 @@ INSERT INTO `kar_time` (`time_id`, `time_name`, `time_start`, `time_end`, `creat
 /*!40000 ALTER TABLE `kar_time` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.kar_user
-DROP TABLE IF EXISTS `kar_user`;
 CREATE TABLE IF NOT EXISTS `kar_user` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_name` varchar(32) NOT NULL,
@@ -1437,7 +1373,6 @@ INSERT INTO `kar_user` (`user_id`, `user_name`, `role_id`, `user_password`, `use
 /*!40000 ALTER TABLE `kar_user` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.par_billing
-DROP TABLE IF EXISTS `par_billing`;
 CREATE TABLE IF NOT EXISTS `par_billing` (
   `billing_id` int(11) NOT NULL AUTO_INCREMENT,
   `receipt_no` varchar(12) NOT NULL DEFAULT '0',
@@ -1482,7 +1417,6 @@ DELETE FROM `par_billing`;
 /*!40000 ALTER TABLE `par_billing` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.par_brand
-DROP TABLE IF EXISTS `par_brand`;
 CREATE TABLE IF NOT EXISTS `par_brand` (
   `brand_id` int(11) NOT NULL AUTO_INCREMENT,
   `brand_name` varchar(128) NOT NULL,
@@ -1503,7 +1437,6 @@ INSERT INTO `par_brand` (`brand_id`, `brand_name`, `created`, `created_by`, `upd
 /*!40000 ALTER TABLE `par_brand` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.par_category
-DROP TABLE IF EXISTS `par_category`;
 CREATE TABLE IF NOT EXISTS `par_category` (
   `category_id` int(11) NOT NULL AUTO_INCREMENT,
   `category_name` varchar(128) NOT NULL,
@@ -1525,7 +1458,6 @@ DELETE FROM `par_category`;
 /*!40000 ALTER TABLE `par_category` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.par_client
-DROP TABLE IF EXISTS `par_client`;
 CREATE TABLE IF NOT EXISTS `par_client` (
   `client_id` varchar(32) NOT NULL,
   `client_name` varchar(32) NOT NULL,
@@ -1565,7 +1497,6 @@ INSERT INTO `par_client` (`client_id`, `client_name`, `client_brand`, `client_st
 /*!40000 ALTER TABLE `par_client` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.par_log
-DROP TABLE IF EXISTS `par_log`;
 CREATE TABLE IF NOT EXISTS `par_log` (
   `log_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
@@ -1582,7 +1513,6 @@ DELETE FROM `par_log`;
 /*!40000 ALTER TABLE `par_log` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.par_module
-DROP TABLE IF EXISTS `par_module`;
 CREATE TABLE IF NOT EXISTS `par_module` (
   `module_id` varchar(15) NOT NULL,
   `module_parent` varchar(15) NOT NULL,
@@ -1626,7 +1556,6 @@ INSERT INTO `par_module` (`module_id`, `module_parent`, `module_name`, `module_f
 /*!40000 ALTER TABLE `par_module` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.par_permission
-DROP TABLE IF EXISTS `par_permission`;
 CREATE TABLE IF NOT EXISTS `par_permission` (
   `permission_id` int(11) NOT NULL AUTO_INCREMENT,
   `role_id` int(11) NOT NULL,
@@ -1684,7 +1613,6 @@ INSERT INTO `par_permission` (`permission_id`, `role_id`, `module_id`, `_create`
 /*!40000 ALTER TABLE `par_permission` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.par_role
-DROP TABLE IF EXISTS `par_role`;
 CREATE TABLE IF NOT EXISTS `par_role` (
   `role_id` int(11) NOT NULL AUTO_INCREMENT,
   `role_name` varchar(255) NOT NULL,
@@ -1708,7 +1636,6 @@ INSERT INTO `par_role` (`role_id`, `role_name`, `created`, `created_by`, `update
 /*!40000 ALTER TABLE `par_role` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.par_shift
-DROP TABLE IF EXISTS `par_shift`;
 CREATE TABLE IF NOT EXISTS `par_shift` (
   `shift_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
@@ -1765,7 +1692,6 @@ DELETE FROM `par_shift`;
 /*!40000 ALTER TABLE `par_shift` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.par_tax
-DROP TABLE IF EXISTS `par_tax`;
 CREATE TABLE IF NOT EXISTS `par_tax` (
   `tax_id` int(11) NOT NULL AUTO_INCREMENT,
   `tax_code` varchar(15) NOT NULL,
@@ -1788,7 +1714,6 @@ INSERT INTO `par_tax` (`tax_id`, `tax_code`, `tax_name`, `tax_ratio`, `created`,
 /*!40000 ALTER TABLE `par_tax` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.par_user
-DROP TABLE IF EXISTS `par_user`;
 CREATE TABLE IF NOT EXISTS `par_user` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_name` varchar(32) NOT NULL,
@@ -1815,7 +1740,6 @@ INSERT INTO `par_user` (`user_id`, `user_name`, `role_id`, `user_password`, `use
 /*!40000 ALTER TABLE `par_user` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_bank
-DROP TABLE IF EXISTS `res_bank`;
 CREATE TABLE IF NOT EXISTS `res_bank` (
   `bank_id` int(11) NOT NULL AUTO_INCREMENT,
   `payment_type_id` int(11) NOT NULL,
@@ -1835,7 +1759,6 @@ DELETE FROM `res_bank`;
 /*!40000 ALTER TABLE `res_bank` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_billing
-DROP TABLE IF EXISTS `res_billing`;
 CREATE TABLE IF NOT EXISTS `res_billing` (
   `tx_id` int(11) NOT NULL AUTO_INCREMENT,
   `tx_receipt_no` varchar(12) NOT NULL DEFAULT '0',
@@ -1880,7 +1803,6 @@ DELETE FROM `res_billing`;
 /*!40000 ALTER TABLE `res_billing` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_billing_buyall
-DROP TABLE IF EXISTS `res_billing_buyall`;
 CREATE TABLE IF NOT EXISTS `res_billing_buyall` (
   `billing_buyall_id` int(11) NOT NULL AUTO_INCREMENT,
   `tx_id` int(11) NOT NULL,
@@ -1904,7 +1826,6 @@ DELETE FROM `res_billing_buyall`;
 /*!40000 ALTER TABLE `res_billing_buyall` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_billing_buyget
-DROP TABLE IF EXISTS `res_billing_buyget`;
 CREATE TABLE IF NOT EXISTS `res_billing_buyget` (
   `billing_buyget_id` int(11) NOT NULL AUTO_INCREMENT,
   `tx_id` int(11) NOT NULL,
@@ -1929,7 +1850,6 @@ DELETE FROM `res_billing_buyget`;
 /*!40000 ALTER TABLE `res_billing_buyget` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_billing_buyitem
-DROP TABLE IF EXISTS `res_billing_buyitem`;
 CREATE TABLE IF NOT EXISTS `res_billing_buyitem` (
   `billing_buyitem_id` int(11) NOT NULL AUTO_INCREMENT,
   `tx_id` int(11) NOT NULL,
@@ -1954,7 +1874,6 @@ DELETE FROM `res_billing_buyitem`;
 /*!40000 ALTER TABLE `res_billing_buyitem` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_billing_detail
-DROP TABLE IF EXISTS `res_billing_detail`;
 CREATE TABLE IF NOT EXISTS `res_billing_detail` (
   `billing_detail_id` int(11) NOT NULL AUTO_INCREMENT,
   `tx_id` int(11) NOT NULL,
@@ -1987,7 +1906,6 @@ DELETE FROM `res_billing_detail`;
 /*!40000 ALTER TABLE `res_billing_detail` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_category
-DROP TABLE IF EXISTS `res_category`;
 CREATE TABLE IF NOT EXISTS `res_category` (
   `category_id` int(11) NOT NULL AUTO_INCREMENT,
   `category_name` varchar(128) NOT NULL,
@@ -2008,7 +1926,6 @@ INSERT INTO `res_category` (`category_id`, `category_name`, `created`, `created_
 /*!40000 ALTER TABLE `res_category` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_client
-DROP TABLE IF EXISTS `res_client`;
 CREATE TABLE IF NOT EXISTS `res_client` (
   `client_id` varchar(32) NOT NULL,
   `client_name` varchar(32) NOT NULL,
@@ -2048,7 +1965,6 @@ INSERT INTO `res_client` (`client_id`, `client_name`, `client_brand`, `client_st
 /*!40000 ALTER TABLE `res_client` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_customer
-DROP TABLE IF EXISTS `res_customer`;
 CREATE TABLE IF NOT EXISTS `res_customer` (
   `customer_id` int(11) NOT NULL AUTO_INCREMENT,
   `customer_name` varchar(255) NOT NULL,
@@ -2071,7 +1987,6 @@ DELETE FROM `res_customer`;
 /*!40000 ALTER TABLE `res_customer` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_item
-DROP TABLE IF EXISTS `res_item`;
 CREATE TABLE IF NOT EXISTS `res_item` (
   `item_id` int(11) NOT NULL AUTO_INCREMENT,
   `category_id` int(11) NOT NULL,
@@ -2099,7 +2014,6 @@ DELETE FROM `res_item`;
 /*!40000 ALTER TABLE `res_item` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_item_package
-DROP TABLE IF EXISTS `res_item_package`;
 CREATE TABLE IF NOT EXISTS `res_item_package` (
   `item_package_id` int(11) NOT NULL AUTO_INCREMENT,
   `item_id` int(11) NOT NULL,
@@ -2120,7 +2034,6 @@ DELETE FROM `res_item_package`;
 /*!40000 ALTER TABLE `res_item_package` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_location
-DROP TABLE IF EXISTS `res_location`;
 CREATE TABLE IF NOT EXISTS `res_location` (
   `location_id` int(11) NOT NULL AUTO_INCREMENT,
   `location_name` varchar(128) NOT NULL,
@@ -2141,7 +2054,6 @@ DELETE FROM `res_location`;
 /*!40000 ALTER TABLE `res_location` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_log
-DROP TABLE IF EXISTS `res_log`;
 CREATE TABLE IF NOT EXISTS `res_log` (
   `log_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
@@ -2158,7 +2070,6 @@ DELETE FROM `res_log`;
 /*!40000 ALTER TABLE `res_log` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_module
-DROP TABLE IF EXISTS `res_module`;
 CREATE TABLE IF NOT EXISTS `res_module` (
   `module_id` varchar(15) NOT NULL,
   `module_parent` varchar(15) NOT NULL,
@@ -2221,7 +2132,6 @@ INSERT INTO `res_module` (`module_id`, `module_parent`, `module_name`, `module_f
 /*!40000 ALTER TABLE `res_module` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_payment_type
-DROP TABLE IF EXISTS `res_payment_type`;
 CREATE TABLE IF NOT EXISTS `res_payment_type` (
   `payment_type_id` int(11) NOT NULL AUTO_INCREMENT,
   `payment_type_name` varchar(32) NOT NULL,
@@ -2244,7 +2154,6 @@ INSERT INTO `res_payment_type` (`payment_type_id`, `payment_type_name`, `created
 /*!40000 ALTER TABLE `res_payment_type` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_permission
-DROP TABLE IF EXISTS `res_permission`;
 CREATE TABLE IF NOT EXISTS `res_permission` (
   `permission_id` int(11) NOT NULL AUTO_INCREMENT,
   `role_id` int(11) NOT NULL,
@@ -2345,7 +2254,6 @@ INSERT INTO `res_permission` (`permission_id`, `role_id`, `module_id`, `_create`
 /*!40000 ALTER TABLE `res_permission` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_po
-DROP TABLE IF EXISTS `res_po`;
 CREATE TABLE IF NOT EXISTS `res_po` (
   `tx_id` int(11) NOT NULL AUTO_INCREMENT,
   `tx_receipt_no` varchar(12) NOT NULL,
@@ -2367,7 +2275,6 @@ DELETE FROM `res_po`;
 /*!40000 ALTER TABLE `res_po` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_po_detail
-DROP TABLE IF EXISTS `res_po_detail`;
 CREATE TABLE IF NOT EXISTS `res_po_detail` (
   `stock_id` int(11) NOT NULL AUTO_INCREMENT,
   `tx_id` int(11) NOT NULL,
@@ -2390,7 +2297,6 @@ DELETE FROM `res_po_detail`;
 /*!40000 ALTER TABLE `res_po_detail` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_promo
-DROP TABLE IF EXISTS `res_promo`;
 CREATE TABLE IF NOT EXISTS `res_promo` (
   `promo_id` int(11) NOT NULL AUTO_INCREMENT,
   `promo_type_id` int(1) NOT NULL,
@@ -2421,7 +2327,6 @@ DELETE FROM `res_promo`;
 /*!40000 ALTER TABLE `res_promo` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_promo_buyall
-DROP TABLE IF EXISTS `res_promo_buyall`;
 CREATE TABLE IF NOT EXISTS `res_promo_buyall` (
   `promo_buyall_id` int(11) NOT NULL AUTO_INCREMENT,
   `promo_id` int(11) NOT NULL,
@@ -2442,7 +2347,6 @@ DELETE FROM `res_promo_buyall`;
 /*!40000 ALTER TABLE `res_promo_buyall` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_promo_buyget
-DROP TABLE IF EXISTS `res_promo_buyget`;
 CREATE TABLE IF NOT EXISTS `res_promo_buyget` (
   `promo_buyget_id` int(11) NOT NULL AUTO_INCREMENT,
   `promo_id` int(11) NOT NULL,
@@ -2465,7 +2369,6 @@ DELETE FROM `res_promo_buyget`;
 /*!40000 ALTER TABLE `res_promo_buyget` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_promo_buyitem
-DROP TABLE IF EXISTS `res_promo_buyitem`;
 CREATE TABLE IF NOT EXISTS `res_promo_buyitem` (
   `promo_buyitem_id` int(11) NOT NULL AUTO_INCREMENT,
   `promo_id` int(11) NOT NULL,
@@ -2487,7 +2390,6 @@ DELETE FROM `res_promo_buyitem`;
 /*!40000 ALTER TABLE `res_promo_buyitem` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_promo_type
-DROP TABLE IF EXISTS `res_promo_type`;
 CREATE TABLE IF NOT EXISTS `res_promo_type` (
   `promo_type_id` int(11) NOT NULL AUTO_INCREMENT,
   `promo_type_code` varchar(3) NOT NULL,
@@ -2511,7 +2413,6 @@ INSERT INTO `res_promo_type` (`promo_type_id`, `promo_type_code`, `promo_type_na
 /*!40000 ALTER TABLE `res_promo_type` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_return
-DROP TABLE IF EXISTS `res_return`;
 CREATE TABLE IF NOT EXISTS `res_return` (
   `tx_id` int(11) NOT NULL AUTO_INCREMENT,
   `tx_id_source` int(11) NOT NULL COMMENT 'Billing Id',
@@ -2539,7 +2440,6 @@ DELETE FROM `res_return`;
 /*!40000 ALTER TABLE `res_return` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_return_detail
-DROP TABLE IF EXISTS `res_return_detail`;
 CREATE TABLE IF NOT EXISTS `res_return_detail` (
   `return_detail_id` int(11) NOT NULL AUTO_INCREMENT,
   `tx_id` int(11) NOT NULL,
@@ -2564,7 +2464,6 @@ DELETE FROM `res_return_detail`;
 /*!40000 ALTER TABLE `res_return_detail` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_role
-DROP TABLE IF EXISTS `res_role`;
 CREATE TABLE IF NOT EXISTS `res_role` (
   `role_id` int(11) NOT NULL AUTO_INCREMENT,
   `role_name` varchar(255) NOT NULL,
@@ -2587,7 +2486,6 @@ INSERT INTO `res_role` (`role_id`, `role_name`, `created`, `created_by`, `update
 /*!40000 ALTER TABLE `res_role` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_shift
-DROP TABLE IF EXISTS `res_shift`;
 CREATE TABLE IF NOT EXISTS `res_shift` (
   `shift_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
@@ -2643,7 +2541,6 @@ DELETE FROM `res_shift`;
 /*!40000 ALTER TABLE `res_shift` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_stock
-DROP TABLE IF EXISTS `res_stock`;
 CREATE TABLE IF NOT EXISTS `res_stock` (
   `stock_id` int(11) NOT NULL AUTO_INCREMENT,
   `tx_id` int(11) NOT NULL,
@@ -2665,7 +2562,6 @@ DELETE FROM `res_stock`;
 /*!40000 ALTER TABLE `res_stock` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_stock_in
-DROP TABLE IF EXISTS `res_stock_in`;
 CREATE TABLE IF NOT EXISTS `res_stock_in` (
   `tx_id` int(11) NOT NULL AUTO_INCREMENT,
   `tx_receipt_no` varchar(12) NOT NULL DEFAULT '0',
@@ -2683,7 +2579,6 @@ DELETE FROM `res_stock_in`;
 /*!40000 ALTER TABLE `res_stock_in` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_stock_opname
-DROP TABLE IF EXISTS `res_stock_opname`;
 CREATE TABLE IF NOT EXISTS `res_stock_opname` (
   `tx_id` int(11) NOT NULL AUTO_INCREMENT,
   `tx_receipt_no` varchar(12) NOT NULL DEFAULT '0',
@@ -2702,7 +2597,6 @@ DELETE FROM `res_stock_opname`;
 /*!40000 ALTER TABLE `res_stock_opname` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_stock_opname_detail
-DROP TABLE IF EXISTS `res_stock_opname_detail`;
 CREATE TABLE IF NOT EXISTS `res_stock_opname_detail` (
   `stock_id` int(11) NOT NULL AUTO_INCREMENT,
   `tx_id` int(11) NOT NULL,
@@ -2724,7 +2618,6 @@ DELETE FROM `res_stock_opname_detail`;
 /*!40000 ALTER TABLE `res_stock_opname_detail` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_stock_out
-DROP TABLE IF EXISTS `res_stock_out`;
 CREATE TABLE IF NOT EXISTS `res_stock_out` (
   `tx_id` int(11) NOT NULL AUTO_INCREMENT,
   `tx_receipt_no` varchar(12) NOT NULL DEFAULT '0',
@@ -2742,7 +2635,6 @@ DELETE FROM `res_stock_out`;
 /*!40000 ALTER TABLE `res_stock_out` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_supplier
-DROP TABLE IF EXISTS `res_supplier`;
 CREATE TABLE IF NOT EXISTS `res_supplier` (
   `supplier_id` int(11) NOT NULL AUTO_INCREMENT,
   `supplier_name` varchar(255) NOT NULL,
@@ -2765,7 +2657,6 @@ DELETE FROM `res_supplier`;
 /*!40000 ALTER TABLE `res_supplier` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_tax
-DROP TABLE IF EXISTS `res_tax`;
 CREATE TABLE IF NOT EXISTS `res_tax` (
   `tax_id` int(11) NOT NULL AUTO_INCREMENT,
   `tax_code` varchar(15) NOT NULL,
@@ -2788,7 +2679,6 @@ INSERT INTO `res_tax` (`tax_id`, `tax_code`, `tax_name`, `tax_ratio`, `created`,
 /*!40000 ALTER TABLE `res_tax` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_tx_type
-DROP TABLE IF EXISTS `res_tx_type`;
 CREATE TABLE IF NOT EXISTS `res_tx_type` (
   `tx_type` varchar(3) NOT NULL,
   `tx_name` varchar(255) NOT NULL,
@@ -2812,7 +2702,6 @@ INSERT INTO `res_tx_type` (`tx_type`, `tx_name`, `created`, `created_by`, `updat
 /*!40000 ALTER TABLE `res_tx_type` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_unit
-DROP TABLE IF EXISTS `res_unit`;
 CREATE TABLE IF NOT EXISTS `res_unit` (
   `unit_id` int(11) NOT NULL AUTO_INCREMENT,
   `unit_code` varchar(10) NOT NULL,
@@ -2840,7 +2729,6 @@ INSERT INTO `res_unit` (`unit_id`, `unit_code`, `unit_name`, `created`, `created
 /*!40000 ALTER TABLE `res_unit` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_user
-DROP TABLE IF EXISTS `res_user`;
 CREATE TABLE IF NOT EXISTS `res_user` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_name` varchar(32) NOT NULL,
@@ -2866,7 +2754,6 @@ INSERT INTO `res_user` (`user_id`, `user_name`, `role_id`, `user_password`, `use
 /*!40000 ALTER TABLE `res_user` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_void
-DROP TABLE IF EXISTS `res_void`;
 CREATE TABLE IF NOT EXISTS `res_void` (
   `tx_id` int(11) NOT NULL AUTO_INCREMENT,
   `tx_receipt_no` varchar(12) NOT NULL DEFAULT '0',
@@ -2894,7 +2781,6 @@ DELETE FROM `res_void`;
 /*!40000 ALTER TABLE `res_void` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.res_void_detail
-DROP TABLE IF EXISTS `res_void_detail`;
 CREATE TABLE IF NOT EXISTS `res_void_detail` (
   `void_detail_id` int(11) NOT NULL AUTO_INCREMENT,
   `tx_id` int(11) NOT NULL,
@@ -2919,7 +2805,6 @@ DELETE FROM `res_void_detail`;
 /*!40000 ALTER TABLE `res_void_detail` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_bank
-DROP TABLE IF EXISTS `ret_bank`;
 CREATE TABLE IF NOT EXISTS `ret_bank` (
   `bank_id` int(11) NOT NULL AUTO_INCREMENT,
   `payment_type_id` int(11) NOT NULL,
@@ -2939,7 +2824,6 @@ DELETE FROM `ret_bank`;
 /*!40000 ALTER TABLE `ret_bank` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_billing
-DROP TABLE IF EXISTS `ret_billing`;
 CREATE TABLE IF NOT EXISTS `ret_billing` (
   `tx_id` int(11) NOT NULL AUTO_INCREMENT,
   `tx_receipt_no` varchar(12) NOT NULL DEFAULT '0',
@@ -2984,7 +2868,6 @@ DELETE FROM `ret_billing`;
 /*!40000 ALTER TABLE `ret_billing` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_billing_buyall
-DROP TABLE IF EXISTS `ret_billing_buyall`;
 CREATE TABLE IF NOT EXISTS `ret_billing_buyall` (
   `billing_buyall_id` int(11) NOT NULL AUTO_INCREMENT,
   `tx_id` int(11) NOT NULL,
@@ -3008,7 +2891,6 @@ DELETE FROM `ret_billing_buyall`;
 /*!40000 ALTER TABLE `ret_billing_buyall` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_billing_buyget
-DROP TABLE IF EXISTS `ret_billing_buyget`;
 CREATE TABLE IF NOT EXISTS `ret_billing_buyget` (
   `billing_buyget_id` int(11) NOT NULL AUTO_INCREMENT,
   `tx_id` int(11) NOT NULL,
@@ -3033,7 +2915,6 @@ DELETE FROM `ret_billing_buyget`;
 /*!40000 ALTER TABLE `ret_billing_buyget` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_billing_buyitem
-DROP TABLE IF EXISTS `ret_billing_buyitem`;
 CREATE TABLE IF NOT EXISTS `ret_billing_buyitem` (
   `billing_buyitem_id` int(11) NOT NULL AUTO_INCREMENT,
   `tx_id` int(11) NOT NULL,
@@ -3058,7 +2939,6 @@ DELETE FROM `ret_billing_buyitem`;
 /*!40000 ALTER TABLE `ret_billing_buyitem` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_billing_detail
-DROP TABLE IF EXISTS `ret_billing_detail`;
 CREATE TABLE IF NOT EXISTS `ret_billing_detail` (
   `billing_detail_id` int(11) NOT NULL AUTO_INCREMENT,
   `tx_id` int(11) NOT NULL,
@@ -3091,7 +2971,6 @@ DELETE FROM `ret_billing_detail`;
 /*!40000 ALTER TABLE `ret_billing_detail` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_category
-DROP TABLE IF EXISTS `ret_category`;
 CREATE TABLE IF NOT EXISTS `ret_category` (
   `category_id` int(11) NOT NULL AUTO_INCREMENT,
   `category_name` varchar(128) NOT NULL,
@@ -3112,7 +2991,6 @@ INSERT INTO `ret_category` (`category_id`, `category_name`, `created`, `created_
 /*!40000 ALTER TABLE `ret_category` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_client
-DROP TABLE IF EXISTS `ret_client`;
 CREATE TABLE IF NOT EXISTS `ret_client` (
   `client_id` varchar(32) NOT NULL,
   `client_name` varchar(32) NOT NULL,
@@ -3152,7 +3030,6 @@ INSERT INTO `ret_client` (`client_id`, `client_name`, `client_brand`, `client_st
 /*!40000 ALTER TABLE `ret_client` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_customer
-DROP TABLE IF EXISTS `ret_customer`;
 CREATE TABLE IF NOT EXISTS `ret_customer` (
   `customer_id` int(11) NOT NULL AUTO_INCREMENT,
   `customer_name` varchar(255) NOT NULL,
@@ -3177,7 +3054,6 @@ INSERT INTO `ret_customer` (`customer_id`, `customer_name`, `customer_phone`, `c
 /*!40000 ALTER TABLE `ret_customer` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_item
-DROP TABLE IF EXISTS `ret_item`;
 CREATE TABLE IF NOT EXISTS `ret_item` (
   `item_id` int(11) NOT NULL AUTO_INCREMENT,
   `category_id` int(11) NOT NULL,
@@ -3203,7 +3079,6 @@ DELETE FROM `ret_item`;
 /*!40000 ALTER TABLE `ret_item` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_item_package
-DROP TABLE IF EXISTS `ret_item_package`;
 CREATE TABLE IF NOT EXISTS `ret_item_package` (
   `item_package_id` int(11) NOT NULL AUTO_INCREMENT,
   `item_id` int(11) NOT NULL,
@@ -3224,7 +3099,6 @@ DELETE FROM `ret_item_package`;
 /*!40000 ALTER TABLE `ret_item_package` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_log
-DROP TABLE IF EXISTS `ret_log`;
 CREATE TABLE IF NOT EXISTS `ret_log` (
   `log_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
@@ -3241,7 +3115,6 @@ DELETE FROM `ret_log`;
 /*!40000 ALTER TABLE `ret_log` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_module
-DROP TABLE IF EXISTS `ret_module`;
 CREATE TABLE IF NOT EXISTS `ret_module` (
   `module_id` varchar(15) NOT NULL,
   `module_parent` varchar(15) NOT NULL,
@@ -3304,7 +3177,6 @@ INSERT INTO `ret_module` (`module_id`, `module_parent`, `module_name`, `module_f
 /*!40000 ALTER TABLE `ret_module` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_payment_type
-DROP TABLE IF EXISTS `ret_payment_type`;
 CREATE TABLE IF NOT EXISTS `ret_payment_type` (
   `payment_type_id` int(11) NOT NULL AUTO_INCREMENT,
   `payment_type_name` varchar(32) NOT NULL,
@@ -3327,7 +3199,6 @@ INSERT INTO `ret_payment_type` (`payment_type_id`, `payment_type_name`, `created
 /*!40000 ALTER TABLE `ret_payment_type` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_permission
-DROP TABLE IF EXISTS `ret_permission`;
 CREATE TABLE IF NOT EXISTS `ret_permission` (
   `permission_id` int(11) NOT NULL AUTO_INCREMENT,
   `role_id` int(11) NOT NULL,
@@ -3424,7 +3295,6 @@ INSERT INTO `ret_permission` (`permission_id`, `role_id`, `module_id`, `_create`
 /*!40000 ALTER TABLE `ret_permission` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_po
-DROP TABLE IF EXISTS `ret_po`;
 CREATE TABLE IF NOT EXISTS `ret_po` (
   `tx_id` int(11) NOT NULL AUTO_INCREMENT,
   `tx_receipt_no` varchar(12) NOT NULL,
@@ -3446,7 +3316,6 @@ DELETE FROM `ret_po`;
 /*!40000 ALTER TABLE `ret_po` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_po_detail
-DROP TABLE IF EXISTS `ret_po_detail`;
 CREATE TABLE IF NOT EXISTS `ret_po_detail` (
   `stock_id` int(11) NOT NULL AUTO_INCREMENT,
   `tx_id` int(11) NOT NULL,
@@ -3469,7 +3338,6 @@ DELETE FROM `ret_po_detail`;
 /*!40000 ALTER TABLE `ret_po_detail` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_promo
-DROP TABLE IF EXISTS `ret_promo`;
 CREATE TABLE IF NOT EXISTS `ret_promo` (
   `promo_id` int(11) NOT NULL AUTO_INCREMENT,
   `promo_type_id` int(1) NOT NULL,
@@ -3500,7 +3368,6 @@ DELETE FROM `ret_promo`;
 /*!40000 ALTER TABLE `ret_promo` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_promo_buyall
-DROP TABLE IF EXISTS `ret_promo_buyall`;
 CREATE TABLE IF NOT EXISTS `ret_promo_buyall` (
   `promo_buyall_id` int(11) NOT NULL AUTO_INCREMENT,
   `promo_id` int(11) NOT NULL,
@@ -3521,7 +3388,6 @@ DELETE FROM `ret_promo_buyall`;
 /*!40000 ALTER TABLE `ret_promo_buyall` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_promo_buyget
-DROP TABLE IF EXISTS `ret_promo_buyget`;
 CREATE TABLE IF NOT EXISTS `ret_promo_buyget` (
   `promo_buyget_id` int(11) NOT NULL AUTO_INCREMENT,
   `promo_id` int(11) NOT NULL,
@@ -3544,7 +3410,6 @@ DELETE FROM `ret_promo_buyget`;
 /*!40000 ALTER TABLE `ret_promo_buyget` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_promo_buyitem
-DROP TABLE IF EXISTS `ret_promo_buyitem`;
 CREATE TABLE IF NOT EXISTS `ret_promo_buyitem` (
   `promo_buyitem_id` int(11) NOT NULL AUTO_INCREMENT,
   `promo_id` int(11) NOT NULL,
@@ -3566,7 +3431,6 @@ DELETE FROM `ret_promo_buyitem`;
 /*!40000 ALTER TABLE `ret_promo_buyitem` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_promo_type
-DROP TABLE IF EXISTS `ret_promo_type`;
 CREATE TABLE IF NOT EXISTS `ret_promo_type` (
   `promo_type_id` int(11) NOT NULL AUTO_INCREMENT,
   `promo_type_code` varchar(3) NOT NULL,
@@ -3590,7 +3454,6 @@ INSERT INTO `ret_promo_type` (`promo_type_id`, `promo_type_code`, `promo_type_na
 /*!40000 ALTER TABLE `ret_promo_type` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_return
-DROP TABLE IF EXISTS `ret_return`;
 CREATE TABLE IF NOT EXISTS `ret_return` (
   `tx_id` int(11) NOT NULL AUTO_INCREMENT,
   `tx_id_source` int(11) NOT NULL COMMENT 'Billing Id',
@@ -3618,7 +3481,6 @@ DELETE FROM `ret_return`;
 /*!40000 ALTER TABLE `ret_return` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_return_detail
-DROP TABLE IF EXISTS `ret_return_detail`;
 CREATE TABLE IF NOT EXISTS `ret_return_detail` (
   `return_detail_id` int(11) NOT NULL AUTO_INCREMENT,
   `tx_id` int(11) NOT NULL,
@@ -3643,7 +3505,6 @@ DELETE FROM `ret_return_detail`;
 /*!40000 ALTER TABLE `ret_return_detail` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_role
-DROP TABLE IF EXISTS `ret_role`;
 CREATE TABLE IF NOT EXISTS `ret_role` (
   `role_id` int(11) NOT NULL AUTO_INCREMENT,
   `role_name` varchar(255) NOT NULL,
@@ -3666,7 +3527,6 @@ INSERT INTO `ret_role` (`role_id`, `role_name`, `created`, `created_by`, `update
 /*!40000 ALTER TABLE `ret_role` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_shift
-DROP TABLE IF EXISTS `ret_shift`;
 CREATE TABLE IF NOT EXISTS `ret_shift` (
   `shift_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
@@ -3722,7 +3582,6 @@ DELETE FROM `ret_shift`;
 /*!40000 ALTER TABLE `ret_shift` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_stock
-DROP TABLE IF EXISTS `ret_stock`;
 CREATE TABLE IF NOT EXISTS `ret_stock` (
   `stock_id` int(11) NOT NULL AUTO_INCREMENT,
   `tx_id` int(11) NOT NULL,
@@ -3744,7 +3603,6 @@ DELETE FROM `ret_stock`;
 /*!40000 ALTER TABLE `ret_stock` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_stock_in
-DROP TABLE IF EXISTS `ret_stock_in`;
 CREATE TABLE IF NOT EXISTS `ret_stock_in` (
   `tx_id` int(11) NOT NULL AUTO_INCREMENT,
   `tx_receipt_no` varchar(12) NOT NULL DEFAULT '0',
@@ -3762,7 +3620,6 @@ DELETE FROM `ret_stock_in`;
 /*!40000 ALTER TABLE `ret_stock_in` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_stock_opname
-DROP TABLE IF EXISTS `ret_stock_opname`;
 CREATE TABLE IF NOT EXISTS `ret_stock_opname` (
   `tx_id` int(11) NOT NULL AUTO_INCREMENT,
   `tx_receipt_no` varchar(12) NOT NULL DEFAULT '0',
@@ -3781,7 +3638,6 @@ DELETE FROM `ret_stock_opname`;
 /*!40000 ALTER TABLE `ret_stock_opname` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_stock_opname_detail
-DROP TABLE IF EXISTS `ret_stock_opname_detail`;
 CREATE TABLE IF NOT EXISTS `ret_stock_opname_detail` (
   `stock_id` int(11) NOT NULL AUTO_INCREMENT,
   `tx_id` int(11) NOT NULL,
@@ -3803,7 +3659,6 @@ DELETE FROM `ret_stock_opname_detail`;
 /*!40000 ALTER TABLE `ret_stock_opname_detail` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_stock_out
-DROP TABLE IF EXISTS `ret_stock_out`;
 CREATE TABLE IF NOT EXISTS `ret_stock_out` (
   `tx_id` int(11) NOT NULL AUTO_INCREMENT,
   `tx_receipt_no` varchar(12) NOT NULL DEFAULT '0',
@@ -3821,7 +3676,6 @@ DELETE FROM `ret_stock_out`;
 /*!40000 ALTER TABLE `ret_stock_out` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_supplier
-DROP TABLE IF EXISTS `ret_supplier`;
 CREATE TABLE IF NOT EXISTS `ret_supplier` (
   `supplier_id` int(11) NOT NULL AUTO_INCREMENT,
   `supplier_name` varchar(255) NOT NULL,
@@ -3844,7 +3698,6 @@ DELETE FROM `ret_supplier`;
 /*!40000 ALTER TABLE `ret_supplier` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_tax
-DROP TABLE IF EXISTS `ret_tax`;
 CREATE TABLE IF NOT EXISTS `ret_tax` (
   `tax_id` int(11) NOT NULL AUTO_INCREMENT,
   `tax_code` varchar(8) NOT NULL,
@@ -3867,7 +3720,6 @@ INSERT INTO `ret_tax` (`tax_id`, `tax_code`, `tax_name`, `tax_ratio`, `created`,
 /*!40000 ALTER TABLE `ret_tax` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_tx_type
-DROP TABLE IF EXISTS `ret_tx_type`;
 CREATE TABLE IF NOT EXISTS `ret_tx_type` (
   `tx_type` varchar(3) NOT NULL,
   `tx_name` varchar(255) NOT NULL,
@@ -3891,7 +3743,6 @@ INSERT INTO `ret_tx_type` (`tx_type`, `tx_name`, `created`, `created_by`, `updat
 /*!40000 ALTER TABLE `ret_tx_type` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_unit
-DROP TABLE IF EXISTS `ret_unit`;
 CREATE TABLE IF NOT EXISTS `ret_unit` (
   `unit_id` int(11) NOT NULL AUTO_INCREMENT,
   `unit_code` varchar(10) NOT NULL,
@@ -3919,7 +3770,6 @@ INSERT INTO `ret_unit` (`unit_id`, `unit_code`, `unit_name`, `created`, `created
 /*!40000 ALTER TABLE `ret_unit` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_user
-DROP TABLE IF EXISTS `ret_user`;
 CREATE TABLE IF NOT EXISTS `ret_user` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_name` varchar(32) NOT NULL,
@@ -3945,7 +3795,6 @@ INSERT INTO `ret_user` (`user_id`, `user_name`, `role_id`, `user_password`, `use
 /*!40000 ALTER TABLE `ret_user` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_void
-DROP TABLE IF EXISTS `ret_void`;
 CREATE TABLE IF NOT EXISTS `ret_void` (
   `tx_id` int(11) NOT NULL AUTO_INCREMENT,
   `tx_receipt_no` varchar(12) NOT NULL DEFAULT '0',
@@ -3973,7 +3822,6 @@ DELETE FROM `ret_void`;
 /*!40000 ALTER TABLE `ret_void` ENABLE KEYS */;
 
 -- Dumping structure for table prisma_pos.ret_void_detail
-DROP TABLE IF EXISTS `ret_void_detail`;
 CREATE TABLE IF NOT EXISTS `ret_void_detail` (
   `void_detail_id` int(11) NOT NULL AUTO_INCREMENT,
   `tx_id` int(11) NOT NULL,
