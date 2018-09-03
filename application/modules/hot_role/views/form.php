@@ -6,10 +6,10 @@
   <div class="row">
     <form id="form" class="" action="<?=base_url()?>hot_role/<?=$action?>" method="post">
       <div class="col-md-6">
-        <input class="form-control" type="hidden" name="role_id" value="<?php if($role != null){echo $role->role_id;}?>">
+        <input class="form-control keyboard" type="hidden" name="role_id" value="<?php if($role != null){echo $role->role_id;}?>">
         <div class="form-group">
           <label>Nama <small class="required-field">*</small></label>
-          <input class="form-control" type="text" name="role_name" value="<?php if($role != null){echo $role->role_name;}?>">
+          <input class="form-control keyboard" type="text" name="role_name" value="<?php if($role != null){echo $role->role_name;}?>">
         </div>
         <div class="form-group">
           <label>Aktif? <small class="required-field">*</small></label><br>
