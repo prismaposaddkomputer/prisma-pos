@@ -243,7 +243,7 @@ class Hot_reservation extends MY_Hotel {
     $billing_total = $billing->billing_total - $billing->billing_down_payment;
     //
     $data['billing_payment'] = price_to_num($data['billing_payment']);
-    $data['billing_change'] = price_to_num($data['billing_payment'] - $billing_total);
+    $data['billing_change'] = $data['billing_payment'] - $billing_total;
     $data['billing_status'] = 2;
     //
     $this->m_hot_billing->update($id,$data);
