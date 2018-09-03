@@ -887,4 +887,10 @@ class Hot_report_receptionist extends MY_Hotel {
     redirect(base_url().'hot_report_receptionist/range/'.$date_start.'/'.$date_end.'/'.$user_id);
   }
 
+  public function frame_pdf()
+  {
+    $data = $_POST;
+    $this->view('hot_report_receptionist/frame_pdf', $data);
+  }
+
 }

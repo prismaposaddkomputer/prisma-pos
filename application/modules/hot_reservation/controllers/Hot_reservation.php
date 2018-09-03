@@ -372,10 +372,10 @@ class Hot_reservation extends MY_Hotel {
       $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
       $printer -> feed();
       $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
-      $printer -> text("Tn. Danu");
+      $printer -> text($billing->guest_name);
       $printer -> feed();
       $printer -> setJustification(Escpos\Printer::JUSTIFY_RIGHT);
-      $printer -> text("123287789");
+      // $printer -> text("123287789");
       $printer -> feed();
       $printer -> text('--------------------------------');
       //Keterangan Pemesanan
