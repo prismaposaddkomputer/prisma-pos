@@ -6,14 +6,14 @@
   <div class="row">
     <form id="form" class="" action="<?=base_url()?>hot_user/<?=$action?>" method="post">
       <div class="col-md-6">
-        <input class="form-control" type="hidden" name="user_id" value="<?php if($user != null){echo $user->user_id;}?>">
+        <input class="form-control keyboard" type="hidden" name="user_id" value="<?php if($user != null){echo $user->user_id;}?>">
         <div class="form-group">
           <label>Nama Lengkap <small class="required-field">*</small></label>
-          <input class="form-control" type="text" name="user_realname" value="<?php if($user != null){echo $user->user_realname;}?>">
+          <input class="form-control keyboard" type="text" name="user_realname" value="<?php if($user != null){echo $user->user_realname;}?>">
         </div>
         <div class="form-group">
           <label>Role <small class="required-field">*</small></label>
-          <select class="form-control" name="role_id">
+          <select class="form-control keyboard" name="role_id">
             <?php foreach ($role_list as $row): ?>
               <option value="<?=$row->role_id?>" <?php if($user != null){if($row->role_id == $user->role_id){echo 'selected';};}?>><?=$row->role_name?></option>
             <?php endforeach; ?>
@@ -21,16 +21,16 @@
         </div>
         <div class="form-group">
           <label>Nama Pengguna (username) <small class="required-field">*</small></label>
-          <input class="form-control" type="text" name="user_name" value="<?php if($user != null){echo $user->user_name;}?>">
+          <input class="form-control keyboard" type="text" name="user_name" value="<?php if($user != null){echo $user->user_name;}?>">
         </div>
         <?php if ($action == 'insert'): ?>
           <div class="form-group">
             <label>Kata Sandi <small class="required-field">*</small></label>
-            <input id="user_password" class="form-control" type="password" name="user_password" value="<?php if($user != null){echo $user->user_password;}?>">
+            <input id="user_password" class="form-control keyboard" type="password" name="user_password" value="<?php if($user != null){echo $user->user_password;}?>">
           </div>
           <div class="form-group">
             <label>Ulangi Kata Sandi <small class="required-field">*</small></label>
-            <input class="form-control" type="password" name="user_password_repeat" value="<?php if($user != null){echo $user->user_password;}?>">
+            <input class="form-control keyboard" type="password" name="user_password_repeat" value="<?php if($user != null){echo $user->user_password;}?>">
           </div>
         <?php endif; ?>
         <div class="form-group">
@@ -50,18 +50,18 @@
       <div class="col-md-6">
         <h4>Ubah Kata Sandi</h4>
         <?php echo $this->session->flashdata('status'); ?>
-        <input class="form-control" type="hidden" name="user_id" value="<?php if($user != null){echo $user->user_id;}?>">
+        <input class="form-control keyboard" type="hidden" name="user_id" value="<?php if($user != null){echo $user->user_id;}?>">
         <div class="form-group">
           <label>Kata Sandi Lama <small class="required-field">*</small></label>
-          <input class="form-control" type="password" name="user_password_old" value="">
+          <input class="form-control keyboard" type="password" name="user_password_old" value="">
         </div>
           <div class="form-group">
             <label>Kata Sandi Baru <small class="required-field">*</small></label>
-            <input id="user_password_new" class="form-control" type="password" name="user_password_new" value="">
+            <input id="user_password_new" class="form-control keyboard" type="password" name="user_password_new" value="">
           </div>
           <div class="form-group">
             <label>Ulangi Kata Sandi Baru <small class="required-field">*</small></label>
-            <input class="form-control" type="password" name="user_password_new_repeat" value="">
+            <input class="form-control keyboard" type="password" name="user_password_new_repeat" value="">
           </div>
         <div class="form-group pull-right">
           <a class="btn btn-default" href="<?=base_url()?>hot_user/index"><i class="fa fa-close"></i> Batal</a>
