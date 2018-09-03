@@ -858,7 +858,12 @@ class Hot_report_reservation extends MY_Hotel {
 
     $data['billing'] = $this->m_hot_report_reservation->detail($tx_id);
     $this->view('detail', $data);
+  }
 
+  public function frame_pdf()
+  {
+    $data = $_POST;
+    $this->view('hot_report_reservation/frame_pdf', $data);
   }
 
 }
