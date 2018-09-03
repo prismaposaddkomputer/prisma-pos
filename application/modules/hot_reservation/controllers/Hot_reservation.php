@@ -243,7 +243,7 @@ class Hot_reservation extends MY_Hotel {
     $billing_total = $billing->billing_total - $billing->billing_down_payment;
     //
     $data['billing_payment'] = price_to_num($data['billing_payment']);
-    $data['billing_change'] = price_to_num($data['billing_payment'] - $billing_total);
+    $data['billing_change'] = $data['billing_payment'] - $billing_total;
     $data['billing_status'] = 2;
     //
     $this->m_hot_billing->update($id,$data);
@@ -522,7 +522,7 @@ class Hot_reservation extends MY_Hotel {
       echo "Couldn't print to this printer: " . $e -> getMessage() . "\n";
     }
     //
-    // redirect(base_url().'hot_reservation/payment/'.$billing_id);
+    redirect(base_url().'hot_reservation');
   }
 
   public function delete($id)
@@ -592,7 +592,7 @@ class Hot_reservation extends MY_Hotel {
     if ($client->client_is_taxed == 0) {
       // Setingan harga sebelum pajak
       $room_type_charge = price_to_num($data['room_type_charge']);
-      $room_subtotal = $room_type_charge*$room_type_duration;
+      $room_type_subtotal = $room_type_charge*$room_type_duration;
       $room_type_tax = $tax->charge_type_ratio*$room_type_subtotal/100;
   
       $room_type_service = 0;
