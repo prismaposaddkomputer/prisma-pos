@@ -273,6 +273,15 @@ class Hot_reservation extends MY_Hotel {
     $this->load->view('hot_billing/update', $data);
   }
 
+  public function cancel($billing_id)
+  {
+    $data = array(
+      'billing_status' => -1
+    );
+    $this->m_hot_reservation->update($billing_id,$data);
+    redirect(base_url().'hot_reservation/index');
+  }
+
   public function update()
   {
     $data = $_POST;

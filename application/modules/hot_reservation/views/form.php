@@ -186,7 +186,7 @@
         </div>
         <div class="form_group">
           <label>Harga</label>
-          <input class="form-control autonumeric" id="room_type_charge" type="text" value="0">
+          <input class="form-control autonumeric num" id="room_type_charge" type="text" value="0">
         </div>
         <br>
         <em>
