@@ -258,7 +258,7 @@ class Hot_reservation extends MY_Hotel {
     //
     $this->m_hot_billing->update($id,$data);
     if ($save_print == 'print_pdf') {
-      $this->reservation_print_pdf($id);
+      $this->frame_pdf($id);
     }else if($save_print == 'print_struk'){
       $this->reservation_print_struk($id);
     }
@@ -318,6 +318,13 @@ class Hot_reservation extends MY_Hotel {
     $this->pdf->setPaper('A4', 'potrait');
     $this->pdf->filename = "laporan-reservasi-pembayaran-".$data['billing']->billing_receipt_no.".pdf";
     $this->pdf->load_view('print_pdf', $data);
+  }
+
+  public function frame_pdf($billing_id)
+  {
+    $data['billing_id'] = $billing_id;
+
+    $this->view('hot_reservation/frame_pdf', $data);
   }
 
   public function reservation_print_struk($billing_id)
