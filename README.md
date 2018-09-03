@@ -3,6 +3,19 @@ Application points of sale built by CV ADD Computer. This application consists o
 
 ## Change Log
 
+### V 2.4.0
+#### Update khusus modul Hotel
+1. Metode input kamar sudah otomatis. Hanya mengisi jenis kamar dan jumlah kamar, maka data kamar akan terisi otomatis.
+1. Item transaksi sudah dipisah-pisah menurut kategori (Ekstra, Pelayanan, FnB dan Non Pajak)
+1. Untuk 1 transaksi bisa menginputkan data item transaksi > 1
+1. Harga bisa di set sebelum/sesudah pajak.
+1. Jenis harga bisa disesaikan dengan kebutuhan (Pajak, service, biaya lain-lain)
+1. Pemesanan dan pembayaran jadi 1 menu
+1. Cetak struk bisa berupa kertas thermal atau PDF (printer besar)
+1. Laporan bisa berupa cetak printer thermal atau PDF
+1. Printer bisa mencetak gambar.
+1. Kompresi gambar logo 
+
 ### V 2.0
 1. Add setting for receipt 
 
