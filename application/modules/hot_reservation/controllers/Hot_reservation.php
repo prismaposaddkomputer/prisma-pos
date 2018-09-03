@@ -214,6 +214,18 @@ class Hot_reservation extends MY_Hotel {
     $this->m_hot_reservation->update($billing_id,$data);
   }
 
+  public function detail($id)
+  {
+    $data['access'] = $this->access;
+    $data['id'] = $id;
+    $data['title'] = 'Detail Reservasi';
+
+    $data['billing'] = $this->m_hot_reservation->get_billing($id);
+    $data['charge_type'] = $this->m_hot_charge_type->get_all();
+
+    $this->view('hot_reservation/detail',$data);
+  }
+
   public function payment($id)
   {
     $data['access'] = $this->access;
