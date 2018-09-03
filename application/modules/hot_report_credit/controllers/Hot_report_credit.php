@@ -881,4 +881,10 @@ class hot_report_credit extends MY_Hotel {
 
   }
 
+  public function frame_pdf()
+  {
+    $data = $_POST;
+    $this->view('hot_report_credit/frame_pdf', $data);
+  }
+
 }
