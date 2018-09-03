@@ -396,14 +396,14 @@
             <td width="300">Pembayaran</td>
             <td width="20">:</td>
             <td>
-              <input id="billing_payment" name="billing_payment" style="width:100%; height: 40px; border: 2px solid red; font-size: 20px; font-weight: bold; padding-left: 10px;" class="autonumeric num" type="text" value="" dir="rtl" onchange="calc_change()">
+              <input id="billing_payment" name="billing_payment" style="width:100%; height: 40px; border: 2px solid red; font-size: 20px; font-weight: bold; text-align: right; padding-right: 10px;" class="autonumeric num" type="text" value="" dir="rtl" onchange="calc_change()">
             </td>
           </tr>
           <tr>
             <th width="300">Kembalian</th>
             <th width="20">:</th>
             <th>
-              <input id="billing_change" style="width:100%; border: none;" class="autonumeric" type="text" value="0" dir="rtl" readonly>
+              <input id="billing_change" style="width:100%; border: none; font-size: 18px;" class="autonumeric" type="text" value="0" dir="rtl" readonly>
             </th>
           </tr>
           <tr>
