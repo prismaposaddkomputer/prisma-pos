@@ -147,18 +147,31 @@ class Hot_reservation extends MY_Hotel {
 
   public function insert()
   {
-    $data = $_POST;
-
-    $room = $this->m_hot_reservation->get_billing_room($data['billing_id']);
-    $extra = $this->m_hot_reservation->get_billing_extra($data['billing_id']);
-    $service = $this->m_hot_reservation->get_billing_service($data['billing_id']);
-    $fnb = $this->m_hot_reservation->get_billing_fnb($data['billing_id']);
+    $data = $_POST;   
 
     $data['billing_status'] = 1;
     $data['billing_date_in'] = ind_to_date($data['billing_date_in']);
     $data['billing_date_out'] = ind_to_date($data['billing_date_out']);
     $data['billing_num_day'] = dateDiff($data['billing_date_out'],$data['billing_date_in'])+1;
     $data['billing_down_payment'] = price_to_num($data['billing_down_payment']);
+
+    $data['user_id'] = $this->session->userdata('user_id');
+    $data['user_realname'] = $this->session->userdata('user_realname');
+    
+    $this->m_hot_reservation->update($data['billing_id'],$data);
+
+    $this->update_all_billing($data['billing_id']);
+
+    $this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil ditambahkan!</div>');
+    redirect(base_url().'hot_reservation/payment/'.$data['billing_id']);
+  }
+
+  public function update_all_billing($billing_id)
+  {
+    $room = $this->m_hot_reservation->get_billing_room($billing_id);
+    $extra = $this->m_hot_reservation->get_billing_extra($billing_id);
+    $service = $this->m_hot_reservation->get_billing_service($billing_id);
+    $fnb = $this->m_hot_reservation->get_billing_fnb($billing_id);
 
     $billing_subtotal = 0;
     $billing_tax = 0;
@@ -198,12 +211,7 @@ class Hot_reservation extends MY_Hotel {
     $data['billing_other'] = $billing_other;
     $data['billing_total'] = $billing_total;
 
-    $data['user_id'] = $this->session->userdata('user_id');
-    $data['user_realname'] = $this->session->userdata('user_realname');
-    
-    $this->m_hot_reservation->update($data['billing_id'],$data);
-    $this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil ditambahkan!</div>');
-    redirect(base_url().'hot_reservation/payment/'.$data['billing_id']);
+    $this->m_hot_reservation->update($billing_id,$data);
   }
 
   public function payment($id)
@@ -211,7 +219,7 @@ class Hot_reservation extends MY_Hotel {
     $data['access'] = $this->access;
     $data['id'] = $id;
     //
-    $data['action'] = 'update';
+    $data['action'] = 'payment_action';
     //
     $data['title'] = 'Pembayaran';
     $data['billing'] = $this->m_hot_reservation->get_billing($id);
@@ -220,21 +228,11 @@ class Hot_reservation extends MY_Hotel {
     $this->view('hot_reservation/payment',$data);
   }
 
-  public function edit($id)
-  {
-    $data['billing']= $this->m_hot_billing->get_specific($id);
-    $data['room_id'] = $this->m_hot_billing_room->get_by_billing_id($id);
-    $this->load->view('hot_billing/update', $data);
-  }
-
-  public function update()
+  public function payment_action()
   {
     $data = $_POST;
     $id = $data['billing_id'];
     $data['updated_by'] = $this->session->userdata('user_realname');
-    if(!isset($data['is_active'])){
-      $data['is_active'] = 0;
-    }
     //
     $save_print = $data['save_print'];
     unset($data['save_print']);
@@ -252,9 +250,37 @@ class Hot_reservation extends MY_Hotel {
     }else if($save_print == 'print_struk'){
       $this->reservation_print_struk($id);
     }
+
+    $this->m_hot_reservation->update($data['billing_id'],$data);
+  }
+
+  public function edit($id)
+  {
+    $data['billing']= $this->m_hot_billing->get_specific($id);
+    $data['room_id'] = $this->m_hot_billing_room->get_by_billing_id($id);
+    $this->load->view('hot_billing/update', $data);
+  }
+
+  public function update()
+  {
+    $data = $_POST;
+
+    $data['billing_status'] = 1;
+    $data['billing_date_in'] = ind_to_date($data['billing_date_in']);
+    $data['billing_date_out'] = ind_to_date($data['billing_date_out']);
+    $data['billing_num_day'] = dateDiff($data['billing_date_out'],$data['billing_date_in'])+1;
+    $data['billing_down_payment'] = price_to_num($data['billing_down_payment']);
+
+    $data['user_id'] = $this->session->userdata('user_id');
+    $data['user_realname'] = $this->session->userdata('user_realname');
+    
+    $this->m_hot_reservation->update($data['billing_id'],$data);
+
+    $this->update_all_billing($data['billing_id']);
+
     $this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil diubah!</div>');
     // redirect(base_url().'hot_reservation/index');
-    redirect(base_url().'hot_reservation/index');
+    redirect(base_url().'hot_reservation/payment/'.$data['billing_id']);
   }
 
   public function reservation_print_pdf($billing_id)
