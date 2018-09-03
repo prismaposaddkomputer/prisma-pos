@@ -380,7 +380,8 @@
             <td width="300">Total</td>
             <td width="20">:</td>
             <td><?=num_to_idr($billing->billing_total)?></td>
-            <input id="billing_total" type="hidden" value="<?=$billing->billing_total?>">
+            <!-- <input id="billing_total" type="hidden" value="<?=$billing->billing_total?>"> -->
+            <input id="billing_total" type="hidden" value="<?=$billing->billing_total-$billing->billing_down_payment?>">
           </tr>
           <tr>
             <td width="300">Uang Muka</td>
