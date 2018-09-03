@@ -605,7 +605,7 @@ class Hot_reservation extends MY_Hotel {
         $room_type_other = $other->charge_type_ratio*$room_type_subtotal/100;
       }
   
-      $room_type_total = $data['room_type_charge']+$room_type_tax+$room_type_service+$room_type_other;
+      $room_type_total = price_to_num($data['room_type_charge'])+$room_type_tax+$room_type_service+$room_type_other;
     } else {
       // Settingan harga setelah pajak
       $room_type_total = price_to_num($data['room_type_charge'])*$room_type_duration;
