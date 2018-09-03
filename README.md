@@ -3,7 +3,7 @@ Application points of sale built by CV ADD Computer. This application consists o
 
 ## Change Log
 
-### V 2.4.0
+### V 2.4.0 - 3 September 2018
 #### Update khusus modul Hotel
 1. Metode input kamar sudah otomatis. Hanya mengisi jenis kamar dan jumlah kamar, maka data kamar akan terisi otomatis.
 1. Item transaksi sudah dipisah-pisah menurut kategori (Ekstra, Pelayanan, FnB dan Non Pajak)
