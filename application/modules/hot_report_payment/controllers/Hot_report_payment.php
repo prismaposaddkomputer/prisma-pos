@@ -881,4 +881,10 @@ class Hot_report_payment extends MY_Hotel {
 
   }
 
+  public function frame_pdf()
+  {
+    $data = $_POST;
+    $this->view('hot_report_payment/frame_pdf', $data);
+  }
+
 }
