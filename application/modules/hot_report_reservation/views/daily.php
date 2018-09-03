@@ -4,9 +4,12 @@
 <div class="content-body">
   <div class="row">
     <div class="col-md-12">
-      <a href="<?=base_url()?>hot_report_reservation/monthly/<?=$month?>" class="btn btn-success"><i class="fa fa-arrow-left"></i> Kembali</a>
-      <a class="btn btn-primary" href="<?=base_url()?>hot_report_reservation/daily_pdf/<?=$date?>" target="_blank"><i class="fa fa-print"></i> Download PDF</a>
-      <a href="<?=base_url()?>hot_report_reservation/daily_print/<?=$date?>" class="btn btn-warning"><i class="fa fa-print"></i> Print Laporan</a>
+      <form method="post" action="<?=base_url()?>hot_report_reservation/frame_pdf">
+        <a href="<?=base_url()?>hot_report_reservation/monthly/<?=$month?>" class="btn btn-success"><i class="fa fa-arrow-left"></i> Kembali</a>
+        <input type="hidden" name="url" value="<?=base_url()?>hot_report_reservation/daily_pdf/<?=$date?>">
+        <button class="btn btn-primary" type="submit"><i class="fa fa-print"></i> Download PDF</button>
+        <a href="<?=base_url()?>hot_report_reservation/daily_print/<?=$date?>" class="btn btn-warning"><i class="fa fa-print"></i> Print Laporan</a>
+      </form>
       <br><br>
       <table class="table table-condensed table-bordered table-striped">
         <thead>
