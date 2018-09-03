@@ -13,7 +13,7 @@
         </div>
         <div class="form-group">
           <label>Role <small class="required-field">*</small></label>
-          <select class="form-control keyboard" name="role_id">
+          <select class="form-control" name="role_id">
             <?php foreach ($role_list as $row): ?>
               <option value="<?=$row->role_id?>" <?php if($user != null){if($row->role_id == $user->role_id){echo 'selected';};}?>><?=$row->role_name?></option>
             <?php endforeach; ?>

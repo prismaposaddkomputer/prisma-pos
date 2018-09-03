@@ -4,9 +4,12 @@
 <div class="content-body">
   <div class="row">
     <div class="col-md-12">
-      <a href="<?=base_url()?>hot_report_receptionist/annual/<?=$year?>/<?=$user_id?>" class="btn btn-success"><i class="fa fa-arrow-left"></i> Kembali</a>
-      <a class="btn btn-primary" href="<?=base_url()?>hot_report_receptionist/monthly_pdf/<?=$month?>/<?=$user_id?>" target="_blank"><i class="fa fa-print"></i> Download PDF</a>
-      <a href="<?=base_url()?>hot_report_receptionist/monthly_print/<?=$month?>/<?=$user_id?>" class="btn btn-warning"><i class="fa fa-print"></i> Print Laporan</a>
+      <form method="post" action="<?=base_url()?>hot_report_receptionist/frame_pdf">
+        <a href="<?=base_url()?>hot_report_receptionist/annual/<?=$year?>/<?=$user_id?>" class="btn btn-success"><i class="fa fa-arrow-left"></i> Kembali</a>
+        <input type="hidden" name="url" value="<?=base_url()?>hot_report_receptionist/monthly_pdf/<?=$month?>/<?=$user_id?>">
+        <button class="btn btn-primary" type="submit"><i class="fa fa-print"></i> Download PDF</button>
+        <a href="<?=base_url()?>hot_report_receptionist/monthly_print/<?=$month?>/<?=$user_id?>" class="btn btn-warning"><i class="fa fa-print"></i> Print Laporan</a>
+      </form>
       <br><br>
       <table class="table table-striped table-bordered table-condensed">
         <thead>
