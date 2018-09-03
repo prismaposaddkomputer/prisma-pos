@@ -83,7 +83,7 @@
     <div style="border-bottom: 1px solid black; margin-top: 15px;"></div>
     <div class="description-print">
       <div class="bill-to">
-        <div>Pembayaran Kepada : </div>
+        <div>Detail Tamu : </div>
         <?php
         if ($billing->guest_gender == 'L') {
           $name_title = "Tn. ";
@@ -117,6 +117,11 @@
             <td>TXS-<?=$billing->billing_receipt_no?></td>
           </tr>
           <tr>
+            <th>Tanggal</th>
+            <td>&nbsp;:&nbsp;</td>
+            <td><?=date("d-m-Y")?></td>
+          </tr>
+          <tr>
             <th>Check In</th>
             <td>&nbsp;:&nbsp;</td>
             <td><?=date_to_ind($billing->billing_date_in)?> <?=$billing->billing_time_in?></td>
@@ -133,24 +138,33 @@
           </tr>
         </table>
       </div>
-      <div style="border-bottom: 1px solid black; margin-top: 110px;"></div>
+      <div style="border-bottom: 1px solid black; margin-top: 127px;"></div>
     </div>
     <div style="padding-top: 150px;">
       <table id="main" class="table table-striped table-bordered table-condensed">
         <thead>
           <tr>
-            <th class="text-center">No</th>
-            <th class="text-center">No Nota</th>
-            <th class="text-center">Nama Tamu</th>
-            <th class="text-center">Status</th>
-            <th class="text-center">Sub Total</th>
-            <th class="text-center">Diskon</th>
+            <th class="text-center">Tanggal</th>
+            <th>Nama</th>
+            <th class="text-center">Qty</th>
+            <th>Harga Unit</th>
+            <th class="text-right">Jumlah</th>
           </tr>
         </thead>
         <tbody>
+
+          <?php if ($billing->room != null): ?>
+            <?php foreach ($billing->room as $row): ?>
             <tr>
-              <td class="text-center" colspan="6">Tidak ada data</td>
+              <td align="center"><?=get_date_only($row->created)?></td>
+              <td>Kamar:<?=$row->room_name?></td>
+              <td align="center"><?=$row->room_type_duration?> Hari</td>
+              <td><?=num_to_idr($row->room_type_total)?></td>
+              <td align="right">Rp 348,600.00</td>
             </tr>
+            <?php endforeach; ?>
+          <?php endif; ?>
+
         </tbody>
       </table>
     </div>
