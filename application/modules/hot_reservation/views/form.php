@@ -786,11 +786,13 @@
     var billing_id = $('#billing_id').val();
     var extra_id = $('#extra_id').val();
     var extra_amount = $('#extra_amount').val();
+    var extra_charge = $('#extra_charge').val();
 
     $.ajax({
       type : 'post',
       url : '<?=base_url()?>hot_reservation/add_extra',
-      data : 'billing_id='+billing_id+'&extra_id='+extra_id+'&extra_amount='+extra_amount,
+      data : 'billing_id='+billing_id+'&extra_id='+extra_id+'&extra_amount='+extra_amount+
+              '&extra_charge='+extra_charge,
       success : function (data) {
         $('#modal_extra_list').modal('show');
         $('#modal_extra').modal('hide');
@@ -833,7 +835,7 @@
             $.each(data.extra, function(i, item) {
               var row = '<tr>'+
                 '<td>'+item.extra_name+'</td>'+
-                '<td>'+sys_to_cur(parseFloat(item.extra_charge)+(parseFloat(item.extra_tax)/parseFloat(item.extra_amount)))+'</td>'+
+                '<td>'+sys_to_cur(item.extra_total/item.extra_amount)+'</td>'+
                 '<td class="text-right">'+item.extra_amount+'</td>'+
                 '<td>'+sys_to_cur(item.extra_total)+'</td>'+
                 '<td class="text-center">'+
@@ -980,11 +982,13 @@
     var billing_id = $('#billing_id').val();
     var fnb_id = $('#fnb_id').val();
     var fnb_amount = $('#fnb_amount').val();
+    var fnb_charge = $('#fnb_charge').val();
 
     $.ajax({
       type : 'post',
       url : '<?=base_url()?>hot_reservation/add_fnb',
-      data : 'billing_id='+billing_id+'&fnb_id='+fnb_id+'&fnb_amount='+fnb_amount,
+      data : 'billing_id='+billing_id+'&fnb_id='+fnb_id+'&fnb_amount='+fnb_amount+
+              '&fnb_charge='+fnb_charge,
       success : function (data) {
         $('#modal_fnb_list').modal('show');
         $('#modal_fnb').modal('hide');
@@ -1027,7 +1031,7 @@
             $.each(data.fnb, function(i, item) {
               var row = '<tr>'+
                 '<td>'+item.fnb_name+'</td>'+
-                '<td>'+sys_to_cur(parseFloat(item.fnb_charge)+(parseFloat(item.fnb_tax)/parseFloat(item.fnb_amount)))+'</td>'+
+                '<td>'+sys_to_cur(item.fnb_total/item.fnb_amount)+'</td>'+
                 '<td class="text-right">'+item.fnb_amount+'</td>'+
                 '<td>'+sys_to_cur(item.fnb_total)+'</td>'+
                 '<td class="text-center">'+

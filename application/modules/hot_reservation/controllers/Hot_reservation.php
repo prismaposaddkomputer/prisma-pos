@@ -835,15 +835,15 @@ class Hot_reservation extends MY_Hotel {
   public function get_extra()
   {
     $extra_id = $this->input->post('extra_id');
-    
     $client = $this->m_hot_client->get_all();
-    $tax = $this->m_hot_charge_type->get_by_id(1);
-
     $data = $this->m_hot_extra->get_by_id($extra_id);
+    $tax = $this->m_hot_charge_type->get_by_id(1);
 
     if ($client->client_is_taxed == 1) {
       $data->extra_charge += $data->extra_charge*$tax->charge_type_ratio/100;
     }
+
+    $data->extra_charge = round($data->extra_charge,0,PHP_ROUND_HALF_UP);
 
     echo json_encode($data);
   }
@@ -855,15 +855,24 @@ class Hot_reservation extends MY_Hotel {
     $extra = $this->m_hot_extra->get_by_id($data['extra_id']);
     $tax = $this->m_hot_charge_type->get_by_id(1);
 
-    $extra_subtotal = $data['extra_amount']*$extra->extra_charge;
-    $extra_tax = $extra_subtotal*$tax->charge_type_ratio/100;
-    $extra_total = $extra_subtotal+$extra_tax;
+    if ($client->client_is_taxed == 0) {
+      $extra_charge = price_to_num($data['extra_charge']);
+      $extra_subtotal = $data['extra_amount']*$extra_charge;
+      $extra_tax = $extra_subtotal*$tax->charge_type_ratio/100;
+      $extra_total = $extra_subtotal+$extra_tax;
+    }else{
+      $extra_total = $data['extra_amount']*price_to_num($data['extra_charge']);
+      $tot_ratio = 100+$tax->charge_type_ratio;
+      $extra_tax = ($tax->charge_type_ratio/$tot_ratio)*$extra_total;
+      $extra_subtotal = $extra_total-$extra_tax;
+      $extra_charge = $extra_subtotal/$data['extra_amount'];
+    }
 
     $data_extra = array(
       'billing_id' => $data['billing_id'],
       'extra_id' => $extra->extra_id,
       'extra_name' => $extra->extra_name,
-      'extra_charge' => $extra->extra_charge,
+      'extra_charge' => $extra_charge,
       'extra_amount' => $data['extra_amount'],
       'extra_subtotal' => $extra_subtotal,
       'extra_tax' => $extra_tax,
@@ -958,15 +967,15 @@ class Hot_reservation extends MY_Hotel {
   public function get_fnb()
   {
     $fnb_id = $this->input->post('fnb_id');
-    
+    $data = $this->m_hot_fnb->get_by_id($fnb_id);    
     $client = $this->m_hot_client->get_all();
     $tax = $this->m_hot_charge_type->get_by_id(1);
-
-    $data = $this->m_hot_fnb->get_by_id($fnb_id);
 
     if ($client->client_is_taxed == 1) {
       $data->fnb_charge += $data->fnb_charge*$tax->charge_type_ratio/100;
     }
+
+    $data->fnb_charge = round($data->fnb_charge,0,PHP_ROUND_HALF_UP);
 
     echo json_encode($data);
   }
@@ -978,15 +987,24 @@ class Hot_reservation extends MY_Hotel {
     $fnb = $this->m_hot_fnb->get_by_id($data['fnb_id']);
     $tax = $this->m_hot_charge_type->get_by_id(1);
 
-    $fnb_subtotal = $data['fnb_amount']*$fnb->fnb_charge;
-    $fnb_tax = $fnb_subtotal*$tax->charge_type_ratio/100;
-    $fnb_total = $fnb_subtotal+$fnb_tax;
+    if ($client->client_is_taxed == 0) {
+      $fnb_charge = price_to_num($data['fnb_charge']);
+      $fnb_subtotal = $data['fnb_amount']*$fnb_charge;
+      $fnb_tax = $fnb_subtotal*$tax->charge_type_ratio/100;
+      $fnb_total = $fnb_subtotal+$fnb_tax;
+    }else{
+      $fnb_total = $data['fnb_amount']*price_to_num($data['fnb_charge']);
+      $tot_ratio = 100+$tax->charge_type_ratio;
+      $fnb_tax = ($tax->charge_type_ratio/$tot_ratio)*$fnb_total;
+      $fnb_subtotal = $fnb_total-$fnb_tax;
+      $fnb_charge = $fnb_subtotal/$data['fnb_amount'];
+    }
 
     $data_fnb = array(
       'billing_id' => $data['billing_id'],
       'fnb_id' => $fnb->fnb_id,
       'fnb_name' => $fnb->fnb_name,
-      'fnb_charge' => $fnb->fnb_charge,
+      'fnb_charge' => $fnb_charge,
       'fnb_amount' => $data['fnb_amount'],
       'fnb_subtotal' => $fnb_subtotal,
       'fnb_tax' => $fnb_tax,
