@@ -833,15 +833,15 @@ class Hot_reservation extends MY_Hotel {
   public function get_extra()
   {
     $extra_id = $this->input->post('extra_id');
-    
     $client = $this->m_hot_client->get_all();
-    $tax = $this->m_hot_charge_type->get_by_id(1);
-
     $data = $this->m_hot_extra->get_by_id($extra_id);
+    $tax = $this->m_hot_charge_type->get_by_id(1);
 
     if ($client->client_is_taxed == 1) {
       $data->extra_charge += $data->extra_charge*$tax->charge_type_ratio/100;
     }
+
+    $data->extra_charge = round($data->extra_charge,0,PHP_ROUND_HALF_UP);
 
     echo json_encode($data);
   }
@@ -853,15 +853,24 @@ class Hot_reservation extends MY_Hotel {
     $extra = $this->m_hot_extra->get_by_id($data['extra_id']);
     $tax = $this->m_hot_charge_type->get_by_id(1);
 
-    $extra_subtotal = $data['extra_amount']*$extra->extra_charge;
-    $extra_tax = $extra_subtotal*$tax->charge_type_ratio/100;
-    $extra_total = $extra_subtotal+$extra_tax;
+    if ($client->client_is_taxed == 0) {
+      $extra_charge = price_to_num($data['extra_charge']);
+      $extra_subtotal = $data['extra_amount']*$extra_charge;
+      $extra_tax = $extra_subtotal*$tax->charge_type_ratio/100;
+      $extra_total = $extra_subtotal+$extra_tax;
+    }else{
+      $extra_total = $data['extra_amount']*price_to_num($data['extra_charge']);
+      $tot_ratio = 100+$tax->charge_type_ratio;
+      $extra_tax = ($tax->charge_type_ratio/$tot_ratio)*$extra_total;
+      $extra_subtotal = $extra_total-$extra_tax;
+      $extra_charge = $extra_subtotal/$data['extra_amount'];
+    }
 
     $data_extra = array(
       'billing_id' => $data['billing_id'],
       'extra_id' => $extra->extra_id,
       'extra_name' => $extra->extra_name,
-      'extra_charge' => $extra->extra_charge,
+      'extra_charge' => $extra_charge,
       'extra_amount' => $data['extra_amount'],
       'extra_subtotal' => $extra_subtotal,
       'extra_tax' => $extra_tax,
