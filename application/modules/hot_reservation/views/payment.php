@@ -380,7 +380,8 @@
             <td width="300">Total</td>
             <td width="20">:</td>
             <td><?=num_to_idr($billing->billing_total)?></td>
-            <input id="billing_total" type="hidden" value="<?=$billing->billing_total?>">
+            <!-- <input id="billing_total" type="hidden" value="<?=$billing->billing_total?>"> -->
+            <input id="billing_total" type="hidden" value="<?=$billing->billing_total-$billing->billing_down_payment?>">
           </tr>
           <tr>
             <td width="300">Uang Muka</td>
@@ -396,7 +397,7 @@
             <td width="300">Pembayaran</td>
             <td width="20">:</td>
             <td>
-              <input id="billing_payment" name="billing_payment" style="width:100%; height: 40px; border: 2px solid red; font-size: 20px; font-weight: bold; text-align: right; padding-right: 10px;" class="autonumeric num" type="text" value="" dir="rtl" onchange="calc_change()">
+              <input id="billing_payment" name="billing_payment" style="width:100%; height: 40px; border: 2px solid green; font-size: 20px; font-weight: bold; text-align: right; padding-right: 10px;" class="autonumeric num" type="text" value="" dir="rtl" onchange="calc_change()">
             </td>
           </tr>
           <tr>

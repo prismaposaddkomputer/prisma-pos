@@ -388,10 +388,21 @@ class Hot_reservation extends MY_Hotel {
       $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
       $printer -> feed();
       $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
-      $printer -> text($billing->guest_name);
+      $printer -> text("Nama : ".$billing->guest_name);
       $printer -> feed();
-      $printer -> setJustification(Escpos\Printer::JUSTIFY_RIGHT);
-      // $printer -> text("123287789");
+      if ($billing->guest_phone !='') {
+        $phone = $billing->guest_phone;
+      }else {
+        $phone = "-";
+      }
+      $printer -> text("No Telp : ".$phone);
+      if ($billing->guest_id_no !='') {
+        $id_no = $billing->guest_id_no;
+      }else {
+        $id_no = "-";
+      }
+      $printer -> feed();
+      $printer -> text("No Identitas : ".$id_no);
       $printer -> feed();
       $printer -> text('--------------------------------');
       //Keterangan Pemesanan
