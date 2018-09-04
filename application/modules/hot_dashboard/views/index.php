@@ -192,7 +192,37 @@
     </div>
   </div>
 
+<!-- Modal -->
+<div class="modal fade" id="informationUpdate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Informasi Update</h4>
+      </div>
+      <div class="modal-body">
+        <div style="font-weight: bold; font-size: 15px; margin-bottom: 7px;">Prisma POS - V<?=$version->version_now?></div>
+        <ul style="margin-left: -10px; font-size: 15px;">
+          <li>Metode input kamar sudah otomatis. Hanya mengisi jenis kamar dan jumlah kamar, maka data kamar akan terisi otomatis</li>
+          <li>Item transaksi sudah dipisah-pisah menurut kategori (Ekstra, Pelayanan, FnB dan Non Pajak)</li>
+          <li>Untuk 1 transaksi bisa menginputkan data item transaksi > 1</li>
+          <li>Harga bisa di set sebelum/sesudah pajak, dimenu Pengaturan -> Client</li>
+          <li>Jenis harga bisa disesuaikan dengan kebutuhan (Pajak, service, biaya lain-lain)</li>
+          <li>Pemesanan, Pembayaran, dan Tamu jadi 1 menu</li>
+          <li>Cetak struk bisa berupa kertas Thermal (Printer Kecil) atau PDF (Printer Besar)</li>
+          <li>Laporan bisa berupa cetak Printer Thermal (Printer Kecil) atau PDF</li>
+          <li>Printer Thermal (Printer Kecil) bisa mencetak gambar</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal"><b>Close</b> <i class="fa fa-times"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
+  $('#informationUpdate').modal('show')
   //selling chart
   var sC = document.getElementById("sellingChart").getContext('2d');
   var sellingChart = new Chart(sC, {
