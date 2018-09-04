@@ -47,8 +47,14 @@
             </tr>
           </thead>
           <tbody>
-            <?php if ($fnb_type != null): ?>
-              <?php $i=1;foreach ($fnb_type as $row): ?>
+            <?php if ($fnb != null): ?>
+              <?php 
+                $tot_ratio = 100;
+                if ($client->client_is_taxed == 1) {
+                  $tot_ratio = 100+$tax->charge_type_ratio;
+                }
+              ?>
+              <?php $i=1;foreach ($fnb as $row): ?>
                 <tr>
                   <td class="text-center"><?=$this->uri->segment('3')+$i++?></td>
                   <td class="text-center">
@@ -56,7 +62,7 @@
                       <button class="btn btn-xs btn-danger" onclick="del('<?=$row->fnb_id?>');"><i class="fa fa-trash"></i></button>
                   </td>
                   <td><?=$row->fnb_name?></td> 
-                  <td><?=num_to_idr($row->fnb_charge)?></td>
+                  <td><?php echo num_to_idr (($tot_ratio/100)*$row->fnb_charge) ?></td>
                   <td class="text-center">
                     <?php if ($row->is_active == 1): ?>
                       <i class="fa fa-check cl-success"></i>
@@ -73,6 +79,15 @@
             <?php endif; ?>
           </tbody>
         </table>
+        <small>
+          Harga
+          <?php if ($client->client_is_taxed == 1) {
+            echo 'Sudah Termasuk';
+          }else{
+            echo 'Belum Termasuk';
+          } ?>
+          Pajak Hotel
+        </small>
         <div class="pull-right">
           <?php echo $this->pagination->create_links(); ?>
         </div>
