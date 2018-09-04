@@ -55,6 +55,7 @@
     <!-- Chart JS -->
     <script src="<?=base_url()?>vendor/chart-js/Chart.min.js" charset="utf-8"></script>
     <script src="<?=base_url()?>vendor/chart-js/Chart.bundle.min.js" charset="utf-8"></script>
+    <script src="<?=base_url()?>vendor/chart-js/utils.js" charset="utf-8"></script>
     <!-- JQuery UI -->
     <script src="<?=base_url()?>vendor/jquery-ui/jquery-ui.min.js"></script>
     <!-- keyboard js -->

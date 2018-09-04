@@ -21,6 +21,75 @@ class M_hot_dashboard extends CI_Model {
 		return $query->row();
   }
 
+  public function count_guest_member() {
+      $sql = "SELECT
+                COUNT(guest_id) AS count_data
+              FROM hot_guest
+              WHERE
+                guest_type = '1' AND
+                is_active = '1'";
+      $query = $this->db->query($sql);
+      $result = $query->row_array();
+      // 
+      return $result['count_data'];
+  }
+
+  public function count_all_billing_id() {
+      $sql = "SELECT
+                COUNT(billing_id) AS count_data
+              FROM hot_billing
+              WHERE
+                billing_status != '0'";
+      $query = $this->db->query($sql);
+      $result = $query->row_array();
+      // 
+      return $result['count_data'];
+  }
+
+  public function count_billing_id_today($today) {
+      $sql = "SELECT
+                COUNT(billing_id) AS count_data
+              FROM hot_billing
+              WHERE
+                billing_date_in LIKE '$today%' AND
+                billing_status != '0'
+              GROUP BY billing_date_in";
+      $query = $this->db->query($sql);
+      $result = $query->row_array();
+      // 
+      return $result['count_data'];
+  }
+
+  public function count_billing_id_chart_monthly($month) {
+      $sql = "SELECT
+                COUNT(billing_id) AS count_data
+              FROM hot_billing
+              WHERE
+                billing_date_in LIKE '$month%' AND
+                billing_status != '0'
+              GROUP BY billing_date_in";
+      $query = $this->db->query($sql);
+      $result = $query->result_array();
+      // 
+      return $result;
+  }
+
+  public function chart_monthly($month)
+  {
+    $billing = $this->db->query(
+      "SELECT
+        *
+      FROM hot_billing
+      WHERE
+        billing_date_in LIKE '$month%' AND
+        billing_status != '0'
+      GROUP BY billing_date_in
+      ORDER BY billing_date_in DESC"
+    )->result();
+
+    return $billing;
+  }
+
   public function total_guest_today()
   {
     $date_now = date('Y-m-d');

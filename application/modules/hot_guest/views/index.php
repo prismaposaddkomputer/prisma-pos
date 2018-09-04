@@ -53,7 +53,7 @@
                     <?php if ($row->guest_type == 0): ?>
                       Regular
                     <?php elseif ($row->guest_type == 1): ?>
-                      Member
+                      Member (Tamu Langganan)
                     <?php endif; ?>
                   </td> 
                   <td class="text-center">
@@ -81,7 +81,7 @@
               <?php endforeach; ?>
             <?php else: ?>
               <tr>
-                <td class="text-center" colspan="6">Tidak ada data!</td>
+                <td class="text-center" colspan="7">Tidak ada data!</td>
               </tr>
             <?php endif; ?>
           </tbody>
