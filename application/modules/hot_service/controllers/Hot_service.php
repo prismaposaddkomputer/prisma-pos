@@ -18,6 +18,8 @@ class Hot_service extends MY_Hotel {
     $this->access = $this->m_hot_config->get_permission($this->role_id, $this->module_controller);
 
     $this->load->model('m_hot_service');
+    $this->load->model('hot_client/m_hot_client');
+    $this->load->model('hot_charge_type/m_hot_charge_type');
   }
 
 	public function index()
@@ -25,6 +27,7 @@ class Hot_service extends MY_Hotel {
     if ($this->access->_read == 1) {
       $data['access'] = $this->access;
       $data['title'] = 'Manajemen Pelayanan Kamar';
+      $data['tax'] = $this->m_hot_charge_type->get_by_id(1);
 
       if($this->input->post('search_term')){
         $search_term = $this->input->post('search_term');
@@ -79,8 +82,13 @@ class Hot_service extends MY_Hotel {
       }
     }else{
       if ($this->access->_update == 1) {
+        $client = $this->m_hot_client->get_all();
+        $tax = $this->m_hot_charge_type->get_by_id(1);
         $data['title'] = 'Ubah Pelayanan Kamar';
         $data['service'] = $this->m_hot_service->get_by_id($id);
+        if ($client->client_is_taxed == 1) {
+          $data['service']->service_charge = ((100+$tax->charge_type_ratio)/100)*$data['service']->service_charge;
+        }
         $data['action'] = 'update';
         $this->view('hot_service/form', $data);
       } else {
@@ -92,11 +100,16 @@ class Hot_service extends MY_Hotel {
   public function insert()
   {
     $data = $_POST;
+    $client = $this->m_hot_client->get_all();
+    $tax = $this->m_hot_charge_type->get_by_id(1);
     $data['created_by'] = $this->session->userdata('user_realname');
     if(!isset($data['is_active'])){
       $data['is_active'] = 0;
     }
     $data['service_charge']=price_to_num($data['service_charge']);
+    if ($client->client_is_taxed == 1) {
+      $data['service_charge'] = (100/(100+$tax->charge_type_ratio))*$data['service_charge'];
+    }
     $this->m_hot_service->insert($data);
     $this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil ditambahkan!</div>');
     redirect(base_url().'hot_service/index');
@@ -112,11 +125,16 @@ class Hot_service extends MY_Hotel {
   {
     $data = $_POST;
     $id = $data['service_id'];
+    $client = $this->m_hot_client->get_all();
+    $tax = $this->m_hot_charge_type->get_by_id(1);
     $data['updated_by'] = $this->session->userdata('user_realname');
     if(!isset($data['is_active'])){
       $data['is_active'] = 0;
     }
     $data['service_charge']=price_to_num($data['service_charge']);
+    if ($client->client_is_taxed == 1) {
+      $data['service_charge'] = (100/(100+$tax->charge_type_ratio))*$data['service_charge'];
+    }
     $this->m_hot_service->update($id,$data);
     $this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil diubah!</div>');
     redirect(base_url().'hot_service/index');

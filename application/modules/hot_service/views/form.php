@@ -22,6 +22,15 @@
             </div>
           </div>
         </div>
+        <small>
+          Harga
+          <?php if ($client->client_is_taxed == 1) {
+            echo 'Sudah Termasuk';
+          }else{
+            echo 'Belum Termasuk';
+          } ?>
+          Pajak Hotel
+        </small>
         <div class="form-group">
           <label>Tersedia?</label><br>
           <input class="" type="checkbox" name="is_active" value="1" <?php if($service != null){if($service->is_active == 1){echo 'checked';}}else{echo 'checked';}?>>
