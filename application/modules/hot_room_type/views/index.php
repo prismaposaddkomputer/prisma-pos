@@ -71,7 +71,7 @@
                   </td>
                   <td><?=$row->room_type_name?></td> 
                   <td class="text-center"><?=$number_of_room?></td> 
-                  <td><?=num_to_idr(($tot_ratio/100)*$row->room_type_charge)?></td> 
+                  <td><?=num_to_idr(round(($tot_ratio/100)*$row->room_type_charge),0,PHP_ROUND_HALF_UP)?></td> 
                   <td class="text-center">
                     <?php if ($row->is_active == 1): ?>
                       <i class="fa fa-check cl-success"></i>
