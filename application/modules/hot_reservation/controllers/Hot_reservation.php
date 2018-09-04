@@ -636,6 +636,7 @@ class Hot_reservation extends MY_Hotel {
     }
 
     $room_type->room_type_charge += $add;
+    $room_type->room_type_charge = round($room_type->room_type_charge,0,PHP_ROUND_HALF_UP);
 
     $data = array(
       'room' => array(),
@@ -845,6 +846,8 @@ class Hot_reservation extends MY_Hotel {
       $data->service_charge += $data->service_charge*$tax->charge_type_ratio/100;
     }
 
+    $data->service_charge = round($data->service_charge,0,PHP_ROUND_HALF_UP);
+
     echo json_encode($data);
   }
 
@@ -855,15 +858,24 @@ class Hot_reservation extends MY_Hotel {
     $service = $this->m_hot_service->get_by_id($data['service_id']);
     $tax = $this->m_hot_charge_type->get_by_id(1);
 
-    $service_subtotal = $data['service_amount']*$service->service_charge;
-    $service_tax = $service_subtotal*$tax->charge_type_ratio/100;
-    $service_total = $service_subtotal+$service_tax;
+    if ($client->client_is_taxed == 0) {
+      $service_charge = price_to_num($data['service_charge']);
+      $service_subtotal = $data['service_amount']*$service_charge;
+      $service_tax = $service_subtotal*$tax->charge_type_ratio/100;
+      $service_total = $service_subtotal+$service_tax;
+    }else{
+      $service_total = $data['service_amount']*price_to_num($data['service_charge']);
+      $tot_ratio = 100+$tax->charge_type_ratio;
+      $service_tax = ($tax->charge_type_ratio/$tot_ratio)*$service_total;
+      $service_subtotal = $service_total-$service_tax;
+      $service_charge = $service_subtotal/$data['service_amount'];
+    }
 
     $data_service = array(
       'billing_id' => $data['billing_id'],
       'service_id' => $service->service_id,
       'service_name' => $service->service_name,
-      'service_charge' => $service->service_charge,
+      'service_charge' => $service_charge,
       'service_amount' => $data['service_amount'],
       'service_subtotal' => $service_subtotal,
       'service_tax' => $service_tax,

@@ -64,7 +64,7 @@
                     <?php endif; ?>
                   </td>
                   <td><?=$row->service_name?></td>
-                  <td><?php echo num_to_idr (($tot_ratio/100)*$row->service_charge) ?></td>
+                  <td><?php echo num_to_idr (round(($tot_ratio/100)*$row->service_charge),0,PHP_ROUND_HALF_UP) ?></td>
                   <td class="text-center">
                     <?php if ($row->is_active == 1): ?>
                       <i class="fa fa-check cl-success"></i>

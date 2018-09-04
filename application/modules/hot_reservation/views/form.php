@@ -882,11 +882,13 @@
     var billing_id = $('#billing_id').val();
     var service_id = $('#service_id').val();
     var service_amount = $('#service_amount').val();
+    var service_charge = $('#service_charge').val();
 
     $.ajax({
       type : 'post',
       url : '<?=base_url()?>hot_reservation/add_service',
-      data : 'billing_id='+billing_id+'&service_id='+service_id+'&service_amount='+service_amount,
+      data : 'billing_id='+billing_id+'&service_id='+service_id+'&service_amount='+service_amount+
+              '&service_charge='+service_charge,
       success : function (data) {
         $('#modal_service_list').modal('show');
         $('#modal_service').modal('hide');
@@ -929,7 +931,7 @@
             $.each(data.service, function(i, item) {
               var row = '<tr>'+
                 '<td>'+item.service_name+'</td>'+
-                '<td>'+sys_to_cur(parseFloat(item.service_charge)+(parseFloat(item.service_tax)/parseFloat(item.service_amount)))+'</td>'+
+                '<td>'+sys_to_cur(item.service_total/item.service_amount)+'</td>'+
                 '<td class="text-right">'+item.service_amount+'</td>'+
                 '<td>'+sys_to_cur(item.service_total)+'</td>'+
                 '<td class="text-center">'+
