@@ -15,7 +15,7 @@
           </label>
           &nbsp;&nbsp;&nbsp;
           <label class="radio-inline">
-            <input type="radio" name="guest_type" value="1" <?php if($guest_type != null){if($guest_type->guest_type == 1){echo 'checked';}}?>/> Member
+            <input type="radio" name="guest_type" value="1" <?php if($guest_type != null){if($guest_type->guest_type == 1){echo 'checked';}}?>/> Member (Tamu Langganan)
           </label>
         </div>
         <div class="form-group">
