@@ -6,10 +6,10 @@
   <div class="row">
     <form id="form" class="" action="<?=base_url()?>hot_fnb/<?=$action?>" method="post">
       <div class="col-md-6">
-        <input class="form-control" type="hidden" name="fnb_id" value="<?php if($fnb_type != null){echo $fnb_type->fnb_id;}?>">
+        <input class="form-control" type="hidden" name="fnb_id" value="<?php if($fnb != null){echo $fnb->fnb_id;}?>">
         <div class="form-group">
           <label>Nama Food and Beverage (FnB) <small class="required-field">*</small></label>
-          <input class="form-control keyboard" type="text" name="fnb_name" value="<?php if($fnb_type != null){echo $fnb_type->fnb_name;}?>">
+          <input class="form-control keyboard" type="text" name="fnb_name" value="<?php if($fnb != null){echo $fnb->fnb_name;}?>">
         </div>
         <div class="row">
           <div class="col-md-5">
@@ -17,14 +17,23 @@
               <label>Harga <small class="required-field">*</small></label>
               <div class="input-group">
                 <div class="input-group-addon"><b>Rp</b></div>
-                <input class="form-control autonumeric num" type="text" name="fnb_charge" value="<?php if($fnb_type != null){echo $fnb_type->fnb_charge;}?>">
+                <input class="form-control autonumeric num" type="text" name="fnb_charge" value="<?php if($fnb != null){echo $fnb->fnb_charge;}?>">
               </div>
             </div>
           </div>
         </div>
+        <small>
+          Harga
+          <?php if ($client->client_is_taxed == 1) {
+            echo 'Sudah Termasuk';
+          }else{
+            echo 'Belum Termasuk';
+          } ?>
+          Pajak Hotel
+        </small>
         <div class="form-group">
           <label>Aktif?</label><br>
-          <input class="" type="checkbox" name="is_active" value="1" <?php if($fnb_type != null){if($fnb_type->is_active == 1){echo 'checked';}}else{echo 'checked';}?>>
+          <input class="" type="checkbox" name="is_active" value="1" <?php if($fnb != null){if($fnb->is_active == 1){echo 'checked';}}else{echo 'checked';}?>>
         </div>
         <div class="form-group pull-right">
           <a class="btn btn-default" href="<?=base_url()?>hot_fnb/index"><i class="fa fa-close"></i> Batal</a>
