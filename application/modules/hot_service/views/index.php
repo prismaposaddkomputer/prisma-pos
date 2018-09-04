@@ -48,6 +48,12 @@
           </thead>
           <tbody>
             <?php if ($service != null): ?>
+              <?php 
+                $tot_ratio = 100;
+                if ($client->client_is_taxed == 1) {
+                  $tot_ratio = 100+$tax->charge_type_ratio;
+                }
+              ?>
               <?php $i=1;foreach ($service as $row): ?>
                 <tr>
                   <td class="text-center"><?=$this->uri->segment('3')+$i++?></td>
@@ -58,7 +64,7 @@
                     <?php endif; ?>
                   </td>
                   <td><?=$row->service_name?></td>
-                  <td><?php echo num_to_idr ($row->service_charge) ?></td>
+                  <td><?php echo num_to_idr (($tot_ratio/100)*$row->service_charge) ?></td>
                   <td class="text-center">
                     <?php if ($row->is_active == 1): ?>
                       <i class="fa fa-check cl-success"></i>
@@ -75,6 +81,15 @@
             <?php endif; ?>
           </tbody>
         </table>
+        <small>
+          Harga
+          <?php if ($client->client_is_taxed == 1) {
+            echo 'Sudah Termasuk';
+          }else{
+            echo 'Belum Termasuk';
+          } ?>
+          Pajak Hotel
+        </small>
         <div class="pull-right">
           <?php echo $this->pagination->create_links(); ?>
         </div>
