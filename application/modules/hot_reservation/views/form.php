@@ -682,6 +682,8 @@
     var room_id = $('#room_id').val();
     var billing_date_in = $('#billing_date_in').val();
     var billing_date_out = $('#billing_date_out').val();
+    var billing_time_in = $('#billing_time_in').val();
+    var billing_time_out = $('#billing_time_out').val();
     var room_type_charge = $('#room_type_charge').val();
     var billing_id = $('#billing_id').val();
 
@@ -689,7 +691,8 @@
       type : 'post',
       url : '<?=base_url()?>hot_reservation/add_room',
       data : 'billing_id='+billing_id+'&room_id='+room_id+'&room_type_charge='+room_type_charge+
-              '&billing_date_in='+billing_date_in+'&billing_date_out='+billing_date_out,
+              '&billing_date_in='+billing_date_in+'&billing_date_out='+billing_date_out+
+              '&billing_time_in='+billing_time_in+'&billing_time_out='+billing_time_out,
       success : function (data) {
         $('#modal_room_list').modal('show');
         $('#modal_room').modal('hide');
@@ -700,11 +703,16 @@
 
   function get_billing_room() {
     var billing_id = $('#billing_id').val();
+    var billing_date_in = $('#billing_date_in').val();
+    var billing_date_out = $('#billing_date_out').val();
+    var billing_time_in = $('#billing_time_in').val();
+    var billing_time_out = $('#billing_time_out').val();
 
     $.ajax({
       type : 'post',
       url : '<?=base_url()?>hot_reservation/get_billing_room',
-      data : 'billing_id='+billing_id,
+      data : 'billing_id='+billing_id+'&billing_date_in='+billing_date_in+'&billing_date_out='+billing_date_out+
+              '&billing_time_in='+billing_time_in+'&billing_time_out='+billing_time_out,
       dataType : 'json',
       success : function (data) {
         $("#row_room_list").html('');
