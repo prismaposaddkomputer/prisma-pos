@@ -597,25 +597,27 @@ class Hot_reservation extends MY_Hotel {
         };
       }
 
-      // Sebelum pajak
-      $printer -> text("Subtotal = ".$s_6.num_to_price($billing->billing_subtotal));
-      $printer -> feed();
-
-      foreach ($charge_type as $row){
-        //
-        if ($row->charge_type_id == '1') {
-          $numb = "7";
-          $charge_type_money = num_to_price($billing->billing_tax);
-        }else if ($row->charge_type_id == '2') {
-          $numb = "8";
-          $charge_type_money = num_to_price($billing->billing_service);
-        }else if ($row->charge_type_id == '3') {
-          $numb = "9";
-          $charge_type_money = num_to_price($billing->billing_other);
-        }
-        //
-        $printer -> text($row->charge_type_name." = ".$s_[$numb].$charge_type_money);
+      if ($client->client_is_taxed == 0){
+        // Sebelum pajak
+        $printer -> text("Subtotal = ".$s_6.num_to_price($billing->billing_subtotal));
         $printer -> feed();
+
+        foreach ($charge_type as $row){
+          //
+          if ($row->charge_type_id == '1') {
+            $numb = "7";
+            $charge_type_money = num_to_price($billing->billing_tax);
+          }else if ($row->charge_type_id == '2') {
+            $numb = "8";
+            $charge_type_money = num_to_price($billing->billing_service);
+          }else if ($row->charge_type_id == '3') {
+            $numb = "9";
+            $charge_type_money = num_to_price($billing->billing_other);
+          }
+          //
+          $printer -> text($row->charge_type_name." = ".$s_[$numb].$charge_type_money);
+          $printer -> feed();
+        }
       }
 
       //
