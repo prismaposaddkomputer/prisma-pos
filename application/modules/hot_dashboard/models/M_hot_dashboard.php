@@ -53,7 +53,8 @@ class M_hot_dashboard extends CI_Model {
               WHERE
                 billing_date_in LIKE '$today%' AND
                 billing_status != '0'
-              GROUP BY billing_date_in";
+              GROUP BY billing_date_in
+              ORDER BY billing_date_in ASC";
       $query = $this->db->query($sql);
       $result = $query->row_array();
       // 
@@ -67,7 +68,8 @@ class M_hot_dashboard extends CI_Model {
               WHERE
                 billing_date_in LIKE '$month%' AND
                 billing_status != '0'
-              GROUP BY billing_date_in";
+              GROUP BY billing_date_in
+              ORDER BY billing_date_in ASC";
       $query = $this->db->query($sql);
       $result = $query->result_array();
       // 
@@ -84,7 +86,7 @@ class M_hot_dashboard extends CI_Model {
         billing_date_in LIKE '$month%' AND
         billing_status != '0'
       GROUP BY billing_date_in
-      ORDER BY billing_date_in DESC"
+      ORDER BY billing_date_in ASC"
     )->result();
 
     return $billing;
