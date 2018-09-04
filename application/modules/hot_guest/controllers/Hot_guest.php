@@ -20,7 +20,7 @@ class Hot_guest extends MY_Hotel {
     $this->load->model('m_hot_guest');
   }
 
-	public function index()
+	public function index($guest_type='')
   {
     if ($this->access->_read == 1) {
       $data['access'] = $this->access;
@@ -42,14 +42,14 @@ class Hot_guest extends MY_Hotel {
         $config['total_rows'] = $num_rows;
         $this->pagination->initialize($config);
 
-        $data['guest_type'] = $this->m_hot_guest->get_list($config['per_page'],$from,$search_term = null);
+        $data['guest_type'] = $this->m_hot_guest->get_list($config['per_page'],$from,$search_term = null,$guest_type);
       }else{
         $search_term = $this->session->userdata('search_term');
         $num_rows = $this->m_hot_guest->num_rows($search_term);
         $config['total_rows'] = $num_rows;
         $this->pagination->initialize($config);
 
-        $data['guest_type'] = $this->m_hot_guest->get_list($config['per_page'],$from,$search_term);
+        $data['guest_type'] = $this->m_hot_guest->get_list($config['per_page'],$from,$search_term,$guest_type);
       }
 
       $this->view('hot_guest/index',$data);

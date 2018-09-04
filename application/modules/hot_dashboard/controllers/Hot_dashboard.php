@@ -17,6 +17,7 @@ class Hot_dashboard extends MY_Hotel {
     $this->load->model('hot_role/m_hot_role');
     $this->load->model('m_hot_dashboard');
     $this->load->model('m_hot_payment');
+    $this->load->model('hot_billing/m_hot_billing');
 
   }
 
@@ -36,6 +37,18 @@ class Hot_dashboard extends MY_Hotel {
 
       $data['booking'] = $this->m_hot_payment->get_all_booking();
       $data['guest'] = $this->m_hot_payment->get_all_tamu();
+
+      //chart monthly
+      $month = date("Y-m");
+      $today = date("Y-m-d");
+      $raw = $raw = explode("-", $month);
+      $data['name_month'] = $raw[1];
+      $data['monthly'] = $this->m_hot_dashboard->chart_monthly($month);
+      $data['count_today'] = $this->m_hot_dashboard->count_billing_id_today($today);
+      $data['count_monthly'] = $this->m_hot_dashboard->count_billing_id_chart_monthly($month);
+      $data['count_all'] = $this->m_hot_dashboard->count_all_billing_id();
+      $data['count_guest_member'] = $this->m_hot_dashboard->count_guest_member();
+      $data['billing'] = $this->m_hot_billing->get_all();
 
       if($this->input->post('search_term')){
         $search_term = $this->input->post('search_term');

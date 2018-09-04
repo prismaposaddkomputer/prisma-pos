@@ -28,6 +28,7 @@ class M_hot_billing extends CI_Model {
 		return $this->db
 			->where('is_deleted','0')
 			->where('is_active','1')
+			->order_by('billing_id','desc')
 			->get('hot_billing')->result();
 	}
 
