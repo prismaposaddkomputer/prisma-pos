@@ -92,6 +92,13 @@ class M_hot_reservation extends CI_Model {
 			->get('hot_billing_room')->result();
 	}
 
+	public function update_billing_room($id,$data)
+	{
+		$this->db
+			->where('billing_room_id',$id)
+			->update('hot_billing_room',$data);
+	}
+
 	public function delete_room($id)
 	{
 		$this->db->where('billing_room_id',$id)->delete('hot_billing_room');

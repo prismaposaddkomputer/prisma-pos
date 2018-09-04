@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+use Carbon\Carbon;
+
 class Hot_reservation extends MY_Hotel {
 
   var $access, $billing_id;
@@ -289,7 +291,7 @@ class Hot_reservation extends MY_Hotel {
     $data['billing_status'] = 1;
     $data['billing_date_in'] = ind_to_date($data['billing_date_in']);
     $data['billing_date_out'] = ind_to_date($data['billing_date_out']);
-    $data['billing_num_day'] = dateDiff($data['billing_date_out'],$data['billing_date_in'])+1;
+    $data['billing_num_day'] = dateDifference($data['billing_date_out'].' '.$data['billing_time_out'],$data['billing_date_in'].' '.$data['billing_time_out'])+1;
     $data['billing_down_payment'] = price_to_num($data['billing_down_payment']);
 
     $data['user_id'] = $this->session->userdata('user_id');
@@ -297,6 +299,15 @@ class Hot_reservation extends MY_Hotel {
     
     $this->m_hot_reservation->update($data['billing_id'],$data);
 
+    $data_update = array(
+      'billing_id' => $data['billing_id'],
+      'billing_date_in' => $data['billing_date_in'],
+      'billing_time_in' => $data['billing_time_in'],
+      'billing_date_out' => $data['billing_date_out'],
+      'billing_time_out' => $data['billing_time_out'],
+    );
+    
+    $this->update_billing_room($data_update);
     $this->update_all_billing($data['billing_id']);
 
     $this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil diubah!</div>');
@@ -646,17 +657,68 @@ class Hot_reservation extends MY_Hotel {
   public function add_room()
   {
     $data = $_POST;
+    $data['billing_date_in'] = ind_to_date($data['billing_date_in']);
+    $data['billing_date_out'] = ind_to_date($data['billing_date_out']);
+
     $client = $this->m_hot_client->get_all();
-    $room_type_duration = dateDiff($data['billing_date_out'],$data['billing_date_in'])+1;
-    
-    $room = $this->m_hot_reservation->room_detail($data['room_id']);
     $tax = $this->m_hot_charge_type->get_by_id(1);
     $service = $this->m_hot_charge_type->get_by_id(2);
     $other = $this->m_hot_charge_type->get_by_id(3);
+    $room = $this->m_hot_reservation->room_detail($data['room_id']);
     
     if ($client->client_is_taxed == 0) {
       // Setingan harga sebelum pajak
       $room_type_charge = price_to_num($data['room_type_charge']);
+    } else {
+      // Settingan harga setelah pajak
+      $room_type_total = price_to_num($data['room_type_charge']);
+      // hitung persen semua setelah pajak
+      $tot_ratio = 100+$tax->charge_type_ratio;
+      if ($service->is_active == 1) {
+        $tot_ratio += $service->charge_type_ratio;
+      }
+      if ($other->is_active == 1) {
+        $tot_ratio += $other->charge_type_ratio;
+      }
+      
+      $room_type_charge = (100/$tot_ratio)*$room_type_total;
+    }
+
+    $data_room = array(
+      'billing_id' => $data['billing_id'],
+      'room_id' => $room->room_id,
+      'room_name' => $room->room_name,
+      'room_type_id' => $room->room_type_id,
+      'room_type_name' => $room->room_type_name,
+      'room_type_charge' => $room_type_charge,
+      'created_by' => $this->session->userdata('user_realname')
+    );
+    $this->m_hot_reservation->add_room($data_room);
+
+    $data_update = array(
+      'billing_id' => $data['billing_id'],
+      'billing_date_in' => $data['billing_date_in'],
+      'billing_time_in' => $data['billing_time_in'],
+      'billing_date_out' => $data['billing_date_out'],
+      'billing_time_out' => $data['billing_time_out'],
+    );
+    $this->update_billing_room($data_update);
+  }
+
+  public function update_billing_room($data)
+  {
+    $in = $data['billing_date_in'].' '.$data['billing_time_in'];
+    $out = $data['billing_date_out'].' '.$data['billing_time_out'];
+
+    $client = $this->m_hot_client->get_all();
+    $room = $this->m_hot_reservation->get_billing_room($data['billing_id']);
+    $tax = $this->m_hot_charge_type->get_by_id(1);
+    $service = $this->m_hot_charge_type->get_by_id(2);
+    $other = $this->m_hot_charge_type->get_by_id(3);
+    $room_type_duration = dateDifference($in,$out)+1;
+
+    foreach ($room as $row) {
+      $room_type_charge = $row->room_type_charge;
       $room_type_subtotal = $room_type_charge*$room_type_duration;
       $room_type_tax = $tax->charge_type_ratio*$room_type_subtotal/100;
   
@@ -671,47 +733,19 @@ class Hot_reservation extends MY_Hotel {
       }
   
       $room_type_total = $room_type_subtotal+$room_type_tax+$room_type_service+$room_type_other;
-    } else {
-      // Settingan harga setelah pajak
-      $room_type_total = price_to_num($data['room_type_charge'])*$room_type_duration;
-      // hitung persen semua setelah pajak
-      $tot_ratio = 100+$tax->charge_type_ratio;
-      if ($service->is_active == 1) {
-        $tot_ratio += $service->charge_type_ratio;
-      }
-      if ($other->is_active == 1) {
-        $tot_ratio += $other->charge_type_ratio;
-      }
-      
-      $room_type_tax = ($tax->charge_type_ratio/$tot_ratio)*$room_type_total;
-      $room_type_service = 0;
-      if ($service->is_active == 1) {
-        $room_type_service = ($service->charge_type_ratio/$tot_ratio)*$room_type_total;
-      }
-      $room_type_other = 0;
-      if ($other->is_active == 1) {
-        $room_type_other = ($other->charge_type_ratio/$tot_ratio)*$room_type_total;
-      }
-      $room_type_subtotal = (100/$tot_ratio)*$room_type_total;
-      $room_type_charge = $room_type_subtotal/$room_type_duration;
-    }
 
-    $data_room = array(
-      'billing_id' => $data['billing_id'],
-      'room_id' => $room->room_id,
-      'room_name' => $room->room_name,
-      'room_type_id' => $room->room_type_id,
-      'room_type_name' => $room->room_type_name,
-      'room_type_charge' => $room_type_charge,
-      'room_type_duration' => $room_type_duration,
-      'room_type_subtotal' => $room_type_subtotal,
-      'room_type_tax' => $room_type_tax,
-      'room_type_service' => $room_type_service,
-      'room_type_other' => $room_type_other,
-      'room_type_total' => $room_type_total,
-      'created_by' => $this->session->userdata('user_realname')
-    );
-    $this->m_hot_reservation->add_room($data_room);
+      $data_room = array(
+        'room_type_duration' => $room_type_duration,
+        'room_type_subtotal' => $room_type_subtotal,
+        'room_type_tax' => $room_type_tax,
+        'room_type_service' => $room_type_service,
+        'room_type_other' => $room_type_other,
+        'room_type_total' => $room_type_total,
+        'created_by' => $this->session->userdata('user_realname')
+      );
+
+      $this->m_hot_reservation->update_billing_room($row->billing_room_id,$data_room);
+    }
   }
 
   public function room_list()
@@ -724,15 +758,20 @@ class Hot_reservation extends MY_Hotel {
 
   public function get_billing_room()
   {
+    $data = $_POST;
+    $data['billing_date_in'] = ind_to_date($data['billing_date_in']);
+    $data['billing_date_out'] = ind_to_date($data['billing_date_out']);
+    $this->update_billing_room($data);
+    
     $client = $this->m_hot_client->get_all();
     $billing_id = $this->input->post('billing_id');
-    $data['room'] = $this->m_hot_reservation->get_billing_room($billing_id);
-    $data['client_is_taxed'] = $client->client_is_taxed;
+    $data2['room'] = $this->m_hot_reservation->get_billing_room($billing_id);
+    $data2['client_is_taxed'] = $client->client_is_taxed;
 
-    echo json_encode($data);
+    echo json_encode($data2);
   }
 
-  public function delete_room()
+  public function delete_room() 
   {
     $id = $this->input->post('billing_room_id');
     $this->m_hot_reservation->delete_room($id);
