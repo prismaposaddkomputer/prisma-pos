@@ -571,9 +571,61 @@ class Hot_reservation extends MY_Hotel {
       for ($i=0; $i < $l_5; $i++) {
         $s_5 .= ' ';
       };
+      $l_6 = $l_max - strlen(num_to_price($billing->billing_subtotal));
+      $s_6 = '';
+      for ($i=0; $i < $l_6; $i++) {
+        $s_6 .= ' ';
+      };
+
+      foreach ($charge_type as $row){
+
+        if ($row->charge_type_id == '1') {
+          $numb = "7";
+          $charge_type_money = num_to_price($billing->billing_tax);
+        }else if ($row->charge_type_id == '2') {
+          $numb = "8";
+          $charge_type_money = num_to_price($billing->billing_service);
+        }else if ($row->charge_type_id == '3') {
+          $numb = "9";
+          $charge_type_money = num_to_price($billing->billing_other);
+        }
+
+        $l_[$numb] = $l_max - strlen($charge_type_money);
+        $s_[$numb] = '';
+        for ($i=0; $i < $l_[$numb]; $i++) {
+          $s_[$numb] .= ' ';
+        };
+      }
+
+      // Sebelum pajak
+      $printer -> text("Subtotal = ".$s_6.num_to_price($billing->billing_subtotal));
+      $printer -> feed();
+
+      foreach ($charge_type as $row){
+        //
+        if ($row->charge_type_id == '1') {
+          $numb = "7";
+          $charge_type_money = num_to_price($billing->billing_tax);
+        }else if ($row->charge_type_id == '2') {
+          $numb = "8";
+          $charge_type_money = num_to_price($billing->billing_service);
+        }else if ($row->charge_type_id == '3') {
+          $numb = "9";
+          $charge_type_money = num_to_price($billing->billing_other);
+        }
+        //
+        $printer -> text($row->charge_type_name." = ".$s_[$numb].$charge_type_money);
+        $printer -> feed();
+      }
+
       //
       $printer -> feed();
-      $printer -> text('Total Bersih = '.$s_1.num_to_price($billing->billing_total));
+      if ($client->client_is_taxed == 0){
+        $name_total = "Total";
+      }else {
+        $name_total = "Total Bersih";
+      }
+      $printer -> text($name_total.' = '.$s_1.num_to_price($billing->billing_total));
       $printer -> feed();
       $printer -> text('Uang Muka = '.$s_2.num_to_price($billing->billing_down_payment));
       $printer -> feed();

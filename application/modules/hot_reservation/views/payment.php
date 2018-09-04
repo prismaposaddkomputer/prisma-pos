@@ -328,21 +328,24 @@
               <td width="20">:</td>
               <td><?=num_to_idr($billing->billing_subtotal)?></td>
             </tr>
+
+            <?php 
+            foreach ($charge_type as $row): 
+            if ($row->charge_type_id == '1') {
+              $charge_type_money = num_to_idr($billing->billing_tax);
+            }else if ($row->charge_type_id == '2') {
+              $charge_type_money = num_to_idr($billing->billing_service);
+            }else if ($row->charge_type_id == '3') {
+              $charge_type_money = num_to_idr($billing->billing_other);
+            }
+            ?>
             <tr>
-              <td width="300">Pajak Hotel</td>
+              <td width="300"><?=$row->charge_type_name?></td>
               <td width="20">:</td>
-              <td><?=num_to_idr($billing->billing_tax)?></td>
+              <td><?=$charge_type_money?></td>
             </tr>
-            <tr>
-              <td width="300">Service Charge</td>
-              <td width="20">:</td>
-              <td><?=num_to_idr($billing->billing_service)?></td>
-            </tr>
-            <tr>
-              <td width="300">Biaya Lain-lain</td>
-              <td width="20">:</td>
-              <td><?=num_to_idr($billing->billing_other)?></td>
-            </tr>
+            <?php endforeach; ?>
+
             <tr>
               <th width="300">Total</th>
               <th width="20">:</th>
