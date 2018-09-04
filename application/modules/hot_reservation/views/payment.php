@@ -434,7 +434,7 @@
           button: "OK",
         });
         return false;
-    }else if (billing_payment <= total_payment) {
+    }else if (billing_payment < total_payment) {
       swal({
           text: "Pembayaran Kurang",
           icon: "warning",
