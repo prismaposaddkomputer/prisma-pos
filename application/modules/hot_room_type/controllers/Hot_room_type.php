@@ -94,7 +94,7 @@ class Hot_room_type extends MY_Hotel {
           foreach ($data['charge_type'] as $row) {
             $tot_ratio += $row->charge_type_ratio;
           }
-          $data['room_type']->room_type_charge = round(($tot_ratio/100)*$data['room_type']->room_type_charge,2);
+          $data['room_type']->room_type_charge = ($tot_ratio/100)*$data['room_type']->room_type_charge;
         }
         $this->view('hot_room_type/form', $data);
       } else {
@@ -132,7 +132,20 @@ class Hot_room_type extends MY_Hotel {
 
   public function update()
   {
-    $this->m_hot_room_type->update();
+    $data = $_POST;
+    $data['room_type_charge'] = price_to_num($data['room_type_charge']);
+
+    $charge_type = $this->m_hot_charge_type->get_all();
+    $client = $this->m_hot_client->get_all();
+    $tot_ratio = 100;
+    if ($client->client_is_taxed == 1) {
+      foreach ($charge_type as $row) {
+        $tot_ratio += $row->charge_type_ratio;
+      }
+      $data['room_type_charge'] = round((100/$tot_ratio)*$data['room_type_charge'],2);
+    }
+
+    $this->m_hot_room_type->update($data);
     $this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil diubah!</div>');
     redirect(base_url().'hot_room_type/index');
   }

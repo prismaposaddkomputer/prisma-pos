@@ -946,6 +946,63 @@ class Hot_reservation extends MY_Hotel {
     $this->m_hot_reservation->delete_fnb($id);
   }
 
+  public function get_non_tax()
+  {
+    $non_tax_id = $this->input->post('non_tax_id');
+    
+    $client = $this->m_hot_client->get_all();
+    $tax = $this->m_hot_charge_type->get_by_id(1);
+
+    $data = $this->m_hot_non_tax->get_by_id($non_tax_id);
+
+    if ($client->client_is_taxed == 1) {
+      $data->non_tax_charge += $data->non_tax_charge*$tax->charge_type_ratio/100;
+    }
+
+    echo json_encode($data);
+  }
+
+  public function add_non_tax()
+  {
+    $data = $_POST;
+    $client = $this->m_hot_client->get_all();
+    $non_tax = $this->m_hot_non_tax->get_by_id($data['non_tax_id']);
+    $tax = $this->m_hot_charge_type->get_by_id(1);
+
+    $non_tax_subtotal = $data['non_tax_amount']*$non_tax->non_tax_charge;
+    $non_tax_tax = $non_tax_subtotal*$tax->charge_type_ratio/100;
+    $non_tax_total = $non_tax_subtotal+$non_tax_tax;
+
+    $data_non_tax = array(
+      'billing_id' => $data['billing_id'],
+      'non_tax_id' => $non_tax->non_tax_id,
+      'non_tax_name' => $non_tax->non_tax_name,
+      'non_tax_charge' => $non_tax->non_tax_charge,
+      'non_tax_amount' => $data['non_tax_amount'],
+      'non_tax_subtotal' => $non_tax_subtotal,
+      'non_tax_tax' => $non_tax_tax,
+      'non_tax_total' => $non_tax_total,
+      'created_by' => $this->session->userdata('user_realname')
+    );
+    $this->m_hot_reservation->add_non_tax($data_non_tax);
+  }
+
+  public function get_billing_non_tax()
+  {
+    $billing_id = $this->input->post('billing_id');
+    $client = $this->m_hot_client->get_all();
+    $data['non_tax'] = $this->m_hot_reservation->get_billing_non_tax($billing_id);
+    $data['client_is_taxed'] = $client->client_is_taxed;
+
+    echo json_encode($data);
+  }
+
+  public function delete_non_tax()
+  {
+    $id = $this->input->post('billing_non_tax_id');
+    $this->m_hot_reservation->delete_non_tax($id);
+  }
+
   public function get_count()
   {
     $billing_id = $this->input->post('billing_id');
