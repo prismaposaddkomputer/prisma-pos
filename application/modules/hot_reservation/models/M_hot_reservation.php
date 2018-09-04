@@ -60,6 +60,7 @@ class M_hot_reservation extends CI_Model {
 		$this->db->where('billing_id',$billing_id)->delete('hot_billing_extra');
 		$this->db->where('billing_id',$billing_id)->delete('hot_billing_service');
 		$this->db->where('billing_id',$billing_id)->delete('hot_billing_fnb');
+		$this->db->where('billing_id',$billing_id)->delete('hot_billing_non_tax');
 	}
 
 	public function room_detail($room_id)
@@ -218,6 +219,41 @@ class M_hot_reservation extends CI_Model {
 		)->row();
 
 		return $data->count_fnb;
+	}
+
+	public function add_non_tax($data)
+	{
+		$this->db->insert('hot_billing_non_tax', $data);
+	}
+
+	public function non_tax_list($billing_id)
+	{
+		return $this->db
+			->where('billing_id',$billing_id)
+			->get('hot_billing_non_tax')->result();
+	}
+
+	public function get_billing_non_tax($billing_id)
+	{
+		return $this->db
+			->where('billing_id',$billing_id)
+			->get('hot_billing_non_tax')->result();
+	}
+
+	public function delete_non_tax($id)
+	{
+		$this->db->where('billing_non_tax_id',$id)->delete('hot_billing_non_tax');
+	}
+
+	public function count_non_tax($billing_id)
+	{
+		$data = $this->db->query(
+			"SELECT COUNT(*) AS count_non_tax 
+			FROM hot_billing_non_tax 
+			WHERE billing_id = '$billing_id'"
+		)->row();
+
+		return $data->count_non_tax;
 	}
 
 }

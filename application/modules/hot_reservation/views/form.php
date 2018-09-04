@@ -58,6 +58,7 @@
         <button class="btn btn-info" id="btn_extra_list" type="button"><i class="fa fa-plus-square"></i> Ekstra <span class="badge" id="lbl_count_extra">0</span></button>
         <button class="btn btn-info" id="btn_service_list" type="button"><i class="fa fa-plus-square"></i> Pelayanan <span class="badge" id="lbl_count_service">0</span></button>
         <button class="btn btn-info" id="btn_fnb_list" type="button"><i class="fa fa-cutlery"></i> F&B <span class="badge" id="lbl_count_fnb">0</span></button>
+        <button class="btn btn-info" id="btn_non_tax_list" type="button"><i class="fa fa-ban"></i> Non Pajak <span class="badge" id="lbl_count_non_tax">0</span></button>
       </div>
       <div class="col-md-6">
         <div class="form-group">
@@ -452,7 +453,7 @@
     </div>
   </div>
 </div>
-<!-- Service -->
+<!-- FnB -->
 <div id="modal_fnb" class="modal fade" role="dialog" aria-labelledby="modal_fnb">
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
@@ -503,6 +504,83 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
         <button type="button" class="btn btn-info" id="btn_add_fnb"><i class="fa fa-plus"></i> Tambah</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Non Pajak List -->
+<div id="modal_non_tax_list" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_non_tax_list">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="title_non_tax_list">Pesanan Non Pajak</h4>
+      </div>
+      <div class="modal-body">
+        <button class="btn btn-info" id="btn_non_tax"><i class="fa fa-plus"></i> Tambah Non Pajak</button>
+        <br><br>
+        <table id="tbl_non_tax_list" class="table table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th class="text-center">Nama Non Pajak</th>
+              <th class="text-center">Harga Satuan</th>
+              <th class="text-center">Banyak</th>
+              <th class="text-center" width="150">Total</th>
+              <th class="text-center" width="50">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="row_non_tax_list">
+
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-check"></i> Selesai</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- FnB -->
+<div id="modal_non_tax" class="modal fade" role="dialog" aria-labelledby="modal_non_tax">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="title_non_tax_list">Pilih Non Pajak</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Non Pajak</label>
+          <select class="form-control select2" id="non_tax_id">
+            <option value="0">-- Pilih Non Pajak --</option>
+            <?php foreach ($non_tax as $row): ?>
+              <option value="<?=$row->non_tax_id?>"><?=$row->non_tax_name?></option>
+            <?php endforeach;?>
+          </select>
+        </div>
+        <div class="row">
+          <div class="col-md-8">
+            <div class="form-group">
+              <label>Harga</label>
+              <input class="form-control autonumeric num" id="non_tax_charge" type="text" value="0" readonly>
+            </div>
+          </div>
+          <div class="col-md-4">  
+            <div class="form-group">
+              <label>Banyak</label>
+              <input class="form-control autonumeric num" id="non_tax_amount" type="text" value="0" onchange="calc_non_tax()">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Total</label>
+          <input class="form-control autonumeric num" id="non_tax_total" type="text" value="0" readonly>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
+        <button type="button" class="btn btn-info" id="btn_add_non_tax"><i class="fa fa-plus"></i> Tambah</button>
       </div>
     </div>
   </div>
@@ -655,6 +733,28 @@
 
     $('#btn_add_fnb').click(function () {
       add_fnb();
+    });
+
+    $('#btn_non_tax_list').click(function () {
+      get_billing_non_tax();
+      $('#modal_non_tax_list').modal('show');
+    });
+
+    $('#btn_non_tax').click(function () {
+      $('#non_tax_id').val(0).trigger('change');
+      $('#non_tax_charge').val(0);
+      $('#non_tax_amount').val(0);
+      $('#non_tax_total').val(0);
+      $('#modal_non_tax').modal('show');
+      $('#modal_non_tax_list').modal('hide');
+    });
+
+    $('#non_tax_id').on('change', function() {
+      get_non_tax(this.value);
+    });
+
+    $('#btn_add_non_tax').click(function () {
+      add_non_tax();
     });
 
   });
@@ -1058,6 +1158,104 @@
     })
   }
 
+  function get_non_tax(non_tax_id) {
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>hot_reservation/get_non_tax',
+      data : 'non_tax_id='+non_tax_id,
+      dataType : 'json',
+      success : function (data) {
+        $('#non_tax_charge').val(sys_to_ind(data.non_tax_charge));
+      }
+    })
+  }
+
+  function calc_non_tax() {
+    var non_tax_charge = ind_to_sys($('#non_tax_charge').val());
+    var non_tax_amount = $('#non_tax_amount').val();
+    $('#non_tax_total').val(sys_to_ind(non_tax_amount*non_tax_charge));
+  }
+
+  function add_non_tax() {
+    var billing_id = $('#billing_id').val();
+    var non_tax_id = $('#non_tax_id').val();
+    var non_tax_amount = $('#non_tax_amount').val();
+    var non_tax_charge = $('#non_tax_charge').val();
+
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>hot_reservation/add_non_tax',
+      data : 'billing_id='+billing_id+'&non_tax_id='+non_tax_id+'&non_tax_amount='+non_tax_amount+
+              '&non_tax_charge='+non_tax_charge,
+      success : function (data) {
+        $('#modal_non_tax_list').modal('show');
+        $('#modal_non_tax').modal('hide');
+        get_billing_non_tax();
+      }
+    })
+  }
+
+  function get_billing_non_tax() {
+    var billing_id = $('#billing_id').val();
+
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>hot_reservation/get_billing_non_tax',
+      data : 'billing_id='+billing_id,
+      dataType : 'json',
+      success : function (data) {
+        if (data.non_tax == null || data.non_tax == '') {
+          $("#row_non_tax_list").html('');
+          var row = '<tr>'+
+            '<td class="text-center" colspan="5">Data tidak ada!</td>'+
+          '</tr>';
+          $("#row_non_tax_list").append(row);
+        } else {
+          $("#row_non_tax_list").html('');
+          if (data.client_is_taxed == 0) {
+            $.each(data.non_tax, function(i, item) {
+              var row = '<tr>'+
+                '<td>'+item.non_tax_name+'</td>'+
+                '<td>'+sys_to_cur(item.non_tax_charge)+'</td>'+
+                '<td class="text-right">'+item.non_tax_amount+'</td>'+
+                '<td>'+sys_to_cur(item.non_tax_subtotal)+'</td>'+
+                '<td class="text-center">'+
+                  '<button class="btn btn-xs btn-danger" onclick="delete_non_tax('+item.billing_non_tax_id+')"><i class="fa fa-trash"></i></button>'+
+                '</td>'+
+              '</tr>';
+              $("#row_non_tax_list").append(row);
+            })
+          }else{
+            $.each(data.non_tax, function(i, item) {
+              var row = '<tr>'+
+                '<td>'+item.non_tax_name+'</td>'+
+                '<td>'+sys_to_cur(item.non_tax_total/item.non_tax_amount)+'</td>'+
+                '<td class="text-right">'+item.non_tax_amount+'</td>'+
+                '<td>'+sys_to_cur(item.non_tax_total)+'</td>'+
+                '<td class="text-center">'+
+                  '<button class="btn btn-xs btn-danger" onclick="delete_non_tax('+item.billing_non_tax_id+')"><i class="fa fa-trash"></i></button>'+
+                '</td>'+
+              '</tr>';
+              $("#row_non_tax_list").append(row);
+            })
+          }
+        }
+        get_count();
+      }
+    })
+  }
+
+  function delete_non_tax(id) {
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>hot_reservation/delete_non_tax',
+      data : 'billing_non_tax_id='+id,
+      success : function () {
+        get_billing_non_tax();
+      }
+    })
+  }
+
   function get_count() {
     var billing_id = $('#billing_id').val();
 
@@ -1071,6 +1269,7 @@
         $('#lbl_count_extra').html(data.count_extra);
         $('#lbl_count_service').html(data.count_service);
         $('#lbl_count_fnb').html(data.count_fnb);
+        $('#lbl_count_non_tax').html(data.count_non_tax);
       }
     })
   }

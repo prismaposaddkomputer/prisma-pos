@@ -781,6 +781,26 @@ class M_app_version extends CI_Model {
         $this->db->query("ALTER TABLE `hot_extra`
 	        CHANGE COLUMN `extra_id` `extra_id` INT(11) NOT NULL AUTO_INCREMENT FIRST");
         break;
+      
+      case '2.4.1':
+        $this->db->query("DROP TABLE IF EXISTS `hot_billing_non_tax`");
+        $this->db->query("CREATE TABLE IF NOT EXISTS `hot_billing_non_tax` (
+          `billing_non_tax_id` int(11) NOT NULL AUTO_INCREMENT,
+          `billing_id` int(11) NOT NULL DEFAULT '0',
+          `non_tax_id` int(11) NOT NULL,
+          `non_tax_name` varchar(128) NOT NULL,
+          `non_tax_charge` float(10,2) NOT NULL,
+          `non_tax_amount` float(10,2) NOT NULL,
+          `non_tax_total` float(10,2) NOT NULL,
+          `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          `created_by` varchar(50) NOT NULL DEFAULT 'System',
+          `updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+          `updated_by` varchar(20) NOT NULL DEFAULT 'System',
+          `is_active` tinyint(1) NOT NULL DEFAULT '1',
+          `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+          PRIMARY KEY (`billing_non_tax_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT");
+        break;
     }
 
     //insert new update history
@@ -856,6 +876,8 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"2.3.9","version_release"=>"2018-09-02 08:56:00"));
     // autoincrement
     array_push($version, array("version_now"=>"2.4.0","version_release"=>"2018-09-02 12:19:00"));
+    // non tax billing
+    array_push($version, array("version_now"=>"2.4.1","version_release"=>"2018-09-04 18:57:00"));
 
     foreach ($version as $key => $val) {
       //check version
