@@ -13,6 +13,12 @@ function sys_to_cur(x){
 }
 
 function sys_to_ind(bilangan) {
+  var negativ = false;
+
+  if (bilangan < 0) {
+    bilangan = bilangan*-1;
+    negativ = true;
+  };
 
   var	number_string = bilangan.toString(),
   	split	= number_string.split('.'),
@@ -27,5 +33,8 @@ function sys_to_ind(bilangan) {
   rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
 
   // Cetak hasil
+  if (negativ == true) {
+    rupiah = '-'+rupiah;
+  }
   return rupiah;
 }

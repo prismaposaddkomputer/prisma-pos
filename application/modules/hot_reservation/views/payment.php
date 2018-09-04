@@ -376,7 +376,7 @@
     <div class="col-md-6">
       <h4><b><i class="fa fa-money"></i></b> Pembayaran</h4>
       <table class="table table-condensed">
-        <form id="form" class="" action="<?=base_url()?>hot_reservation/<?=$action?>" method="post">
+        <form class="" action="<?=base_url()?>hot_reservation/<?=$action?>" method="post" name="myForm" onsubmit="return validateForm()">
         <input type="hidden" name="billing_id" value="<?=$id?>">
         <tbody>
           <tr>
@@ -395,6 +395,7 @@
             <td width="300">Kekurangan</td>
             <td width="20">:</td>
             <td><?=num_to_idr($billing->billing_total-$billing->billing_down_payment)?></td>
+            <input type="hidden" name="" id="total_payment" value="<?=$billing->billing_total-$billing->billing_down_payment?>">
           </tr>
           <tr>
             <td width="300">Pembayaran</td>
@@ -407,7 +408,7 @@
             <th width="300">Kembalian</th>
             <th width="20">:</th>
             <th>
-              <input id="billing_change" style="width:100%; border: none; font-size: 18px;" class="autonumeric" type="text" value="0" dir="rtl" readonly>
+              <input id="billing_change" style="width:100%; border: none; font-size: 18px; text-align: right;" type="text" value="0" readonly>
             </th>
           </tr>
           <tr>
@@ -423,11 +424,39 @@
   </div>
 </div>
 <script>
-  function calc_change() {
-    var billing_total = $('#billing_total').val();
+  function validateForm() {
     var billing_payment = ind_to_sys($('#billing_payment').val());
-    var billing_change = billing_payment-billing_total;
+    var total_payment = <?=$billing->billing_total-$billing->billing_down_payment?>;
+    if (billing_payment == "") {
+        swal({
+          text: "Pembayaran Belum Diisi",
+          icon: "warning",
+          button: "OK",
+        });
+        return false;
+    }else if (billing_payment < total_payment) {
+      swal({
+          text: "Pembayaran Kurang",
+          icon: "warning",
+          button: "OK",
+        });
+        return false;
+    }
+  }
+
+  function calc_change() {
+    var total_payment = $('#total_payment').val();
+    var billing_payment = ind_to_sys($('#billing_payment').val());
+    var billing_change = billing_payment-total_payment;
     console.log(billing_change);
     $('#billing_change').val(sys_to_ind(billing_change.toFixed(2)));
   }
 </script>
+<style type="text/css">
+    .swal-text {
+        font-weight: bold;
+    }
+    .swal-button--confirm {
+      background-color: #2e86de;
+    }
+</style>

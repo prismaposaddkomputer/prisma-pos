@@ -62,6 +62,8 @@
     <script src="<?=base_url()?>vendor/keyboard-master/dist/js/jquery.keyboard.min.js"></script>
     <!-- Nabapos JS -->
     <script src="<?=base_url()?>dist/js/prismapos.js" charset="utf-8"></script>
+    <!-- Sweetalert -->
+    <script src="<?=base_url()?>vendor/sweetalert/sweetalert.min.js"></script>
     <!-- Common JS -->
     <script type="text/javascript">
       $(document).ready(function () {
