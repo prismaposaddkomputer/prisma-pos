@@ -101,7 +101,7 @@
                     }
                   ?>
                 </td>
-                <td class="text-center"><?=$billing->billing_num_day?> Hari</td>
+                <td class="text-center"><?=round($row->room_type_duration,0,PHP_ROUND_HALF_UP)?> Hari</td>
                 <td>
                   <?php 
                     if ($client->client_is_taxed == 0) {
