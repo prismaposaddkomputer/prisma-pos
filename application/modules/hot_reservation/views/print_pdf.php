@@ -295,8 +295,36 @@
 
     <div class="column-payment">
       <table>
+        <?php if ($client->client_is_taxed == 0): ?>  
+          <?php 
+            foreach ($charge_type as $row): 
+            if ($row->charge_type_id == '1') {
+              $charge_type_money = num_to_price($billing->billing_tax);
+            }else if ($row->charge_type_id == '2') {
+              $charge_type_money = num_to_price($billing->billing_service);
+            }else if ($row->charge_type_id == '3') {
+              $charge_type_money = num_to_price($billing->billing_other);
+            }
+            ?>
+          <tr>
+            <th><?=$row->charge_type_name?></th>
+            <th class="colon">:</th>
+            <th><?=$charge_type_money?></th>
+          </tr>
+          <?php endforeach; ?>
+          <tr>
+            <th><br></th>
+          </tr>
+        <?php endif; ?>
         <tr>
-          <th>Total Bersih</th>
+          <?php
+          if ($client->client_is_taxed == 0){
+            $name_total = "Total";
+          }else {
+            $name_total = "Total Bersih";
+          }
+          ?>
+          <th><?=$name_total?></th>
           <th class="colon">:</th>
           <th><?=num_to_price($billing->billing_total)?></th>
         </tr>
