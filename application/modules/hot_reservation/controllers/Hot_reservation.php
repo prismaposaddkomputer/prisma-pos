@@ -29,6 +29,7 @@ class Hot_reservation extends MY_Hotel {
     $this->load->model('hot_extra/m_hot_extra');
     $this->load->model('hot_service/m_hot_service');
     $this->load->model('hot_fnb/m_hot_fnb');
+    $this->load->model('hot_non_tax/m_hot_non_tax');
     $this->load->model('hot_billing_room/m_hot_billing_room');
     $this->load->model('hot_billing_extra/m_hot_billing_extra');
     $this->load->model('hot_billing_service/m_hot_billing_service');
@@ -88,6 +89,7 @@ class Hot_reservation extends MY_Hotel {
     $data['extra'] = $this->m_hot_extra->get_all();
     $data['service'] = $this->m_hot_service->get_all();
     $data['fnb'] = $this->m_hot_fnb->get_all();
+    $data['non_tax'] = $this->m_hot_non_tax->get_all();
     $data['charge_type'] = $this->m_hot_charge_type->get_all();
     if ($id == null) {
       if ($this->access->_create == 1) {
@@ -174,6 +176,7 @@ class Hot_reservation extends MY_Hotel {
     $extra = $this->m_hot_reservation->get_billing_extra($billing_id);
     $service = $this->m_hot_reservation->get_billing_service($billing_id);
     $fnb = $this->m_hot_reservation->get_billing_fnb($billing_id);
+    $non_tax = $this->m_hot_reservation->get_billing_non_tax($billing_id);
 
     $billing_subtotal = 0;
     $billing_tax = 0;
@@ -205,6 +208,11 @@ class Hot_reservation extends MY_Hotel {
       $billing_subtotal += $row->fnb_subtotal;
       $billing_tax += $row->fnb_tax;
       $billing_total += $row->fnb_total;
+    }
+
+    foreach ($non_tax as $row) {
+      $billing_subtotal += $row->non_tax_total;
+      $billing_total += $row->non_tax_total;
     }
 
     $data['billing_subtotal'] = $billing_subtotal;
@@ -533,6 +541,36 @@ class Hot_reservation extends MY_Hotel {
           }
           //
           $printer -> text($row->fnb_amount." X ".$fnb_charge_sub_total." = ".$fnb_charge_total);
+          $printer -> feed();
+        }
+      }
+      // Non Pajak
+      if ($billing->non_tax != null){
+        $printer -> text('--------------------------------');
+        $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+        $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+        $printer -> text("Non Pajak :");
+        $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
+        $printer -> feed();
+        foreach ($billing->non_tax as $row){
+          $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+          $printer -> text($row->non_tax_name);
+          $printer -> feed();
+          $printer -> setJustification(Escpos\Printer::JUSTIFY_RIGHT);
+          //
+          if ($client->client_is_taxed == 0) {
+            $non_tax_charge_sub_total = num_to_price($row->non_tax_charge);
+          }else{
+            $non_tax_charge_sub_total = num_to_price($row->non_tax_total/$row->non_tax_amount);
+          }
+          //
+          if ($client->client_is_taxed == 0) {
+            $non_tax_charge_total = num_to_price($row->non_tax_subtotal);
+          }else{
+            $non_tax_charge_total = num_to_price($row->non_tax_total);
+          }
+          //
+          $printer -> text($row->non_tax_amount." X ".$non_tax_charge_sub_total." = ".$non_tax_charge_total);
           $printer -> feed();
         }
       }
@@ -1022,8 +1060,8 @@ class Hot_reservation extends MY_Hotel {
     $data['client_is_taxed'] = $client->client_is_taxed;
 
     echo json_encode($data);
-  }
 
+  }
   public function delete_fnb()
   {
     $id = $this->input->post('billing_fnb_id');
@@ -1033,15 +1071,9 @@ class Hot_reservation extends MY_Hotel {
   public function get_non_tax()
   {
     $non_tax_id = $this->input->post('non_tax_id');
-    
+    $data = $this->m_hot_non_tax->get_by_id($non_tax_id);    
     $client = $this->m_hot_client->get_all();
     $tax = $this->m_hot_charge_type->get_by_id(1);
-
-    $data = $this->m_hot_non_tax->get_by_id($non_tax_id);
-
-    if ($client->client_is_taxed == 1) {
-      $data->non_tax_charge += $data->non_tax_charge*$tax->charge_type_ratio/100;
-    }
 
     echo json_encode($data);
   }
@@ -1053,18 +1085,15 @@ class Hot_reservation extends MY_Hotel {
     $non_tax = $this->m_hot_non_tax->get_by_id($data['non_tax_id']);
     $tax = $this->m_hot_charge_type->get_by_id(1);
 
-    $non_tax_subtotal = $data['non_tax_amount']*$non_tax->non_tax_charge;
-    $non_tax_tax = $non_tax_subtotal*$tax->charge_type_ratio/100;
-    $non_tax_total = $non_tax_subtotal+$non_tax_tax;
-
+    $non_tax_charge = price_to_num($data['non_tax_charge']);
+    $non_tax_total = $non_tax_charge*$data['non_tax_amount'];
+    
     $data_non_tax = array(
       'billing_id' => $data['billing_id'],
       'non_tax_id' => $non_tax->non_tax_id,
       'non_tax_name' => $non_tax->non_tax_name,
-      'non_tax_charge' => $non_tax->non_tax_charge,
+      'non_tax_charge' => $non_tax_charge,
       'non_tax_amount' => $data['non_tax_amount'],
-      'non_tax_subtotal' => $non_tax_subtotal,
-      'non_tax_tax' => $non_tax_tax,
       'non_tax_total' => $non_tax_total,
       'created_by' => $this->session->userdata('user_realname')
     );
@@ -1095,6 +1124,7 @@ class Hot_reservation extends MY_Hotel {
     $data['count_extra'] = $this->m_hot_reservation->count_extra($billing_id);
     $data['count_service'] = $this->m_hot_reservation->count_service($billing_id);
     $data['count_fnb'] = $this->m_hot_reservation->count_fnb($billing_id);
+    $data['count_non_tax'] = $this->m_hot_reservation->count_non_tax($billing_id);
 
     echo json_encode($data);
   }

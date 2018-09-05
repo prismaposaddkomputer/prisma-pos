@@ -316,7 +316,68 @@
         </tfoot>
       </table>
     </div>
+    <div class="col-md-6">
+      <h4><b><i class="fa fa-cutlery"></i></b> E. Non Pajak</h4>
+      <table class="table table-bordered table-condensed">
+        <thead>
+          <tr>
+            <th class="text-center" width="20">No.</th>
+            <th class="text-center">Non Pajak</th>
+            <th class="text-center" width="120">Tarif</th>
+            <th class="text-center" width="20">Banyak</th>
+            <th class="text-center" width="120">Total</th>
+          </tr>              
+        </thead>
+        <tbody>
+          <?php $tot_non_tax=0; if ($billing->non_tax != null): ?>
+            <?php $i=1; foreach ($billing->non_tax as $row): ?>
+              <tr>
+                <td class="text-center"><?=$i++?></td>
+                <td><?=$row->non_tax_name?></td>
+                <td>
+                  <?php 
+                    if ($client->client_is_taxed == 0) {
+                      echo num_to_idr($row->non_tax_charge);
+                    }else{
+                      echo num_to_idr($row->non_tax_total/$row->non_tax_amount);
+                    }
+                  ?>
+                </td>
+                <td class="text-center"><?=$row->non_tax_amount?></td>
+                <td>
+                  <?php 
+                    if ($client->client_is_taxed == 0) {
+                      echo num_to_idr($row->non_tax_subtotal);
+                    }else{
+                      echo num_to_idr($row->non_tax_total);
+                    }
+                  ?>
+                </td>
+                <?php 
+                  if ($client->client_is_taxed == 0) {
+                    $tot_non_tax += $row->non_tax_subtotal;
+                  }else{
+                    $tot_non_tax += $row->non_tax_total;
+                  }
+                ?>
+              </tr>
+            <?php endforeach;?>
+          <?php else: ?>
+            <tr>
+              <td class="text-center" colspan="5"><i>Tidak ada data!</i></td>
+            </tr>
+          <?php endif;?>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th class="text-center" colspan="4">Total</th>
+            <th><?=num_to_idr($tot_non_tax)?></th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
   </div>
+  <div style="border-bottom: 1px solid #333333; margin-bottom: 10px; margin-top: 5px;"></div>
   <div class="row">
     <div class="col-md-6">
       <h4><b><i class="fa fa-list"></i></b> Total</h4>
@@ -401,14 +462,26 @@
             <td width="300">Pembayaran</td>
             <td width="20">:</td>
             <td>
-              <input id="billing_payment" name="billing_payment" style="width:100%; height: 40px; border: 2px solid green; font-size: 20px; font-weight: bold; text-align: right; padding-right: 10px;" class="autonumeric num" type="text" value="" dir="rtl" onchange="calc_change()">
+              <?php if ($billing->billing_payment == 0) {
+                $echo = "";
+              }else{
+                $echo = $billing->billing_payment; 
+              }
+              ?>
+              <input id="billing_payment" name="billing_payment" style="width:100%; height: 40px; border: 2px solid green; font-size: 20px; font-weight: bold; text-align: right; padding-right: 10px;" class="autonumeric num" type="text" value="<?=$echo?>" dir="rtl" onchange="calc_change()">
             </td>
           </tr>
           <tr>
             <th width="300">Kembalian</th>
             <th width="20">:</th>
             <th>
-              <input id="billing_change" style="width:100%; border: none; font-size: 18px; text-align: right;" type="text" value="0" readonly>
+              <?php if ($billing->billing_change == 0) {
+                $billing_change_echo = 0;
+              }else{
+                $billing_change_echo = num_to_price($billing->billing_change); 
+              }
+              ?>
+              <input id="billing_change" style="width:100%; border: none; font-size: 18px; text-align: right;" type="text" value="<?=$billing_change_echo?>" readonly>
             </th>
           </tr>
           <tr>
