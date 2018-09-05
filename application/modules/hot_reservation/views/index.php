@@ -55,7 +55,7 @@
                     <?php if ($row->billing_status != -1): ?>
                       <a class="btn btn-xs btn-warning" href="<?=base_url()?>hot_reservation/form/<?=$row->billing_id?>"><i class="fa fa-pencil"></i></a>
                       <a class="btn btn-xs btn-success" href="<?=base_url()?>hot_reservation/payment/<?=$row->billing_id?>"><i class="fa fa-money"></i></a>
-                      <a class="btn btn-xs btn-danger" href="<?=base_url()?>hot_reservation/cancel/<?=$row->billing_id?>"><i class="fa fa-trash"></i></a>
+                      <button class="btn btn-xs btn-danger" onclick="del('<?=$row->billing_id?>')"><i class="fa fa-trash"></i></a>
                     <?php endif;?>
                   </td>
                   <td class="text-center">TRS-<?=$row->billing_receipt_no?></td> 
@@ -95,16 +95,16 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Hapus Data</h4>
+        <h4 class="modal-title">Batalkan Reservasi</h4>
       </div>
       <div class="modal-body">
-        <p>Anda yakin ingin menghapus data ini?</p>
+        <p>Anda yakin ingin membatalkan reservasi ini?</p>
         <b class="cl-danger">Peringatan!</b>
-        <p>Data ini mungkin digunakan atau terhubung dengan data lain.</p>
+        <p>Aksi ini tidak bisa dibatalkan.</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
-        <button id="btn_delete_action" type="button" class="btn btn-danger"><i class="fa fa-trash"></i> Hapus</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Tutup</button>
+        <button id="btn_delete_action" type="button" class="btn btn-danger"><i class="fa fa-trash"></i> Batal</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -115,7 +115,7 @@
     $("#modal_delete").modal('show');
 
     $("#btn_delete_action").click(function () {
-      window.location = "<?=base_url()?>hot_billing/delete/"+id;
+      window.location = "<?=base_url()?>hot_reservation/cancel/"+id;
     })
   }
 </script>
