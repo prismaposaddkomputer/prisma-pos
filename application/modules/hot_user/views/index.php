@@ -47,7 +47,9 @@
                   <td class="text-center">
                     <?php if ($row->user_id != '' ): ?>
                       <a class="btn btn-xs btn-warning" href="<?=base_url()?>hot_user/form/<?=$row->user_id?>"><i class="fa fa-pencil"></i></a>
+                      <?php if ($row->user_id != '1'): ?>
                       <button class="btn btn-xs btn-danger" onclick="del('<?=$row->user_id?>');"><i class="fa fa-trash"></i></button>
+                      <?php endif; ?>
                     <?php endif; ?>
                   </td>
                   <td><?=$row->user_realname?></td>

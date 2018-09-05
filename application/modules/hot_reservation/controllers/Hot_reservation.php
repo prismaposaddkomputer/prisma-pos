@@ -544,6 +544,36 @@ class Hot_reservation extends MY_Hotel {
           $printer -> feed();
         }
       }
+      // Non Pajak
+      if ($billing->non_tax != null){
+        $printer -> text('--------------------------------');
+        $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+        $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+        $printer -> text("Non Pajak :");
+        $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
+        $printer -> feed();
+        foreach ($billing->non_tax as $row){
+          $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+          $printer -> text($row->non_tax_name);
+          $printer -> feed();
+          $printer -> setJustification(Escpos\Printer::JUSTIFY_RIGHT);
+          //
+          if ($client->client_is_taxed == 0) {
+            $non_tax_charge_sub_total = num_to_price($row->non_tax_charge);
+          }else{
+            $non_tax_charge_sub_total = num_to_price($row->non_tax_total/$row->non_tax_amount);
+          }
+          //
+          if ($client->client_is_taxed == 0) {
+            $non_tax_charge_total = num_to_price($row->non_tax_subtotal);
+          }else{
+            $non_tax_charge_total = num_to_price($row->non_tax_total);
+          }
+          //
+          $printer -> text($row->non_tax_amount." X ".$non_tax_charge_sub_total." = ".$non_tax_charge_total);
+          $printer -> feed();
+        }
+      }
       $printer -> text('--------------------------------');
       //
       $space_array = array(

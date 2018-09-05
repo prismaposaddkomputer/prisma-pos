@@ -35,6 +35,7 @@ class M_hot_reservation extends CI_Model {
 		$data->room = $this->db->where('billing_id',$id)->get('hot_billing_room')->result();
 		$data->extra = $this->db->where('billing_id',$id)->get('hot_billing_extra')->result();
 		$data->service = $this->db->where('billing_id',$id)->get('hot_billing_service')->result();
+		$data->non_tax = $this->db->where('billing_id',$id)->get('hot_billing_non_tax')->result();
 		$data->fnb = $this->db->where('billing_id',$id)->get('hot_billing_fnb')->result();
 		
 		return $data;
