@@ -826,6 +826,7 @@ class Hot_reservation extends MY_Hotel {
       }
   
       $room_type_total = $room_type_subtotal+$room_type_tax+$room_type_service+$room_type_other;
+      $room_type_total = round($room_type_total,0,PHP_ROUND_HALF_UP);
 
       $data_room = array(
         'room_type_duration' => $room_type_duration,
