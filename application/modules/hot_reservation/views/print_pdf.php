@@ -201,7 +201,7 @@
             ?>
             <tr>
               <td>Kamar : <?=$row->room_name?></td>
-              <td align="center"><?=$billing->billing_num_day?> Hari</td>
+              <td align="center"><?=round($row->room_type_duration,0,PHP_ROUND_HALF_UP)?> Hari</td>
               <td align="right"><?=$room_type_subtotal?></td>
               <td align="right"><?=$room_type_total?></td>
             </tr>

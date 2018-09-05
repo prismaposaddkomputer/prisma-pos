@@ -24,6 +24,7 @@ class Hot_report_payment extends MY_Hotel {
     $this->load->model('hot_client/m_hot_client');
     //
     $this->load->model('hot_charge_type/m_hot_charge_type');
+    $this->load->model('hot_reservation/m_hot_reservation');
   }
 
 	public function index()
@@ -875,8 +876,10 @@ class Hot_report_payment extends MY_Hotel {
   {
     $data['access'] = $this->access;
     $data['title'] = 'Detail Transaksi';
+    $data['id'] = $tx_id;
 
-    $data['billing'] = $this->m_hot_report_payment->detail($tx_id);
+    $data['billing'] = $this->m_hot_reservation->get_billing($tx_id);
+    $data['charge_type'] = $this->m_hot_charge_type->get_all();
     $this->view('detail', $data);
 
   }

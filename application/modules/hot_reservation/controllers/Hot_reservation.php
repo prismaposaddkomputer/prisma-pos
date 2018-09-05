@@ -339,14 +339,15 @@ class Hot_reservation extends MY_Hotel {
     $this->pdf->load_view('print_pdf', $data);
   }
 
-  public function frame_pdf($billing_id)
+  public function frame_pdf($billing_id, $url)
   {
     $data['billing_id'] = $billing_id;
+    $data['url'] = $url;
 
     $this->view('hot_reservation/frame_pdf', $data);
   }
 
-  public function reservation_print_struk($billing_id)
+  public function reservation_print_struk($billing_id, $url)
   {
     $title = "Laporan Reservasi Pembayaran";
     $client = $this->m_hot_client->get_all();
@@ -450,7 +451,7 @@ class Hot_reservation extends MY_Hotel {
             $room_type_total = num_to_price($row->room_type_total);
           }
           //
-          $printer -> text($billing->billing_num_day." X ".$room_type_subtotal." = ".$room_type_total);
+          $printer -> text(round($row->room_type_duration,0,PHP_ROUND_HALF_UP)." X ".$room_type_subtotal." = ".$room_type_total);
           $printer -> feed();
         }
       }
@@ -690,7 +691,11 @@ class Hot_reservation extends MY_Hotel {
       echo "Couldn't print to this printer: " . $e -> getMessage() . "\n";
     }
     //
-    redirect(base_url().'hot_reservation');
+    if ($url !='') {
+      redirect(base_url().$url.'/detail/'.$billing_id);
+    }else {
+      redirect(base_url().'hot_reservation');
+    }
   }
 
   public function delete($id)
