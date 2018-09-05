@@ -120,7 +120,7 @@
 
 <!-- Modals -->
 <!-- Room List -->
-<div id="modal_room_list" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_room_list">
+<div id="modal_room_list" class="modal fade"  role="dialog" aria-labelledby="modal_room_list">
   <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -162,7 +162,7 @@
   </div>
 </div>
 <!-- Room -->
-<div id="modal_room" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_room">
+<div id="modal_room" class="modal fade"  role="dialog" aria-labelledby="modal_room">
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -213,7 +213,7 @@
 </div>
 
 <!-- Extra List -->
-<div id="modal_extra_list" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_extra_list">
+<div id="modal_extra_list" class="modal fade"  role="dialog" aria-labelledby="modal_extra_list">
   <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -313,7 +313,7 @@
 </div>
 
 <!-- Service List -->
-<div id="modal_service_list" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_service_list">
+<div id="modal_service_list" class="modal fade"  role="dialog" aria-labelledby="modal_service_list">
   <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -411,7 +411,7 @@
   </div>
 </div>
 <!-- Fnb List -->
-<div id="modal_fnb_list" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_fnb_list">
+<div id="modal_fnb_list" class="modal fade"  role="dialog" aria-labelledby="modal_fnb_list">
   <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -510,7 +510,7 @@
 </div>
 
 <!-- Non Pajak List -->
-<div id="modal_non_tax_list" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal_non_tax_list">
+<div id="modal_non_tax_list" class="modal fade"  role="dialog" aria-labelledby="modal_non_tax_list">
   <div class="modal-dialog modal-md" role="document">
     <div class="modal-content">
       <div class="modal-header">
