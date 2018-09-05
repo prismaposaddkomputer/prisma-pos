@@ -53,19 +53,19 @@ class Hot_reservation extends MY_Hotel {
       $from = $this->uri->segment(3);
 
       if($this->session->userdata('search_term') == null){
-        $num_rows = $this->m_hot_billing->num_rows();
+        $num_rows = $this->m_hot_reservation->num_rows();
 
         $config['total_rows'] = $num_rows;
         $this->pagination->initialize($config);
 
-        $data['billing'] = $this->m_hot_billing->get_list($config['per_page'],$from,$search_term = null);
+        $data['billing'] = $this->m_hot_reservation->get_list($config['per_page'],$from,$search_term = null);
       }else{
         $search_term = $this->session->userdata('search_term');
-        $num_rows = $this->m_hot_billing->num_rows($search_term);
+        $num_rows = $this->m_hot_reservation->num_rows($search_term);
         $config['total_rows'] = $num_rows;
         $this->pagination->initialize($config);
 
-        $data['billing'] = $this->m_hot_billing->get_list($config['per_page'],$from,$search_term);
+        $data['billing'] = $this->m_hot_reservation->get_list($config['per_page'],$from,$search_term);
       }
 
       $this->view('hot_reservation/index',$data);

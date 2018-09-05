@@ -19,7 +19,7 @@
             <input type="text" class="form-control keyboard" name="search_term" placeholder="Pencarian..." value="<?php echo $this->session->userdata('search_term');?>">
             <span class="input-group-btn">
               <button class="btn btn-info" type="submit"><i class="fa fa-search"></i></button>
-              <a class="btn btn-default" href="<?=base_url()?>hot_billing/reset_search"><i class="fa fa-refresh"></i></a>
+              <a class="btn btn-default" href="<?=base_url()?>hot_reservation/reset_search"><i class="fa fa-refresh"></i></a>
             </span>
           </div>
         </div>

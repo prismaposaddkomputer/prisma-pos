@@ -13,7 +13,7 @@ class M_hot_reservation extends CI_Model {
 				->result();
 		}else{
 			return $this->db
-				->like('reservation_name',$search_term,'both')
+				->like('guest_name',$search_term,'both')
 				->where('is_deleted','0')
 				->order_by('billing_id','desc')
 				->get('hot_billing',$number,$offset)
@@ -255,6 +255,14 @@ class M_hot_reservation extends CI_Model {
 		)->row();
 
 		return $data->count_non_tax;
+	}
+
+	function num_rows($search_term = null){
+		if($search_term == null){
+			return $this->db->get('hot_billing')->num_rows();
+		}else{
+			return $this->db->like('guest_name',$search_term,'both')->get('hot_billing')->num_rows();
+		}
 	}
 
 }

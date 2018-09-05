@@ -14,7 +14,7 @@ class M_hot_billing extends CI_Model {
 				->result();
 		}else{
 			return $this->db
-				->like('billing_name',$search_term,'both')
+				->like('guest_name',$search_term,'both')
 				->where('is_deleted','0')
 				->where('billing_status !=','0')
 				->order_by('billing_id','desc')
@@ -62,7 +62,7 @@ class M_hot_billing extends CI_Model {
 		if($search_term == null){
 			return $this->db->get('hot_billing')->num_rows();
 		}else{
-			return $this->db->like('billing_name',$search_term,'both')->get('hot_billing')->num_rows();
+			return $this->db->like('guest_name',$search_term,'both')->get('hot_billing')->num_rows();
 		}
 	}
 
