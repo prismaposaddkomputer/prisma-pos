@@ -8,17 +8,6 @@
       <div class="col-md-6">
         <input class="form-control" type="hidden" name="member_id" value="<?php if($member_type != null){echo $member_type->member_id;}?>">
         <div class="form-group">
-          <label>Jenis Tamu <small class="required-field">*</small></label>
-          <br>
-            <label class="radio-inline">
-               <input type="radio" name="member_type" value="0" <?php if($member_type != null){if($member_type->member_type == '0'){echo 'checked';}}else{echo 'checked';}?>/> Reguler (Biasa)
-            </label>
-            &nbsp;&nbsp;&nbsp;
-            <label class="radio-inline">
-               <input type="radio" name="member_type" value="1" <?php if($member_type != null){if($member_type->member_type == '1'){echo 'checked';}}?>/> Member (Langganan)
-            </label>
-        </div>
-        <div class="form-group">
           <label>Nama Tamu / Plat Nomor Kendaraan <small class="required-field">*</small></label>
           <input class="form-control keyboard" type="text" name="member_name" value="<?php if($member_type != null){echo $member_type->member_name;}?>">
         </div>
@@ -112,9 +101,6 @@
         },
         'member_gender': {
           required: true
-        },
-        'member_type': {
-          required: true
         }
       },
       messages: {
@@ -122,9 +108,6 @@
           required: '<i style="color:red">Wajib diisi!</i>'
         },
         'member_gender': {
-          required: '<i style="color:red">Wajib diisi!</i>'
-        },
-        'member_type': {
           required: '<i style="color:red">Wajib diisi!</i>'
         }
       }
@@ -146,13 +129,13 @@
     $('[name=before_tax]').prop('readonly',true);
     var pajak=0;
     var hasil=0;
-    var service_hotel=0;
+    var service_karaoke=0;
     var sudahx=ind_to_sys($('#sudah').val());
     var sudah=parseFloat(sudahx);
       hasil=(sudah*100)/120;
       pajak=(sudah*10)/120;
     $("#pajak").val(sys_to_ind(pajak.toFixed(0)));
-    $("#service_hotel").val(sys_to_ind(pajak.toFixed(0)));
+    $("#service_karaoke").val(sys_to_ind(pajak.toFixed(0)));
     $("#belum").val(sys_to_ind(hasil.toFixed(0)));
   }
 
@@ -160,13 +143,13 @@
     $('[name=after_tax]').prop('readonly',true);
     var pajak=0;
     var hasil=0;
-    var service_hotel=0;
+    var service_karaoke=0;
     var belumx=ind_to_sys($('#belum').val());
     var belum=parseFloat(belumx);
       pajak=(belum*10)/100;
       hasil=belum+pajak+pajak;
     $("#pajak").val(sys_to_ind(pajak.toFixed(0)));
-    $("#service_hotel").val(sys_to_ind(pajak.toFixed(0)));
+    $("#service_karaoke").val(sys_to_ind(pajak.toFixed(0)));
     $("#sudah").val(sys_to_ind(hasil.toFixed(0)));
   }
 </script>

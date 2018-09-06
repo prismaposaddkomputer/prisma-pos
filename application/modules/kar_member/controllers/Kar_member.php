@@ -24,7 +24,7 @@ class Kar_member extends MY_Karaoke {
   {
     if ($this->access->_read == 1) {
       $data['access'] = $this->access;
-      $data['title'] = 'Manajemen Tamu';
+      $data['title'] = 'Manajemen Member (Tamu Langganan)';
 
       if($this->input->post('search_term')){
         $search_term = $this->input->post('search_term');
@@ -70,7 +70,7 @@ class Kar_member extends MY_Karaoke {
     $data['access'] = $this->access;
     if ($id == null) {
       if ($this->access->_create == 1) {
-        $data['title'] = 'Tambah Tamu';
+        $data['title'] = 'Tambah Member (Tamu Langganan)';
         $data['action'] = 'insert';
         $data['member_type'] = null;
         $this->view('kar_member/form', $data);
@@ -79,7 +79,7 @@ class Kar_member extends MY_Karaoke {
       }
     }else{
       if ($this->access->_update == 1) {
-        $data['title'] = 'Ubah Tamu';
+        $data['title'] = 'Ubah Member (Tamu Langganan)';
         $data['member_type'] = $this->m_kar_member->get_by_id($id);
         $data['action'] = 'update';
         $this->view('kar_member/form', $data);

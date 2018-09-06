@@ -7,25 +7,48 @@ class M_kar_charge_type extends CI_Model {
   {
 		if($search_term == null){
 			return $this->db
-				->where('is_deleted','0')
+        ->where('is_deleted','0')
+				->where('charge_type_id = ','1')
 				->get('kar_charge_type',$number,$offset)
 				->result();
 		}else{
 			return $this->db
 				->like('charge_type_name',$search_term,'both')
-				->where('is_deleted','0')
+        ->where('is_deleted','0')
+				->where('charge_type_id = ','1')
 				->get('kar_charge_type',$number,$offset)
 				->result();
 		}
   }
 
-	public function get_all()
-	{
-		return $this->db
-			->where('is_deleted','0')
-			->where('is_active','1')
-			->get('kar_charge_type')->result();
-	}
+  public function get_all()
+  {
+	return $this->db
+		->where('is_deleted','0')
+		->where('is_active','1')
+		->get('kar_charge_type')->result();
+  }
+
+  public function list_data_except_tax_karaoke()
+  {
+	 $sql = "SELECT *
+            FROM kar_charge_type 
+            WHERE is_active = '1'
+            ORDER BY charge_type_id ASC";
+    $query = $this->db->query($sql);
+    $result = $query->result_array();
+    //
+    return $result;
+  }
+
+  function get_data_kar_charge_type($charge_type_id) {
+    $sql = "SELECT *
+            FROM kar_charge_type 
+            WHERE is_active = '1' AND charge_type_id = ?
+            ORDER BY charge_type_id ASC";
+    $query = $this->db->query($sql, $charge_type_id);
+    return $query->row_array();
+  }
 
   public function get_by_id($id)
   {

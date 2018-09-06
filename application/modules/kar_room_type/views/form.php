@@ -8,13 +8,13 @@
       <div class="col-md-6">
         <input class="form-control" type="hidden" name="room_type_id" value="<?php if($room_type != null){echo $room_type->room_type_id;}?>">
         <div class="form-group">
-          <label>Nama Tipe Ruang (Kategori Ruang) <small class="required-field">*</small></label>
+          <label>Nama Tipe Kamar (Kategori Kamar) <small class="required-field">*</small></label>
           <input class="form-control keyboard" type="text" name="room_type_name" value="<?php if($room_type != null){echo $room_type->room_type_name;}?>">
         </div>
         <div class="row">
           <div class="col-md-5">
             <div class="form-group">
-              <label>Tarif Ruang <small class="required-field">**</small></label>
+              <label>Tarif Kamar <small class="required-field">**</small></label>
               <div class="input-group">
                   <div class="input-group-addon"><b>Rp</b></div>
                   <input class="form-control autonumeric num" type="text" name="room_type_charge" value="<?php if($room_type != null){echo $room_type->room_type_charge;}else{echo '0';}?>">
@@ -24,10 +24,10 @@
           <div class="col-md-2">&nbsp;</div>
           <div class="col-md-5">
             <div class="form-group">
-              <label>Jumlah Ruang <small class="required-field">*</small></label>
+              <label>Jumlah Kamar <small class="required-field">*</small></label>
               <div class="input-group">
                   <input class="form-control autonumeric num" type="text" name="room_no" value="<?php if($room_type != null){echo $number_of_room;}else{echo '0';}?>">
-                  <div class="input-group-addon"><b>Ruang</b></div>
+                  <div class="input-group-addon"><b>Kamar</b></div>
               </div>
             </div>
           </div>
@@ -96,4 +96,32 @@
       $('[name=after_tax]').prop('readonly',true);	
 		}
 	});
+
+  function findAfter(){
+    $('[name=before_tax]').prop('readonly',true);
+    var pajak=0;
+    var hasil=0;
+    var service_karaoke=0;
+    var sudahx=ind_to_sys($('#sudah').val());
+    var sudah=parseFloat(sudahx);
+      hasil=(sudah*100)/120;
+      pajak=(sudah*10)/120;
+    $("#pajak").val(sys_to_ind(pajak.toFixed(0)));
+    $("#service_karaoke").val(sys_to_ind(pajak.toFixed(0)));
+    $("#belum").val(sys_to_ind(hasil.toFixed(0)));
+  }
+
+   function findBefore(){
+    $('[name=after_tax]').prop('readonly',true);
+    var pajak=0;
+    var hasil=0;
+    var service_karaoke=0;
+    var belumx=ind_to_sys($('#belum').val());
+    var belum=parseFloat(belumx);
+      pajak=(belum*10)/100;
+      hasil=belum+pajak+pajak;
+    $("#pajak").val(sys_to_ind(pajak.toFixed(0)));
+    $("#service_karaoke").val(sys_to_ind(pajak.toFixed(0)));
+    $("#sudah").val(sys_to_ind(hasil.toFixed(0)));
+  }
 </script>

@@ -26,7 +26,7 @@ class Kar_room_type extends MY_Karaoke {
   {
     if ($this->access->_read == 1) {
       $data['access'] = $this->access;
-      $data['title'] = 'Manajemen Tipe Ruang (Kategori Ruang)';
+      $data['title'] = 'Manajemen Tipe Kamar (Kategori Kamar)';
       $data['charge_type'] = $this->m_kar_charge_type->get_all();
     
       if($this->input->post('search_term')){
@@ -75,7 +75,7 @@ class Kar_room_type extends MY_Karaoke {
     $client = $this->m_kar_client->get_all();
     if ($id == null) {
       if ($this->access->_create == 1) {
-        $data['title'] = 'Tambah Tipe Ruang (Kategori Ruang)';
+        $data['title'] = 'Tambah Tipe Kamar (Kategori Kamar)';
         $data['action'] = 'insert';
         $data['room_type'] = null;
         $this->view('kar_room_type/form', $data);
@@ -84,7 +84,7 @@ class Kar_room_type extends MY_Karaoke {
       }
     }else{
       if ($this->access->_update == 1) {
-        $data['title'] = 'Ubah Tipe Ruang (Kategori Ruang)';
+        $data['title'] = 'Ubah Tipe Kamar (Kategori Kamar)';
         $data['room_type'] = $this->m_kar_room_type->get_by_id($id);
         $data['number_of_room'] = $this->m_kar_room_type->get_list_room_by_type_id($id);
         $data['action'] = 'update';
@@ -94,7 +94,7 @@ class Kar_room_type extends MY_Karaoke {
           foreach ($data['charge_type'] as $row) {
             $tot_ratio += $row->charge_type_ratio;
           }
-          $data['room_type']->room_type_charge = round(($tot_ratio/100)*$data['room_type']->room_type_charge,2);
+          $data['room_type']->room_type_charge = ($tot_ratio/100)*$data['room_type']->room_type_charge;
         }
         $this->view('kar_room_type/form', $data);
       } else {
@@ -132,7 +132,20 @@ class Kar_room_type extends MY_Karaoke {
 
   public function update()
   {
-    $this->m_kar_room_type->update();
+    $data = $_POST;
+    $data['room_type_charge'] = price_to_num($data['room_type_charge']);
+
+    $charge_type = $this->m_kar_charge_type->get_all();
+    $client = $this->m_kar_client->get_all();
+    $tot_ratio = 100;
+    if ($client->client_is_taxed == 1) {
+      foreach ($charge_type as $row) {
+        $tot_ratio += $row->charge_type_ratio;
+      }
+      $data['room_type_charge'] = round((100/$tot_ratio)*$data['room_type_charge'],2);
+    }
+
+    $this->m_kar_room_type->update($data);
     $this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil diubah!</div>');
     redirect(base_url().'kar_room_type/index');
   }

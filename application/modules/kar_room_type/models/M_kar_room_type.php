@@ -85,15 +85,14 @@ class M_kar_room_type extends CI_Model {
 
   }
 
-  public function update()
+  public function update($data)
   {
-  	$kar_room_type = $_POST;
+  	$kar_room_type = $data;
     $id = $kar_room_type['room_type_id'];
     $kar_room_type['updated_by'] = $this->session->userdata('user_realname');
     if(!isset($kar_room_type['is_active'])){
       $kar_room_type['is_active'] = 0;
     }
-    $kar_room_type['room_type_charge'] = price_to_num($kar_room_type['room_type_charge']);
 
   	//get data
   	$get_awal = $this->get_list_room_by_type_id($id);
