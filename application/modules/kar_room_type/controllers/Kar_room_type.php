@@ -26,7 +26,7 @@ class Kar_room_type extends MY_Karaoke {
   {
     if ($this->access->_read == 1) {
       $data['access'] = $this->access;
-      $data['title'] = 'Manajemen Tipe Kamar (Kategori Kamar)';
+      $data['title'] = 'Manajemen Tipe Room (Kategori Room)';
       $data['charge_type'] = $this->m_kar_charge_type->get_all();
     
       if($this->input->post('search_term')){
@@ -75,7 +75,7 @@ class Kar_room_type extends MY_Karaoke {
     $client = $this->m_kar_client->get_all();
     if ($id == null) {
       if ($this->access->_create == 1) {
-        $data['title'] = 'Tambah Tipe Kamar (Kategori Kamar)';
+        $data['title'] = 'Tambah Tipe Room (Kategori Room)';
         $data['action'] = 'insert';
         $data['room_type'] = null;
         $this->view('kar_room_type/form', $data);
@@ -84,7 +84,7 @@ class Kar_room_type extends MY_Karaoke {
       }
     }else{
       if ($this->access->_update == 1) {
-        $data['title'] = 'Ubah Tipe Kamar (Kategori Kamar)';
+        $data['title'] = 'Ubah Tipe Room (Kategori Room)';
         $data['room_type'] = $this->m_kar_room_type->get_by_id($id);
         $data['number_of_room'] = $this->m_kar_room_type->get_list_room_by_type_id($id);
         $data['action'] = 'update';

@@ -11,7 +11,7 @@
  Target Server Version : 100125
  File Encoding         : 65001
 
- Date: 06/09/2018 10:29:30
+ Date: 06/09/2018 10:51:28
 */
 
 SET NAMES utf8mb4;
@@ -56,7 +56,12 @@ CREATE TABLE `kar_billing`  (
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`billing_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of kar_billing
+-- ----------------------------
+INSERT INTO `kar_billing` VALUES (1, '180906000001', 0, 0, '', '', '', 0, '', 0, '', '0000-00-00', '00:00:00', '0000-00-00', '00:00:00', 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, '', 0, '2018-09-06 10:40:57', 'System', '0000-00-00 00:00:00', '', 1, 0);
 
 -- ----------------------------
 -- Table structure for kar_billing_extra
@@ -551,8 +556,8 @@ CREATE TABLE `kar_module`  (
 INSERT INTO `kar_module` VALUES ('01', '', 'Dashboard', 'kar_dashboard', 'kar_dashboard', 'index', 'dashboard', '2018-08-18 05:51:24', '', '2018-09-06 10:13:07', '', 0, 0);
 INSERT INTO `kar_module` VALUES ('02', '', 'Master', '', '', '#', 'cubes', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0);
 INSERT INTO `kar_module` VALUES ('02.01', '02', 'Jenis Biaya', 'kar_charge_type', 'kar_charge_type', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 10:22:02', '', 0, 0);
-INSERT INTO `kar_module` VALUES ('02.02', '02', 'Tipe Kamar', 'kar_room_type', 'kar_room_type', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 10:22:10', '', 0, 0);
-INSERT INTO `kar_module` VALUES ('02.03', '02', 'Kamar', 'kar_room', 'kar_room', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 10:22:15', '', 0, 0);
+INSERT INTO `kar_module` VALUES ('02.02', '02', 'Tipe Room', 'kar_room_type', 'kar_room_type', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 10:50:32', '', 0, 0);
+INSERT INTO `kar_module` VALUES ('02.03', '02', 'Room', 'kar_room', 'kar_room', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 10:50:29', '', 0, 0);
 INSERT INTO `kar_module` VALUES ('02.05', '02', 'Tamu', 'kar_guest', 'kar_guest', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 10:22:22', '', 0, 0);
 INSERT INTO `kar_module` VALUES ('02.06', '02', 'Pelayanan', 'kar_service', 'kar_service', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 10:22:28', '', 0, 0);
 INSERT INTO `kar_module` VALUES ('02.07', '02', 'Ekstra', 'kar_extra', 'kar_extra', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 10:22:33', '', 0, 0);

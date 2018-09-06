@@ -123,8 +123,7 @@
       </div>
       <div class="modal-body" style="font-size: 15px;">
         <ul style="margin-left: -22px;">
-          <li>Menu ini digunakan untuk memanajemen jenis biaya seperti Pajak karaoke dll</li>
-          <li>Jika <b>Servis karaoke</b> dan/atau <b>Biaya Lain-Lain</b> tidak digunakan silahkan non aktifkan <b>Servis karaoke</b> dan/atau <b>Biaya Lain-Lain</b>, dengan klik tombol pensil kemudian uncheck (jangan di cek) kolom Aktif</li>
+          <li>Menu ini digunakan untuk melihat jenis biaya lain, seperti Pajak Karaoke</li>
         </ul>
       </div>
       <div class="modal-footer">

@@ -8,13 +8,13 @@
       <div class="col-md-6">
         <input class="form-control" type="hidden" name="room_type_id" value="<?php if($room_type != null){echo $room_type->room_type_id;}?>">
         <div class="form-group">
-          <label>Nama Tipe Kamar (Kategori Kamar) <small class="required-field">*</small></label>
+          <label>Nama Tipe Room (Kategori Room) <small class="required-field">*</small></label>
           <input class="form-control keyboard" type="text" name="room_type_name" value="<?php if($room_type != null){echo $room_type->room_type_name;}?>">
         </div>
         <div class="row">
           <div class="col-md-5">
             <div class="form-group">
-              <label>Tarif Kamar <small class="required-field">**</small></label>
+              <label>Tarif Room <small class="required-field">**</small></label>
               <div class="input-group">
                   <div class="input-group-addon"><b>Rp</b></div>
                   <input class="form-control autonumeric num" type="text" name="room_type_charge" value="<?php if($room_type != null){echo $room_type->room_type_charge;}else{echo '0';}?>">
@@ -24,10 +24,10 @@
           <div class="col-md-2">&nbsp;</div>
           <div class="col-md-5">
             <div class="form-group">
-              <label>Jumlah Kamar <small class="required-field">*</small></label>
+              <label>Jumlah Room <small class="required-field">*</small></label>
               <div class="input-group">
                   <input class="form-control autonumeric num" type="text" name="room_no" value="<?php if($room_type != null){echo $number_of_room;}else{echo '0';}?>">
-                  <div class="input-group-addon"><b>Kamar</b></div>
+                  <div class="input-group-addon"><b>Room</b></div>
               </div>
             </div>
           </div>

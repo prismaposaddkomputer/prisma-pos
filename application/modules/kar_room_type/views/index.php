@@ -10,7 +10,7 @@
 <div class="content-body">
   <div class="row">
     <div class="col-md-5">
-      <a class="btn btn-info" href="<?=base_url()?>kar_room_type/form"><i class="fa fa-plus"></i> Tambah Tipe Kamar (Kategori Kamar)</a>
+      <a class="btn btn-info" href="<?=base_url()?>kar_room_type/form"><i class="fa fa-plus"></i> Tambah Tipe Room (Kategori Room)</a>
       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalInformation">
         <i class="fa fa-question"></i> Informasi
       </button>
@@ -41,8 +41,8 @@
             <tr>
               <th class="text-center" width="50">No</th>
               <th class="text-center" width="70">Aksi</th>
-              <th class="text-center">Nama Tipe Kamar (Kategori Kamar)</th>
-              <th class="text-center" width="150">Jumlah Kamar</th>
+              <th class="text-center">Nama Tipe Room (Kategori Room)</th>
+              <th class="text-center" width="150">Jumlah Room</th>
               <th class="text-center" width="150">Harga</th>
               <th class="text-center" width="80">Aktif</th>
             </tr>
@@ -133,12 +133,12 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Informasi Menu Tipe Kamar (Kategori Kamar)</h4>
+        <h4 class="modal-title" id="myModalLabel">Informasi Menu Tipe Room (Kategori Room)</h4>
       </div>
       <div class="modal-body" style="font-size: 15px;">
         <ul style="margin-left: -22px;">
-          <li>Menu ini digunakan untuk memanajemen Tipe Kamar (Kategori Kamar)</li>
-          <li>Ketika Anda mengisi kolom Jumlah Kamar di Form Tambah Tipe Kamar maka di menu Kamar akan otomatis terisi sama dengan Jumlah Kamar yang Anda isikan</li>
+          <li>Menu ini digunakan untuk memanajemen Tipe Room (Kategori Room)</li>
+          <li>Ketika Anda mengisi kolom Jumlah Room di Form Tambah Tipe Room maka di menu Room akan otomatis terisi sama dengan Jumlah Room yang Anda isikan</li>
         </ul>
       </div>
       <div class="modal-footer">
