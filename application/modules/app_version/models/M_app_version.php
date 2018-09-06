@@ -801,6 +801,11 @@ class M_app_version extends CI_Model {
           PRIMARY KEY (`billing_non_tax_id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT");
         break;
+      
+      case '2.4.2':
+        $this->db->query("ALTER TABLE `res_client`
+	        CHANGE COLUMN `client_receipt_is_taxed` `client_is_taxed` TINYINT(1) NOT NULL DEFAULT '1' AFTER `client_keyboard_status`");
+        break;
     }
 
     //insert new update history
@@ -878,6 +883,8 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"2.4.0","version_release"=>"2018-09-02 12:19:00"));
     // non tax billing
     array_push($version, array("version_now"=>"2.4.1","version_release"=>"2018-09-04 18:57:00"));
+    // change res _client
+    array_push($version, array("version_now"=>"2.4.2","version_release"=>"2018-09-06 10:29:00"));
 
     foreach ($version as $key => $val) {
       //check version

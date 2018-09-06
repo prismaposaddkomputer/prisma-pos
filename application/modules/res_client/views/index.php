@@ -104,13 +104,13 @@
               <th colspan="3">Data Lain</th>
             </tr>
             <tr>
-              <td>Metode cetak struk</td>
+              <td>Metode Harga</td>
               <td class="text-center">:</td>
               <td>
-                <?php if ($client->client_receipt_is_taxed == 0): ?>
-                  Harga sebelum pajak.
+                <?php if ($client->client_is_taxed == 0): ?>
+                  <b class="cl-warning">Harga sebelum pajak.</b>
                 <?php else: ?>
-                  Harga sesudah pajak.
+                  <b class="cl-success">Harga sesudah pajak.</b>
                 <?php endif; ?>
               </td>
             </tr>
