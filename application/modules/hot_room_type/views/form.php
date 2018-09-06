@@ -71,7 +71,6 @@
         },
         'room_type_charge': {
           required: true,
-          number: true
         }
       },
       messages: {
@@ -80,7 +79,6 @@
         },
         'room_type_charge': {
           required: '<i style="color:red">Wajib diisi!</i>',
-          number: '<i style="color:red">Harus berupa angka!</i>'
         }
       }
     });
