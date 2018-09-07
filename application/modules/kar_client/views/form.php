@@ -102,6 +102,11 @@
         <hr>
         <h4>Data Lain</h4>
         <div class="form-group">
+          <label>Metode Harga</label><br>
+          <input type="radio" value="0" name="client_is_taxed" <?php if($client != null){if($client->client_is_taxed == 0){echo 'checked';}}?>> Harga sebelum pajak.
+          <input type="radio" value="1" name="client_is_taxed" <?php if($client != null){if($client->client_is_taxed == 1){echo 'checked';}}?>> Harga setelah pajak.
+        </div>
+        <div class="form-group">
           <label>Keterangan Tambahan<small class="required-field">*</small></label>
           <textarea class="form-control keyboard" type="text" name="client_notes"><?php if($client != null){echo $client->client_notes;}?></textarea>
         </div>
@@ -123,7 +128,7 @@
           <?php endif; ?>
           <br><br>
           <input type="file" name="client_logo" value="">
-          <small>Type : *.gif/*.jpg/*.png; Max Size : 10 MB; Max Height : 1024px; Max Width : 768px;</small>
+          <small>Gambar akan dikompress dengan Tinggi : 150px & Lebar : 300px dan distruk akan menjadi hitam putih</small>
         </div>
         <div class="form-group pull-right">
           <a class="btn btn-default" href="<?=base_url()?>kar_client/index"><i class="fa fa-close"></i> Batal</a>

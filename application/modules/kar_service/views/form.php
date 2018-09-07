@@ -8,7 +8,7 @@
       <div class="col-md-6">
         <input class="form-control" type="hidden" name="service_id" value="<?php if($service != null){echo $service->service_id;}?>">
         <div class="form-group">
-          <label>Nama Pelayanan Ruang <small class="required-field">*</small></label>
+          <label>Nama Pelayanan Kamar <small class="required-field">*</small></label>
           <input class="form-control keyboard" type="text" name="service_name" value="<?php if($service != null){echo $service->service_name;}?>">
         </div>
         <div class="row">
@@ -22,6 +22,15 @@
             </div>
           </div>
         </div>
+        <small>
+          Harga
+          <?php if ($client->client_is_taxed == 1) {
+            echo 'Sudah Termasuk';
+          }else{
+            echo 'Belum Termasuk';
+          } ?>
+          Pajak karaoke
+        </small>
         <div class="form-group">
           <label>Tersedia?</label><br>
           <input class="" type="checkbox" name="is_active" value="1" <?php if($service != null){if($service->is_active == 1){echo 'checked';}}else{echo 'checked';}?>>

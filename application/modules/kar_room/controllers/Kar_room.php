@@ -25,7 +25,7 @@ class Kar_room extends MY_Karaoke {
   {
     if ($this->access->_read == 1) {
       $data['access'] = $this->access;
-      $data['title'] = 'Manajemen Ruang';
+      $data['title'] = 'Manajemen Kamar';
 
       if($this->input->post('search_term')){
         $search_term = $this->input->post('search_term');
@@ -71,7 +71,7 @@ class Kar_room extends MY_Karaoke {
     $data['access'] = $this->access;
     if ($id == null) {
       if ($this->access->_create == 1) {
-        $data['title'] = 'Tambah Ruang';
+        $data['title'] = 'Tambah Kamar';
         $data['action'] = 'insert';
         $data['room'] = null;
         $data['room_type'] = $this->m_kar_room_type->get_all();
@@ -81,7 +81,7 @@ class Kar_room extends MY_Karaoke {
       }
     }else{
       if ($this->access->_update == 1) {
-        $data['title'] = 'Ubah Ruang';
+        $data['title'] = 'Ubah Kamar';
         $data['room'] = $this->m_kar_room->get_by_id($id);
         $data['room_type'] = $this->m_kar_room_type->get_all();
         $data['action'] = 'update';

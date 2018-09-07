@@ -12,14 +12,6 @@
           <input class="form-control keyboard" type="text" name="discount_name" value="<?php if($discount != null){echo $discount->discount_name;}?>">
         </div>
         <div class="form-group">
-          <label>Pilih Tipe Diskon <small class="required-field">*</small></label>
-          <select class="form-control select2" name="discount_group" id="select-get-value">
-            <option value="1" <?php if($discount != null){if($discount->discount_group == '1'){echo 'selected';}}?>>Diskon Ruangan</option>
-            <option value="2" <?php if($discount != null){if($discount->discount_group == '2'){echo 'selected';}}?>>Diskon Member</option>
-            <option value="3" <?php if($discount != null){if($discount->discount_group == '3'){echo 'selected';}}?>>Diskon Total</option>
-          </select>
-        </div>
-        <div class="form-group">
           <label>Pilih Jenis Diskon <small class="required-field">*</small></label>
           <br>
             <label class="radio-inline">
@@ -131,4 +123,31 @@
 		}
 	});
 
+  function findAfter(){
+    $('[name=before_tax]').prop('readonly',true);
+    var pajak=0;
+    var hasil=0;
+    var service_karaoke=0;
+    var sudahx=ind_to_sys($('#sudah').val());
+    var sudah=parseFloat(sudahx);
+      hasil=(sudah*100)/120;
+      pajak=(sudah*10)/120;
+    $("#pajak").val(sys_to_ind(pajak.toFixed(0)));
+    $("#service_karaoke").val(sys_to_ind(pajak.toFixed(0)));
+    $("#belum").val(sys_to_ind(hasil.toFixed(0)));
+  }
+
+   function findBefore(){
+    $('[name=after_tax]').prop('readonly',true);
+    var pajak=0;
+    var hasil=0;
+    var service_karaoke=0;
+    var belumx=ind_to_sys($('#belum').val());
+    var belum=parseFloat(belumx);
+      pajak=(belum*10)/100;
+      hasil=belum+pajak+pajak;
+    $("#pajak").val(sys_to_ind(pajak.toFixed(0)));
+    $("#service_karaoke").val(sys_to_ind(pajak.toFixed(0)));
+    $("#sudah").val(sys_to_ind(hasil.toFixed(0)));
+  }
 </script>

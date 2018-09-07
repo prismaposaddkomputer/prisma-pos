@@ -11,7 +11,7 @@
  Target Server Version : 100125
  File Encoding         : 65001
 
- Date: 30/08/2018 15:24:11
+ Date: 06/09/2018 08:24:57
 */
 
 SET NAMES utf8mb4;
@@ -37,7 +37,7 @@ CREATE TABLE `app_install`  (
 -- ----------------------------
 -- Records of app_install
 -- ----------------------------
-INSERT INTO `app_install` VALUES (1, 3, 1, '2018-04-18 12:14:03', 'System', '2018-08-28 08:43:07', 'System', 1, 0);
+INSERT INTO `app_install` VALUES (1, 3, 1, '2018-04-18 12:14:03', 'System', '2018-09-05 22:39:44', 'System', 1, 0);
 
 -- ----------------------------
 -- Table structure for app_type
@@ -75,34 +75,44 @@ CREATE TABLE `app_version`  (
   `version_release` timestamp(0) NULL DEFAULT NULL,
   `version_updated` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`version_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 24 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 34 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of app_version
 -- ----------------------------
-INSERT INTO `app_version` VALUES (1, '1.0', '2018-07-05 18:00:00', '2018-08-13 09:02:01');
-INSERT INTO `app_version` VALUES (2, '1.1', '2018-07-09 14:16:00', '2018-08-13 09:02:02');
-INSERT INTO `app_version` VALUES (3, '1.2', '2018-07-16 11:20:00', '2018-08-13 09:02:03');
-INSERT INTO `app_version` VALUES (4, '1.3', '2018-07-17 10:00:00', '2018-08-13 09:02:03');
-INSERT INTO `app_version` VALUES (5, '1.4', '2018-07-17 10:41:00', '2018-08-13 09:02:06');
-INSERT INTO `app_version` VALUES (6, '1.5', '2018-07-18 11:52:00', '2018-08-13 09:02:10');
-INSERT INTO `app_version` VALUES (7, '1.6', '2018-07-22 19:47:00', '2018-08-13 09:02:14');
-INSERT INTO `app_version` VALUES (8, '1.7', '2018-08-07 10:46:00', '2018-08-13 09:02:16');
-INSERT INTO `app_version` VALUES (9, '1.8', '2018-08-07 12:12:00', '2018-08-13 09:02:16');
-INSERT INTO `app_version` VALUES (10, '1.9', '2018-08-07 14:12:00', '2018-08-13 09:02:19');
-INSERT INTO `app_version` VALUES (11, '2.0', '2018-08-08 11:15:00', '2018-08-13 09:02:22');
-INSERT INTO `app_version` VALUES (12, '2.1', '2018-08-13 12:12:00', '2018-08-13 20:46:02');
-INSERT INTO `app_version` VALUES (13, '2.2.1', '2018-08-18 09:00:00', '2018-08-20 10:45:08');
-INSERT INTO `app_version` VALUES (14, '2.2.2', '2018-08-20 09:00:00', '2018-08-20 10:45:08');
-INSERT INTO `app_version` VALUES (15, '2.2.3', '2018-08-21 09:40:00', '2018-08-20 10:45:10');
-INSERT INTO `app_version` VALUES (16, '2.2.4', '2018-08-21 10:20:00', '2018-08-20 10:45:11');
-INSERT INTO `app_version` VALUES (17, '2.2.5', '2018-08-21 10:20:00', '2018-08-20 15:10:10');
-INSERT INTO `app_version` VALUES (18, '2.2.6', '2018-08-21 14:45:00', '2018-08-21 08:24:30');
-INSERT INTO `app_version` VALUES (19, '2.2.7', '2018-08-21 14:56:00', '2018-08-21 08:24:30');
-INSERT INTO `app_version` VALUES (20, '2.2.8', '2018-08-21 14:56:00', '2018-08-21 08:24:31');
-INSERT INTO `app_version` VALUES (21, '2.2.9', '2018-08-21 15:13:00', '2018-08-21 08:24:31');
-INSERT INTO `app_version` VALUES (22, '2.3.0', '2018-08-21 15:20:00', '2018-08-21 08:24:32');
-INSERT INTO `app_version` VALUES (23, '2.3.1', '2018-08-22 08:30:00', '2018-08-21 14:44:04');
+INSERT INTO `app_version` VALUES (1, '1.0', '2018-07-05 18:00:00', '2018-09-03 07:50:59');
+INSERT INTO `app_version` VALUES (2, '1.1', '2018-07-09 14:16:00', '2018-09-03 07:51:00');
+INSERT INTO `app_version` VALUES (3, '1.2', '2018-07-16 11:20:00', '2018-09-03 07:51:01');
+INSERT INTO `app_version` VALUES (4, '1.3', '2018-07-17 10:00:00', '2018-09-03 07:51:01');
+INSERT INTO `app_version` VALUES (5, '1.4', '2018-07-17 10:41:00', '2018-09-03 07:51:04');
+INSERT INTO `app_version` VALUES (6, '1.5', '2018-07-18 11:52:00', '2018-09-03 07:51:08');
+INSERT INTO `app_version` VALUES (7, '1.6', '2018-07-22 19:47:00', '2018-09-03 07:51:09');
+INSERT INTO `app_version` VALUES (8, '1.7', '2018-08-07 10:46:00', '2018-09-03 07:51:10');
+INSERT INTO `app_version` VALUES (9, '1.8', '2018-08-07 12:12:00', '2018-09-03 07:51:10');
+INSERT INTO `app_version` VALUES (10, '1.9', '2018-08-07 14:12:00', '2018-09-03 07:51:13');
+INSERT INTO `app_version` VALUES (11, '2.0', '2018-08-08 11:15:00', '2018-09-03 07:51:16');
+INSERT INTO `app_version` VALUES (12, '2.1', '2018-08-13 12:12:00', '2018-09-03 07:51:23');
+INSERT INTO `app_version` VALUES (13, '2.2.1', '2018-08-18 09:00:00', '2018-09-03 07:51:23');
+INSERT INTO `app_version` VALUES (14, '2.2.2', '2018-08-20 09:00:00', '2018-09-03 07:51:23');
+INSERT INTO `app_version` VALUES (15, '2.2.3', '2018-08-21 09:40:00', '2018-09-03 07:51:25');
+INSERT INTO `app_version` VALUES (16, '2.2.4', '2018-08-21 10:20:00', '2018-09-03 07:51:26');
+INSERT INTO `app_version` VALUES (17, '2.2.5', '2018-08-21 10:20:00', '2018-09-03 07:51:26');
+INSERT INTO `app_version` VALUES (18, '2.2.6', '2018-08-21 14:45:00', '2018-09-03 07:51:27');
+INSERT INTO `app_version` VALUES (19, '2.2.7', '2018-08-21 14:56:00', '2018-09-03 07:51:27');
+INSERT INTO `app_version` VALUES (20, '2.2.8', '2018-08-21 14:56:00', '2018-09-03 07:51:28');
+INSERT INTO `app_version` VALUES (21, '2.2.9', '2018-08-21 15:13:00', '2018-09-03 07:51:29');
+INSERT INTO `app_version` VALUES (22, '2.3.0', '2018-08-21 15:20:00', '2018-09-03 07:51:35');
+INSERT INTO `app_version` VALUES (23, '2.3.1', '2018-08-22 08:30:00', '2018-09-03 07:51:35');
+INSERT INTO `app_version` VALUES (24, '2.3.2', '2018-09-02 07:01:00', '2018-09-03 07:51:35');
+INSERT INTO `app_version` VALUES (25, '2.3.3', '2018-09-02 07:58:00', '2018-09-03 07:51:35');
+INSERT INTO `app_version` VALUES (26, '2.3.4', '2018-09-02 08:07:00', '2018-09-03 07:51:36');
+INSERT INTO `app_version` VALUES (27, '2.3.5', '2018-09-02 08:15:00', '2018-09-03 07:51:37');
+INSERT INTO `app_version` VALUES (28, '2.3.6', '2018-09-02 08:24:00', '2018-09-03 07:51:38');
+INSERT INTO `app_version` VALUES (29, '2.3.7', '2018-09-02 08:28:00', '2018-09-03 07:51:39');
+INSERT INTO `app_version` VALUES (30, '2.3.8', '2018-09-02 08:51:00', '2018-09-03 07:51:41');
+INSERT INTO `app_version` VALUES (31, '2.3.9', '2018-09-02 08:56:00', '2018-09-03 07:51:42');
+INSERT INTO `app_version` VALUES (32, '2.4.0', '2018-09-02 12:19:00', '2018-09-03 07:51:42');
+INSERT INTO `app_version` VALUES (33, '2.4.1', '2018-09-04 18:57:00', '2018-09-05 05:18:05');
 
 -- ----------------------------
 -- Table structure for hot_billing
@@ -148,7 +158,10 @@ CREATE TABLE `hot_billing`  (
 -- ----------------------------
 -- Records of hot_billing
 -- ----------------------------
-INSERT INTO `hot_billing` VALUES (4, '180830000001', 0, 0, '', '', '', 0, '', 0, '', '0000-00-00', '00:00:00', '0000-00-00', '00:00:00', 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, '', 0, '2018-08-30 15:23:23', 'System', '0000-00-00 00:00:00', '', 1, 0);
+INSERT INTO `hot_billing` VALUES (1, '180905000001', 0, 0, 'Testing', 'L', '', 1, '', 1, 'Super Hotel', '2018-09-05', '14:00:00', '2018-09-06', '12:00:00', 2, 45454.55, 4545.45, 0.00, 0.00, 50000.00, 0, 0.00, 100000.00, 50000.00, '', 2, '2018-09-05 10:29:15', 'System', '0000-00-00 00:00:00', 'Super Hotel', 1, 0);
+INSERT INTO `hot_billing` VALUES (2, '180905000002', 0, 0, 'Testing', 'L', '', 1, '', 1, 'Super Hotel', '2018-09-05', '10:53:22', '2018-09-06', '12:00:00', 2, 90909.10, 9090.91, 0.00, 0.00, 100000.00, 0, 0.00, 100000.00, 0.00, '', 2, '2018-09-05 11:05:00', 'System', '0000-00-00 00:00:00', 'Super Restaurant', 1, 0);
+INSERT INTO `hot_billing` VALUES (3, '180905000003', 0, 0, 'Piutang', 'L', '', 1, '', 1, 'Super Hotel', '2018-09-05', '13:52:02', '2018-09-06', '13:52:02', 2, 90909.10, 9090.91, 0.00, 0.00, 100000.00, 0, 0.00, 0.00, 0.00, '', 1, '2018-09-05 11:09:23', 'System', '0000-00-00 00:00:00', '', 1, 0);
+INSERT INTO `hot_billing` VALUES (4, '180905000004', 0, 0, '', '', '', 0, '', 0, '', '0000-00-00', '00:00:00', '0000-00-00', '00:00:00', 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, '', 0, '2018-09-05 15:54:46', 'System', '0000-00-00 00:00:00', '', 1, 0);
 
 -- ----------------------------
 -- Table structure for hot_billing_extra
@@ -197,6 +210,27 @@ CREATE TABLE `hot_billing_fnb`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
+-- Table structure for hot_billing_non_tax
+-- ----------------------------
+DROP TABLE IF EXISTS `hot_billing_non_tax`;
+CREATE TABLE `hot_billing_non_tax`  (
+  `billing_non_tax_id` int(11) NOT NULL AUTO_INCREMENT,
+  `billing_id` int(11) NOT NULL DEFAULT 0,
+  `non_tax_id` int(11) NOT NULL,
+  `non_tax_name` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `non_tax_charge` float(10, 2) NOT NULL,
+  `non_tax_amount` float(10, 2) NOT NULL,
+  `non_tax_total` float(10, 2) NOT NULL,
+  `created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_by` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
+  `updated` timestamp(0) NOT NULL,
+  `updated_by` varchar(20) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`billing_non_tax_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
 -- Table structure for hot_billing_room
 -- ----------------------------
 DROP TABLE IF EXISTS `hot_billing_room`;
@@ -221,12 +255,14 @@ CREATE TABLE `hot_billing_room`  (
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`billing_room_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of hot_billing_room
 -- ----------------------------
-INSERT INTO `hot_billing_room` VALUES (3, 1, 802, 'Gold - 02', 8, 'Gold', 83333.33, 2.00, 166666.67, 16666.67, 16666.67, 0.00, 200000.00, '2018-08-30 15:23:32', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `hot_billing_room` VALUES (1, 1, 501, 'Testing - 01', 5, 'Testing', 45454.55, 1.00, 45454.55, 4545.45, 0.00, 0.00, 50000.00, '2018-09-05 10:29:55', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `hot_billing_room` VALUES (2, 2, 501, 'Testing - 01', 5, 'Testing', 45454.55, 2.00, 90909.10, 9090.91, 0.00, 0.00, 100000.00, '2018-09-05 11:05:51', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `hot_billing_room` VALUES (5, 3, 501, 'Testing - 01', 5, 'Testing', 45454.55, 2.00, 90909.10, 9090.91, 0.00, 0.00, 100000.00, '2018-09-05 13:52:11', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0);
 
 -- ----------------------------
 -- Table structure for hot_billing_service
@@ -249,7 +285,7 @@ CREATE TABLE `hot_billing_service`  (
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`billing_service_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for hot_booking
@@ -273,18 +309,7 @@ CREATE TABLE `hot_booking`  (
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   `opsi_hari` int(155) NULL DEFAULT 0,
   PRIMARY KEY (`booking_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
-
--- ----------------------------
--- Records of hot_booking
--- ----------------------------
-INSERT INTO `hot_booking` VALUES (1, '2102', 1, 1, 2, 1, '2018-08-13', '2018-08-13', '2018-08-15', '2018-08-13 10:07:40', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0, 0);
-INSERT INTO `hot_booking` VALUES (2, '2116', 1, 0, 2, 1, '2018-08-13', '2018-08-13', '2018-08-15', '2018-08-13 20:47:23', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0, 0);
-INSERT INTO `hot_booking` VALUES (3, '2047', 3, 1, 3, 1, '2018-08-14', '2018-08-14', '2018-08-17', '2018-08-14 10:00:59', 'Super Hotel', '0000-00-00 00:00:00', 'Super Hotel', 1, 0, 0);
-INSERT INTO `hot_booking` VALUES (4, '2081', 1, 1, 2, 1, '2018-08-14', '2018-08-14', '2018-08-16', '2018-08-14 10:05:15', 'Super Hotel', '0000-00-00 00:00:00', 'Super Hotel', 1, 0, 0);
-INSERT INTO `hot_booking` VALUES (5, '2108', 3, 0, 3, 4, '2018-08-15', '2018-08-15', '2018-08-18', '2018-08-15 10:11:57', 'Super Hotel', '0000-00-00 00:00:00', 'Super Hotel', 1, 0, 0);
-INSERT INTO `hot_booking` VALUES (6, '2154', 5, 0, 2, 3, '2018-08-15', '2018-08-15', '2018-08-17', '2018-08-15 10:21:59', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0, 0);
-INSERT INTO `hot_booking` VALUES (7, '2077', 7, 0, 1, 4, '2018-08-15', '2018-08-15', '2018-08-16', '2018-08-15 10:36:22', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0, 0);
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for hot_booking_diskon
@@ -361,16 +386,7 @@ CREATE TABLE `hot_category`  (
   `after_tax` int(155) NULL DEFAULT NULL,
   `service_hotel` int(155) NULL DEFAULT NULL,
   PRIMARY KEY (`category_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
-
--- ----------------------------
--- Records of hot_category
--- ----------------------------
-INSERT INTO `hot_category` VALUES (1, 'Deluxe Room', '2018-08-13 09:49:36', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0, 0, '', 1, 27273, 2727, 30000, NULL);
-INSERT INTO `hot_category` VALUES (2, 'Standard Hotel', '2018-08-13 20:49:51', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 1, 0, '', 1, 25000, 2500, 30000, 2500);
-INSERT INTO `hot_category` VALUES (3, 'Standar Room', '2018-08-14 09:54:37', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0, 0, '', 0, 30000, 3000, 36000, 3000);
-INSERT INTO `hot_category` VALUES (4, 'tipe 1', '2018-08-15 10:23:39', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0, 0, '', 0, 30000, 3000, 36000, 3000);
-INSERT INTO `hot_category` VALUES (5, 'test', '2018-08-15 13:50:24', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0, 0, '', 1, 25000, 2500, 30000, 2500);
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for hot_charge_type
@@ -394,9 +410,9 @@ CREATE TABLE `hot_charge_type`  (
 -- ----------------------------
 -- Records of hot_charge_type
 -- ----------------------------
-INSERT INTO `hot_charge_type` VALUES (1, '1.1.1.01.05', 'Pajak Hotel', 10.00, 'Pajak Daerah', '2018-08-20 10:45:11', 'System', NULL, 'System', 1, 0);
-INSERT INTO `hot_charge_type` VALUES (2, 'SRV', 'Servis Hotel', 10.00, 'Biaya Servis', '2018-08-20 10:45:11', 'System', '2018-08-27 09:29:21', 'Super Karaoke', 1, 0);
-INSERT INTO `hot_charge_type` VALUES (3, 'BLL', 'Biaya Lain-Lain', 1.00, 'Biaya Lain-Lain', '2018-08-29 07:05:50', 'System', '2018-08-29 15:34:25', 'Super Hotel', 0, 0);
+INSERT INTO `hot_charge_type` VALUES (1, '1.1.1.01.05', 'Pajak Hotel', 10.00, 'Pajak Daerah', '2018-09-03 07:51:25', 'System', NULL, 'System', 1, 0);
+INSERT INTO `hot_charge_type` VALUES (2, 'SRV', 'Servis Hotel', 10.00, 'Biaya Servis', '2018-09-03 07:51:25', 'System', '2018-09-04 15:57:49', 'Super Hotel', 0, 0);
+INSERT INTO `hot_charge_type` VALUES (3, 'OTH', 'Biaya Lain-lain', 1.00, 'Biaya Lain-lain', '2018-09-03 07:51:35', 'System', '2018-09-04 15:57:42', 'Super Hotel', 0, 0);
 
 -- ----------------------------
 -- Table structure for hot_client
@@ -436,7 +452,7 @@ CREATE TABLE `hot_client`  (
 -- ----------------------------
 -- Records of hot_client
 -- ----------------------------
-INSERT INTO `hot_client` VALUES ('1', 'CV Prisma Hotel', 'Prisma Hotel', 'sendiri', 'Jalan Gajahmada 57', 'Warungboto', 'Umbulharjo', 'Yogyakarta', 'Daerah Istimewa Yogyakarta', 'buat@gmail.com', '123', '123', '1234', '1234', 'Sujo', 'jalan manggis\r\n', 'Tidak ada', '1234-1234-1234', 1, 'update-hotel-griya-persada1.png', 1, '2018-05-08 10:26:03', 'System', '2018-08-29 15:17:57', 'Super Hotel', 1, 0);
+INSERT INTO `hot_client` VALUES ('1', 'CV Prisma Hotel', 'Prisma Hotel', 'sendiri', 'Jalan Gajahmada 56', 'Warungboto', 'Umbulharjo', 'Yogyakarta', 'Daerah Istimewa Yogyakarta', 'buat@gmail.com', '123', '123', '1234', '1234', 'Sujo', 'jalan manggis\r\n', 'Tidak ada', '1234-1234-1234', 1, 'update-hotel-griya-persada3.png', 1, '2018-05-08 10:26:03', 'System', '2018-09-05 12:01:50', 'Super Hotel', 1, 0);
 
 -- ----------------------------
 -- Table structure for hot_discount
@@ -454,6 +470,30 @@ CREATE TABLE `hot_discount`  (
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`discount_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of hot_discount
+-- ----------------------------
+INSERT INTO `hot_discount` VALUES (1, 'Diskon Akhir Tahun', 1, 10.00, '2018-09-03 08:18:31', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `hot_discount` VALUES (2, 'Testing', 2, 50000.00, '2018-09-05 08:38:35', 'Super Hotel', '2018-09-05 08:38:49', 'Super Hotel', 1, 0);
+
+-- ----------------------------
+-- Table structure for hot_diskon
+-- ----------------------------
+DROP TABLE IF EXISTS `hot_diskon`;
+CREATE TABLE `hot_diskon`  (
+  `diskon_id` int(11) NOT NULL AUTO_INCREMENT,
+  `diskon_name` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `diskon_price` int(155) NOT NULL,
+  `created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_by` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
+  `updated` timestamp(0) NOT NULL,
+  `updated_by` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
+  `nominal` int(155) NULL DEFAULT NULL,
+  PRIMARY KEY (`diskon_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
@@ -461,7 +501,7 @@ CREATE TABLE `hot_discount`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `hot_extra`;
 CREATE TABLE `hot_extra`  (
-  `extra_id` int(11) NOT NULL,
+  `extra_id` int(11) NOT NULL AUTO_INCREMENT,
   `extra_name` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `extra_charge` float(10, 2) NOT NULL,
   `created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -471,7 +511,13 @@ CREATE TABLE `hot_extra`  (
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`extra_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of hot_extra
+-- ----------------------------
+INSERT INTO `hot_extra` VALUES (1, 'Selimut', 5000.00, '2018-09-03 08:18:08', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `hot_extra` VALUES (2, 'Testing', 45454.55, '2018-09-05 08:37:34', 'Super Hotel', '2018-09-05 08:37:52', 'Super Hotel', 1, 0);
 
 -- ----------------------------
 -- Table structure for hot_fnb
@@ -479,32 +525,32 @@ CREATE TABLE `hot_extra`  (
 DROP TABLE IF EXISTS `hot_fnb`;
 CREATE TABLE `hot_fnb`  (
   `fnb_id` int(11) NOT NULL AUTO_INCREMENT,
-  `fnb_name` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `fnb_charge` float(10, 2) NULL DEFAULT NULL,
-  `created` timestamp(0) NULL DEFAULT NULL,
-  `created_by` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT 'System',
-  `updated` timestamp(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0),
-  `updated_by` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT 'System',
-  `is_active` tinyint(1) NULL DEFAULT 1,
-  `is_deleted` tinyint(1) NULL DEFAULT 0,
+  `fnb_name` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `fnb_charge` float(10, 2) NOT NULL,
+  `created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_by` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
+  `updated` timestamp(0) NOT NULL,
+  `updated_by` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`fnb_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of hot_fnb
 -- ----------------------------
-INSERT INTO `hot_fnb` VALUES (1, 'Ayam Goreng1', 100000.00, NULL, 'Super Hotel', '2018-08-20 13:05:16', 'Super Hotel', 1, 1);
-INSERT INTO `hot_fnb` VALUES (2, 'Ayam Geprek', 2000.00, NULL, 'Super Hotel', NULL, 'System', 1, 0);
-INSERT INTO `hot_fnb` VALUES (3, 'Ayam Goreng', 3000.00, NULL, 'Super Hotel', NULL, 'System', 1, 0);
-INSERT INTO `hot_fnb` VALUES (4, 'Test', 2000.00, NULL, 'Super Hotel', '2018-08-27 11:41:35', 'System', 1, 1);
+INSERT INTO `hot_fnb` VALUES (1, 'Ayam Geprek', 12000.00, '2018-09-03 08:18:24', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `hot_fnb` VALUES (2, 'Testing', 45454.55, '2018-09-05 08:38:07', 'Super Hotel', '0000-00-00 00:00:00', 'Super Hotel', 1, 0);
 
 -- ----------------------------
 -- Table structure for hot_guest
 -- ----------------------------
 DROP TABLE IF EXISTS `hot_guest`;
 CREATE TABLE `hot_guest`  (
-  `guest_id` int(11) NOT NULL,
+  `guest_id` int(11) NOT NULL AUTO_INCREMENT,
+  `guest_type` tinyint(1) NOT NULL DEFAULT 0,
   `guest_name` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `guest_gender` char(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `guest_phone` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `guest_address` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `guest_id_type` tinyint(1) NOT NULL DEFAULT 1,
@@ -516,7 +562,13 @@ CREATE TABLE `hot_guest`  (
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`guest_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of hot_guest
+-- ----------------------------
+INSERT INTO `hot_guest` VALUES (1, 0, 'Joko Susilo', 'L', '', '', 1, '', '2018-09-04 11:51:28', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `hot_guest` VALUES (2, 1, 'Joko Samino', 'L', '', '', 1, '', '2018-09-04 11:51:55', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0);
 
 -- ----------------------------
 -- Table structure for hot_log
@@ -530,143 +582,45 @@ CREATE TABLE `hot_log`  (
   `log_date` date NOT NULL,
   `log_time` time(0) NOT NULL,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 120 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of hot_log
 -- ----------------------------
-INSERT INTO `hot_log` VALUES (1, 1, 'Super Hotel', 'Sign In', '2018-08-13', '09:03:31');
-INSERT INTO `hot_log` VALUES (2, 1, 'Super Hotel', 'Sign In', '2018-08-13', '09:44:41');
-INSERT INTO `hot_log` VALUES (3, 1, 'Super Hotel', 'Sign In', '2018-08-13', '10:09:36');
-INSERT INTO `hot_log` VALUES (4, 1, 'Super Hotel', 'Sign In', '2018-08-13', '10:09:50');
-INSERT INTO `hot_log` VALUES (5, 1, 'Super Hotel', 'Sign In', '2018-08-13', '10:11:18');
-INSERT INTO `hot_log` VALUES (6, 1, 'Super Hotel', 'Sign Out', '2018-08-13', '10:22:11');
-INSERT INTO `hot_log` VALUES (7, 1, 'Super Hotel', 'Sign In', '2018-08-13', '10:22:21');
-INSERT INTO `hot_log` VALUES (8, 1, 'Super Hotel', 'Sign In', '2018-08-13', '10:22:42');
-INSERT INTO `hot_log` VALUES (9, 1, 'Super Hotel', 'Sign In', '2018-08-13', '10:36:10');
-INSERT INTO `hot_log` VALUES (10, 1, 'Super Hotel', 'Sign In', '2018-08-13', '11:52:29');
-INSERT INTO `hot_log` VALUES (11, 1, 'Super Hotel', 'Sign In', '2018-08-13', '14:22:36');
-INSERT INTO `hot_log` VALUES (12, 1, 'Super Hotel', 'Sign In', '2018-08-13', '20:46:18');
-INSERT INTO `hot_log` VALUES (13, 1, 'Super Hotel', 'Sign In', '2018-08-14', '09:52:05');
-INSERT INTO `hot_log` VALUES (14, 1, 'Super Hotel', 'Sign Out', '2018-08-14', '10:13:29');
-INSERT INTO `hot_log` VALUES (15, 4, 'Alfian', 'Sign In', '2018-08-14', '10:13:36');
-INSERT INTO `hot_log` VALUES (16, 1, 'Super Hotel', 'Sign In', '2018-08-14', '10:13:54');
-INSERT INTO `hot_log` VALUES (17, 1, 'Super Hotel', 'Sign Out', '2018-08-14', '10:18:55');
-INSERT INTO `hot_log` VALUES (18, 3, 'Cashier Hotel', 'Sign In', '2018-08-14', '10:19:11');
-INSERT INTO `hot_log` VALUES (19, 1, 'Super Hotel', 'Sign In', '2018-08-14', '10:19:24');
-INSERT INTO `hot_log` VALUES (20, 1, 'Super Hotel', 'Sign In', '2018-08-15', '10:09:44');
-INSERT INTO `hot_log` VALUES (21, 1, 'Super Hotel', 'Sign Out', '2018-08-15', '10:15:16');
-INSERT INTO `hot_log` VALUES (22, 1, 'Super Hotel', 'Sign In', '2018-08-15', '10:15:33');
-INSERT INTO `hot_log` VALUES (23, 1, 'Super Hotel', 'Sign Out', '2018-08-15', '10:15:36');
-INSERT INTO `hot_log` VALUES (24, 1, 'Super Hotel', 'Sign In', '2018-08-15', '10:16:53');
-INSERT INTO `hot_log` VALUES (25, 1, 'Super Hotel', 'Sign Out', '2018-08-15', '10:16:59');
-INSERT INTO `hot_log` VALUES (26, 1, 'Super Hotel', 'Sign In', '2018-08-15', '10:17:10');
-INSERT INTO `hot_log` VALUES (27, 1, 'Super Hotel', 'Sign Out', '2018-08-15', '10:19:23');
-INSERT INTO `hot_log` VALUES (28, 1, 'Super Hotel', 'Sign In', '2018-08-15', '10:19:54');
-INSERT INTO `hot_log` VALUES (29, 1, 'Super Hotel', 'Sign Out', '2018-08-15', '11:05:02');
-INSERT INTO `hot_log` VALUES (30, 1, 'Super Hotel', 'Sign In', '2018-08-15', '11:19:35');
-INSERT INTO `hot_log` VALUES (31, 1, 'Super Hotel', 'Sign In', '2018-08-15', '12:05:03');
-INSERT INTO `hot_log` VALUES (32, 1, 'Super Hotel', 'Sign In', '2018-08-15', '12:15:30');
-INSERT INTO `hot_log` VALUES (33, 1, 'Super Hotel', 'Sign In', '2018-08-15', '12:34:27');
-INSERT INTO `hot_log` VALUES (34, 1, 'Super Hotel', 'Sign In', '2018-08-15', '12:52:30');
-INSERT INTO `hot_log` VALUES (35, 1, 'Super Hotel', 'Sign In', '2018-08-15', '12:53:04');
-INSERT INTO `hot_log` VALUES (36, 1, 'Super Hotel', 'Sign In', '2018-08-15', '12:54:07');
-INSERT INTO `hot_log` VALUES (37, 1, 'Super Hotel', 'Sign In', '2018-08-15', '12:54:33');
-INSERT INTO `hot_log` VALUES (38, 1, 'Super Hotel', 'Sign In', '2018-08-15', '12:58:08');
-INSERT INTO `hot_log` VALUES (39, 1, 'Super Hotel', 'Sign In', '2018-08-15', '13:36:35');
-INSERT INTO `hot_log` VALUES (40, 1, 'Super Hotel', 'Sign In', '2018-08-15', '13:37:08');
-INSERT INTO `hot_log` VALUES (41, 1, 'Super Hotel', 'Sign In', '2018-08-15', '13:38:04');
-INSERT INTO `hot_log` VALUES (42, 1, 'Super Hotel', 'Sign In', '2018-08-20', '10:22:20');
-INSERT INTO `hot_log` VALUES (43, 1, 'Super Hotel', 'Sign In', '2018-08-20', '10:29:04');
-INSERT INTO `hot_log` VALUES (44, 1, 'Super Hotel', 'Sign In', '2018-08-20', '10:39:35');
-INSERT INTO `hot_log` VALUES (45, 1, 'Super Hotel', 'Sign In', '2018-08-20', '10:39:45');
-INSERT INTO `hot_log` VALUES (46, 1, 'Super Hotel', 'Sign In', '2018-08-20', '10:43:08');
-INSERT INTO `hot_log` VALUES (47, 1, 'Super Hotel', 'Sign In', '2018-08-20', '10:43:59');
-INSERT INTO `hot_log` VALUES (48, 1, 'Super Hotel', 'Sign In', '2018-08-20', '10:44:09');
-INSERT INTO `hot_log` VALUES (49, 1, 'Super Hotel', 'Sign In', '2018-08-20', '10:48:41');
-INSERT INTO `hot_log` VALUES (50, 1, 'Super Hotel', 'Sign In', '2018-08-20', '10:50:16');
-INSERT INTO `hot_log` VALUES (51, 1, 'Super Hotel', 'Sign In', '2018-08-20', '11:22:47');
-INSERT INTO `hot_log` VALUES (52, 1, 'Super Hotel', 'Sign In', '2018-08-20', '11:25:29');
-INSERT INTO `hot_log` VALUES (53, 1, 'Super Hotel', 'Sign In', '2018-08-20', '11:25:59');
-INSERT INTO `hot_log` VALUES (54, 1, 'Super Hotel', 'Sign In', '2018-08-20', '11:26:16');
-INSERT INTO `hot_log` VALUES (55, 1, 'Super Hotel', 'Sign In', '2018-08-20', '11:26:25');
-INSERT INTO `hot_log` VALUES (56, 1, 'Super Hotel', 'Sign In', '2018-08-20', '11:28:58');
-INSERT INTO `hot_log` VALUES (57, 1, 'Super Hotel', 'Sign In', '2018-08-20', '11:29:03');
-INSERT INTO `hot_log` VALUES (58, 1, 'Super Hotel', 'Sign In', '2018-08-20', '14:43:17');
-INSERT INTO `hot_log` VALUES (59, 1, 'Super Hotel', 'Sign In', '2018-08-20', '14:43:46');
-INSERT INTO `hot_log` VALUES (60, 1, 'Super Hotel', 'Sign Out', '2018-08-20', '15:05:19');
-INSERT INTO `hot_log` VALUES (61, 1, 'Super Hotel', 'Sign In', '2018-08-20', '15:05:27');
-INSERT INTO `hot_log` VALUES (62, 1, 'Super Hotel', 'Sign Out', '2018-08-20', '15:10:09');
-INSERT INTO `hot_log` VALUES (63, 1, 'Super Hotel', 'Sign In', '2018-08-20', '15:11:28');
-INSERT INTO `hot_log` VALUES (64, 1, 'Super Hotel', 'Sign In', '2018-08-20', '17:19:54');
-INSERT INTO `hot_log` VALUES (65, 1, 'Super Hotel', 'Sign In', '2018-08-20', '17:20:05');
-INSERT INTO `hot_log` VALUES (66, 1, 'Super Hotel', 'Sign In', '2018-08-20', '17:38:36');
-INSERT INTO `hot_log` VALUES (67, 1, 'Super Hotel', 'Sign In', '2018-08-20', '17:44:13');
-INSERT INTO `hot_log` VALUES (68, 1, 'Super Hotel', 'Sign In', '2018-08-20', '18:25:59');
-INSERT INTO `hot_log` VALUES (69, 1, 'Super Hotel', 'Sign In', '2018-08-20', '18:26:11');
-INSERT INTO `hot_log` VALUES (70, 1, 'Super Hotel', 'Sign In', '2018-08-21', '07:20:57');
-INSERT INTO `hot_log` VALUES (71, 1, 'Super Hotel', 'Sign In', '2018-08-21', '08:08:17');
-INSERT INTO `hot_log` VALUES (72, 1, 'Super Hotel', 'Sign In', '2018-08-21', '08:24:40');
-INSERT INTO `hot_log` VALUES (73, 1, 'Super Hotel', 'Sign In', '2018-08-21', '09:14:42');
-INSERT INTO `hot_log` VALUES (74, 1, 'Super Hotel', 'Sign In', '2018-08-21', '11:19:47');
-INSERT INTO `hot_log` VALUES (75, 1, 'Super Hotel', 'Sign In', '2018-08-21', '14:44:13');
-INSERT INTO `hot_log` VALUES (76, 1, 'Super Hotel', 'Sign In', '2018-08-21', '14:46:41');
-INSERT INTO `hot_log` VALUES (77, 1, 'Super Hotel', 'Sign Out', '2018-08-21', '14:49:30');
-INSERT INTO `hot_log` VALUES (78, 1, 'Super Hotel', 'Sign In', '2018-08-21', '14:49:37');
-INSERT INTO `hot_log` VALUES (79, 1, 'Super Hotel', 'Sign Out', '2018-08-21', '14:54:27');
-INSERT INTO `hot_log` VALUES (80, 1, 'Super Hotel', 'Sign In', '2018-08-21', '14:54:37');
-INSERT INTO `hot_log` VALUES (81, 1, 'Super Hotel', 'Sign In', '2018-08-21', '15:32:09');
-INSERT INTO `hot_log` VALUES (82, 1, 'Super Hotel', 'Sign In', '2018-08-21', '15:38:14');
-INSERT INTO `hot_log` VALUES (83, 1, 'Super Hotel', 'Sign In', '2018-08-21', '18:35:33');
-INSERT INTO `hot_log` VALUES (84, 1, 'Super Hotel', 'Sign In', '2018-08-21', '18:36:22');
-INSERT INTO `hot_log` VALUES (85, 1, 'Super Hotel', 'Sign In', '2018-08-21', '18:37:52');
-INSERT INTO `hot_log` VALUES (86, 1, 'Super Hotel', 'Sign In', '2018-08-22', '21:22:46');
-INSERT INTO `hot_log` VALUES (87, 1, 'Super Hotel', 'Sign In', '2018-08-22', '21:24:55');
-INSERT INTO `hot_log` VALUES (88, 1, 'Super Hotel', 'Sign In', '2018-08-27', '07:55:31');
-INSERT INTO `hot_log` VALUES (89, 1, 'Super Hotel', 'Sign Out', '2018-08-27', '08:58:02');
-INSERT INTO `hot_log` VALUES (90, 1, 'Super Hotel', 'Sign In', '2018-08-27', '11:33:13');
-INSERT INTO `hot_log` VALUES (91, 1, 'Super Hotel', 'Sign Out', '2018-08-27', '11:33:20');
-INSERT INTO `hot_log` VALUES (92, 1, 'Super Hotel', 'Sign In', '2018-08-27', '11:40:51');
-INSERT INTO `hot_log` VALUES (93, 1, 'Super Hotel', 'Sign Out', '2018-08-27', '11:56:48');
-INSERT INTO `hot_log` VALUES (94, 1, 'Super Hotel', 'Sign In', '2018-08-27', '14:45:11');
-INSERT INTO `hot_log` VALUES (95, 1, 'Super Hotel', 'Sign Out', '2018-08-27', '14:45:26');
-INSERT INTO `hot_log` VALUES (96, 1, 'Super Hotel', 'Sign In', '2018-08-27', '15:27:06');
-INSERT INTO `hot_log` VALUES (97, 1, 'Super Hotel', 'Sign Out', '2018-08-27', '16:09:46');
-INSERT INTO `hot_log` VALUES (98, 1, 'Super Hotel', 'Sign In', '2018-08-27', '16:17:03');
-INSERT INTO `hot_log` VALUES (99, 1, 'Super Hotel', 'Sign Out', '2018-08-27', '19:37:31');
-INSERT INTO `hot_log` VALUES (100, 1, 'Super Hotel', 'Sign In', '2018-08-27', '19:37:40');
-INSERT INTO `hot_log` VALUES (101, 1, 'Super Hotel', 'Sign In', '2018-08-28', '07:23:54');
-INSERT INTO `hot_log` VALUES (102, 1, 'Super Hotel', 'Sign In', '2018-08-28', '08:42:18');
-INSERT INTO `hot_log` VALUES (103, 1, 'Super Hotel', 'Sign Out', '2018-08-28', '08:42:34');
-INSERT INTO `hot_log` VALUES (104, 1, 'Super Hotel', 'Sign In', '2018-08-28', '08:43:23');
-INSERT INTO `hot_log` VALUES (105, 1, 'Super Hotel', 'Sign In', '2018-08-29', '06:49:08');
-INSERT INTO `hot_log` VALUES (106, 1, 'Super Hotel', 'Sign In', '2018-08-29', '12:09:14');
-INSERT INTO `hot_log` VALUES (107, 1, 'Super Hotel', 'Sign In', '2018-08-29', '22:33:20');
-INSERT INTO `hot_log` VALUES (108, 1, 'Super Hotel', 'Sign In', '2018-08-29', '22:34:02');
-INSERT INTO `hot_log` VALUES (109, 1, 'Super Hotel', 'Sign In', '2018-08-30', '05:44:49');
-INSERT INTO `hot_log` VALUES (110, 1, 'Super Hotel', 'Sign Out', '2018-08-30', '08:14:31');
-INSERT INTO `hot_log` VALUES (111, 4, 'Alfian', 'Sign In', '2018-08-30', '08:14:39');
-INSERT INTO `hot_log` VALUES (112, 4, 'Alfian', 'Sign Out', '2018-08-30', '08:14:48');
-INSERT INTO `hot_log` VALUES (113, 1, 'Super Hotel', 'Sign In', '2018-08-30', '08:15:05');
-INSERT INTO `hot_log` VALUES (114, 1, 'Super Hotel', 'Sign Out', '2018-08-30', '08:15:34');
-INSERT INTO `hot_log` VALUES (115, 4, 'Alfian', 'Sign In', '2018-08-30', '08:15:40');
-INSERT INTO `hot_log` VALUES (116, 4, 'Alfian', 'Sign Out', '2018-08-30', '08:17:13');
-INSERT INTO `hot_log` VALUES (117, 1, 'Super Hotel', 'Sign In', '2018-08-30', '08:17:20');
-INSERT INTO `hot_log` VALUES (118, 1, 'Super Hotel', 'Sign In', '2018-08-30', '14:46:15');
-INSERT INTO `hot_log` VALUES (119, 1, 'Super Hotel', 'Sign In', '2018-08-30', '15:22:35');
+INSERT INTO `hot_log` VALUES (1, 1, 'Super Hotel', 'Sign In', '2018-09-03', '08:00:23');
+INSERT INTO `hot_log` VALUES (2, 1, 'Super Hotel', 'Sign Out', '2018-09-03', '08:16:55');
+INSERT INTO `hot_log` VALUES (3, 1, 'Super Hotel', 'Sign In', '2018-09-03', '08:17:03');
+INSERT INTO `hot_log` VALUES (4, 1, 'Super Hotel', 'Sign In', '2018-09-03', '08:19:06');
+INSERT INTO `hot_log` VALUES (5, 1, 'Super Hotel', 'Sign In', '2018-09-03', '09:31:04');
+INSERT INTO `hot_log` VALUES (6, 1, 'Super Hotel', 'Sign In', '2018-09-03', '13:30:55');
+INSERT INTO `hot_log` VALUES (7, 1, 'Super Hotel', 'Sign In', '2018-09-03', '16:02:10');
+INSERT INTO `hot_log` VALUES (8, 1, 'Super Hotel', 'Sign Out', '2018-09-03', '16:26:59');
+INSERT INTO `hot_log` VALUES (9, 3, 'Cashier Hotel', 'Sign In', '2018-09-03', '16:27:29');
+INSERT INTO `hot_log` VALUES (10, 1, 'Super Hotel', 'Sign In', '2018-09-03', '18:55:42');
+INSERT INTO `hot_log` VALUES (11, 1, 'Super Hotel', 'Sign Out', '2018-09-03', '18:55:47');
+INSERT INTO `hot_log` VALUES (12, 1, 'Super Hotel', 'Sign In', '2018-09-03', '18:56:00');
+INSERT INTO `hot_log` VALUES (13, 1, 'Super Hotel', 'Sign In', '2018-09-05', '05:18:13');
+INSERT INTO `hot_log` VALUES (14, 1, 'Super Hotel', 'Sign In', '2018-09-05', '05:21:25');
+INSERT INTO `hot_log` VALUES (15, 1, 'Super Hotel', 'Sign In', '2018-09-05', '07:18:03');
+INSERT INTO `hot_log` VALUES (16, 1, 'Super Hotel', 'Sign Out', '2018-09-05', '07:23:16');
+INSERT INTO `hot_log` VALUES (17, 1, 'Super Hotel', 'Sign In', '2018-09-05', '07:23:23');
+INSERT INTO `hot_log` VALUES (18, 1, 'Super Hotel', 'Sign In', '2018-09-05', '07:23:41');
+INSERT INTO `hot_log` VALUES (19, 1, 'Super Hotel', 'Sign In', '2018-09-05', '07:37:53');
+INSERT INTO `hot_log` VALUES (20, 1, 'Super Hotel', 'Sign In', '2018-09-05', '08:55:48');
+INSERT INTO `hot_log` VALUES (21, 1, 'Super Hotel', 'Sign Out', '2018-09-05', '14:13:41');
+INSERT INTO `hot_log` VALUES (22, 1, 'Super Hotel', 'Sign In', '2018-09-05', '22:39:51');
 
 -- ----------------------------
 -- Table structure for hot_member
 -- ----------------------------
 DROP TABLE IF EXISTS `hot_member`;
 CREATE TABLE `hot_member`  (
-  `member_id` int(11) NOT NULL AUTO_INCREMENT,
-  `member_name` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `member_phone` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `member_address` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `member_id_type` tinyint(1) NULL DEFAULT 1,
-  `member_id_no` varchar(20) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `member_gender` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `member_id` int(11) NOT NULL,
+  `member_name` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `member_phone` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `member_address` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `member_id_type` tinyint(1) NOT NULL DEFAULT 1,
+  `member_id_no` varchar(20) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
   `updated` timestamp(0) NOT NULL ON UPDATE CURRENT_TIMESTAMP(0),
@@ -674,13 +628,7 @@ CREATE TABLE `hot_member`  (
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`member_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
-
--- ----------------------------
--- Records of hot_member
--- ----------------------------
-INSERT INTO `hot_member` VALUES (1, 'Test', '', NULL, 1, '', 'L', '2018-08-27 11:55:14', 'Super Hotel', '2018-08-27 11:55:34', 'Super Hotel', 1, 0);
-INSERT INTO `hot_member` VALUES (2, 'Test', '0855', NULL, 3, '555', 'L', '2018-08-27 11:55:26', 'Super Hotel', '2018-08-27 11:55:30', 'System', 1, 1);
+) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for hot_module
@@ -711,12 +659,12 @@ INSERT INTO `hot_module` VALUES ('02', '', 'Master', '', '', '#', 'cubes', '2018
 INSERT INTO `hot_module` VALUES ('02.01', '02', 'Jenis Biaya', 'hot_charge_type', 'hot_charge_type', 'index', '', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0);
 INSERT INTO `hot_module` VALUES ('02.02', '02', 'Tipe Kamar', 'hot_room_type', 'hot_room_type', 'index', '', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0);
 INSERT INTO `hot_module` VALUES ('02.03', '02', 'Kamar', 'hot_room', 'hot_room', 'index', '', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0);
-INSERT INTO `hot_module` VALUES ('02.04', '02', 'Tamu Langganan', 'hot_member', 'hot_member', 'index', '', '2018-08-18 05:51:24', '', '2018-08-20 15:04:05', 'Super Hotel', 0, 0);
+INSERT INTO `hot_module` VALUES ('02.05', '02', 'Tamu', 'hot_guest', 'hot_guest', 'index', '', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0);
 INSERT INTO `hot_module` VALUES ('02.06', '02', 'Pelayanan', 'hot_service', 'hot_service', 'index', '', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0);
 INSERT INTO `hot_module` VALUES ('02.07', '02', 'Ekstra', 'hot_extra', 'hot_extra', 'index', '', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0);
 INSERT INTO `hot_module` VALUES ('02.08', '02', 'FnB', 'hot_fnb', 'hot_fnb', 'index', '', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0);
 INSERT INTO `hot_module` VALUES ('02.09', '02', 'Diskon', 'hot_discount', 'hot_discount', 'index', '', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0);
-INSERT INTO `hot_module` VALUES ('02.10', '02', 'Non Pajak', 'hot_non_tax', 'hot_non_tax', 'index', '', '2018-08-30 10:55:05', 'System', '2018-08-30 10:56:34', 'System', 0, 0);
+INSERT INTO `hot_module` VALUES ('02.10', '02', 'Non Pajak', 'hot_non_tax', 'hot_non_tax', 'index', '', '2018-09-03 07:51:35', 'System', '0000-00-00 00:00:00', 'System', 1, 0);
 INSERT INTO `hot_module` VALUES ('03', '', 'Reservasi', 'hot_reservation', 'hot_reservation', 'index', 'address-book-o', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0);
 INSERT INTO `hot_module` VALUES ('04', '', 'Laporan', '', '', '#', 'files-o', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0);
 INSERT INTO `hot_module` VALUES ('04.01', '04', 'Laporan Reservasi (semua)', 'hot_report_reservation', 'hot_report_reservation', 'index', '', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0);
@@ -736,21 +684,22 @@ INSERT INTO `hot_module` VALUES ('99.05', '99', 'Client', 'hot_client', 'hot_cli
 DROP TABLE IF EXISTS `hot_non_tax`;
 CREATE TABLE `hot_non_tax`  (
   `non_tax_id` int(11) NOT NULL AUTO_INCREMENT,
-  `non_tax_name` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `non_tax_charge` float(10, 2) NULL DEFAULT NULL,
-  `created` timestamp(0) NULL DEFAULT NULL,
-  `created_by` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT 'System',
-  `updated` timestamp(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0),
-  `updated_by` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT 'System',
-  `is_active` tinyint(1) NULL DEFAULT 1,
-  `is_deleted` tinyint(1) NULL DEFAULT 0,
+  `non_tax_name` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `non_tax_charge` float(10, 2) NOT NULL,
+  `created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_by` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
+  `updated` timestamp(0) NOT NULL,
+  `updated_by` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`non_tax_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of hot_non_tax
 -- ----------------------------
-INSERT INTO `hot_non_tax` VALUES (7, 'MIRAS', 120000.00, NULL, 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_non_tax` VALUES (1, 'LC', 80000.00, '2018-09-05 05:45:50', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `hot_non_tax` VALUES (2, 'Testing', 50000.00, '2018-09-05 08:38:57', 'Super Hotel', '0000-00-00 00:00:00', 'Super Hotel', 1, 0);
 
 -- ----------------------------
 -- Table structure for hot_payment
@@ -775,18 +724,7 @@ CREATE TABLE `hot_payment`  (
   `posting_date` datetime(0) NULL DEFAULT NULL,
   `status` int(155) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
-
--- ----------------------------
--- Records of hot_payment
--- ----------------------------
-INSERT INTO `hot_payment` VALUES (1, 1, 40000, 10, 36000, 50000, 14000, 1, '2018-08-13 10:07:40', 'System', '0000-00-00 00:00:00', 'Super Hotel', 0, 0, 0, NULL, NULL);
-INSERT INTO `hot_payment` VALUES (2, 2, 30000, 0, 30000, 50000, 20000, 1, '2018-08-13 20:47:24', 'System', '0000-00-00 00:00:00', 'Super Hotel', 0, 0, 0, NULL, NULL);
-INSERT INTO `hot_payment` VALUES (3, 3, 40000, 0, 40000, 50000, 10000, 1, '2018-08-14 10:00:59', 'System', '0000-00-00 00:00:00', 'Super Hotel', 0, 0, 0, NULL, NULL);
-INSERT INTO `hot_payment` VALUES (4, 4, 40000, 0, 40000, 50000, 10000, 1, '2018-08-14 10:05:15', 'System', '0000-00-00 00:00:00', 'Super Hotel', 0, 0, 0, NULL, NULL);
-INSERT INTO `hot_payment` VALUES (5, 5, 0, 0, 0, NULL, NULL, 0, '2018-08-15 10:11:57', 'System', '0000-00-00 00:00:00', 'System', 1, 0, 0, NULL, NULL);
-INSERT INTO `hot_payment` VALUES (6, 6, 30000, 0, 30000, 50000, 20000, 1, '2018-08-15 10:21:59', 'System', '0000-00-00 00:00:00', 'Super Hotel', 0, 0, 0, NULL, NULL);
-INSERT INTO `hot_payment` VALUES (7, 7, 36000, 0, 36000, 100000, 64000, 1, '2018-08-15 10:36:22', 'System', '0000-00-00 00:00:00', 'Super Hotel', 0, 0, 0, NULL, NULL);
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for hot_permission
@@ -803,56 +741,60 @@ CREATE TABLE `hot_permission`  (
   `created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   PRIMARY KEY (`permission_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 89 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 52 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of hot_permission
 -- ----------------------------
-INSERT INTO `hot_permission` VALUES (44, 3, '01', 1, 1, 1, 1, '2018-08-20 10:45:08', 'System');
-INSERT INTO `hot_permission` VALUES (45, 3, '03', 1, 1, 1, 1, '2018-08-20 10:45:08', 'System');
-INSERT INTO `hot_permission` VALUES (46, 1, '01', 1, 1, 1, 1, '2018-08-30 10:57:14', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (47, 1, '02', 1, 1, 1, 1, '2018-08-30 10:57:14', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (48, 1, '02.01', 1, 1, 1, 1, '2018-08-30 10:57:14', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (49, 1, '02.02', 1, 1, 1, 1, '2018-08-30 10:57:14', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (50, 1, '02.03', 1, 1, 1, 1, '2018-08-30 10:57:14', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (51, 1, '02.04', 1, 1, 1, 1, '2018-08-30 10:57:14', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (52, 1, '02.06', 1, 1, 1, 1, '2018-08-30 10:57:14', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (53, 1, '02.07', 1, 1, 1, 1, '2018-08-30 10:57:14', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (54, 1, '02.08', 1, 1, 1, 1, '2018-08-30 10:57:14', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (55, 1, '02.09', 1, 1, 1, 1, '2018-08-30 10:57:14', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (56, 1, '02.10', 1, 1, 1, 1, '2018-08-30 10:57:14', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (57, 1, '03', 1, 1, 1, 1, '2018-08-30 10:57:14', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (58, 1, '04', 1, 1, 1, 1, '2018-08-30 10:57:14', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (59, 1, '04.01', 1, 1, 1, 1, '2018-08-30 10:57:14', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (60, 1, '04.02', 1, 1, 1, 1, '2018-08-30 10:57:14', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (61, 1, '04.03', 1, 1, 1, 1, '2018-08-30 10:57:14', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (62, 1, '04.04', 1, 1, 1, 1, '2018-08-30 10:57:14', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (63, 1, '99', 1, 1, 1, 1, '2018-08-30 10:57:14', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (64, 1, '99.03', 1, 1, 1, 1, '2018-08-30 10:57:14', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (65, 1, '99.05', 1, 1, 1, 1, '2018-08-30 10:57:15', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (66, 0, '01', 1, 1, 1, 1, '2018-08-30 10:58:59', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (67, 0, '02', 1, 1, 1, 1, '2018-08-30 10:58:59', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (68, 0, '02.01', 1, 1, 1, 1, '2018-08-30 10:58:59', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (69, 0, '02.02', 1, 1, 1, 1, '2018-08-30 10:58:59', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (70, 0, '02.03', 1, 1, 1, 1, '2018-08-30 10:58:59', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (71, 0, '02.04', 1, 1, 1, 1, '2018-08-30 10:58:59', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (72, 0, '02.06', 1, 1, 1, 1, '2018-08-30 10:58:59', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (73, 0, '02.07', 1, 1, 1, 1, '2018-08-30 10:58:59', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (74, 0, '02.08', 1, 1, 1, 1, '2018-08-30 10:58:59', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (75, 0, '02.09', 1, 1, 1, 1, '2018-08-30 10:58:59', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (76, 0, '02.10', 1, 1, 1, 1, '2018-08-30 10:58:59', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (77, 0, '03', 1, 1, 1, 1, '2018-08-30 10:58:59', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (78, 0, '04', 1, 1, 1, 1, '2018-08-30 10:58:59', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (79, 0, '04.01', 1, 1, 1, 1, '2018-08-30 10:59:00', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (80, 0, '04.02', 1, 1, 1, 1, '2018-08-30 10:59:00', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (81, 0, '04.03', 1, 1, 1, 1, '2018-08-30 10:59:00', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (82, 0, '04.04', 1, 1, 1, 1, '2018-08-30 10:59:00', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (83, 0, '99', 1, 1, 1, 1, '2018-08-30 10:59:00', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (84, 0, '99.01', 1, 1, 1, 1, '2018-08-30 10:59:00', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (85, 0, '99.02', 1, 1, 1, 1, '2018-08-30 10:59:00', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (86, 0, '99.03', 1, 1, 1, 1, '2018-08-30 10:59:00', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (87, 0, '99.04', 1, 1, 1, 1, '2018-08-30 10:59:00', 'Super Hotel');
-INSERT INTO `hot_permission` VALUES (88, 0, '99.05', 1, 1, 1, 1, '2018-08-30 10:59:00', 'Super Hotel');
+INSERT INTO `hot_permission` VALUES (1, 0, '01', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (2, 0, '02', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (3, 0, '02.01', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (4, 0, '02.02', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (5, 0, '02.03', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (6, 0, '02.04', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (7, 0, '02.05', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (8, 0, '02.06', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (9, 0, '02.07', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (10, 0, '02.08', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (11, 0, '02.09', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (12, 0, '03', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (13, 0, '04', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (14, 0, '04.01', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (15, 0, '04.02', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (16, 0, '04.03', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (17, 0, '04.04', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (18, 0, '99', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (19, 0, '99.01', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (20, 0, '99.02', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (21, 0, '99.03', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (22, 0, '99.04', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (23, 0, '99.05', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (24, 1, '01', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (25, 1, '02', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (26, 1, '02.01', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (27, 1, '02.02', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (28, 1, '02.03', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (29, 1, '02.04', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (30, 1, '02.05', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (31, 1, '02.06', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (32, 1, '02.07', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (33, 1, '02.08', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (34, 1, '02.09', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (35, 1, '03', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (36, 1, '04', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (37, 1, '04.01', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (38, 1, '04.02', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (39, 1, '04.03', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (40, 1, '04.04', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (41, 1, '99', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (42, 1, '99.03', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (43, 1, '99.05', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
+INSERT INTO `hot_permission` VALUES (46, 0, '02.10', 1, 1, 1, 1, '2018-09-03 07:51:35', 'System');
+INSERT INTO `hot_permission` VALUES (47, 1, '02.10', 1, 1, 1, 1, '2018-09-03 07:51:35', 'System');
+INSERT INTO `hot_permission` VALUES (48, 3, '01', 1, 1, 1, 1, '2018-09-03 16:26:52', 'Super Hotel');
+INSERT INTO `hot_permission` VALUES (49, 3, '02', 1, 1, 1, 1, '2018-09-03 16:26:52', 'Super Hotel');
+INSERT INTO `hot_permission` VALUES (50, 3, '02.01', 1, 1, 1, 1, '2018-09-03 16:26:52', 'Super Hotel');
+INSERT INTO `hot_permission` VALUES (51, 3, '03', 1, 1, 1, 1, '2018-09-03 16:26:52', 'Super Hotel');
 
 -- ----------------------------
 -- Table structure for hot_role
@@ -868,12 +810,12 @@ CREATE TABLE `hot_role`  (
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`role_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of hot_role
 -- ----------------------------
-INSERT INTO `hot_role` VALUES (0, 'Super Administrator Hotel', '2018-03-30 11:16:36', 'Super Administrator', '2018-08-30 10:58:36', 'Super Administrator', 1, 0);
+INSERT INTO `hot_role` VALUES (0, 'Super Administrator Hotel', '2018-03-30 11:16:36', 'Super Administrator', '2018-05-18 13:44:46', 'Super Administrator', 1, 0);
 INSERT INTO `hot_role` VALUES (1, 'Administrator Hotel', '2018-03-30 11:18:19', 'Super Administrator', '2018-05-18 13:44:51', 'Super Administrator', 1, 0);
 INSERT INTO `hot_role` VALUES (3, 'Cashier Hotel', '2018-05-08 13:42:21', 'Admin Hotel', '2018-05-18 13:45:02', 'Super Retail', 1, 0);
 
@@ -882,9 +824,9 @@ INSERT INTO `hot_role` VALUES (3, 'Cashier Hotel', '2018-05-08 13:42:21', 'Admin
 -- ----------------------------
 DROP TABLE IF EXISTS `hot_room`;
 CREATE TABLE `hot_room`  (
-  `room_id` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `room_id` int(11) NOT NULL AUTO_INCREMENT,
   `room_type_id` int(11) NOT NULL DEFAULT 0,
-  `room_name` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
+  `room_name` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '0',
   `room_no` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '0',
   `created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
@@ -893,19 +835,45 @@ CREATE TABLE `hot_room`  (
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`room_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 506 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of hot_room
 -- ----------------------------
-INSERT INTO `hot_room` VALUES ('801', 8, 'Gold - 01', '1', '2018-08-30 15:23:19', 'Super Hotel', NULL, 'System', 1, 0);
-INSERT INTO `hot_room` VALUES ('802', 8, 'Gold - 02', '2', '2018-08-30 15:23:19', 'Super Hotel', NULL, 'System', 1, 0);
-INSERT INTO `hot_room` VALUES ('803', 8, 'Gold - 03', '3', '2018-08-30 15:23:19', 'Super Hotel', NULL, 'System', 1, 0);
-INSERT INTO `hot_room` VALUES ('804', 8, 'Gold - 04', '4', '2018-08-30 15:23:19', 'Super Hotel', NULL, 'System', 1, 0);
-INSERT INTO `hot_room` VALUES ('805', 8, 'Gold - 05', '5', '2018-08-30 15:23:19', 'Super Hotel', NULL, 'System', 1, 0);
-INSERT INTO `hot_room` VALUES ('806', 8, 'Gold - 06', '6', '2018-08-30 15:23:19', 'Super Hotel', NULL, 'System', 1, 0);
-INSERT INTO `hot_room` VALUES ('807', 8, 'Gold - 07', '7', '2018-08-30 15:23:19', 'Super Hotel', NULL, 'System', 1, 0);
-INSERT INTO `hot_room` VALUES ('808', 8, 'Gold - 08', '8', '2018-08-30 15:23:20', 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_room` VALUES (101, 1, 'Super - 01', '1', '2018-09-03 08:00:54', 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_room` VALUES (102, 1, 'Super - 02', '2', '2018-09-03 08:00:54', 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_room` VALUES (103, 1, 'Super - 03', '3', '2018-09-03 08:00:54', 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_room` VALUES (104, 1, 'Super - 04', '4', '2018-09-03 08:00:54', 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_room` VALUES (105, 1, 'Super - 05', '5', '2018-09-03 08:00:55', 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_room` VALUES (106, 1, 'Super - 06', '6', '2018-09-03 08:00:55', 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_room` VALUES (107, 1, 'Super - 07', '7', '2018-09-03 08:00:55', 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_room` VALUES (201, 2, 'Gold - 01', '1', '2018-09-03 14:12:58', 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_room` VALUES (202, 2, 'Gold - 02', '2', '2018-09-03 14:12:59', 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_room` VALUES (203, 2, 'Gold - 03', '3', '2018-09-03 14:12:59', 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_room` VALUES (204, 2, 'Gold - 04', '4', '2018-09-03 14:12:59', 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_room` VALUES (205, 2, 'Gold - 05', '5', '2018-09-03 14:12:59', 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_room` VALUES (206, 2, 'Gold - 06', '6', '2018-09-03 14:12:59', 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_room` VALUES (207, 2, 'Gold - 07', '7', '2018-09-03 14:12:59', 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_room` VALUES (301, 3, 'Murah - 01', '1', '2018-09-04 17:32:16', 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_room` VALUES (302, 3, 'Murah - 02', '2', '2018-09-04 17:32:17', 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_room` VALUES (303, 3, 'Murah - 03', '3', '2018-09-04 17:32:17', 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_room` VALUES (304, 3, 'Murah - 04', '4', '2018-09-04 17:32:17', 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_room` VALUES (305, 3, 'Murah - 05', '5', '2018-09-04 17:32:17', 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_room` VALUES (401, 4, 'Melati - 01', '1', '2018-09-04 20:20:05', 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_room` VALUES (402, 4, 'Melati - 02', '2', '2018-09-04 20:20:05', 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_room` VALUES (403, 4, 'Melati - 03', '3', '2018-09-04 20:20:05', 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_room` VALUES (404, 4, 'Melati - 04', '4', '2018-09-04 20:20:06', 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_room` VALUES (405, 4, 'Melati - 05', '5', '2018-09-04 20:20:06', 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_room` VALUES (406, 4, 'Melati - 06', '6', '2018-09-04 20:20:06', 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_room` VALUES (407, 4, 'Melati - 07', '7', '2018-09-04 20:20:06', 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_room` VALUES (408, 4, 'Melati - 08', '8', '2018-09-04 20:20:06', 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_room` VALUES (409, 4, 'Melati - 09', '9', '2018-09-04 20:20:06', 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_room` VALUES (410, 4, 'Melati - 10', '10', '2018-09-04 20:20:06', 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_room` VALUES (501, 5, 'Testing - 01', '1', '2018-09-05 08:35:52', 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_room` VALUES (502, 5, 'Testing - 02', '2', '2018-09-05 08:35:52', 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_room` VALUES (503, 5, 'Testing - 03', '3', '2018-09-05 08:35:52', 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_room` VALUES (504, 5, 'Testing - 04', '4', '2018-09-05 08:35:52', 'Super Hotel', NULL, 'System', 1, 0);
+INSERT INTO `hot_room` VALUES (505, 5, 'Testing - 05', '5', '2018-09-05 08:35:52', 'Super Hotel', NULL, 'System', 1, 0);
 
 -- ----------------------------
 -- Table structure for hot_room_type
@@ -923,12 +891,16 @@ CREATE TABLE `hot_room_type`  (
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`room_type_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of hot_room_type
 -- ----------------------------
-INSERT INTO `hot_room_type` VALUES (8, 'Gold', 83333.33, '', '2018-08-30 15:23:19', 'System', NULL, '', 1, 0);
+INSERT INTO `hot_room_type` VALUES (1, 'Super', 82644.63, '', '2018-09-03 08:00:54', 'System', NULL, '', 1, 0);
+INSERT INTO `hot_room_type` VALUES (2, 'Gold', 45454.55, '', '2018-09-03 14:12:58', 'System', '2018-09-04 16:32:18', 'Super Hotel', 1, 0);
+INSERT INTO `hot_room_type` VALUES (3, 'Murah', 45454.55, '', '2018-09-04 17:32:16', 'System', NULL, '', 1, 0);
+INSERT INTO `hot_room_type` VALUES (4, 'Melati', 45454.55, '', '2018-09-04 20:20:05', 'System', NULL, '', 1, 0);
+INSERT INTO `hot_room_type` VALUES (5, 'Testing', 45454.55, '', '2018-09-05 08:35:52', 'System', '2018-09-05 08:36:12', 'Super Hotel', 1, 0);
 
 -- ----------------------------
 -- Table structure for hot_service
@@ -945,14 +917,15 @@ CREATE TABLE `hot_service`  (
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`service_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of hot_service
 -- ----------------------------
-INSERT INTO `hot_service` VALUES (1, 't', 0.00, '2018-08-21 14:35:07', 'Super Hotel', '2018-08-21 14:35:11', 'System', 1, 1);
-INSERT INTO `hot_service` VALUES (2, 'Pijat', 50000.00, '2018-08-21 14:38:12', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0);
-INSERT INTO `hot_service` VALUES (3, 'Sarapan Pagi', 10000.00, '2018-08-27 14:11:44', 'Super Karaoke', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `hot_service` VALUES (1, 'Sarapan Pagi', 18181.82, '2018-09-03 08:18:41', 'Super Hotel', '2018-09-04 15:35:17', 'Super Hotel', 1, 0);
+INSERT INTO `hot_service` VALUES (2, 'Test', 45454.55, '2018-09-04 16:47:35', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `hot_service` VALUES (3, 'Pelayanan Murah', 45454.55, '2018-09-04 17:32:35', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `hot_service` VALUES (4, 'Testing', 45454.55, '2018-09-05 08:37:02', 'Super Hotel', '2018-09-05 08:37:20', 'Super Hotel', 1, 0);
 
 -- ----------------------------
 -- Table structure for hot_tax
@@ -994,15 +967,14 @@ CREATE TABLE `hot_user`  (
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of hot_user
 -- ----------------------------
-INSERT INTO `hot_user` VALUES (1, 'superhotel', 0, '21232f297a57a5a743894a0e4a801fc3', 'Super Hotel', '2018-04-04 10:45:37', 'System', '2018-05-17 14:51:48', 'System', 1, 0);
-INSERT INTO `hot_user` VALUES (2, 'adminhotel', 1, '21232f297a57a5a743894a0e4a801fc3', 'Admin Hotel', '2018-05-08 13:40:40', 'System', '2018-05-17 14:51:52', 'System', 1, 0);
-INSERT INTO `hot_user` VALUES (3, 'cashierhotel', 3, '21232f297a57a5a743894a0e4a801fc3', 'Cashier Hotel', '2018-05-08 13:43:54', 'System', '2018-05-17 14:51:57', 'System', 1, 0);
-INSERT INTO `hot_user` VALUES (4, 'alfian', 3, '64fc0802fbae681ee55a9a4b87f0aec7', 'Alfian', '2018-08-14 10:13:22', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `hot_user` VALUES (1, 'superhotel', 0, '21232f297a57a5a743894a0e4a801fc3', 'Super Hotel', '2018-04-04 10:45:37', 'System', '2018-09-05 07:23:32', 'System', 1, 0);
+INSERT INTO `hot_user` VALUES (2, 'adminhotel', 1, '21232f297a57a5a743894a0e4a801fc3', 'Admin Hotel', '2018-05-08 13:40:40', 'System', '2018-09-05 07:23:30', 'System', 1, 0);
+INSERT INTO `hot_user` VALUES (3, 'cashierhotel', 3, '21232f297a57a5a743894a0e4a801fc3', 'Cashier Hotel', '2018-05-08 13:43:54', 'System', '2018-09-05 07:23:26', 'System', 1, 0);
 
 -- ----------------------------
 -- Table structure for kar_bank
@@ -1085,31 +1057,6 @@ CREATE TABLE `kar_billing_service_charge`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
--- Table structure for kar_charge_type
--- ----------------------------
-DROP TABLE IF EXISTS `kar_charge_type`;
-CREATE TABLE `kar_charge_type`  (
-  `charge_type_id` int(11) NOT NULL AUTO_INCREMENT,
-  `charge_type_code` varchar(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  `charge_type_name` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  `charge_type_ratio` float(10, 2) NOT NULL DEFAULT 0.00,
-  `charge_type_desc` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  `created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `created_by` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
-  `updated` timestamp(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0),
-  `updated_by` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
-  `is_active` tinyint(1) NOT NULL DEFAULT 1,
-  `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`charge_type_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
-
--- ----------------------------
--- Records of kar_charge_type
--- ----------------------------
-INSERT INTO `kar_charge_type` VALUES (1, '1.1.1.01.05', 'Pajak Karaoke', 15.00, 'Pajak Daerah', '2018-08-20 10:45:11', 'System', '2018-08-27 09:22:37', 'System', 1, 0);
-INSERT INTO `kar_charge_type` VALUES (2, 'SRV', 'Servis Karaoke', 10.00, 'Biaya Servis', '2018-08-20 10:45:11', 'System', '2018-08-27 09:32:01', 'Super Karaoke', 1, 0);
-
--- ----------------------------
 -- Table structure for kar_client
 -- ----------------------------
 DROP TABLE IF EXISTS `kar_client`;
@@ -1135,7 +1082,6 @@ CREATE TABLE `kar_client`  (
   `client_keyboard_status` tinyint(1) NOT NULL DEFAULT 1,
   `client_receipt_is_taxed` tinyint(1) NOT NULL DEFAULT 1,
   `client_logo` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `client_is_taxed` tinyint(1) NULL DEFAULT NULL,
   `created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
   `updated` timestamp(0) NOT NULL ON UPDATE CURRENT_TIMESTAMP(0),
@@ -1148,55 +1094,7 @@ CREATE TABLE `kar_client`  (
 -- ----------------------------
 -- Records of kar_client
 -- ----------------------------
-INSERT INTO `kar_client` VALUES ('1', 'CV Prisma Karaoke', 'Prisma Karaoke', 'sendiri', 'Jalan Gajahmada 56', 'Warungboto', 'Umbulharjo', 'Yogyakarta', 'Daerah Istimewa Yogyakarta', 'buat@gmail.com', '123', '123', '1234', '1234', 'Sujo', 'jalan manggis\r\n', 'Tidak ada', '1234-1234-1234', 1, 1, NULL, NULL, '2018-05-08 10:26:03', 'System', '2018-08-27 10:01:44', 'Super Karaoke', 1, 0);
-
--- ----------------------------
--- Table structure for kar_discount
--- ----------------------------
-DROP TABLE IF EXISTS `kar_discount`;
-CREATE TABLE `kar_discount`  (
-  `discount_id` int(11) NOT NULL AUTO_INCREMENT,
-  `discount_name` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  `discount_type` tinyint(1) NOT NULL DEFAULT 1,
-  `discount_group` tinyint(1) NULL DEFAULT NULL,
-  `discount_amount` float(10, 2) NOT NULL,
-  `created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `created_by` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
-  `updated` timestamp(0) NOT NULL ON UPDATE CURRENT_TIMESTAMP(0),
-  `updated_by` varchar(20) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
-  `is_active` tinyint(1) NOT NULL DEFAULT 1,
-  `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`discount_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
-
--- ----------------------------
--- Records of kar_discount
--- ----------------------------
-INSERT INTO `kar_discount` VALUES (3, 'Diskon Ruangan', 1, 1, 10.00, '2018-08-27 15:01:28', 'Super Karaoke', '0000-00-00 00:00:00', 'System', 1, 0);
-INSERT INTO `kar_discount` VALUES (4, 'Diskon Member', 2, 2, 20000.00, '2018-08-27 15:02:06', 'Super Karaoke', '0000-00-00 00:00:00', 'System', 1, 0);
-INSERT INTO `kar_discount` VALUES (5, 'Diskon Total', 1, 3, 20.00, '2018-08-27 15:02:21', 'Super Karaoke', '2018-08-27 15:02:45', 'Super Karaoke', 1, 0);
-
--- ----------------------------
--- Table structure for kar_fnb
--- ----------------------------
-DROP TABLE IF EXISTS `kar_fnb`;
-CREATE TABLE `kar_fnb`  (
-  `fnb_id` int(11) NOT NULL AUTO_INCREMENT,
-  `fnb_name` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `fnb_charge` float(10, 2) NULL DEFAULT NULL,
-  `created` timestamp(0) NULL DEFAULT NULL,
-  `created_by` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT 'System',
-  `updated` timestamp(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0),
-  `updated_by` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT 'System',
-  `is_active` tinyint(1) NULL DEFAULT 1,
-  `is_deleted` tinyint(1) NULL DEFAULT 0,
-  PRIMARY KEY (`fnb_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
-
--- ----------------------------
--- Records of kar_fnb
--- ----------------------------
-INSERT INTO `kar_fnb` VALUES (5, 'Ayam Geprek', 12000.00, NULL, 'Super Karaoke', '2018-08-27 14:20:19', 'Super Karaoke', 1, 0);
+INSERT INTO `kar_client` VALUES ('1', 'CV Prisma Karaoke', 'Prisma Karaoke', 'sendiri', 'Jalan Gajahmada 56', 'Warungboto', 'Umbulharjo', 'Yogyakarta', 'Daerah Istimewa Yogyakarta', 'buat@gmail.com', '123', '123', '1234', '1234', 'Sujo', 'jalan manggis\r\n', 'Tidak ada', '1234-1234-1234', 0, 1, NULL, '2018-05-08 10:26:03', 'System', '2018-06-25 09:32:58', 'Super Karaoke', 1, 0);
 
 -- ----------------------------
 -- Table structure for kar_log
@@ -1210,41 +1108,7 @@ CREATE TABLE `kar_log`  (
   `log_date` date NOT NULL,
   `log_time` time(0) NOT NULL,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 31 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
-
--- ----------------------------
--- Records of kar_log
--- ----------------------------
-INSERT INTO `kar_log` VALUES (1, 1, 'Super Karaoke', 'Sign In', '2018-08-27', '08:58:20');
-INSERT INTO `kar_log` VALUES (2, 1, 'Super Karaoke', 'Sign In', '2018-08-27', '09:01:48');
-INSERT INTO `kar_log` VALUES (3, 1, 'Super Karaoke', 'Sign In', '2018-08-27', '09:04:50');
-INSERT INTO `kar_log` VALUES (4, 1, 'Super Karaoke', 'Sign In', '2018-08-27', '09:05:05');
-INSERT INTO `kar_log` VALUES (5, 1, 'Super Karaoke', 'Sign In', '2018-08-27', '09:05:46');
-INSERT INTO `kar_log` VALUES (6, 1, 'Super Karaoke', 'Sign In', '2018-08-27', '09:06:09');
-INSERT INTO `kar_log` VALUES (7, 1, 'Super Karaoke', 'Sign In', '2018-08-27', '09:08:34');
-INSERT INTO `kar_log` VALUES (8, 1, 'Super Karaoke', 'Sign Out', '2018-08-27', '09:29:40');
-INSERT INTO `kar_log` VALUES (9, 1, 'Super Karaoke', 'Sign In', '2018-08-27', '09:29:47');
-INSERT INTO `kar_log` VALUES (10, 1, 'Super Karaoke', 'Sign In', '2018-08-27', '10:17:46');
-INSERT INTO `kar_log` VALUES (11, 1, 'Super Karaoke', 'Sign Out', '2018-08-27', '10:39:46');
-INSERT INTO `kar_log` VALUES (12, 1, 'Super Karaoke', 'Sign In', '2018-08-27', '10:39:52');
-INSERT INTO `kar_log` VALUES (13, 1, 'Super Karaoke', 'Sign Out', '2018-08-27', '11:33:06');
-INSERT INTO `kar_log` VALUES (14, 1, 'Super Karaoke', 'Sign In', '2018-08-27', '11:33:37');
-INSERT INTO `kar_log` VALUES (15, 1, 'Super Karaoke', 'Sign Out', '2018-08-27', '11:40:45');
-INSERT INTO `kar_log` VALUES (16, 1, 'Super Karaoke', 'Sign In', '2018-08-27', '11:57:02');
-INSERT INTO `kar_log` VALUES (17, 1, 'Super Karaoke', 'Sign In', '2018-08-27', '12:11:09');
-INSERT INTO `kar_log` VALUES (18, 1, 'Super Karaoke', 'Sign In', '2018-08-27', '12:11:22');
-INSERT INTO `kar_log` VALUES (19, 1, 'Super Karaoke', 'Sign Out', '2018-08-27', '12:13:06');
-INSERT INTO `kar_log` VALUES (20, 1, 'Super Karaoke', 'Sign In', '2018-08-27', '12:13:12');
-INSERT INTO `kar_log` VALUES (21, 1, 'Super Karaoke', 'Sign Out', '2018-08-27', '14:11:52');
-INSERT INTO `kar_log` VALUES (22, 1, 'Super Karaoke', 'Sign In', '2018-08-27', '14:11:59');
-INSERT INTO `kar_log` VALUES (23, 1, 'Super Karaoke', 'Sign In', '2018-08-27', '14:12:53');
-INSERT INTO `kar_log` VALUES (24, 1, 'Super Karaoke', 'Sign In', '2018-08-27', '14:18:27');
-INSERT INTO `kar_log` VALUES (25, 1, 'Super Karaoke', 'Sign In', '2018-08-27', '14:19:39');
-INSERT INTO `kar_log` VALUES (26, 1, 'Super Karaoke', 'Sign Out', '2018-08-27', '14:45:05');
-INSERT INTO `kar_log` VALUES (27, 1, 'Super Karaoke', 'Sign In', '2018-08-27', '14:45:35');
-INSERT INTO `kar_log` VALUES (28, 1, 'Super Karaoke', 'Sign Out', '2018-08-27', '15:26:59');
-INSERT INTO `kar_log` VALUES (29, 1, 'Super Karaoke', 'Sign In', '2018-08-28', '08:42:48');
-INSERT INTO `kar_log` VALUES (30, 1, 'Super Karaoke', 'Sign Out', '2018-08-28', '08:43:04');
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for kar_member
@@ -1252,27 +1116,20 @@ INSERT INTO `kar_log` VALUES (30, 1, 'Super Karaoke', 'Sign Out', '2018-08-28', 
 DROP TABLE IF EXISTS `kar_member`;
 CREATE TABLE `kar_member`  (
   `member_id` int(11) NOT NULL AUTO_INCREMENT,
-  `member_name` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `member_phone` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `member_address` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `member_id_type` tinyint(1) NULL DEFAULT 1,
-  `member_id_no` varchar(20) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `member_gender` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `member_type` tinyint(1) NULL DEFAULT NULL,
+  `member_type_id` int(11) NOT NULL DEFAULT 0,
+  `member_name` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `member_phone` varchar(20) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `member_fax` varchar(20) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `member_email` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `member_address` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `created_by` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
-  `updated` timestamp(0) NOT NULL ON UPDATE CURRENT_TIMESTAMP(0),
-  `updated_by` varchar(20) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
-  `is_active` tinyint(1) NOT NULL DEFAULT 1,
-  `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
+  `created_by` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `updated` timestamp(0) NOT NULL,
+  `updated_by` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `is_active` int(1) NOT NULL DEFAULT 1,
+  `is_deleted` int(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`member_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
-
--- ----------------------------
--- Records of kar_member
--- ----------------------------
-INSERT INTO `kar_member` VALUES (4, 'Biasa', '', NULL, 1, '', 'P', 0, '2018-08-27 14:51:04', 'Super Karaoke', '2018-08-27 14:52:33', 'Super Karaoke', 1, 0);
-INSERT INTO `kar_member` VALUES (5, 'Langganan', '', NULL, 1, '', 'L', 1, '2018-08-27 14:51:12', 'Super Karaoke', '2018-08-27 14:52:26', 'Super Karaoke', 1, 0);
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for kar_member_type
@@ -1314,50 +1171,30 @@ CREATE TABLE `kar_module`  (
 -- ----------------------------
 -- Records of kar_module
 -- ----------------------------
-INSERT INTO `kar_module` VALUES ('01', '', 'Dashboard', 'kar_dashboard', 'kar_dashboard', 'index', 'dashboard', '2018-08-18 05:51:24', '', '2018-08-27 08:52:10', '', 0, 0);
-INSERT INTO `kar_module` VALUES ('02', '', 'Master', '', '', '#', 'cubes', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0);
-INSERT INTO `kar_module` VALUES ('02.01', '02', 'Jenis Biaya', 'kar_charge_type', 'kar_charge_type', 'index', '', '2018-08-18 05:51:24', '', '2018-08-27 08:52:40', '', 0, 0);
-INSERT INTO `kar_module` VALUES ('02.02', '02', 'Tipe Ruang', 'kar_room_type', 'kar_room_type', 'index', '', '2018-08-18 05:51:24', '', '2018-08-27 09:00:28', '', 0, 0);
-INSERT INTO `kar_module` VALUES ('02.03', '02', 'Ruang', 'kar_room', 'kar_room', 'index', '', '2018-08-18 05:51:24', '', '2018-08-27 08:52:56', '', 0, 0);
-INSERT INTO `kar_module` VALUES ('02.04', '02', 'Tamu', 'kar_member', 'kar_member', 'index', '', '2018-08-18 05:51:24', '', '2018-08-27 08:53:04', '', 0, 0);
-INSERT INTO `kar_module` VALUES ('02.06', '02', 'Pelayanan', 'kar_service', 'kar_service', 'index', '', '2018-08-18 05:51:24', '', '2018-08-27 08:53:12', '', 0, 0);
-INSERT INTO `kar_module` VALUES ('02.07', '02', 'FnB', 'kar_fnb', 'kar_fnb', 'index', '', '2018-08-18 05:51:24', '', '2018-08-27 08:53:47', '', 0, 0);
-INSERT INTO `kar_module` VALUES ('02.08', '02', 'Non Pajak', 'kar_non_tax', 'kar_non_tax', 'index', '', '2018-08-18 05:51:24', '', '2018-08-27 08:55:15', '', 0, 0);
-INSERT INTO `kar_module` VALUES ('02.09', '02', 'Diskon', 'kar_discount', 'kar_discount', 'index', '', '2018-08-18 05:51:24', '', '2018-08-27 08:55:35', '', 0, 0);
-INSERT INTO `kar_module` VALUES ('03', '', 'Pemesanan', 'kar_reservation', 'kar_reservation', 'index', 'address-book-o', '2018-08-18 05:51:24', '', '2018-08-27 08:55:41', '', 0, 0);
-INSERT INTO `kar_module` VALUES ('04', '', 'Laporan', '', '', '#', 'files-o', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0);
-INSERT INTO `kar_module` VALUES ('04.01', '04', 'Laporan Pemesanan (semua)', 'kar_report_reservation', 'kar_report_reservation', 'index', '', '2018-08-18 05:51:24', '', '2018-08-27 08:55:48', '', 0, 0);
-INSERT INTO `kar_module` VALUES ('04.02', '04', 'Laporan Pemesanan (resepsionis)', 'kar_report_receptionist', 'kar_report_receptionist', 'index', '', '2018-08-18 05:51:24', '', '2018-08-27 15:06:52', '', 0, 0);
-INSERT INTO `kar_module` VALUES ('04.03', '04', 'Laporan Pembayaran', 'kar_report_payment', 'kar_report_payment', 'index', '', '2018-08-18 05:51:24', '', '2018-08-27 08:56:28', '', 0, 0);
-INSERT INTO `kar_module` VALUES ('04.04', '04', 'Laporan Piutang', 'kar_report_credit', 'kar_report_credit', 'index', '', '2018-08-18 05:51:24', '', '2018-08-27 08:56:35', '', 0, 0);
-INSERT INTO `kar_module` VALUES ('99', '', 'Pengaturan', '', '', '#', 'gears', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0);
-INSERT INTO `kar_module` VALUES ('99.01', '99', 'Modul', 'kar_module', 'kar_module', 'index', '', '2018-08-18 05:51:24', '', '2018-08-27 08:56:44', '', 0, 0);
-INSERT INTO `kar_module` VALUES ('99.02', '99', 'Role', 'kar_role', 'kar_role', 'index', '', '2018-08-18 05:51:24', '', '2018-08-27 08:56:51', '', 0, 0);
-INSERT INTO `kar_module` VALUES ('99.03', '99', 'Pengguna', 'kar_user', 'kar_user', 'index', '', '2018-08-18 05:51:24', '', '2018-08-27 08:56:57', '', 0, 0);
-INSERT INTO `kar_module` VALUES ('99.04', '99', 'Hak Akses', 'kar_permission', 'kar_permission', 'index', '', '2018-08-18 05:51:24', '', '2018-08-27 08:57:04', '', 0, 0);
-INSERT INTO `kar_module` VALUES ('99.05', '99', 'Client', 'kar_client', 'kar_client', 'index', '', '2018-08-18 05:51:24', '', '2018-08-27 08:57:11', '', 0, 0);
-
--- ----------------------------
--- Table structure for kar_non_tax
--- ----------------------------
-DROP TABLE IF EXISTS `kar_non_tax`;
-CREATE TABLE `kar_non_tax`  (
-  `non_tax_id` int(11) NOT NULL AUTO_INCREMENT,
-  `non_tax_name` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `non_tax_charge` float(10, 2) NULL DEFAULT NULL,
-  `created` timestamp(0) NULL DEFAULT NULL,
-  `created_by` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT 'System',
-  `updated` timestamp(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0),
-  `updated_by` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT 'System',
-  `is_active` tinyint(1) NULL DEFAULT 1,
-  `is_deleted` tinyint(1) NULL DEFAULT 0,
-  PRIMARY KEY (`non_tax_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
-
--- ----------------------------
--- Records of kar_non_tax
--- ----------------------------
-INSERT INTO `kar_non_tax` VALUES (6, 'LC', 80000.00, NULL, 'Super Karaoke', '2018-08-27 14:30:43', 'Super Karaoke', 1, 0);
+INSERT INTO `kar_module` VALUES ('01', '', 'Dashboard', 'kar_dashboard', 'kar_dashboard', 'index', 'dashboard', '2018-04-04 10:26:27', 'Super Administrator', '2018-05-18 10:41:20', 'Super Administrator', 1, 0);
+INSERT INTO `kar_module` VALUES ('02', '', 'Master', '', '', '#', 'cubes', '2018-06-01 20:12:17', 'Super Karaoke', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `kar_module` VALUES ('02.01', '02', 'Waktu', 'kar_time', 'kar_time', 'index', 'clock-o', '2018-06-01 21:06:07', 'Super Karaoke', '2018-06-01 21:17:41', 'Super Karaoke', 1, 0);
+INSERT INTO `kar_module` VALUES ('02.02', '02', 'Tipe Ruang', 'kar_room_type', 'kar_room_type', 'index', 'home', '2018-06-01 20:21:07', 'Super Karaoke', '2018-06-02 06:30:00', 'Super Karaoke', 1, 0);
+INSERT INTO `kar_module` VALUES ('02.03', '02', 'Ruang', 'kar_room', 'kar_room', 'index', 'home', '2018-06-01 22:23:54', 'Super Karaoke', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `kar_module` VALUES ('02.04', '02', 'Tipe Member', 'kar_member_type', 'kar_member_type', 'index', 'users', '2018-06-02 08:39:21', 'Super Karaoke', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `kar_module` VALUES ('02.05', '02', 'Member', 'kar_member', 'kar_member', 'index', 'user', '2018-06-02 08:56:52', 'Super Karaoke', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `kar_module` VALUES ('02.06', '02', 'Service Charge', 'kar_service_charge', 'kar_service_charge', 'index', 'plus', '2018-06-02 09:08:35', 'Super Karaoke', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `kar_module` VALUES ('02.07', '02', 'Bank', 'kar_bank', 'kar_bank', 'index', 'university', '2018-06-02 16:20:27', 'Super Karaoke', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `kar_module` VALUES ('03', '', 'Kasir', 'kar_cashier', 'kar_cashier', 'index', 'laptop', '2018-06-02 12:00:37', 'Super Karaoke', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `kar_module` VALUES ('04', '', 'Laporan', '', '', 'index', 'files-o', '2018-06-03 15:38:31', 'Super Karaoke', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `kar_module` VALUES ('04.01', '04', 'Penyewaan (Semua)', 'kar_report_billing', 'kar_report_billing', 'index', 'file', '2018-06-03 15:40:53', 'Super Karaoke', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `kar_module` VALUES ('04.02', '04', 'Penyewaan (Kasir)', 'kar_report_billing_cashier', 'kar_report_billing_cashier', 'index', 'laptop', '2018-06-03 20:58:38', 'Super Karaoke', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `kar_module` VALUES ('04.03', '04', 'Penyewaan (Member)', 'kar_report_billing_member', 'kar_report_billing_member', 'index', 'users', '2018-06-03 21:17:10', 'Super Karaoke', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `kar_module` VALUES ('04.04', '04', 'Shift', 'kar_report_shift', 'kar_report_shift', 'index', 'user', '2018-06-03 21:38:26', 'Super Karaoke', '2018-06-03 21:40:01', 'Super Karaoke', 1, 0);
+INSERT INTO `kar_module` VALUES ('04.05', '04', 'Log Akses', 'kar_report_log', 'kar_report_log', 'index', 'users', '2018-06-05 08:21:20', 'Super Karaoke', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `kar_module` VALUES ('04.06', '04', 'Piutang', 'kar_report_credit', 'kar_report_credit', 'index', 'credit-card', '2018-06-08 10:30:50', 'Super Karaoke', '2018-06-08 10:40:14', 'Super Karaoke', 1, 0);
+INSERT INTO `kar_module` VALUES ('99', '', 'Pengaturan', '', '', '#', 'gears', '2018-04-04 09:41:46', 'Super Administrator', '0000-00-00 00:00:00', '', 1, 0);
+INSERT INTO `kar_module` VALUES ('99.01', '99', 'Modul', 'kar_module', 'kar_module', 'index', 'window-restore', '2018-04-04 09:44:01', 'Super Administrator', '2018-05-18 10:41:46', 'Super Administrator', 1, 0);
+INSERT INTO `kar_module` VALUES ('99.02', '99', 'Role', 'kar_role', 'kar_role', 'index', 'users', '2018-04-04 09:46:50', 'Super Administrator', '2018-05-18 10:41:49', 'Super Administrator', 1, 0);
+INSERT INTO `kar_module` VALUES ('99.03', '99', 'Pengguna', 'kar_user', 'kar_user', 'index', '', '2018-04-04 10:37:41', 'Super Administrator', '2018-05-18 10:41:52', 'Super Administrator', 1, 0);
+INSERT INTO `kar_module` VALUES ('99.04', '99', 'Hak Akses', 'kar_permission', 'kar_permission', 'index', 'list', '2018-04-05 08:20:56', 'Super Administrator', '2018-05-18 10:41:55', '', 1, 0);
+INSERT INTO `kar_module` VALUES ('99.05', '99', 'Client', 'kar_client', 'kar_client', 'index', 'th-large', '2018-04-05 17:31:04', 'Super Administrator', '2018-05-18 10:41:58', 'Super Administrator', 1, 0);
+INSERT INTO `kar_module` VALUES ('99.06', '99', 'Struk', 'kar_receipt', 'kar_receipt', 'index', 'print', '2018-06-07 09:27:58', 'Super Karaoke', '0000-00-00 00:00:00', 'System', 1, 0);
 
 -- ----------------------------
 -- Table structure for kar_payment_type
@@ -1397,33 +1234,35 @@ CREATE TABLE `kar_permission`  (
   `created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   PRIMARY KEY (`permission_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 954 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 902 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of kar_permission
 -- ----------------------------
-INSERT INTO `kar_permission` VALUES (932, 0, '01', 1, 1, 1, 1, '2018-08-27 09:08:05', 'Super Karaoke');
-INSERT INTO `kar_permission` VALUES (933, 0, '02', 1, 1, 1, 1, '2018-08-27 09:08:05', 'Super Karaoke');
-INSERT INTO `kar_permission` VALUES (934, 0, '02.01', 1, 1, 1, 1, '2018-08-27 09:08:05', 'Super Karaoke');
-INSERT INTO `kar_permission` VALUES (935, 0, '02.02', 1, 1, 1, 1, '2018-08-27 09:08:05', 'Super Karaoke');
-INSERT INTO `kar_permission` VALUES (936, 0, '02.03', 1, 1, 1, 1, '2018-08-27 09:08:05', 'Super Karaoke');
-INSERT INTO `kar_permission` VALUES (937, 0, '02.04', 1, 1, 1, 1, '2018-08-27 09:08:05', 'Super Karaoke');
-INSERT INTO `kar_permission` VALUES (938, 0, '02.06', 1, 1, 1, 1, '2018-08-27 09:08:05', 'Super Karaoke');
-INSERT INTO `kar_permission` VALUES (939, 0, '02.07', 1, 1, 1, 1, '2018-08-27 09:08:05', 'Super Karaoke');
-INSERT INTO `kar_permission` VALUES (940, 0, '02.08', 1, 1, 1, 1, '2018-08-27 09:08:05', 'Super Karaoke');
-INSERT INTO `kar_permission` VALUES (941, 0, '02.09', 1, 1, 1, 1, '2018-08-27 09:08:05', 'Super Karaoke');
-INSERT INTO `kar_permission` VALUES (942, 0, '03', 1, 1, 1, 1, '2018-08-27 09:08:05', 'Super Karaoke');
-INSERT INTO `kar_permission` VALUES (943, 0, '04', 1, 1, 1, 1, '2018-08-27 09:08:05', 'Super Karaoke');
-INSERT INTO `kar_permission` VALUES (944, 0, '04.01', 1, 1, 1, 1, '2018-08-27 09:08:05', 'Super Karaoke');
-INSERT INTO `kar_permission` VALUES (945, 0, '04.02', 1, 1, 1, 1, '2018-08-27 09:08:05', 'Super Karaoke');
-INSERT INTO `kar_permission` VALUES (946, 0, '04.03', 1, 1, 1, 1, '2018-08-27 09:08:05', 'Super Karaoke');
-INSERT INTO `kar_permission` VALUES (947, 0, '04.04', 1, 1, 1, 1, '2018-08-27 09:08:05', 'Super Karaoke');
-INSERT INTO `kar_permission` VALUES (948, 0, '99', 1, 1, 1, 1, '2018-08-27 09:08:06', 'Super Karaoke');
-INSERT INTO `kar_permission` VALUES (949, 0, '99.01', 1, 1, 1, 1, '2018-08-27 09:08:06', 'Super Karaoke');
-INSERT INTO `kar_permission` VALUES (950, 0, '99.02', 1, 1, 1, 1, '2018-08-27 09:08:06', 'Super Karaoke');
-INSERT INTO `kar_permission` VALUES (951, 0, '99.03', 1, 1, 1, 1, '2018-08-27 09:08:06', 'Super Karaoke');
-INSERT INTO `kar_permission` VALUES (952, 0, '99.04', 1, 1, 1, 1, '2018-08-27 09:08:06', 'Super Karaoke');
-INSERT INTO `kar_permission` VALUES (953, 0, '99.05', 1, 1, 1, 1, '2018-08-27 09:08:06', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (878, 0, '01', 1, 1, 1, 1, '2018-06-08 10:39:00', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (879, 0, '02', 1, 1, 1, 1, '2018-06-08 10:39:00', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (880, 0, '02.01', 1, 1, 1, 1, '2018-06-08 10:39:00', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (881, 0, '02.02', 1, 1, 1, 1, '2018-06-08 10:39:00', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (882, 0, '02.03', 1, 1, 1, 1, '2018-06-08 10:39:00', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (883, 0, '02.04', 1, 1, 1, 1, '2018-06-08 10:39:00', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (884, 0, '02.05', 1, 1, 1, 1, '2018-06-08 10:39:00', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (885, 0, '02.06', 1, 1, 1, 1, '2018-06-08 10:39:00', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (886, 0, '02.07', 1, 1, 1, 1, '2018-06-08 10:39:00', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (887, 0, '03', 1, 1, 1, 1, '2018-06-08 10:39:00', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (888, 0, '04', 1, 1, 1, 1, '2018-06-08 10:39:00', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (889, 0, '04.01', 1, 1, 1, 1, '2018-06-08 10:39:00', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (890, 0, '04.02', 1, 1, 1, 1, '2018-06-08 10:39:00', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (891, 0, '04.03', 1, 1, 1, 1, '2018-06-08 10:39:00', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (892, 0, '04.04', 1, 1, 1, 1, '2018-06-08 10:39:00', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (893, 0, '04.05', 1, 1, 1, 1, '2018-06-08 10:39:00', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (894, 0, '04.06', 1, 1, 1, 1, '2018-06-08 10:39:00', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (895, 0, '99', 1, 1, 1, 1, '2018-06-08 10:39:00', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (896, 0, '99.01', 1, 1, 1, 1, '2018-06-08 10:39:00', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (897, 0, '99.02', 1, 1, 1, 1, '2018-06-08 10:39:01', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (898, 0, '99.03', 1, 1, 1, 1, '2018-06-08 10:39:01', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (899, 0, '99.04', 1, 1, 1, 1, '2018-06-08 10:39:01', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (900, 0, '99.05', 1, 1, 1, 1, '2018-06-08 10:39:01', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (901, 0, '99.06', 1, 1, 1, 1, '2018-06-08 10:39:01', 'Super Karaoke');
 
 -- ----------------------------
 -- Table structure for kar_role
@@ -1444,7 +1283,7 @@ CREATE TABLE `kar_role`  (
 -- ----------------------------
 -- Records of kar_role
 -- ----------------------------
-INSERT INTO `kar_role` VALUES (0, 'Super Administrator Karaoke', '2018-03-30 11:16:36', 'Super Administrator', '2018-08-27 09:05:33', 'Super Administrator', 1, 0);
+INSERT INTO `kar_role` VALUES (0, 'Super Administrator Karaoke', '2018-03-30 11:16:36', 'Super Administrator', '2018-05-18 10:44:11', 'Super Administrator', 1, 0);
 INSERT INTO `kar_role` VALUES (1, 'Administrator Karaoke', '2018-03-30 11:18:19', 'Super Administrator', '2018-05-18 10:44:21', 'Super Administrator', 1, 0);
 INSERT INTO `kar_role` VALUES (2, 'Cashier Karaoke', '2018-05-08 13:42:21', 'Admin Retail', '2018-06-03 21:04:44', 'Super Retail', 1, 0);
 INSERT INTO `kar_role` VALUES (5, 'a', '2018-05-18 10:44:41', 'Super Karaoke', '2018-05-18 10:44:44', 'System', 1, 1);
@@ -1454,32 +1293,19 @@ INSERT INTO `kar_role` VALUES (5, 'a', '2018-05-18 10:44:41', 'Super Karaoke', '
 -- ----------------------------
 DROP TABLE IF EXISTS `kar_room`;
 CREATE TABLE `kar_room`  (
-  `room_id` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  `room_type_id` int(11) NOT NULL DEFAULT 0,
-  `room_name` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL,
-  `room_no` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '0',
+  `room_id` int(11) NOT NULL AUTO_INCREMENT,
+  `room_code` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `room_type_id` int(11) NOT NULL,
+  `room_name` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `room_is_used` tinyint(1) NOT NULL DEFAULT 0,
   `created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `created_by` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
-  `updated` timestamp(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0),
-  `updated_by` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
+  `created_by` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
+  `updated` timestamp(0) NOT NULL,
+  `updated_by` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`room_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
-
--- ----------------------------
--- Records of kar_room
--- ----------------------------
-INSERT INTO `kar_room` VALUES ('601', 6, 'Diva Family - 01', '1', '2018-08-27 10:31:01', 'Super Karaoke', '2018-08-27 10:41:15', 'Super Karaoke', 1, 0);
-INSERT INTO `kar_room` VALUES ('602', 6, 'Diva Family - 02', '2', '2018-08-27 10:31:01', 'Super Karaoke', NULL, 'System', 1, 0);
-INSERT INTO `kar_room` VALUES ('603', 6, 'Diva Family - 03', '3', '2018-08-27 10:31:02', 'Super Karaoke', NULL, 'System', 1, 0);
-INSERT INTO `kar_room` VALUES ('604', 6, 'Diva Family - 04', '4', '2018-08-27 10:31:02', 'Super Karaoke', NULL, 'System', 1, 0);
-INSERT INTO `kar_room` VALUES ('605', 6, 'Diva Family - 05', '5', '2018-08-27 10:31:02', 'Super Karaoke', NULL, 'System', 1, 0);
-INSERT INTO `kar_room` VALUES ('606', 6, 'Diva Family - 06', '6', '2018-08-27 10:31:02', 'Super Karaoke', NULL, 'System', 1, 0);
-INSERT INTO `kar_room` VALUES ('607', 6, 'Diva Family - 07', '7', '2018-08-27 10:31:02', 'Super Karaoke', NULL, 'System', 1, 0);
-INSERT INTO `kar_room` VALUES ('608', 6, 'Diva Family - 08', '8', '2018-08-27 10:31:02', 'Super Karaoke', NULL, 'System', 1, 0);
-INSERT INTO `kar_room` VALUES ('609', 6, 'Diva Family - 09', '9', '2018-08-27 10:31:02', 'Super Karaoke', NULL, 'System', 1, 0);
-INSERT INTO `kar_room` VALUES ('610', 6, 'Diva Family - 10', '10', '2018-08-27 10:31:02', 'Super Karaoke', NULL, 'System', 1, 0);
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for kar_room_type
@@ -1488,45 +1314,21 @@ DROP TABLE IF EXISTS `kar_room_type`;
 CREATE TABLE `kar_room_type`  (
   `room_type_id` int(11) NOT NULL AUTO_INCREMENT,
   `room_type_name` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  `room_type_charge` float(10, 2) NOT NULL,
-  `room_type_desc` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  `created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `created_by` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
-  `updated` timestamp(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0),
-  `updated_by` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  `is_active` tinyint(1) NOT NULL DEFAULT 1,
-  `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`room_type_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
-
--- ----------------------------
--- Records of kar_room_type
--- ----------------------------
-INSERT INTO `kar_room_type` VALUES (6, 'Diva Family', 100000.00, '', '2018-08-27 10:31:01', 'System', '2018-08-27 10:40:29', 'Super Karaoke', 1, 0);
-
--- ----------------------------
--- Table structure for kar_service
--- ----------------------------
-DROP TABLE IF EXISTS `kar_service`;
-CREATE TABLE `kar_service`  (
-  `service_id` int(11) NOT NULL AUTO_INCREMENT,
-  `service_name` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  `service_charge` float(10, 2) NOT NULL,
+  `room_type_capacity` int(11) NOT NULL,
+  `weekday_happy_hours` float(10, 2) NOT NULL,
+  `weekday_business_hours` float(10, 2) NOT NULL,
+  `weekend_happy_hours` float(10, 2) NOT NULL,
+  `weekend_business_hours` float(10, 2) NOT NULL,
+  `holiday_happy_hours` float(10, 2) NOT NULL,
+  `holiday_business_hours` float(10, 2) NOT NULL,
   `created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
-  `updated` timestamp(0) NOT NULL ON UPDATE CURRENT_TIMESTAMP(0),
+  `updated` timestamp(0) NOT NULL,
   `updated_by` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`service_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
-
--- ----------------------------
--- Records of kar_service
--- ----------------------------
-INSERT INTO `kar_service` VALUES (1, 't', 0.00, '2018-08-21 14:35:07', 'Super Hotel', '2018-08-21 14:35:11', 'System', 1, 1);
-INSERT INTO `kar_service` VALUES (2, 'Pijat', 50000.00, '2018-08-21 14:38:12', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0);
-INSERT INTO `kar_service` VALUES (3, 'Sarapan Pagi', 10000.00, '2018-08-27 14:13:06', 'Super Karaoke', '2018-08-27 14:13:32', 'Super Karaoke', 1, 0);
+  PRIMARY KEY (`room_type_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for kar_service_charge
@@ -1737,12 +1539,12 @@ CREATE TABLE `par_brand`  (
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`brand_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of par_brand
 -- ----------------------------
-INSERT INTO `par_brand` VALUES (1, 'Lainnya\r\n', '2018-05-22 10:20:18', 'System', '2018-07-05 15:42:49', 'System', 1, 0);
+INSERT INTO `par_brand` VALUES (0, 'Lainnya\r\n', '2018-05-22 10:20:18', 'System', '2018-07-05 15:42:49', 'System', 1, 0);
 
 -- ----------------------------
 -- Table structure for par_category
@@ -1933,15 +1735,15 @@ CREATE TABLE `par_role`  (
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`role_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of par_role
 -- ----------------------------
+INSERT INTO `par_role` VALUES (0, 'Super Administrator Parking', '2018-03-30 11:16:36', 'Super Administrator', '2018-05-17 13:50:14', 'Super Administrator', 1, 0);
 INSERT INTO `par_role` VALUES (1, 'Administrator Parking', '2018-03-30 11:18:19', 'Super Administrator', '2018-05-17 13:50:10', 'Super Administrator', 1, 0);
 INSERT INTO `par_role` VALUES (2, 'Cashier Parking In', '2018-05-08 13:42:21', 'Admin Retail', '2018-07-05 15:43:44', 'Super Parking', 1, 0);
 INSERT INTO `par_role` VALUES (3, 'Cashier Parking Out', '2018-05-24 15:03:20', 'Super Parking', '2018-07-05 15:43:47', 'System', 1, 0);
-INSERT INTO `par_role` VALUES (4, 'Super Administrator Parking', '2018-03-30 11:16:36', 'Super Administrator', '2018-05-17 13:50:14', 'Super Administrator', 1, 0);
 
 -- ----------------------------
 -- Table structure for par_shift
@@ -2104,15 +1906,17 @@ CREATE TABLE `res_billing`  (
   `posting_st` tinyint(1) NOT NULL DEFAULT 0,
   `posting_date` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`tx_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of res_billing
 -- ----------------------------
-INSERT INTO `res_billing` VALUES (1, '180827000001', 1, 'Super Restaurant', 1, 'Umum', 'TXS', '2018-08-27', '16:12:30', '', 1, 100000.00, 1, NULL, 0, '', '', 0.00, 8727.27, 0.00, 87272.72, 95999.99, 95999.99, 4000.01, 87272.72, 78545.45, '2018-08-27 16:12:32', 'Super Restaurant', '2018-08-27 16:12:47', 'Super Restaurant', 1, 0, 0, NULL);
-INSERT INTO `res_billing` VALUES (2, '180827000002', 1, 'Super Restaurant', 1, 'Umum', 'TXS', '2018-07-27', '16:12:56', '', 1, 50000.00, 1, NULL, 0, '', '', 0.00, 2563.64, 0.00, 25636.36, 28200.00, 28200.00, 21800.00, 25636.36, 23072.72, '2018-08-27 16:12:57', 'Super Restaurant', '2018-08-29 09:53:11', 'Super Restaurant', 1, 0, 0, NULL);
-INSERT INTO `res_billing` VALUES (3, '180829000001', 1, 'Super Hotel', 1, 'Umum', 'TXS', '2017-08-29', '09:57:41', '', 1, 50000.00, 1, NULL, 0, '', '', 0.00, 1200.00, 0.00, 12000.00, 13200.00, 13200.00, 36800.00, 12000.00, 10800.00, '2018-08-29 09:57:44', 'Super Hotel', '2018-08-29 09:58:12', 'System', 1, 0, 0, NULL);
-INSERT INTO `res_billing` VALUES (4, '180829000001', 1, 'Super Hotel', 1, 'Umum', 'TXS', '2018-08-29', '12:01:18', '', 1, 20000.00, 1, NULL, 0, '', '', 0.00, 1363.64, 0.00, 13636.36, 15000.00, 15000.00, 5000.00, 13636.36, 12272.72, '2018-08-29 12:01:20', 'Super Hotel', '2018-08-29 12:01:29', 'System', 1, 0, 0, NULL);
+INSERT INTO `res_billing` VALUES (1, '180905000001', 1, 'Super Restaurant', 1, 'Umum', 'TXS', '2018-09-05', '14:21:36', '', 1, 20000.00, 1, NULL, 0, '', '', 0.00, 1727.28, 0.00, 17272.72, 19000.00, 19000.00, 1000.00, 17272.72, 15545.44, '2018-09-05 14:21:55', 'Super Restaurant', '2018-09-05 14:24:14', 'Super Restaurant', 1, 0, 0, NULL);
+INSERT INTO `res_billing` VALUES (2, '180905000002', 1, 'Super Restaurant', 1, 'Umum', 'TXS', '2018-09-05', '14:24:15', '', 0, 0.00, -2, '', 0, '', '', 0.00, 28636.36, 0.00, 286363.56, 314999.91, 314999.91, 0.00, 286363.56, 257727.20, '2018-09-05 14:25:24', 'Super Restaurant', '2018-09-05 14:25:36', 'Super Restaurant', 1, 0, 0, NULL);
+INSERT INTO `res_billing` VALUES (3, '180905000003', 1, 'Super Restaurant', 1, 'Umum', 'TXS', '2018-09-05', '14:25:37', '', 0, 0.00, -2, '', 0, '', '', 0.00, 28636.36, 0.00, 286363.56, 314999.91, 314999.91, 0.00, 286363.56, 257727.20, '2018-09-05 14:25:40', 'Super Restaurant', '2018-09-05 14:25:49', 'Super Restaurant', 1, 0, 0, NULL);
+INSERT INTO `res_billing` VALUES (4, '180905000004', 1, 'Super Restaurant', 1, 'Umum', 'TXS', '2018-09-05', '14:25:49', '', 0, 0.00, -2, '', 0, '', '', 0.00, 43636.35, 0.00, 436363.53, 479999.88, 479999.88, 0.00, 436363.53, 392727.16, '2018-09-05 14:25:56', 'Super Restaurant', '2018-09-05 14:26:02', 'Super Restaurant', 1, 0, 0, NULL);
+INSERT INTO `res_billing` VALUES (5, '180905000005', 1, 'Super Restaurant', 1, 'Umum', 'TXS', '2018-09-05', '14:26:02', '', 0, 0.00, -2, '', 0, '', '', 0.00, 15000.00, 0.00, 149999.95, 164999.95, 164999.95, 0.00, 149999.95, 134999.95, '2018-09-05 14:27:05', 'Super Restaurant', '2018-09-05 14:27:31', 'Super Restaurant', 1, 0, 0, NULL);
+INSERT INTO `res_billing` VALUES (6, '180905000006', 1, 'Super Restaurant', 1, 'Umum', 'TXS', '2018-09-05', '14:27:31', '', 0, 0.00, -1, NULL, 0, '', '', 0.00, 15000.00, 0.00, 149999.95, 164999.95, 164999.95, 0.00, 149999.95, 134999.95, '2018-09-05 14:27:45', 'Super Restaurant', '2018-09-05 14:35:38', 'Super Restaurant', 1, 0, 0, NULL);
 
 -- ----------------------------
 -- Table structure for res_billing_buyall
@@ -2212,13 +2016,13 @@ CREATE TABLE `res_billing_detail`  (
 -- ----------------------------
 -- Records of res_billing_detail
 -- ----------------------------
-INSERT INTO `res_billing_detail` VALUES (1, 0, 'TXS', 2, 'Ayam Bakar', 13636.36, 15000.00, 0.00, 11, 15000.00, 0.00, 0.00, 149999.95, 164999.95, 149999.95, 134999.95, '2018-08-27 16:12:16', 'System', '0000-00-00 00:00:00', 'System', 1, 0);
-INSERT INTO `res_billing_detail` VALUES (2, 1, 'TXS', 2, 'Ayam Bakar', 13636.36, 15000.00, 0.00, 2, 2727.27, 0.00, 0.00, 27272.72, 29999.99, 27272.72, 24545.45, '2018-08-27 16:12:32', 'System', '0000-00-00 00:00:00', 'System', 1, 0);
-INSERT INTO `res_billing_detail` VALUES (3, 1, 'TXS', 1, 'Ayam Geprek', 12000.00, 13200.00, 0.00, 5, 6000.00, 0.00, 0.00, 60000.00, 66000.00, 60000.00, 54000.00, '2018-08-27 16:12:36', 'System', '0000-00-00 00:00:00', 'System', 1, 0);
-INSERT INTO `res_billing_detail` VALUES (4, 2, 'TXS', 2, 'Ayam Bakar', 13636.36, 15000.00, 0.00, 1, 1363.64, 0.00, 0.00, 13636.36, 15000.00, 13636.36, 12272.72, '2018-08-27 16:12:57', 'System', '0000-00-00 00:00:00', 'System', 1, 0);
-INSERT INTO `res_billing_detail` VALUES (5, 2, 'TXS', 1, 'Ayam Geprek', 12000.00, 13200.00, 0.00, 1, 1200.00, 0.00, 0.00, 12000.00, 13200.00, 12000.00, 10800.00, '2018-08-27 16:12:59', 'System', '0000-00-00 00:00:00', 'System', 1, 0);
-INSERT INTO `res_billing_detail` VALUES (6, 3, 'TXS', 1, 'Ayam Geprek', 12000.00, 13200.00, 0.00, 1, 1200.00, 0.00, 0.00, 12000.00, 13200.00, 12000.00, 10800.00, '2018-08-29 09:57:44', 'System', '0000-00-00 00:00:00', 'System', 1, 0);
-INSERT INTO `res_billing_detail` VALUES (7, 4, 'TXS', 2, 'Ayam Bakar', 13636.36, 15000.00, 0.00, 1, 1363.64, 0.00, 0.00, 13636.36, 15000.00, 13636.36, 12272.72, '2018-08-29 12:01:20', 'System', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `res_billing_detail` VALUES (1, 1, 'TXS', 1, 'Ayam Geprek', 13636.36, 15000.00, 0.00, 1, 1363.64, 0.00, 0.00, 13636.36, 15000.00, 13636.36, 12272.72, '2018-09-05 14:21:55', 'System', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `res_billing_detail` VALUES (2, 1, 'TXS', 2, 'Es Teh', 1818.18, 2000.00, 0.00, 2, 363.64, 0.00, 0.00, 3636.36, 4000.00, 3636.36, 3272.72, '2018-09-05 14:24:01', 'System', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `res_billing_detail` VALUES (3, 2, 'TXS', 1, 'Ayam Geprek', 13636.36, 15000.00, 0.00, 21, 28636.36, 0.00, 0.00, 286363.56, 314999.91, 286363.56, 257727.20, '2018-09-05 14:25:24', 'System', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `res_billing_detail` VALUES (4, 3, 'TXS', 1, 'Ayam Geprek', 13636.36, 15000.00, 0.00, 21, 28636.36, 0.00, 0.00, 286363.56, 314999.91, 286363.56, 257727.20, '2018-09-05 14:25:40', 'System', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `res_billing_detail` VALUES (5, 4, 'TXS', 1, 'Ayam Geprek', 13636.36, 15000.00, 0.00, 32, 43636.35, 0.00, 0.00, 436363.53, 479999.88, 436363.53, 392727.16, '2018-09-05 14:25:56', 'System', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `res_billing_detail` VALUES (6, 5, 'TXS', 1, 'Ayam Geprek', 13636.36, 15000.00, 0.00, 11, 15000.00, 0.00, 0.00, 149999.95, 164999.95, 149999.95, 134999.95, '2018-09-05 14:27:05', 'System', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `res_billing_detail` VALUES (7, 6, 'TXS', 1, 'Ayam Geprek', 13636.36, 15000.00, 0.00, 11, 15000.00, 0.00, 0.00, 149999.95, 164999.95, 149999.95, 134999.95, '2018-09-05 14:27:45', 'System', '0000-00-00 00:00:00', 'System', 1, 0);
 
 -- ----------------------------
 -- Table structure for res_category
@@ -2234,12 +2038,15 @@ CREATE TABLE `res_category`  (
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`category_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of res_category
 -- ----------------------------
-INSERT INTO `res_category` VALUES (1, 'Tidak Terkategori', '2018-05-08 13:26:31', 'System', '2018-05-08 13:26:44', 'System', 1, 0);
+INSERT INTO `res_category` VALUES (0, 'Tidak Terkategori', '2018-05-08 13:26:31', 'System', '2018-05-08 13:26:44', 'System', 1, 0);
+INSERT INTO `res_category` VALUES (1, 'Makanan', '2018-09-05 14:18:29', 'Super Restaurant', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `res_category` VALUES (2, 'Makanan', '2018-09-05 14:18:33', 'Super Restaurant', '2018-09-05 14:18:36', 'System', 1, 1);
+INSERT INTO `res_category` VALUES (3, 'Minuman', '2018-09-05 14:18:41', 'Super Restaurant', '0000-00-00 00:00:00', 'System', 1, 0);
 
 -- ----------------------------
 -- Table structure for res_client
@@ -2304,7 +2111,7 @@ CREATE TABLE `res_customer`  (
 -- ----------------------------
 -- Records of res_customer
 -- ----------------------------
-INSERT INTO `res_customer` VALUES (1, 'Umum', '0', '', '', '', '2018-08-27 16:12:28', 'Super Restaurant', '0000-00-00 00:00:00', '', 1, 0);
+INSERT INTO `res_customer` VALUES (1, 'Umum', '1', '', '', '', '2018-09-05 14:21:06', 'Super Restaurant', '0000-00-00 00:00:00', '', 1, 0);
 
 -- ----------------------------
 -- Table structure for res_item
@@ -2334,8 +2141,8 @@ CREATE TABLE `res_item`  (
 -- ----------------------------
 -- Records of res_item
 -- ----------------------------
-INSERT INTO `res_item` VALUES (1, 1, 1, 1, 'Ayam Geprek', '01', '', 12000.00, 1200.00, 13200.00, 0, '2018-08-27 16:11:47', 'Super Restaurant', '0000-00-00 00:00:00', 'System', 1, 0);
-INSERT INTO `res_item` VALUES (2, 1, 1, 1, 'Ayam Bakar', '02', '', 13636.36, 1363.64, 15000.00, 0, '2018-08-27 16:12:04', 'Super Restaurant', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `res_item` VALUES (1, 1, 0, 1, 'Ayam Geprek', '01', '', 13636.36, 1364.00, 15000.00, 0, '2018-09-05 14:19:38', 'Super Restaurant', '0000-00-00 00:00:00', 'System', 1, 0);
+INSERT INTO `res_item` VALUES (2, 3, 0, 1, 'Es Teh', '02', '', 1818.18, 181.82, 2000.00, 0, '2018-09-05 14:20:54', 'Super Restaurant', '0000-00-00 00:00:00', 'System', 1, 0);
 
 -- ----------------------------
 -- Table structure for res_item_package
@@ -2385,13 +2192,12 @@ CREATE TABLE `res_log`  (
   `log_date` date NOT NULL,
   `log_time` time(0) NOT NULL,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of res_log
 -- ----------------------------
-INSERT INTO `res_log` VALUES (1, 1, 'Super Restaurant', 'Sign In', '2018-08-27', '16:09:54');
-INSERT INTO `res_log` VALUES (2, 1, 'Super Restaurant', 'Sign Out', '2018-08-27', '16:16:54');
+INSERT INTO `res_log` VALUES (1, 1, 'Super Restaurant', 'Sign In', '2018-09-05', '14:14:05');
 
 -- ----------------------------
 -- Table structure for res_module
@@ -2499,86 +2305,86 @@ CREATE TABLE `res_permission`  (
 -- ----------------------------
 -- Records of res_permission
 -- ----------------------------
-INSERT INTO `res_permission` VALUES (1, 0, '01', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (2, 0, '02', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (3, 0, '02.01', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (4, 0, '02.02', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (5, 0, '02.03', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (6, 0, '02.04', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (7, 0, '02.05', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (8, 0, '02.06', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (9, 0, '02.07', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (10, 0, '02.08', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (11, 0, '03', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (12, 0, '03.01', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (13, 0, '03.02', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (14, 0, '03.03', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (15, 0, '04', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (16, 0, '04.01', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (17, 0, '04.02', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (18, 0, '04.03', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (19, 0, '04.04', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (20, 0, '04.05', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (21, 0, '05', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (22, 0, '05.01', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (23, 0, '05.02', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (24, 0, '05.03', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (25, 0, '05.04', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (26, 0, '05.05', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (27, 0, '05.06', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (28, 0, '05.07', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (29, 0, '05.08', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (30, 0, '05.09', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (31, 0, '05.10', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (32, 0, '05.11', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (33, 0, '99', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (34, 0, '99.01', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (35, 0, '99.02', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (36, 0, '99.03', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (37, 0, '99.04', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (38, 0, '99.05', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (39, 0, '99.06', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (40, 1, '01', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (41, 1, '02', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (42, 1, '02.01', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (43, 1, '02.02', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (44, 1, '02.03', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (45, 1, '02.04', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (46, 1, '02.05', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (47, 1, '02.06', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (48, 1, '02.08', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (49, 1, '03', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (50, 1, '03.01', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (51, 1, '03.02', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (52, 1, '03.03', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (53, 1, '04', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (54, 1, '04.01', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (55, 1, '04.02', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (56, 1, '04.03', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (57, 1, '04.04', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (58, 1, '04.05', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (59, 1, '05', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (60, 1, '05.01', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (61, 1, '05.02', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (62, 1, '05.03', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (63, 1, '05.04', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (64, 1, '05.05', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (65, 1, '05.06', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (66, 1, '05.07', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (67, 1, '05.08', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (68, 1, '05.09', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (69, 1, '05.10', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (70, 1, '05.11', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (71, 1, '99', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (72, 1, '99.03', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (73, 1, '99.05', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (74, 2, '01', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (75, 2, '03', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (76, 2, '03.01', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (77, 2, '03.02', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (78, 2, '03.03', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (79, 2, '05', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
-INSERT INTO `res_permission` VALUES (80, 2, '05.04', 1, 1, 1, 1, '2018-08-13 09:02:15', 'System');
+INSERT INTO `res_permission` VALUES (1, 0, '01', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (2, 0, '02', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (3, 0, '02.01', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (4, 0, '02.02', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (5, 0, '02.03', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (6, 0, '02.04', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (7, 0, '02.05', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (8, 0, '02.06', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (9, 0, '02.07', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (10, 0, '02.08', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (11, 0, '03', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (12, 0, '03.01', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (13, 0, '03.02', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (14, 0, '03.03', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (15, 0, '04', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (16, 0, '04.01', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (17, 0, '04.02', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (18, 0, '04.03', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (19, 0, '04.04', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (20, 0, '04.05', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (21, 0, '05', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (22, 0, '05.01', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (23, 0, '05.02', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (24, 0, '05.03', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (25, 0, '05.04', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (26, 0, '05.05', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (27, 0, '05.06', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (28, 0, '05.07', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (29, 0, '05.08', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (30, 0, '05.09', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (31, 0, '05.10', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (32, 0, '05.11', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (33, 0, '99', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (34, 0, '99.01', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (35, 0, '99.02', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (36, 0, '99.03', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (37, 0, '99.04', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (38, 0, '99.05', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (39, 0, '99.06', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (40, 1, '01', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (41, 1, '02', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (42, 1, '02.01', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (43, 1, '02.02', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (44, 1, '02.03', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (45, 1, '02.04', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (46, 1, '02.05', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (47, 1, '02.06', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (48, 1, '02.08', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (49, 1, '03', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (50, 1, '03.01', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (51, 1, '03.02', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (52, 1, '03.03', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (53, 1, '04', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (54, 1, '04.01', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (55, 1, '04.02', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (56, 1, '04.03', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (57, 1, '04.04', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (58, 1, '04.05', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (59, 1, '05', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (60, 1, '05.01', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (61, 1, '05.02', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (62, 1, '05.03', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (63, 1, '05.04', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (64, 1, '05.05', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (65, 1, '05.06', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (66, 1, '05.07', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (67, 1, '05.08', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (68, 1, '05.09', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (69, 1, '05.10', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (70, 1, '05.11', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (71, 1, '99', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (72, 1, '99.03', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (73, 1, '99.05', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (74, 2, '01', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (75, 2, '03', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (76, 2, '03.01', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (77, 2, '03.02', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (78, 2, '03.03', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (79, 2, '05', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
+INSERT INTO `res_permission` VALUES (80, 2, '05.04', 1, 1, 1, 1, '2018-09-03 07:51:09', 'System');
 
 -- ----------------------------
 -- Table structure for res_po
@@ -2789,14 +2595,14 @@ CREATE TABLE `res_role`  (
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`role_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of res_role
 -- ----------------------------
+INSERT INTO `res_role` VALUES (0, 'Super Administrator Restaurant', '2018-03-30 11:16:36', 'Super Administrator', '2018-05-08 13:40:17', 'Super Administrator', 1, 0);
 INSERT INTO `res_role` VALUES (1, 'Administrator Restaurant', '2018-03-30 11:18:19', 'Super Administrator', '2018-04-19 11:04:57', 'Super Administrator', 1, 0);
 INSERT INTO `res_role` VALUES (2, 'Cashier Restaurant', '2018-05-08 13:42:21', 'Admin Restaurant', '2018-05-28 22:17:09', 'Super Restaurant', 1, 0);
-INSERT INTO `res_role` VALUES (3, 'Super Administrator Restaurant', '2018-03-30 11:16:36', 'Super Administrator', '2018-05-08 13:40:17', 'Super Administrator', 1, 0);
 
 -- ----------------------------
 -- Table structure for res_shift
@@ -2854,7 +2660,7 @@ CREATE TABLE `res_shift`  (
 -- ----------------------------
 -- Records of res_shift
 -- ----------------------------
-INSERT INTO `res_shift` VALUES (1, 1, 'Super Restaurant', 1, 0, '2018-08-27', '16:12:13', NULL, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '2018-08-27 16:12:13', 'Super Restaurant', '0000-00-00 00:00:00', 'System');
+INSERT INTO `res_shift` VALUES (1, 1, 'Super Restaurant', 1, 0, '2018-09-05', '14:21:35', NULL, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '2018-09-05 14:21:35', 'Super Restaurant', '0000-00-00 00:00:00', 'System');
 
 -- ----------------------------
 -- Table structure for res_stock
@@ -2873,17 +2679,13 @@ CREATE TABLE `res_stock`  (
   `created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
   PRIMARY KEY (`stock_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of res_stock
 -- ----------------------------
-INSERT INTO `res_stock` VALUES (1, 1, 'TXS', '2018-08-27', 2, 0.00, -2.00, 0.00, 0.00, '2018-08-27 16:12:47', 'Super Restaurant');
-INSERT INTO `res_stock` VALUES (2, 1, 'TXS', '2018-08-27', 1, 0.00, -5.00, 0.00, 0.00, '2018-08-27 16:12:47', 'Super Restaurant');
-INSERT INTO `res_stock` VALUES (3, 2, 'TXS', '2018-08-27', 2, 0.00, -1.00, 0.00, 0.00, '2018-08-27 16:13:05', 'Super Restaurant');
-INSERT INTO `res_stock` VALUES (4, 2, 'TXS', '2018-08-27', 1, 0.00, -1.00, 0.00, 0.00, '2018-08-27 16:13:05', 'Super Restaurant');
-INSERT INTO `res_stock` VALUES (5, 3, 'TXS', '2018-08-29', 1, 0.00, -1.00, 0.00, 0.00, '2018-08-29 09:57:49', 'Super Hotel');
-INSERT INTO `res_stock` VALUES (6, 4, 'TXS', '2018-08-29', 2, 0.00, -1.00, 0.00, 0.00, '2018-08-29 12:01:29', 'Super Hotel');
+INSERT INTO `res_stock` VALUES (1, 1, 'TXS', '2018-09-05', 1, 0.00, -1.00, 0.00, 0.00, '2018-09-05 14:24:15', 'Super Restaurant');
+INSERT INTO `res_stock` VALUES (2, 1, 'TXS', '2018-09-05', 2, 0.00, -2.00, 0.00, 0.00, '2018-09-05 14:24:15', 'Super Restaurant');
 
 -- ----------------------------
 -- Table structure for res_stock_in
@@ -3032,18 +2834,18 @@ CREATE TABLE `res_unit`  (
   `is_active` int(1) NOT NULL DEFAULT 1,
   `is_deleted` int(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`unit_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of res_unit
 -- ----------------------------
+INSERT INTO `res_unit` VALUES (0, 'pcs', 'Pieces', '2018-05-08 13:31:41', 'System', '2018-06-04 09:01:43', '', 1, 0);
 INSERT INTO `res_unit` VALUES (1, 'gr', 'Gram', '2018-06-04 09:02:07', 'System', '2018-06-04 09:02:10', '', 1, 0);
 INSERT INTO `res_unit` VALUES (2, 'kg', 'Kilogram', '2018-06-04 09:02:32', 'System', '0000-00-00 00:00:00', '', 1, 0);
 INSERT INTO `res_unit` VALUES (3, 'doz', 'Lusin', '2018-06-04 09:02:46', 'System', '0000-00-00 00:00:00', '', 1, 0);
 INSERT INTO `res_unit` VALUES (4, 'pks', 'Packs', '2018-06-04 09:03:03', 'System', '0000-00-00 00:00:00', '', 1, 0);
 INSERT INTO `res_unit` VALUES (5, 'gross', 'Gross', '2018-06-04 09:03:16', 'System', '0000-00-00 00:00:00', '', 1, 0);
 INSERT INTO `res_unit` VALUES (6, 'krtn', 'Karton', '2018-06-04 09:03:28', 'System', '0000-00-00 00:00:00', '', 1, 0);
-INSERT INTO `res_unit` VALUES (7, 'pcs', 'Pieces', '2018-05-08 13:31:41', 'System', '2018-06-04 09:01:43', '', 1, 0);
 
 -- ----------------------------
 -- Table structure for res_user
@@ -3286,12 +3088,12 @@ CREATE TABLE `ret_category`  (
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`category_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of ret_category
 -- ----------------------------
-INSERT INTO `ret_category` VALUES (1, 'Tidak Terkategori', '2018-05-08 13:26:31', 'System', '2018-05-08 13:26:44', 'System', 1, 0);
+INSERT INTO `ret_category` VALUES (0, 'Tidak Terkategori', '2018-05-08 13:26:31', 'System', '2018-05-08 13:26:44', 'System', 1, 0);
 
 -- ----------------------------
 -- Table structure for ret_client
@@ -3351,12 +3153,12 @@ CREATE TABLE `ret_customer`  (
   `is_active` int(1) NOT NULL DEFAULT 1,
   `is_deleted` int(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`customer_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of ret_customer
 -- ----------------------------
-INSERT INTO `ret_customer` VALUES (1, 'Umum', '1234567890', '1234567890', 'umum@umum.com', 'Umum', '2018-05-08 11:07:30', 'Super Administrator', '2018-05-08 13:33:20', '', 1, 0);
+INSERT INTO `ret_customer` VALUES (0, 'Umum', '1234567890', '1234567890', 'umum@umum.com', 'Umum', '2018-05-08 11:07:30', 'Super Administrator', '2018-05-08 13:33:20', '', 1, 0);
 
 -- ----------------------------
 -- Table structure for ret_item
@@ -3805,14 +3607,14 @@ CREATE TABLE `ret_role`  (
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`role_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of ret_role
 -- ----------------------------
+INSERT INTO `ret_role` VALUES (0, 'Super Administrator Retail', '2018-03-30 11:16:36', 'Super Administrator', '2018-05-08 13:40:17', 'Super Administrator', 1, 0);
 INSERT INTO `ret_role` VALUES (1, 'Administrator Retail', '2018-03-30 11:18:19', 'Super Administrator', '2018-04-19 11:04:57', 'Super Administrator', 1, 0);
 INSERT INTO `ret_role` VALUES (2, 'Cashier Retail', '2018-05-08 13:42:21', 'Admin Retail', '2018-05-28 22:17:09', 'Super Retail', 1, 0);
-INSERT INTO `ret_role` VALUES (3, 'Super Administrator Retail', '2018-03-30 11:16:36', 'Super Administrator', '2018-05-08 13:40:17', 'Super Administrator', 1, 0);
 
 -- ----------------------------
 -- Table structure for ret_shift
@@ -4033,18 +3835,18 @@ CREATE TABLE `ret_unit`  (
   `is_active` int(1) NOT NULL DEFAULT 1,
   `is_deleted` int(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`unit_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of ret_unit
 -- ----------------------------
+INSERT INTO `ret_unit` VALUES (0, 'pcs', 'Pieces', '2018-05-08 13:31:41', 'System', '2018-06-04 09:01:43', '', 1, 0);
 INSERT INTO `ret_unit` VALUES (1, 'gr', 'Gram', '2018-06-04 09:02:07', 'System', '2018-06-04 09:02:10', '', 1, 0);
 INSERT INTO `ret_unit` VALUES (2, 'kg', 'Kilogram', '2018-06-04 09:02:32', 'System', '0000-00-00 00:00:00', '', 1, 0);
 INSERT INTO `ret_unit` VALUES (3, 'doz', 'Lusin', '2018-06-04 09:02:46', 'System', '0000-00-00 00:00:00', '', 1, 0);
 INSERT INTO `ret_unit` VALUES (4, 'pks', 'Packs', '2018-06-04 09:03:03', 'System', '0000-00-00 00:00:00', '', 1, 0);
 INSERT INTO `ret_unit` VALUES (5, 'gross', 'Gross', '2018-06-04 09:03:16', 'System', '0000-00-00 00:00:00', '', 1, 0);
 INSERT INTO `ret_unit` VALUES (6, 'krtn', 'Karton', '2018-06-04 09:03:28', 'System', '0000-00-00 00:00:00', '', 1, 0);
-INSERT INTO `ret_unit` VALUES (7, 'pcs', 'Pieces', '2018-05-08 13:31:41', 'System', '2018-06-04 09:01:43', '', 1, 0);
 
 -- ----------------------------
 -- Table structure for ret_user

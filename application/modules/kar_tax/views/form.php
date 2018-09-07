@@ -6,24 +6,21 @@
   <div class="row">
     <form id="form" class="" action="<?=base_url()?>kar_tax/<?=$action?>" method="post">
       <div class="col-md-6">
-        <input class="form-control keyboard" type="hidden" name="tax_id" value="<?php if($tax != null){echo $tax->tax_id;}?>">
+        <input class="form-control" type="hidden" name="tax_id" value="<?php if($tax != null){echo $tax->tax_id;}?>">
         <div class="form-group">
-          <label>Kode <small class="required-field">*</small></label>
+          <label>Kode Pajak<small class="required-field">*</small></label>
           <input class="form-control keyboard" type="text" name="tax_code" value="<?php if($tax != null){echo $tax->tax_code;}?>">
         </div>
         <div class="form-group">
-          <label>Nama <small class="required-field">*</small></label>
+          <label>Nama Pajak<small class="required-field">*</small></label>
           <input class="form-control keyboard" type="text" name="tax_name" value="<?php if($tax != null){echo $tax->tax_name;}?>">
         </div>
         <div class="form-group">
-          <label>Rasio Pajak</label>
-          <div class="input-group col-sm-4">
-            <input type="text" class="form-control keyboard autonumeric" name="tax_ratio" aria-describedby="basic-addon2" value="<?php if($tax != null){echo $tax->tax_ratio;}?>">
-            <span class="input-group-addon" id="basic-addon2">%</span>
-          </div>
+          <label>Sebesar (%)<small class="required-field">*</small></label>
+          <input class="form-control num" type="number" min="0" max="100" name="tax_ratio" value="<?php if($tax != null){echo $tax->tax_ratio;}?>">
         </div>
         <div class="form-group">
-          <label>Aktif? <small class="required-field">*</small></label><br>
+          <label>Aktif?</label><br>
           <input class="" type="checkbox" name="is_active" value="1" <?php if($tax != null){if($tax->is_active == 1){echo 'checked';}}else{echo 'checked';}?>>
         </div>
         <div class="form-group pull-right">
@@ -41,13 +38,7 @@
         'tax_id': {
           required: true
         },
-        'tax_code': {
-          required: true
-        },
         'tax_name': {
-          required: true
-        },
-        'tax_ratio': {
           required: true
         }
       },
@@ -55,13 +46,7 @@
         'tax_id': {
           required: '<i style="color:red">Wajib diisi!</i>'
         },
-        'tax_code': {
-          required: '<i style="color:red">Wajib diisi!</i>'
-        },
         'tax_name': {
-          required: '<i style="color:red">Wajib diisi!</i>'
-        },
-        'tax_ratio': {
           required: '<i style="color:red">Wajib diisi!</i>'
         }
       }

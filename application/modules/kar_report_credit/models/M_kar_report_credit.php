@@ -7,19 +7,18 @@ class M_kar_report_credit extends CI_Model {
   {
 		$billing = $this->db->query(
 			"SELECT
-				MONTH(tx_date) AS tx_month,
-				YEAR(tx_date) AS tx_year,
-				SUM(tx_total_before_tax) AS tx_total_before_tax,
-				SUM(tx_total_tax) AS tx_total_tax,
-				SUM(tx_total_after_tax) AS tx_total_after_tax,
-				SUM(tx_total_discount) AS tx_total_discount,
-				SUM(tx_total_grand) AS tx_total_grand
+				MONTH(billing_date_in) AS tx_month,
+				YEAR(billing_date_in) AS tx_year,
+				SUM(billing_subtotal) AS billing_subtotal,
+				SUM(billing_tax) AS billing_tax,
+				SUM(billing_total) AS billing_total,
+				SUM(billing_down_payment) AS billing_down_payment
 			FROM kar_billing
 			WHERE
-				tx_date LIKE '$year%' AND
-				tx_status = 0
-			GROUP BY YEAR(tx_date)
-			ORDER BY tx_date DESC"
+				billing_date_in LIKE '$year%' AND
+				billing_status = '1'
+			GROUP BY MONTH(billing_date_in)
+			ORDER BY billing_date_in ASC"
 		)->result();
 
 		return $billing;
@@ -29,18 +28,17 @@ class M_kar_report_credit extends CI_Model {
   {
 		$billing = $this->db->query(
 			"SELECT
-				tx_date,
-				SUM(tx_total_before_tax) AS tx_total_before_tax,
-				SUM(tx_total_tax) AS tx_total_tax,
-				SUM(tx_total_after_tax) AS tx_total_after_tax,
-				SUM(tx_total_discount) AS tx_total_discount,
-				SUM(tx_total_grand) AS tx_total_grand
+				billing_date_in,
+				SUM(billing_subtotal) AS billing_subtotal,
+				SUM(billing_tax) AS billing_tax,
+				SUM(billing_total) AS billing_total,
+				SUM(billing_down_payment) AS billing_down_payment
 			FROM kar_billing
 			WHERE
-				tx_date LIKE '$month%' AND
-				tx_status = 0
-			GROUP BY tx_date
-			ORDER BY tx_date DESC"
+				billing_date_in LIKE '$month%' AND
+				billing_status = '1'
+			GROUP BY billing_date_in
+			ORDER BY billing_date_in DESC"
 		)->result();
 
 		return $billing;
@@ -50,19 +48,18 @@ class M_kar_report_credit extends CI_Model {
 	{
 		$billing = $this->db->query(
 			"SELECT
-				tx_date,
-				SUM(tx_total_before_tax) AS tx_total_before_tax,
-				SUM(tx_total_tax) AS tx_total_tax,
-				SUM(tx_total_after_tax) AS tx_total_after_tax,
-				SUM(tx_total_discount) AS tx_total_discount,
-				SUM(tx_total_grand) AS tx_total_grand
+				billing_date_in,
+				SUM(billing_subtotal) AS billing_subtotal,
+				SUM(billing_tax) AS billing_tax,
+				SUM(billing_total) AS billing_total,
+				SUM(billing_down_payment) AS billing_down_payment
 			FROM kar_billing
 			WHERE
-				tx_date >= '$date_start' AND
-				tx_date <= '$date_end' AND
-				tx_status = 0
-			GROUP BY tx_date
-			ORDER BY tx_date DESC"
+				billing_date_in >= '$date_start' AND
+				billing_date_in <= '$date_end' AND
+				billing_status = '1'
+			GROUP BY billing_date_in
+			ORDER BY billing_date_in DESC"
 		)->result();
 
 		return $billing;
@@ -70,12 +67,15 @@ class M_kar_report_credit extends CI_Model {
 
 	public function daily($date)
   {
-		$billing = $this->db
-			->join('kar_payment_type','kar_billing.payment_type_id = kar_payment_type.payment_type_id','left')
-			->where('tx_status', 0)
-			->where('tx_date =', $date)
-			->order_by('tx_id','desc')
-			->get('kar_billing')->result();
+		$billing = $this->db->query(
+			"SELECT
+				*
+			FROM kar_billing
+			WHERE
+				billing_date_in = '$date' AND
+				billing_status = '1'
+			ORDER BY billing_receipt_no ASC"
+		)->result();
 
 		return $billing;
 	}
@@ -84,36 +84,51 @@ class M_kar_report_credit extends CI_Model {
 	{
 		$billing = $this->db->query(
 			"SELECT
-				tx_date,
-				SUM(tx_total_before_tax) AS tx_total_before_tax,
-				SUM(tx_total_tax) AS tx_total_tax,
-				SUM(tx_total_after_tax) AS tx_total_after_tax,
-				SUM(tx_total_discount) AS tx_total_discount,
-				SUM(tx_total_grand) AS tx_total_grand
+				billing_date_in,
+				SUM(billing_subtotal) AS billing_subtotal,
+				SUM(billing_tax) AS billing_tax,
+				SUM(billing_total) AS billing_total,
+				SUM(billing_down_payment) AS billing_down_payment
 			FROM kar_billing
 			WHERE
-				tx_date >= '$date_start' AND
-				tx_date <= '$date_end' AND
-				tx_status = 0
-			GROUP BY tx_date
-			ORDER BY tx_date DESC"
+				billing_date_in >= '$date_start' AND
+				billing_date_in <= '$date_end' AND
+				billing_status = '1'
+			GROUP BY billing_date_in
+			ORDER BY billing_date_in DESC"
 		)->result();
 
 		return $billing;
 	}
 
-	public function detail($tx_id)
+	public function detail($billing_id)
 	{
 		$billing = $this->db
-			->join('kar_room','kar_billing.room_id = kar_room.room_id')
-			->join('kar_room_type','kar_room.room_type_id = kar_room_type.room_type_id')
-			->join('kar_payment_type','kar_billing.payment_type_id = kar_payment_type.payment_type_id','left')
-			->where('tx_id',$tx_id)
+			->select('kar_billing')
+			->where('billing_id', $billing_id)
 			->get('kar_billing')->row();
+		$billing->detail = $this->db->where('billing_id', $billing_id)->get('kar_billing_detail')->result();
+		$billing->buyget = $this->db
+			->select('kar_billing_buyget.*,res_item.item_name,res_promo.promo_name')
+			->join('res_item', 'kar_billing_buyget.get_item_id = res_item.item_id')
+			->join('res_promo_buyget', 'kar_billing_buyget.promo_buyget_id = res_promo_buyget.promo_buyget_id')
+			->join('res_promo', 'res_promo_buyget.promo_id = res_promo.promo_id')
+			->where('billing_id', $billing_id)
+			->get('kar_billing_buyget')->result();
 
-		$billing->service_charge = $this->db
-			->where('tx_id',$tx_id)
-			->get('kar_billing_service_charge')->result();
+		$billing->buyitem = $this->db
+			->select('kar_billing_buyitem.*,res_promo.promo_name')
+			->join('res_promo_buyitem', 'kar_billing_buyitem.promo_buyitem_id = res_promo_buyitem.promo_buyitem_id')
+			->join('res_promo', 'res_promo_buyitem.promo_id = res_promo.promo_id')
+			->where('billing_id', $billing_id)
+			->get('kar_billing_buyitem')->result();
+
+		$billing->buyall = $this->db
+		  ->select('kar_billing_buyall.*,res_promo.promo_name')
+		  ->join('res_promo_buyall', 'kar_billing_buyall.promo_buyall_id = res_promo_buyall.promo_buyall_id')
+		  ->join('res_promo', 'res_promo_buyall.promo_id = res_promo.promo_id')
+		  ->where('billing_id', $billing_id)
+		  ->get('kar_billing_buyall')->result();
 
 		return $billing;
 	}

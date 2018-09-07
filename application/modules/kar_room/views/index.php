@@ -4,7 +4,7 @@
 <div class="content-body">
   <div class="row">
     <div class="col-md-4">
-      <!-- <a class="btn btn-info" href="<?=base_url()?>kar_room/form"><i class="fa fa-plus"></i> Tambah Ruang</a> -->
+      <!-- <a class="btn btn-info" href="<?=base_url()?>kar_room/form"><i class="fa fa-plus"></i> Tambah Kamar</a> -->
       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalInformation">
         <i class="fa fa-question"></i> Informasi
       </button>
@@ -35,8 +35,8 @@
             <tr>
               <th class="text-center" width="50">No</th>
               <th class="text-center" width="70">Aksi</th>
-              <th class="text-center" width="380">Nama Ruang</th>
-              <th class="text-center">Tipe Ruang (Kategori Ruang)</th>
+              <th class="text-center" width="380">Nama Kamar</th>
+              <th class="text-center">Tipe Kamar (Kategori Kamar)</th>
               <th class="text-center">Nomor</th>
               <th class="text-center" width="80">Status</th>
             </tr>
@@ -116,13 +116,13 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Informasi Menu Ruang</h4>
+        <h4 class="modal-title" id="myModalLabel">Informasi Menu Kamar</h4>
       </div>
       <div class="modal-body" style="font-size: 15px;">
         <ul style="margin-left: -22px;">
-          <li>Menu ini digunakan untuk memanajemen Ruang</li>
-          <li>Ketika Anda ingin menambah Ruang silahkan ke menu Tipe Ruang kemudian edit Jumlah Ruang yang diinginkan</li>
-          <li>Nama Ruang bisa diubah, silahkan klik tombol pencil untuk mengubah nama Ruang</li>
+          <li>Menu ini digunakan untuk memanajemen Kamar</li>
+          <li>Ketika Anda ingin menambah kamar silahkan ke menu Tipe Kamar kemudian edit Jumlah Kamar yang diinginkan</li>
+          <li>Nama Kamar bisa diubah, silahkan klik tombol pencil untuk mengubah nama kamar</li>
         </ul>
       </div>
       <div class="modal-footer">

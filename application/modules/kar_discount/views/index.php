@@ -40,7 +40,6 @@
               <th class="text-center" width="70">Aksi</th>
               <th class="text-center" width="500">Nama Diskon</th>
               <th class="text-center" width="150">Tipe Diskon</th>
-              <th class="text-center" width="150">Jenis Diskon</th>
               <th class="text-center" width="150">Jumlah</th>
               <th class="text-center" width="80">Aktif</th>
             </tr>
@@ -55,15 +54,6 @@
                       <button class="btn btn-xs btn-danger" onclick="del('<?=$row->discount_id?>');"><i class="fa fa-trash"></i></button>
                   </td>
                   <td><?=$row->discount_name?></td> 
-
-                  <?php if ($row->discount_group == '1'): ?>
-                    <td class="text-center">Diskon Ruangan</td>
-                  <?php elseif($row->discount_group == '2'): ?>
-                    <td class="text-center">Diskon Member</td>
-                  <?php elseif($row->discount_group == '3'): ?>
-                    <td class="text-center">Diskon Total</td>
-                  <?php endif; ?>
-
                   <?php if ($row->discount_type == '1'): ?>
                     <td class="text-center">Persentase (%)</td>
                   <?php elseif($row->discount_type == '2'): ?>
@@ -87,7 +77,7 @@
               <?php endforeach; ?>
             <?php else: ?>
               <tr>
-                <td class="text-center" colspan="7">Tidak ada data!</td>
+                <td class="text-center" colspan="6">Tidak ada data!</td>
               </tr>
             <?php endif; ?>
           </tbody>

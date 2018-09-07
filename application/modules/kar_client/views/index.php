@@ -104,6 +104,19 @@
               <th colspan="3">Data Lain</th>
             </tr>
             <tr>
+              <td>Metode Harga</td>
+              <td class="text-center">:</td>
+              <?php if ($client->client_is_taxed == 0): ?>
+                <td class="cl-success">
+                  <strong>Harga sebelum pajak.</strong>
+                </td>
+              <?php else: ?>
+                <td class="cl-warning">
+                  <strong>Harga sesudah pajak.</strong>
+                </td>
+              <?php endif; ?>
+            </tr>
+            <tr>
               <td>Keterangan Tambahan</td>
               <td class="text-center">:</td>
               <td><?=$client->client_notes?></td>
@@ -131,7 +144,7 @@
                 <?php if ($client->client_logo == null || $client->client_logo == ''): ?>
                   <img src="<?=base_url()?>img/no-image.png" alt="" width="200" height="200">
                 <?php else: ?>
-                  <img src="<?=base_url()?>img/<?=$client->client_logo?>" alt="" width="200" height="200">
+                  <img src="<?=base_url()?>img/<?=$client->client_logo?>" alt="">
                 <?php endif; ?>
               </td>
             </tr>

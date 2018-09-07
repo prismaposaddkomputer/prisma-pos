@@ -161,7 +161,7 @@
                     }
                   ?>
                 </td>
-                <td class="text-center"><?=$row->extra_amount?></td>
+                <td class="text-center"><?=round($row->extra_amount,0,PHP_ROUND_HALF_UP)?></td>
                 <td>
                   <?php 
                     if ($client->client_is_taxed == 0) {
@@ -223,7 +223,7 @@
                     }
                   ?>
                 </td>
-                <td class="text-center"><?=$row->service_amount?></td>
+                <td class="text-center"><?=round($row->service_amount,0,PHP_ROUND_HALF_UP)?></td>
                 <td>
                   <?php 
                     if ($client->client_is_taxed == 0) {
@@ -283,7 +283,7 @@
                     }
                   ?>
                 </td>
-                <td class="text-center"><?=$row->fnb_amount?></td>
+                <td class="text-center"><?=round($row->fnb_amount,0,PHP_ROUND_HALF_UP)?></td>
                 <td>
                   <?php 
                     if ($client->client_is_taxed == 0) {
@@ -343,22 +343,14 @@
                     }
                   ?>
                 </td>
-                <td class="text-center"><?=$row->non_tax_amount?></td>
+                <td class="text-center"><?=round($row->non_tax_amount,0,PHP_ROUND_HALF_UP)?></td>
                 <td>
                   <?php 
-                    if ($client->client_is_taxed == 0) {
-                      echo num_to_idr($row->non_tax_subtotal);
-                    }else{
-                      echo num_to_idr($row->non_tax_total);
-                    }
+                    echo num_to_idr($row->non_tax_total);
                   ?>
                 </td>
                 <?php 
-                  if ($client->client_is_taxed == 0) {
-                    $tot_non_tax += $row->non_tax_subtotal;
-                  }else{
-                    $tot_non_tax += $row->non_tax_total;
-                  }
+                  $tot_non_tax += $row->non_tax_total;
                 ?>
               </tr>
             <?php endforeach;?>

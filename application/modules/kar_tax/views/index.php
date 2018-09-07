@@ -1,16 +1,20 @@
+<?php
+	function digit($inp = 0)
+	{
+	    return number_format($inp, 0, ',', '.');
+	}
+?>
 <div class="content-header">
   <h4><i class="fa fa-<?=$access->module_icon?>"></i> <?=$title?></h4>
 </div>
 <div class="content-body">
   <div class="row">
-    <div class="col-md-4">
-      <a class="btn btn-info" href="<?=base_url()?>kar_tax/form"><i class="fa fa-plus"></i> Tambah Pajak</a>
-    </div>
+    
     <div class="col-md-4 pull-right">
       <form class="" action="<?=base_url()?>kar_tax/index" method="post">
         <div class="form-group">
           <div class="input-group">
-            <input type="text" class="form-control keyboard" name="search_term" placeholder="Pencarian..." value="<?php echo $this->session->userdata('search_term');?>">
+            <input type="text" class="form-control" name="search_term" placeholder="Pencarian..." value="<?php echo $this->session->userdata('search_term');?>">
             <span class="input-group-btn">
               <button class="btn btn-info" type="submit"><i class="fa fa-search"></i></button>
               <a class="btn btn-default" href="<?=base_url()?>kar_tax/reset_search"><i class="fa fa-refresh"></i></a>
@@ -32,10 +36,10 @@
             <tr>
               <th class="text-center" width="50">No</th>
               <th class="text-center" width="70">Aksi</th>
-              <th class="text-center" width="70">Kode</th>
+              <th class="text-center">Kode Pajak</th>
               <th class="text-center">Nama Pajak</th>
-              <th class="text-center" width="100">Rasio Pajak</th>
-              <th class="text-center" width="80">Aktif</th>
+              <th class="text-center">Sebesar (%)</th>
+              <th class="text-center" width="80">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -44,14 +48,14 @@
                 <tr>
                   <td class="text-center"><?=$this->uri->segment('3')+$i++?></td>
                   <td class="text-center">
-                    <?php if ($row->tax_id != null ): ?>
+                    <?php if ($row->tax_id != 0 ): ?>
                       <a class="btn btn-xs btn-warning" href="<?=base_url()?>kar_tax/form/<?=$row->tax_id?>"><i class="fa fa-pencil"></i></a>
-                      <button class="btn btn-xs btn-danger" onclick="del('<?=$row->tax_id?>');"><i class="fa fa-trash"></i></button>
+                     
                     <?php endif; ?>
                   </td>
-                  <td class="text-center"><?=$row->tax_code?></td>
+                  <td><?=$row->tax_code?></td>
                   <td><?=$row->tax_name?></td>
-                  <td class="text-center"><?=$row->tax_ratio?>%</td>
+                  <td align="center"><?=$row->tax_ratio?>%</td>
                   <td class="text-center">
                     <?php if ($row->is_active == 1): ?>
                       <i class="fa fa-check cl-success"></i>
@@ -63,7 +67,7 @@
               <?php endforeach; ?>
             <?php else: ?>
               <tr>
-                <td class="text-center" colspan="4">Tidak ada data!</td>
+                <td class="text-center" colspan="5">Tidak ada data!</td>
               </tr>
             <?php endif; ?>
           </tbody>
