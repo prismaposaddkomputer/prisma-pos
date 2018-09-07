@@ -827,7 +827,7 @@
               var row = '<tr>'+
                 '<td>'+item.room_type_name+'</td>'+
                 '<td>'+item.room_name+'</td>'+
-                '<td>'+sys_to_cur(item.room_type_charge)+'</td>'+
+                '<td>'+sys_to_cur(item.room_type_subtotal)+'</td>'+
                 '<td class="text-center">'+
                   '<button class="btn btn-xs btn-danger" onclick="delete_room('+item.billing_room_id+')"><i class="fa fa-trash"></i></button>'+
                 '</td>'+
