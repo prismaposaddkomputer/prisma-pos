@@ -26,7 +26,7 @@ class Kar_service extends MY_Karaoke {
   {
     if ($this->access->_read == 1) {
       $data['access'] = $this->access;
-      $data['title'] = 'Manajemen Pelayanan Kamar';
+      $data['title'] = 'Manajemen Pelayanan Room';
       $data['tax'] = $this->m_kar_charge_type->get_by_id(1);
 
       if($this->input->post('search_term')){
@@ -73,7 +73,7 @@ class Kar_service extends MY_Karaoke {
     $data['access'] = $this->access;
     if ($id == null) {
       if ($this->access->_create == 1) {
-        $data['title'] = 'Tambah Pelayanan Kamar';
+        $data['title'] = 'Tambah Pelayanan Room';
         $data['action'] = 'insert';
         $data['service'] = null;
         $this->view('kar_service/form', $data);
@@ -84,7 +84,7 @@ class Kar_service extends MY_Karaoke {
       if ($this->access->_update == 1) {
         $client = $this->m_kar_client->get_all();
         $tax = $this->m_kar_charge_type->get_by_id(1);
-        $data['title'] = 'Ubah Pelayanan Kamar';
+        $data['title'] = 'Ubah Pelayanan Room';
         $data['service'] = $this->m_kar_service->get_by_id($id);
         if ($client->client_is_taxed == 1) {
           $data['service']->service_charge = ((100+$tax->charge_type_ratio)/100)*$data['service']->service_charge;

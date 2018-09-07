@@ -10,7 +10,7 @@
 <div class="content-body">
   <div class="row">
     <div class="col-md-4">
-      <a class="btn btn-info" href="<?=base_url()?>kar_service/form"><i class="fa fa-plus"></i> Tambah Pelayanan Kamar</a>
+      <a class="btn btn-info" href="<?=base_url()?>kar_service/form"><i class="fa fa-plus"></i> Tambah Pelayanan Room</a>
       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalInformation">
         <i class="fa fa-question"></i> Informasi
       </button>
@@ -41,7 +41,7 @@
             <tr>
               <th class="text-center" width="50">No</th>
               <th class="text-center" width="70">Aksi</th>
-              <th class="text-center">Nama Pelayanan Kamar</th>
+              <th class="text-center">Nama Pelayanan Room</th>
               <th class="text-center" width="150">Harga</th>
               <th class="text-center" width="80">Status</th>
             </tr>
@@ -135,11 +135,11 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Informasi Menu Pelayanan Kamar</h4>
+        <h4 class="modal-title" id="myModalLabel">Informasi Menu Pelayanan Room</h4>
       </div>
       <div class="modal-body" style="font-size: 15px;">
         <ul style="margin-left: -22px;">
-          <li>Menu ini digunakan untuk memanajemen Pelayanan Kamar, contoh Pelayanan Kamar seperti : Sarapan Pagi, Makan Malam, dll</li>
+          <li>Menu ini digunakan untuk memanajemen Pelayanan Room</li>
         </ul>
       </div>
       <div class="modal-footer">
