@@ -10,7 +10,7 @@
 <div class="content-body">
   <div class="row">
     <div class="col-md-5">
-      <a class="btn btn-info" href="<?=base_url()?>kar_room_type/form"><i class="fa fa-plus"></i> Tambah Tipe Ruang (Kategori Ruang)</a>
+      <a class="btn btn-info" href="<?=base_url()?>kar_room_type/form"><i class="fa fa-plus"></i> Tambah Tipe Room (Kategori Room)</a>
       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalInformation">
         <i class="fa fa-question"></i> Informasi
       </button>
@@ -41,8 +41,8 @@
             <tr>
               <th class="text-center" width="50">No</th>
               <th class="text-center" width="70">Aksi</th>
-              <th class="text-center">Nama Tipe Ruang (Kategori Ruang)</th>
-              <th class="text-center" width="150">Jumlah Ruang</th>
+              <th class="text-center">Nama Tipe Room (Kategori Room)</th>
+              <th class="text-center" width="150">Jumlah Room</th>
               <th class="text-center" width="150">Harga</th>
               <th class="text-center" width="80">Aktif</th>
             </tr>
@@ -71,7 +71,7 @@
                   </td>
                   <td><?=$row->room_type_name?></td> 
                   <td class="text-center"><?=$number_of_room?></td> 
-                  <td><?=num_to_idr(($tot_ratio/100)*$row->room_type_charge)?></td> 
+                  <td><?=num_to_idr(round(($tot_ratio/100)*$row->room_type_charge),0,PHP_ROUND_HALF_UP)?></td> 
                   <td class="text-center">
                     <?php if ($row->is_active == 1): ?>
                       <i class="fa fa-check cl-success"></i>
@@ -83,7 +83,7 @@
               <?php endforeach; ?>
             <?php else: ?>
               <tr>
-                <td class="text-center" colspan="6">Tidak ada data!</td>
+                <td class="text-center" colspan="5">Tidak ada data!</td>
               </tr>
             <?php endif; ?>
           </tbody>
@@ -133,12 +133,12 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Informasi Menu Tipe Ruang (Kategori Ruang)</h4>
+        <h4 class="modal-title" id="myModalLabel">Informasi Menu Tipe Room (Kategori Room)</h4>
       </div>
       <div class="modal-body" style="font-size: 15px;">
         <ul style="margin-left: -22px;">
-          <li>Menu ini digunakan untuk memanajemen Tipe Ruang (Kategori Ruang)</li>
-          <li>Ketika Anda mengisi kolom Jumlah Ruang di Form Tambah Tipe Ruang maka di menu Ruang akan otomatis terisi sama dengan Jumlah Ruang yang Anda isikan</li>
+          <li>Menu ini digunakan untuk memanajemen Tipe Room (Kategori Room)</li>
+          <li>Ketika Anda mengisi kolom Jumlah Room di Form Tambah Tipe Room maka di menu Room akan otomatis terisi sama dengan Jumlah Room yang Anda isikan</li>
         </ul>
       </div>
       <div class="modal-footer">

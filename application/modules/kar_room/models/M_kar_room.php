@@ -31,13 +31,13 @@ class M_kar_room extends CI_Model {
 			->get('kar_room')->result();
 	}
 
-	// public function get_all_category()
-	// {
-	// 	return $this->db
-	// 		->where('is_deleted','0')
-	// 		->where('is_active','1')
-	// 		->get('hot_category')->result();
-	// }
+	public function get_all_category()
+	{
+		return $this->db
+			->where('is_deleted','0')
+			->where('is_active','1')
+			->get('kar_category')->result();
+	}
 
   public function get_by_id($id)
   {

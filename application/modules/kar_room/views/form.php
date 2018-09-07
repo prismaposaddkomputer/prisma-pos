@@ -10,7 +10,7 @@
         <div class="row">
           <div class="col-md-12">
             <div class="form-group">
-              <label>Nama Ruang <small class="required-field">*</small></label>
+              <label>Nama Kamar <small class="required-field">*</small></label>
               <input class="form-control keyboard" name="room_name" value="<?php if($room != null){echo $room->room_name;}?>">
             </div>
           </div>

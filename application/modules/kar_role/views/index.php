@@ -44,7 +44,7 @@
                   <td class="text-center">
                     <?php if ($row->role_id != '' ): ?>
                       <a class="btn btn-xs btn-warning" href="<?=base_url()?>kar_role/form/<?=$row->role_id?>"><i class="fa fa-pencil"></i></a>
-                      <button class="btn btn-xs btn-danger" onclick="del('<?=$row->role_id?>');"><i class="fa fa-trash"></i></button>
+                      <!-- <button class="btn btn-xs btn-danger" onclick="del('<?=$row->role_id?>');"><i class="fa fa-trash"></i></button> -->
                     <?php endif; ?>
                   </td>
                   <td><?=$row->role_name?></td>

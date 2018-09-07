@@ -13,7 +13,7 @@
         </div>
         <div class="form-group">
           <label>Modul Induk <small class="required-field">*</small></label>
-          <select class="form-control keyboard select2" name="module_parent">
+          <select class="form-control keyboard" name="module_parent">
             <option value=""> --- </option>
             <?php foreach ($module_all as $row): ?>
               <option value="<?=$row->module_id?>" <?php if($module != null){if($row->module_id == $module->module_parent){echo 'selected';};}?>><?=$row->module_id.' - '.$row->module_name?></option>
