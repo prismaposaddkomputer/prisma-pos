@@ -1212,33 +1212,18 @@
           $("#row_non_tax_list").append(row);
         } else {
           $("#row_non_tax_list").html('');
-          if (data.client_is_taxed == 0) {
-            $.each(data.non_tax, function(i, item) {
-              var row = '<tr>'+
-                '<td>'+item.non_tax_name+'</td>'+
-                '<td>'+sys_to_cur(item.non_tax_charge)+'</td>'+
-                '<td class="text-right">'+item.non_tax_amount+'</td>'+
-                '<td>'+sys_to_cur(item.non_tax_subtotal)+'</td>'+
-                '<td class="text-center">'+
-                  '<button class="btn btn-xs btn-danger" onclick="delete_non_tax('+item.billing_non_tax_id+')"><i class="fa fa-trash"></i></button>'+
-                '</td>'+
-              '</tr>';
-              $("#row_non_tax_list").append(row);
-            })
-          }else{
-            $.each(data.non_tax, function(i, item) {
-              var row = '<tr>'+
-                '<td>'+item.non_tax_name+'</td>'+
-                '<td>'+sys_to_cur(item.non_tax_total/item.non_tax_amount)+'</td>'+
-                '<td class="text-right">'+item.non_tax_amount+'</td>'+
-                '<td>'+sys_to_cur(item.non_tax_total)+'</td>'+
-                '<td class="text-center">'+
-                  '<button class="btn btn-xs btn-danger" onclick="delete_non_tax('+item.billing_non_tax_id+')"><i class="fa fa-trash"></i></button>'+
-                '</td>'+
-              '</tr>';
-              $("#row_non_tax_list").append(row);
-            })
-          }
+          $.each(data.non_tax, function(i, item) {
+            var row = '<tr>'+
+              '<td>'+item.non_tax_name+'</td>'+
+              '<td>'+sys_to_cur(item.non_tax_charge)+'</td>'+
+              '<td class="text-right">'+item.non_tax_amount+'</td>'+
+              '<td>'+sys_to_cur(item.non_tax_total)+'</td>'+
+              '<td class="text-center">'+
+                '<button class="btn btn-xs btn-danger" onclick="delete_non_tax('+item.billing_non_tax_id+')"><i class="fa fa-trash"></i></button>'+
+              '</td>'+
+            '</tr>';
+            $("#row_non_tax_list").append(row);
+          })
         }
         get_count();
       }
