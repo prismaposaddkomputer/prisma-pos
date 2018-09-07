@@ -481,7 +481,7 @@ class Hot_reservation extends MY_Hotel {
             $extra_charge_total = num_to_price($row->extra_total);
           }
           //
-          $printer -> text($row->extra_amount." X ".$extra_charge_sub_total." = ".$extra_charge_total);
+          $printer -> text(round($row->extra_amount,0,PHP_ROUND_HALF_UP)." X ".$extra_charge_sub_total." = ".$extra_charge_total);
           $printer -> feed();
         }
       }
@@ -511,7 +511,7 @@ class Hot_reservation extends MY_Hotel {
             $service_charge_total = num_to_price($row->service_total);
           }
           //
-          $printer -> text($row->service_amount." X ".$service_charge_sub_total." = ".$service_charge_total);
+          $printer -> text(round($row->service_amount,0,PHP_ROUND_HALF_UP)." X ".$service_charge_sub_total." = ".$service_charge_total);
           $printer -> feed();
         }
       }
@@ -541,7 +541,7 @@ class Hot_reservation extends MY_Hotel {
             $fnb_charge_total = num_to_price($row->fnb_total);
           }
           //
-          $printer -> text($row->fnb_amount." X ".$fnb_charge_sub_total." = ".$fnb_charge_total);
+          $printer -> text(round($row->fnb_amount,0,PHP_ROUND_HALF_UP)." X ".$fnb_charge_sub_total." = ".$fnb_charge_total);
           $printer -> feed();
         }
       }
@@ -559,19 +559,7 @@ class Hot_reservation extends MY_Hotel {
           $printer -> feed();
           $printer -> setJustification(Escpos\Printer::JUSTIFY_RIGHT);
           //
-          if ($client->client_is_taxed == 0) {
-            $non_tax_charge_sub_total = num_to_price($row->non_tax_charge);
-          }else{
-            $non_tax_charge_sub_total = num_to_price($row->non_tax_total/$row->non_tax_amount);
-          }
-          //
-          if ($client->client_is_taxed == 0) {
-            $non_tax_charge_total = num_to_price($row->non_tax_subtotal);
-          }else{
-            $non_tax_charge_total = num_to_price($row->non_tax_total);
-          }
-          //
-          $printer -> text($row->non_tax_amount." X ".$non_tax_charge_sub_total." = ".$non_tax_charge_total);
+          $printer -> text(round($row->non_tax_amount,0,PHP_ROUND_HALF_UP)." X ".num_to_price($row->non_tax_charge)." = ".num_to_price($row->non_tax_total))  ;
           $printer -> feed();
         }
       }
