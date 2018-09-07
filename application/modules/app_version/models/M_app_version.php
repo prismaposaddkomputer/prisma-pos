@@ -806,6 +806,116 @@ class M_app_version extends CI_Model {
         $this->db->query("ALTER TABLE `res_client`
 	        CHANGE COLUMN `client_receipt_is_taxed` `client_is_taxed` TINYINT(1) NOT NULL DEFAULT '1' AFTER `client_keyboard_status`");
         break;
+
+      case '2.4.3':
+        $this->db->query("ALTER TABLE `kar_client`
+	        CHANGE COLUMN `client_receipt_is_taxed` `client_is_taxed` TINYINT(1) NOT NULL DEFAULT '1' AFTER `client_keyboard_status`");
+        break;
+
+      case '2.4.4':
+        $this->db->query("DELETE FROM `kar_module`");
+        $this->db->query("INSERT INTO `kar_module` VALUES ('01', '', 'Dashboard', 'kar_dashboard', 'kar_dashboard', 'index', 'dashboard', '2018-08-18 05:51:24', '', '2018-09-06 10:13:07', '', 0, 0)");
+        $this->db->query("INSERT INTO `kar_module` VALUES ('02', '', 'Master', '', '', '#', 'cubes', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0)");
+        $this->db->query("INSERT INTO `kar_module` VALUES ('02.01', '02', 'Jenis Biaya', 'kar_charge_type', 'kar_charge_type', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 10:22:02', '', 0, 0)");
+        $this->db->query("INSERT INTO `kar_module` VALUES ('02.02', '02', 'Tipe Room', 'kar_room_type', 'kar_room_type', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 10:50:32', '', 0, 0)");
+        $this->db->query("INSERT INTO `kar_module` VALUES ('02.03', '02', 'Room', 'kar_room', 'kar_room', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 10:50:29', '', 0, 0)");
+        $this->db->query("INSERT INTO `kar_module` VALUES ('02.04', '02', 'Paket', 'kar_paket', 'kar_paket', 'index', '', '2018-09-06 12:07:16', 'System', '0000-00-00 00:00:00', 'System', 1, 0)");
+        $this->db->query("INSERT INTO `kar_module` VALUES ('02.05', '02', 'Tamu', 'kar_guest', 'kar_guest', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 10:22:22', '', 0, 0)");
+        $this->db->query("INSERT INTO `kar_module` VALUES ('02.06', '02', 'Pelayanan', 'kar_service', 'kar_service', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 12:06:13', '', 0, 0)");
+        $this->db->query("INSERT INTO `kar_module` VALUES ('02.07', '02', 'FnB', 'kar_fnb', 'kar_fnb', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 12:06:27', '', 0, 0)");
+        $this->db->query("INSERT INTO `kar_module` VALUES ('02.08', '02', 'Diskon', 'kar_discount', 'kar_discount', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 12:06:34', '', 0, 0)");
+        $this->db->query("INSERT INTO `kar_module` VALUES ('02.09', '02', 'Non Pajak', 'kar_non_tax', 'kar_non_tax', 'index', '', '2018-09-03 07:51:35', 'System', '2018-09-06 12:06:42', 'System', 1, 0)");
+        $this->db->query("INSERT INTO `kar_module` VALUES ('03', '', 'Pemesanan', 'kar_reservation', 'kar_reservation', 'index', 'address-book-o', '2018-08-18 05:51:24', '', '2018-09-07 06:57:39', 'Super Karaoke', 0, 0)");
+        $this->db->query("INSERT INTO `kar_module` VALUES ('04', '', 'Laporan', '', '', '#', 'files-o', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0)");
+        $this->db->query("INSERT INTO `kar_module` VALUES ('04.01', '04', 'Laporan Pemesanan (semua)', 'kar_report_reservation', 'kar_report_reservation', 'index', '', '2018-08-18 05:51:24', '', '2018-09-07 06:59:59', 'Super Karaoke', 0, 0)");
+        $this->db->query("INSERT INTO `kar_module` VALUES ('04.02', '04', 'Laporan Pemesanan (kasir)', 'kar_report_receptionist', 'kar_report_receptionist', 'index', '', '2018-08-18 05:51:24', '', '2018-09-07 07:00:21', 'Super Karaoke', 0, 0)");
+        $this->db->query("INSERT INTO `kar_module` VALUES ('04.03', '04', 'Laporan Pembayaran', 'kar_report_payment', 'kar_report_payment', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 10:23:14', '', 0, 0)");
+        $this->db->query("INSERT INTO `kar_module` VALUES ('04.04', '04', 'Laporan Piutang', 'kar_report_credit', 'kar_report_credit', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 10:23:20', '', 0, 0)");
+        $this->db->query("INSERT INTO `kar_module` VALUES ('99', '', 'Pengaturan', '', '', '#', 'gears', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0)");
+        $this->db->query("INSERT INTO `kar_module` VALUES ('99.01', '99', 'Modul', 'kar_module', 'kar_module', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 10:23:25', '', 0, 0)");
+        $this->db->query("INSERT INTO `kar_module` VALUES ('99.02', '99', 'Role', 'kar_role', 'kar_role', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 10:23:32', '', 0, 0)");
+        $this->db->query("INSERT INTO `kar_module` VALUES ('99.03', '99', 'Pengguna', 'kar_user', 'kar_user', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 10:23:37', '', 0, 0)");
+        $this->db->query("INSERT INTO `kar_module` VALUES ('99.04', '99', 'Hak Akses', 'kar_permission', 'kar_permission', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 10:23:43', '', 0, 0)");
+        $this->db->query("INSERT INTO `kar_module` VALUES ('99.05', '99', 'Client', 'kar_client', 'kar_client', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 11:14:45', '', 0, 0)");
+        break;
+
+      case '2.4.5':
+        $this->db->query("TRUNCATE `kar_permission`");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 0, '01', 1, 1, 1, 1, '2018-09-06 12:10:36', 'Super Karaoke')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 0, '02', 1, 1, 1, 1, '2018-09-06 12:10:36', 'Super Karaoke')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 0, '02.01', 1, 1, 1, 1, '2018-09-06 12:10:36', 'Super Karaoke')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 0, '02.02', 1, 1, 1, 1, '2018-09-06 12:10:36', 'Super Karaoke')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 0, '02.03', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 0, '02.04', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 0, '02.05', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 0, '02.06', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 0, '02.07', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 0, '02.08', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 0, '02.09', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 0, '03', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 0, '04', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 0, '04.01', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 0, '04.02', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 0, '04.03', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 0, '04.04', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 0, '99', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 0, '99.01', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 0, '99.02', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 0, '99.03', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 0, '99.04', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 0, '99.05', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 1, '01', 1, 1, 1, 1, '2018-09-07 11:18:01', 'Super Hotel')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 1, '02', 1, 1, 1, 1, '2018-09-07 11:18:01', 'Super Hotel')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 1, '02.01', 1, 1, 1, 1, '2018-09-07 11:18:01', 'Super Hotel')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 1, '02.02', 1, 1, 1, 1, '2018-09-07 11:18:01', 'Super Hotel')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 1, '02.03', 1, 1, 1, 1, '2018-09-07 11:18:01', 'Super Hotel')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 1, '02.04', 1, 1, 1, 1, '2018-09-07 11:18:01', 'Super Hotel')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 1, '02.05', 1, 1, 1, 1, '2018-09-07 11:18:01', 'Super Hotel')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 1, '02.06', 1, 1, 1, 1, '2018-09-07 11:18:02', 'Super Hotel')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 1, '02.07', 1, 1, 1, 1, '2018-09-07 11:18:02', 'Super Hotel')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 1, '02.08', 1, 1, 1, 1, '2018-09-07 11:18:02', 'Super Hotel')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 1, '02.09', 1, 1, 1, 1, '2018-09-07 11:18:02', 'Super Hotel')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 1, '03', 1, 1, 1, 1, '2018-09-07 11:18:02', 'Super Hotel')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 1, '04', 1, 1, 1, 1, '2018-09-07 11:18:02', 'Super Hotel')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 1, '04.01', 1, 1, 1, 1, '2018-09-07 11:18:02', 'Super Hotel')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 1, '04.02', 1, 1, 1, 1, '2018-09-07 11:18:02', 'Super Hotel')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 1, '04.03', 1, 1, 1, 1, '2018-09-07 11:18:02', 'Super Hotel')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 1, '04.04', 1, 1, 1, 1, '2018-09-07 11:18:02', 'Super Hotel')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 1, '99', 1, 1, 1, 1, '2018-09-07 11:18:02', 'Super Hotel')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 1, '99.01', 1, 1, 1, 1, '2018-09-07 11:18:02', 'Super Hotel')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 1, '99.02', 1, 1, 1, 1, '2018-09-07 11:18:02', 'Super Hotel')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 1, '99.03', 1, 1, 1, 1, '2018-09-07 11:18:02', 'Super Hotel')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 1, '99.04', 1, 1, 1, 1, '2018-09-07 11:18:02', 'Super Hotel')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 1, '99.05', 1, 1, 1, 1, '2018-09-07 11:18:02', 'Super Hotel')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 3, '01', 1, 1, 1, 1, '2018-09-07 11:18:21', 'Super Hotel')");
+        $this->db->query("INSERT INTO `kar_permission` VALUES (NULL, 3, '03', 1, 1, 1, 1, '2018-09-07 11:18:21', 'Super Hotel')");
+        break;
+
+      case '2.4.6':
+        $this->db->query("DROP TABLE IF EXISTS `kar_charge_type`");
+        $this->db->query("CREATE TABLE `kar_charge_type`  (
+            `charge_type_id` int(11) NOT NULL AUTO_INCREMENT,
+            `charge_type_code` varchar(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+            `charge_type_name` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+            `charge_type_ratio` float(10, 2) NOT NULL DEFAULT 0.00,
+            `charge_type_desc` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+            `created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            `created_by` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
+            `updated` timestamp(0) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(0),
+            `updated_by` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
+            `is_active` tinyint(1) NOT NULL DEFAULT 1,
+            `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
+            PRIMARY KEY (`charge_type_id`) USING BTREE
+          ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact
+        ");
+        $this->db->query("INSERT INTO `kar_charge_type` VALUES (1, '1.1.1.01.05', 'Pajak Karaoke', 15.00, 'Pajak Daerah', '2018-09-03 07:51:25', 'System', '2018-09-06 10:27:03', 'System', 1, 0)");
+        $this->db->query("INSERT INTO `kar_charge_type` VALUES (2, 'SRV', 'Servis Karaoke', 10.00, 'Biaya Servis', '2018-09-03 07:51:25', 'System', '2018-09-06 10:28:34', 'Super Hotel', 0, 0)");
+        $this->db->query("INSERT INTO `kar_charge_type` VALUES (3, 'OTH', 'Biaya Lain-lain', 1.00, 'Biaya Lain-lain', '2018-09-03 07:51:35', 'System', '2018-09-04 15:57:42', 'Super Hotel', 0, 0)");
+        break;
+      
+      case '2.4.7':
+        # code...
+        break;
     }
 
     //insert new update history
@@ -885,7 +995,12 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"2.4.1","version_release"=>"2018-09-04 18:57:00"));
     // change res _client
     array_push($version, array("version_now"=>"2.4.2","version_release"=>"2018-09-06 10:29:00"));
-
+    // change name is_taxed
+    array_push($version, array("version_now"=>"2.4.3","version_release"=>"2018-09-07 11:11:00"));
+    // udpate module karaoke
+    array_push($version, array("version_now"=>"2.4.4","version_release"=>"2018-09-07 11:15:00"));
+    array_push($version, array("version_now"=>"2.4.5","version_release"=>"2018-09-07 11:25:00"));
+    array_push($version, array("version_now"=>"2.4.6","version_release"=>"2018-09-07 11:25:00"));
     foreach ($version as $key => $val) {
       //check version
       $check = null;
