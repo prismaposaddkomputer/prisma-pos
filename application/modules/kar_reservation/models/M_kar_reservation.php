@@ -8,6 +8,7 @@ class M_kar_reservation extends CI_Model {
 		if($search_term == null){
 			return $this->db
 				->where('is_deleted','0')
+				->where('billing_status!=','0')
 				->order_by('billing_id','desc')
 				->get('kar_billing',$number,$offset)
 				->result();
@@ -15,6 +16,7 @@ class M_kar_reservation extends CI_Model {
 			return $this->db
 				->like('guest_name',$search_term,'both')
 				->where('is_deleted','0')
+				->where('billing_status!=','0')
 				->order_by('billing_id','desc')
 				->get('kar_billing',$number,$offset)
 				->result();

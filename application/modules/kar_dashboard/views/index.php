@@ -93,8 +93,8 @@
               <th class="text-center" width="50">No</th>
               <th class="text-center" width="100">Aksi</th>
               <th class="text-center">No. Nota</th>
-              <th class="text-center">Check In</th>
-              <th class="text-center">Check Out</th>
+              <th class="text-center cl-success"><i class="fa fa-arrow-down"></i> In (Masuk)</th>
+              <th class="text-center cl-danger"><i class="fa fa-arrow-up"></i> Out (Keluar)</th>
               <th class="text-center">Tamu</th>
               <th class="text-center" width="150">Total</th>
               <th class="text-center" width="80">Status</th>
@@ -116,7 +116,7 @@
                   <td class="text-center"><?=date_to_ind($row->billing_date_in).' '.$row->billing_time_in?></td>
                   <td class="text-center"><?=date_to_ind($row->billing_date_out).' '.$row->billing_time_out?></td>
                   <td><?=$row->guest_name?></td>
-                  <td><?=num_to_idr($row->billing_subtotal)?></td>
+                  <td><?=num_to_idr($row->billing_total)?></td>
                   <td class="text-center">
                     <?php if ($row->billing_status == -1){ ?>
                       <span class="badge bg-danger">Dibatalkan</span>
@@ -213,8 +213,12 @@
         borderColor: window.chartColors.blue,
         borderWidth: 1,
         data: [
-        <?php foreach ($monthly as $row): ?>
-          '<?=$row->billing_total?>',
+        <?php 
+        $billing_total = 0;
+        foreach ($monthly as $row): 
+        $billing_total += $row->billing_total;
+        ?>
+          '<?=$billing_total?>',
         <?php endforeach; ?>
         ]
       }]
