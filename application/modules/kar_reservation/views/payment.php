@@ -12,14 +12,14 @@
             <td>TXS-<?=$billing->billing_receipt_no?></td>
           </tr>
           <tr>
-            <td>Check In</td>
+            <td class="cl-success"><i class="fa fa-arrow-down"></i> In (Masuk)</td>
             <td>:</td>
             <td><?=date_to_ind($billing->billing_date_in)?> <?=$billing->billing_time_in?></td>
           </tr>
           <tr>
-            <td>Check Out</td>
+            <td class="cl-danger"><i class="fa fa-arrow-up"></i> Out (Keluar)</td>
             <td>:</td>
-            <td><?=date_to_ind($billing->billing_date_out)?> <?=$billing->billing_time_out?></td>
+            <td><?=date_to_ind(date("Y-m-d"))?> <?=date("H:i:s")?></td>
           </tr>
         </tbody>
       </table>
@@ -101,7 +101,7 @@
                     }
                   ?>
                 </td>
-                <td class="text-center"><?=round($row->room_type_duration,0,PHP_ROUND_HALF_UP)?> Hari</td>
+                <td class="text-center"><?=round($row->room_type_duration,0,PHP_ROUND_HALF_UP)?> Jam</td>
                 <td>
                   <?php 
                     if ($client->client_is_taxed == 0) {
@@ -135,47 +135,47 @@
       </table>
     </div>
     <div class="col-md-6">
-      <h4><b><i class="fa fa-plus-square"></i></b> B. Ekstra</h4>
+      <h4><b><i class="fa fa-cubes"></i></b> B. Paket</h4>
       <table class="table table-bordered table-condensed">
         <thead>
           <tr>
             <th class="text-center" width="20">No.</th>
-            <th class="text-center">Ekstra</th>
+            <th class="text-center">Paket</th>
             <th class="text-center" width="120">Tarif</th>
             <th class="text-center" width="20">Banyak</th>
             <th class="text-center" width="120">Total</th>
           </tr>              
         </thead>
         <tbody>
-          <?php $tot_extra=0; if ($billing->extra != null): ?>
-            <?php $tot_extra=0;$i=1;foreach ($billing->extra as $row): ?>
+          <?php $tot_paket=0; if ($billing->paket != null): ?>
+            <?php $i=1;foreach ($billing->paket as $row): ?>
               <tr>
                 <td class="text-center"><?=$i++?></td>
-                <td><?=$row->extra_name?></td>
+                <td><?=$row->paket_name?></td>
                 <td>
                   <?php 
                     if ($client->client_is_taxed == 0) {
-                      echo num_to_idr($row->extra_charge);
+                      echo num_to_idr($row->paket_charge);
                     }else{
-                      echo num_to_idr($row->extra_total/$row->extra_amount);
+                      echo num_to_idr($row->paket_total/$row->paket_amount);
                     }
                   ?>
                 </td>
-                <td class="text-center"><?=$row->extra_amount?></td>
+                <td class="text-center"><?=round($row->paket_amount,0,PHP_ROUND_HALF_UP)?></td>
                 <td>
                   <?php 
                     if ($client->client_is_taxed == 0) {
-                      echo num_to_idr($row->extra_subtotal);
+                      echo num_to_idr($row->paket_subtotal);
                     }else{
-                      echo num_to_idr($row->extra_total);
+                      echo num_to_idr($row->paket_total);
                     }
                   ?>
                 </td>
                 <?php 
                   if ($client->client_is_taxed == 0) {
-                    $tot_extra += $row->extra_subtotal;
+                    $tot_paket += $row->paket_subtotal;
                   }else{
-                    $tot_extra += $row->extra_total;
+                    $tot_paket += $row->paket_total;
                   }
                 ?>
               </tr>
@@ -189,7 +189,7 @@
         <tfoot>
           <tr>
             <th class="text-center" colspan="4">Total</th>
-            <th><?=num_to_idr($tot_extra)?></th>
+            <th><?=num_to_idr($tot_paket)?></th>
           </tr>
         </tfoot>
       </table>
@@ -223,7 +223,7 @@
                     }
                   ?>
                 </td>
-                <td class="text-center"><?=$row->service_amount?></td>
+                <td class="text-center"><?=round($row->service_amount,0,PHP_ROUND_HALF_UP)?></td>
                 <td>
                   <?php 
                     if ($client->client_is_taxed == 0) {
@@ -283,7 +283,7 @@
                     }
                   ?>
                 </td>
-                <td class="text-center"><?=$row->fnb_amount?></td>
+                <td class="text-center"><?=round($row->fnb_amount,0,PHP_ROUND_HALF_UP)?></td>
                 <td>
                   <?php 
                     if ($client->client_is_taxed == 0) {
@@ -336,29 +336,15 @@
                 <td><?=$row->non_tax_name?></td>
                 <td>
                   <?php 
-                    if ($client->client_is_taxed == 0) {
-                      echo num_to_idr($row->non_tax_charge);
-                    }else{
-                      echo num_to_idr($row->non_tax_total/$row->non_tax_amount);
-                    }
+                    echo num_to_idr($row->non_tax_charge);
                   ?>
                 </td>
-                <td class="text-center"><?=$row->non_tax_amount?></td>
+                <td class="text-center"><?=round($row->non_tax_amount,0,PHP_ROUND_HALF_UP)?></td>
                 <td>
-                  <?php 
-                    if ($client->client_is_taxed == 0) {
-                      echo num_to_idr($row->non_tax_subtotal);
-                    }else{
-                      echo num_to_idr($row->non_tax_total);
-                    }
-                  ?>
+                  <?=num_to_idr($row->non_tax_total);?>
                 </td>
                 <?php 
-                  if ($client->client_is_taxed == 0) {
-                    $tot_non_tax += $row->non_tax_subtotal;
-                  }else{
-                    $tot_non_tax += $row->non_tax_total;
-                  }
+                  $tot_non_tax += $row->non_tax_total;
                 ?>
               </tr>
             <?php endforeach;?>
@@ -439,6 +425,8 @@
       <table class="table table-condensed">
         <form class="" action="<?=base_url()?>kar_reservation/<?=$action?>" method="post" name="myForm" onsubmit="return validateForm()">
         <input type="hidden" name="billing_id" value="<?=$id?>">
+        <input type="hidden" name="billing_date_out" value="<?=date("Y-m-d")?>">
+        <input type="hidden" name="billing_time_out" value="<?=date("H:i:s")?>">
         <tbody>
           <tr>
             <td width="300">Total</td>

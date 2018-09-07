@@ -11,8 +11,6 @@ class M_kar_report_reservation extends CI_Model {
 				YEAR(billing_date_in) AS tx_year,
 				SUM(billing_subtotal) AS billing_subtotal,
 				SUM(billing_tax) AS billing_tax,
-				SUM(billing_service) AS billing_service,
-				SUM(billing_other) AS billing_other,
 				SUM(billing_total) AS billing_total
 			FROM kar_billing
 			WHERE
@@ -32,8 +30,6 @@ class M_kar_report_reservation extends CI_Model {
 				billing_date_in,
 				SUM(billing_subtotal) AS billing_subtotal,
 				SUM(billing_tax) AS billing_tax,
-				SUM(billing_service) AS billing_service,
-				SUM(billing_other) AS billing_other,
 				SUM(billing_total) AS billing_total
 			FROM kar_billing
 			WHERE
@@ -53,8 +49,6 @@ class M_kar_report_reservation extends CI_Model {
 				billing_date_in,
 				SUM(billing_subtotal) AS billing_subtotal,
 				SUM(billing_tax) AS billing_tax,
-				SUM(billing_service) AS billing_service,
-				SUM(billing_other) AS billing_other,
 				SUM(billing_total) AS billing_total
 			FROM kar_billing
 			WHERE
@@ -90,8 +84,6 @@ class M_kar_report_reservation extends CI_Model {
 				billing_date_in,
 				SUM(billing_subtotal) AS billing_subtotal,
 				SUM(billing_tax) AS billing_tax,
-				SUM(billing_service) AS billing_service,
-				SUM(billing_other) AS billing_other,
 				SUM(billing_total) AS billing_total
 			FROM kar_billing
 			WHERE

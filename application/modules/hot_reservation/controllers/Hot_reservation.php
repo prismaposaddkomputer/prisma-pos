@@ -268,7 +268,7 @@ class Hot_reservation extends MY_Hotel {
     //
     $this->m_hot_billing->update($id,$data);
     if ($save_print == 'print_pdf') {
-      $this->frame_pdf($id);
+      $this->frame_pdf($id, '');
     }else if($save_print == 'print_struk'){
       $this->reservation_print_struk($id);
     }

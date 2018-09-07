@@ -11,7 +11,7 @@
  Target Server Version : 100125
  File Encoding         : 65001
 
- Date: 06/09/2018 10:51:28
+ Date: 07/09/2018 08:06:16
 */
 
 SET NAMES utf8mb4;
@@ -37,11 +37,8 @@ CREATE TABLE `kar_billing`  (
   `billing_time_in` time(0) NOT NULL,
   `billing_date_out` date NOT NULL,
   `billing_time_out` time(0) NOT NULL,
-  `billing_num_day` int(11) NOT NULL,
   `billing_subtotal` float(10, 2) NOT NULL,
   `billing_tax` float(10, 2) NOT NULL,
-  `billing_service` float(10, 2) NOT NULL,
-  `billing_other` float(10, 2) NOT NULL,
   `billing_total` float(10, 2) NOT NULL,
   `billing_payment_type` tinyint(1) NOT NULL,
   `billing_down_payment` float(10, 2) NOT NULL,
@@ -56,12 +53,7 @@ CREATE TABLE `kar_billing`  (
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`billing_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
-
--- ----------------------------
--- Records of kar_billing
--- ----------------------------
-INSERT INTO `kar_billing` VALUES (1, '180906000001', 0, 0, '', '', '', 0, '', 0, '', '0000-00-00', '00:00:00', '0000-00-00', '00:00:00', 0, 0.00, 0.00, 0.00, 0.00, 0.00, 0, 0.00, 0.00, 0.00, '', 0, '2018-09-06 10:40:57', 'System', '0000-00-00 00:00:00', '', 1, 0);
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for kar_billing_extra
@@ -131,6 +123,29 @@ CREATE TABLE `kar_billing_non_tax`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
+-- Table structure for kar_billing_paket
+-- ----------------------------
+DROP TABLE IF EXISTS `kar_billing_paket`;
+CREATE TABLE `kar_billing_paket`  (
+  `billing_paket_id` int(11) NOT NULL AUTO_INCREMENT,
+  `billing_id` int(11) NOT NULL DEFAULT 0,
+  `paket_id` int(11) NOT NULL,
+  `paket_name` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `paket_charge` float(10, 2) NOT NULL,
+  `paket_amount` float(10, 2) NOT NULL,
+  `paket_subtotal` float(10, 2) NOT NULL,
+  `paket_tax` float(10, 2) NOT NULL,
+  `paket_total` float(10, 2) NOT NULL,
+  `created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_by` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
+  `updated` timestamp(0) NOT NULL,
+  `updated_by` varchar(20) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`billing_paket_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
 -- Table structure for kar_billing_room
 -- ----------------------------
 DROP TABLE IF EXISTS `kar_billing_room`;
@@ -145,8 +160,6 @@ CREATE TABLE `kar_billing_room`  (
   `room_type_duration` float(10, 2) NOT NULL,
   `room_type_subtotal` float(10, 2) NOT NULL,
   `room_type_tax` float(10, 2) NOT NULL,
-  `room_type_service` float(10, 2) NOT NULL,
-  `room_type_other` float(10, 2) NOT NULL,
   `room_type_total` float(10, 2) NOT NULL,
   `created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
@@ -345,7 +358,7 @@ CREATE TABLE `kar_client`  (
 -- ----------------------------
 -- Records of kar_client
 -- ----------------------------
-INSERT INTO `kar_client` VALUES ('1', 'CV Prisma Karaoke', 'Prisma Hotel', 'sendiri', 'Jalan Gajahmada 56', 'Warungboto', 'Umbulharjo', 'Yogyakarta', 'Daerah Istimewa Yogyakarta', 'buat@gmail.com', '123', '123', '1234', '1234', 'Sujo', 'jalan manggis\r\n', 'Tidak ada', '1234-1234-1234', 1, 'update-hotel-griya-persada3.png', 1, '2018-05-08 10:26:03', 'System', '2018-09-06 10:17:23', 'Super Hotel', 1, 0);
+INSERT INTO `kar_client` VALUES ('1', 'CV Prisma Karaoke', 'Prisma Karaoke', 'sendiri', 'Jalan Gajahmada 56', 'Warungboto', 'Umbulharjo', 'Yogyakarta', 'Daerah Istimewa Yogyakarta', 'buat@gmail.com', '123', '123', '1234', '1234', 'Sujo', 'jalan manggis\r\n', 'Tidak ada', '1234-1234-1234', 1, NULL, 1, '2018-05-08 10:26:03', 'System', '2018-09-07 06:52:52', 'Super Karaoke', 1, 0);
 
 -- ----------------------------
 -- Table structure for kar_discount
@@ -363,13 +376,7 @@ CREATE TABLE `kar_discount`  (
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`discount_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
-
--- ----------------------------
--- Records of kar_discount
--- ----------------------------
-INSERT INTO `kar_discount` VALUES (1, 'Diskon Akhir Tahun', 1, 10.00, '2018-09-03 08:18:31', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0);
-INSERT INTO `kar_discount` VALUES (2, 'Testing', 2, 50000.00, '2018-09-05 08:38:35', 'Super Hotel', '2018-09-05 08:38:49', 'Super Hotel', 1, 0);
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for kar_diskon
@@ -404,13 +411,14 @@ CREATE TABLE `kar_extra`  (
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`extra_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of kar_extra
 -- ----------------------------
 INSERT INTO `kar_extra` VALUES (1, 'Selimut', 5000.00, '2018-09-03 08:18:08', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0);
 INSERT INTO `kar_extra` VALUES (2, 'Testing', 45454.55, '2018-09-05 08:37:34', 'Super Hotel', '2018-09-05 08:37:52', 'Super Hotel', 1, 0);
+INSERT INTO `kar_extra` VALUES (3, 'Extra Testing', 43478.26, '2018-09-06 11:32:25', 'Super Karaoke', '0000-00-00 00:00:00', 'System', 1, 0);
 
 -- ----------------------------
 -- Table structure for kar_fnb
@@ -427,13 +435,7 @@ CREATE TABLE `kar_fnb`  (
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`fnb_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
-
--- ----------------------------
--- Records of kar_fnb
--- ----------------------------
-INSERT INTO `kar_fnb` VALUES (1, 'Ayam Geprek', 12000.00, '2018-09-03 08:18:24', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0);
-INSERT INTO `kar_fnb` VALUES (2, 'Testing', 45454.55, '2018-09-05 08:38:07', 'Super Hotel', '0000-00-00 00:00:00', 'Super Hotel', 1, 0);
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for kar_guest
@@ -455,13 +457,7 @@ CREATE TABLE `kar_guest`  (
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`guest_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
-
--- ----------------------------
--- Records of kar_guest
--- ----------------------------
-INSERT INTO `kar_guest` VALUES (1, 0, 'Joko Susilo', 'L', '', '', 1, '', '2018-09-04 11:51:28', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0);
-INSERT INTO `kar_guest` VALUES (2, 1, 'Joko Samino', 'L', '', '', 1, '', '2018-09-04 11:51:55', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0);
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for kar_log
@@ -475,7 +471,7 @@ CREATE TABLE `kar_log`  (
   `log_date` date NOT NULL,
   `log_time` time(0) NOT NULL,
   PRIMARY KEY (`log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 29 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 32 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of kar_log
@@ -508,6 +504,9 @@ INSERT INTO `kar_log` VALUES (25, 1, 'Super Karaoke', 'Sign In', '2018-09-06', '
 INSERT INTO `kar_log` VALUES (26, 1, 'Super Karaoke', 'Sign In', '2018-09-06', '10:11:07');
 INSERT INTO `kar_log` VALUES (27, 1, 'Super Karaoke', 'Sign In', '2018-09-06', '10:12:28');
 INSERT INTO `kar_log` VALUES (28, 1, 'Super Karaoke', 'Sign In', '2018-09-06', '10:13:16');
+INSERT INTO `kar_log` VALUES (29, 1, 'Super Karaoke', 'Sign In', '2018-09-06', '12:08:12');
+INSERT INTO `kar_log` VALUES (30, 1, 'Super Karaoke', 'Sign In', '2018-09-06', '12:08:44');
+INSERT INTO `kar_log` VALUES (31, 1, 'Super Karaoke', 'Sign In', '2018-09-06', '12:09:26');
 
 -- ----------------------------
 -- Table structure for kar_member
@@ -558,16 +557,16 @@ INSERT INTO `kar_module` VALUES ('02', '', 'Master', '', '', '#', 'cubes', '2018
 INSERT INTO `kar_module` VALUES ('02.01', '02', 'Jenis Biaya', 'kar_charge_type', 'kar_charge_type', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 10:22:02', '', 0, 0);
 INSERT INTO `kar_module` VALUES ('02.02', '02', 'Tipe Room', 'kar_room_type', 'kar_room_type', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 10:50:32', '', 0, 0);
 INSERT INTO `kar_module` VALUES ('02.03', '02', 'Room', 'kar_room', 'kar_room', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 10:50:29', '', 0, 0);
+INSERT INTO `kar_module` VALUES ('02.04', '02', 'Paket', 'kar_paket', 'kar_paket', 'index', '', '2018-09-06 12:07:16', 'System', '0000-00-00 00:00:00', 'System', 1, 0);
 INSERT INTO `kar_module` VALUES ('02.05', '02', 'Tamu', 'kar_guest', 'kar_guest', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 10:22:22', '', 0, 0);
-INSERT INTO `kar_module` VALUES ('02.06', '02', 'Pelayanan', 'kar_service', 'kar_service', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 10:22:28', '', 0, 0);
-INSERT INTO `kar_module` VALUES ('02.07', '02', 'Ekstra', 'kar_extra', 'kar_extra', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 10:22:33', '', 0, 0);
-INSERT INTO `kar_module` VALUES ('02.08', '02', 'FnB', 'kar_fnb', 'kar_fnb', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 10:22:39', '', 0, 0);
-INSERT INTO `kar_module` VALUES ('02.09', '02', 'Diskon', 'kar_discount', 'kar_discount', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 10:22:46', '', 0, 0);
-INSERT INTO `kar_module` VALUES ('02.10', '02', 'Non Pajak', 'kar_non_tax', 'kar_non_tax', 'index', '', '2018-09-03 07:51:35', 'System', '2018-09-06 10:22:51', 'System', 1, 0);
-INSERT INTO `kar_module` VALUES ('03', '', 'Reservasi', 'kar_reservation', 'kar_reservation', 'index', 'address-book-o', '2018-08-18 05:51:24', '', '2018-09-06 10:22:57', '', 0, 0);
+INSERT INTO `kar_module` VALUES ('02.06', '02', 'Pelayanan', 'kar_service', 'kar_service', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 12:06:13', '', 0, 0);
+INSERT INTO `kar_module` VALUES ('02.07', '02', 'FnB', 'kar_fnb', 'kar_fnb', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 12:06:27', '', 0, 0);
+INSERT INTO `kar_module` VALUES ('02.08', '02', 'Diskon', 'kar_discount', 'kar_discount', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 12:06:34', '', 0, 0);
+INSERT INTO `kar_module` VALUES ('02.09', '02', 'Non Pajak', 'kar_non_tax', 'kar_non_tax', 'index', '', '2018-09-03 07:51:35', 'System', '2018-09-06 12:06:42', 'System', 1, 0);
+INSERT INTO `kar_module` VALUES ('03', '', 'Pemesanan', 'kar_reservation', 'kar_reservation', 'index', 'address-book-o', '2018-08-18 05:51:24', '', '2018-09-07 06:57:39', 'Super Karaoke', 0, 0);
 INSERT INTO `kar_module` VALUES ('04', '', 'Laporan', '', '', '#', 'files-o', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0);
-INSERT INTO `kar_module` VALUES ('04.01', '04', 'Laporan Reservasi (semua)', 'kar_report_reservation', 'kar_report_reservation', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 10:23:02', '', 0, 0);
-INSERT INTO `kar_module` VALUES ('04.02', '04', 'Laporan Reservasi  (resepsionis)', 'kar_report_receptionist', 'kar_report_receptionist', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 10:23:07', '', 0, 0);
+INSERT INTO `kar_module` VALUES ('04.01', '04', 'Laporan Pemesanan (semua)', 'kar_report_reservation', 'kar_report_reservation', 'index', '', '2018-08-18 05:51:24', '', '2018-09-07 06:59:59', 'Super Karaoke', 0, 0);
+INSERT INTO `kar_module` VALUES ('04.02', '04', 'Laporan Pemesanan (kasir)', 'kar_report_receptionist', 'kar_report_receptionist', 'index', '', '2018-08-18 05:51:24', '', '2018-09-07 07:00:21', 'Super Karaoke', 0, 0);
 INSERT INTO `kar_module` VALUES ('04.03', '04', 'Laporan Pembayaran', 'kar_report_payment', 'kar_report_payment', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 10:23:14', '', 0, 0);
 INSERT INTO `kar_module` VALUES ('04.04', '04', 'Laporan Piutang', 'kar_report_credit', 'kar_report_credit', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 10:23:20', '', 0, 0);
 INSERT INTO `kar_module` VALUES ('99', '', 'Pengaturan', '', '', '#', 'gears', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0);
@@ -575,7 +574,7 @@ INSERT INTO `kar_module` VALUES ('99.01', '99', 'Modul', 'kar_module', 'kar_modu
 INSERT INTO `kar_module` VALUES ('99.02', '99', 'Role', 'kar_role', 'kar_role', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 10:23:32', '', 0, 0);
 INSERT INTO `kar_module` VALUES ('99.03', '99', 'Pengguna', 'kar_user', 'kar_user', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 10:23:37', '', 0, 0);
 INSERT INTO `kar_module` VALUES ('99.04', '99', 'Hak Akses', 'kar_permission', 'kar_permission', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 10:23:43', '', 0, 0);
-INSERT INTO `kar_module` VALUES ('99.05', '99', 'Client', 'hot_client', 'hot_client', 'index', '', '2018-08-18 05:51:24', '', '2018-08-18 05:51:24', '', 0, 0);
+INSERT INTO `kar_module` VALUES ('99.05', '99', 'Client', 'kar_client', 'kar_client', 'index', '', '2018-08-18 05:51:24', '', '2018-09-06 11:14:45', '', 0, 0);
 
 -- ----------------------------
 -- Table structure for kar_non_tax
@@ -592,13 +591,24 @@ CREATE TABLE `kar_non_tax`  (
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`non_tax_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
--- Records of kar_non_tax
+-- Table structure for kar_paket
 -- ----------------------------
-INSERT INTO `kar_non_tax` VALUES (1, 'LC', 80000.00, '2018-09-05 05:45:50', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0);
-INSERT INTO `kar_non_tax` VALUES (2, 'Testing', 50000.00, '2018-09-05 08:38:57', 'Super Hotel', '0000-00-00 00:00:00', 'Super Hotel', 1, 0);
+DROP TABLE IF EXISTS `kar_paket`;
+CREATE TABLE `kar_paket`  (
+  `paket_id` int(11) NOT NULL AUTO_INCREMENT,
+  `paket_name` varchar(128) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `paket_charge` float(10, 2) NOT NULL,
+  `created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_by` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
+  `updated` timestamp(0) NOT NULL ON UPDATE CURRENT_TIMESTAMP(0),
+  `updated_by` varchar(20) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`paket_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for kar_payment
@@ -640,59 +650,34 @@ CREATE TABLE `kar_permission`  (
   `created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `created_by` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   PRIMARY KEY (`permission_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 52 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of kar_permission
 -- ----------------------------
-INSERT INTO `kar_permission` VALUES (1, 0, '01', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (2, 0, '02', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (3, 0, '02.01', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (4, 0, '02.02', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (5, 0, '02.03', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (6, 0, '02.04', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (7, 0, '02.05', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (8, 0, '02.06', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (9, 0, '02.07', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (10, 0, '02.08', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (11, 0, '02.09', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (12, 0, '03', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (13, 0, '04', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (14, 0, '04.01', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (15, 0, '04.02', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (16, 0, '04.03', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (17, 0, '04.04', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (18, 0, '99', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (19, 0, '99.01', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (20, 0, '99.02', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (21, 0, '99.03', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (22, 0, '99.04', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (23, 0, '99.05', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (24, 1, '01', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (25, 1, '02', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (26, 1, '02.01', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (27, 1, '02.02', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (28, 1, '02.03', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (29, 1, '02.04', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (30, 1, '02.05', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (31, 1, '02.06', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (32, 1, '02.07', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (33, 1, '02.08', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (34, 1, '02.09', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (35, 1, '03', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (36, 1, '04', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (37, 1, '04.01', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (38, 1, '04.02', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (39, 1, '04.03', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (40, 1, '04.04', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (41, 1, '99', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (42, 1, '99.03', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (43, 1, '99.05', 1, 1, 1, 1, '2018-09-03 07:51:23', 'System');
-INSERT INTO `kar_permission` VALUES (47, 1, '02.10', 1, 1, 1, 1, '2018-09-03 07:51:35', 'System');
-INSERT INTO `kar_permission` VALUES (48, 3, '01', 1, 1, 1, 1, '2018-09-03 16:26:52', 'Super Hotel');
-INSERT INTO `kar_permission` VALUES (49, 3, '02', 1, 1, 1, 1, '2018-09-03 16:26:52', 'Super Hotel');
-INSERT INTO `kar_permission` VALUES (50, 3, '02.01', 1, 1, 1, 1, '2018-09-03 16:26:52', 'Super Hotel');
-INSERT INTO `kar_permission` VALUES (51, 3, '03', 1, 1, 1, 1, '2018-09-03 16:26:52', 'Super Hotel');
+INSERT INTO `kar_permission` VALUES (77, 0, '01', 1, 1, 1, 1, '2018-09-06 12:10:36', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (78, 0, '02', 1, 1, 1, 1, '2018-09-06 12:10:36', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (79, 0, '02.01', 1, 1, 1, 1, '2018-09-06 12:10:36', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (80, 0, '02.02', 1, 1, 1, 1, '2018-09-06 12:10:36', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (81, 0, '02.03', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (82, 0, '02.04', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (83, 0, '02.05', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (84, 0, '02.06', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (85, 0, '02.07', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (86, 0, '02.08', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (87, 0, '02.09', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (88, 0, '03', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (89, 0, '04', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (90, 0, '04.01', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (91, 0, '04.02', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (92, 0, '04.03', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (93, 0, '04.04', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (94, 0, '99', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (95, 0, '99.01', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (96, 0, '99.02', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (97, 0, '99.03', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (98, 0, '99.04', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke');
+INSERT INTO `kar_permission` VALUES (99, 0, '99.05', 1, 1, 1, 1, '2018-09-06 12:10:37', 'Super Karaoke');
 
 -- ----------------------------
 -- Table structure for kar_role
@@ -708,7 +693,7 @@ CREATE TABLE `kar_role`  (
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`role_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of kar_role
@@ -768,15 +753,7 @@ CREATE TABLE `kar_service`  (
   `is_active` tinyint(1) NOT NULL DEFAULT 1,
   `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`service_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
-
--- ----------------------------
--- Records of kar_service
--- ----------------------------
-INSERT INTO `kar_service` VALUES (1, 'Sarapan Pagi', 18181.82, '2018-09-03 08:18:41', 'Super Hotel', '2018-09-04 15:35:17', 'Super Hotel', 1, 0);
-INSERT INTO `kar_service` VALUES (2, 'Test', 45454.55, '2018-09-04 16:47:35', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0);
-INSERT INTO `kar_service` VALUES (3, 'Pelayanan Murah', 45454.55, '2018-09-04 17:32:35', 'Super Hotel', '0000-00-00 00:00:00', 'System', 1, 0);
-INSERT INTO `kar_service` VALUES (4, 'Testing', 45454.55, '2018-09-05 08:37:02', 'Super Hotel', '2018-09-05 08:37:20', 'Super Hotel', 1, 0);
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for kar_tax

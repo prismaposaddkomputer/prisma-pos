@@ -35,6 +35,7 @@ class M_kar_reservation extends CI_Model {
 		$data->room = $this->db->where('billing_id',$id)->get('kar_billing_room')->result();
 		$data->extra = $this->db->where('billing_id',$id)->get('kar_billing_extra')->result();
 		$data->service = $this->db->where('billing_id',$id)->get('kar_billing_service')->result();
+		$data->paket = $this->db->where('billing_id',$id)->get('kar_billing_paket')->result();
 		$data->non_tax = $this->db->where('billing_id',$id)->get('kar_billing_non_tax')->result();
 		$data->fnb = $this->db->where('billing_id',$id)->get('kar_billing_fnb')->result();
 		
@@ -60,6 +61,7 @@ class M_kar_reservation extends CI_Model {
 		$this->db->where('billing_id',$billing_id)->delete('kar_billing_room');
 		$this->db->where('billing_id',$billing_id)->delete('kar_billing_extra');
 		$this->db->where('billing_id',$billing_id)->delete('kar_billing_service');
+		$this->db->where('billing_id',$billing_id)->delete('kar_billing_paket');
 		$this->db->where('billing_id',$billing_id)->delete('kar_billing_fnb');
 		$this->db->where('billing_id',$billing_id)->delete('kar_billing_non_tax');
 	}
@@ -186,6 +188,47 @@ class M_kar_reservation extends CI_Model {
 
 		return $data->count_service;
 	}
+
+
+
+
+	public function add_paket($data)
+	{
+		$this->db->insert('kar_billing_paket', $data);
+	}
+
+	public function paket_list($billing_id)
+	{
+		return $this->db
+			->where('billing_id',$billing_id)
+			->get('kar_billing_paket')->result();
+	}
+
+	public function get_billing_paket($billing_id)
+	{
+		return $this->db
+			->where('billing_id',$billing_id)
+			->get('kar_billing_paket')->result();
+	}
+
+	public function delete_paket($id)
+	{
+		$this->db->where('billing_paket_id',$id)->delete('kar_billing_paket');
+	}
+
+	public function count_paket($billing_id)
+	{
+		$data = $this->db->query(
+			"SELECT COUNT(*) AS count_paket 
+			FROM kar_billing_paket 
+			WHERE billing_id = '$billing_id'"
+		)->row();
+
+		return $data->count_paket;
+	}
+
+
+
 
 	public function add_fnb($data)
 	{

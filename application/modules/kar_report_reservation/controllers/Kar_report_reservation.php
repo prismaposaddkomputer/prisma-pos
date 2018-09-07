@@ -31,7 +31,7 @@ class Kar_report_reservation extends MY_Karaoke {
   {
     if ($this->access->_read == 1) {
       $data['access'] = $this->access;
-      $data['title'] = 'Laporan Reservasi';
+      $data['title'] = 'Laporan Pemesanan';
 
       $this->view('kar_report_reservation/index',$data);
     } else {
@@ -78,7 +78,7 @@ class Kar_report_reservation extends MY_Karaoke {
   public function annual($year)
   {
     $data['access'] = $this->access;
-    $data['title'] = 'Laporan Reservasi Tahun '.$year;
+    $data['title'] = 'Laporan Pemesanan Tahun '.$year;
     $data['year'] = $year;
     //
     $data['annual'] = $this->m_kar_report_reservation->annual($year);
@@ -89,7 +89,7 @@ class Kar_report_reservation extends MY_Karaoke {
 
   public function annual_pdf($year)
   {
-    $data['title'] = 'Laporan Reservasi Tahun '.$year;
+    $data['title'] = 'Laporan Pemesanan Tahun '.$year;
     $data['annual'] = $this->m_kar_report_reservation->annual($year);
     $data['client'] = $this->m_kar_client->get_all();
     $data['charge_type'] = $this->m_kar_charge_type->list_data_except_tax_karaoke();
@@ -102,7 +102,7 @@ class Kar_report_reservation extends MY_Karaoke {
 
   public function annual_print($year)
   {
-    $title = 'Laporan Reservasi Tahun '.$year;
+    $title = 'Laporan Pemesanan Tahun '.$year;
     $client = $this->m_kar_client->get_all();
     //
     $annual = $this->m_kar_report_reservation->annual($year);
@@ -148,8 +148,6 @@ class Kar_report_reservation extends MY_Karaoke {
       $billing_service = 0;
       $billing_other = 0;
       $total_tax = 0;
-      $total_service = 0;
-      $total_other = 0;
       $billing_total = 0;
       $i=1;
       foreach ($annual as $row){
@@ -231,7 +229,7 @@ class Kar_report_reservation extends MY_Karaoke {
     $data['year'] = $raw[0];
 
     $data['access'] = $this->access;
-    $data['title'] = 'Laporan Reservasi Bulan '.month_name_ind($num_month).' '.$raw[0];
+    $data['title'] = 'Laporan Pemesanan Bulan '.month_name_ind($num_month).' '.$raw[0];
     $data['month'] = $month;
 
     $data['monthly'] = $this->m_kar_report_reservation->monthly($month);
@@ -245,7 +243,7 @@ class Kar_report_reservation extends MY_Karaoke {
     $raw = $raw = explode("-", $month);
     $num_month = $raw[1];
 
-    $data['title'] = 'Laporan Reservasi Bulan '.month_name_ind($num_month).' '.$raw[0];
+    $data['title'] = 'Laporan Pemesanan Bulan '.month_name_ind($num_month).' '.$raw[0];
     $data['monthly'] = $this->m_kar_report_reservation->monthly($month);
     $data['client'] = $this->m_kar_client->get_all();
     $data['charge_type'] = $this->m_kar_charge_type->list_data_except_tax_karaoke();
@@ -261,7 +259,7 @@ class Kar_report_reservation extends MY_Karaoke {
     $raw = $raw = explode("-", $month);
     $num_month = $raw[1];
     //
-    $title = "Laporan Reservasi Bulan ".month_name_ind($num_month)."\n".$raw[0];
+    $title = "Laporan Pemesanan Bulan ".month_name_ind($num_month)."\n".$raw[0];
     $client = $this->m_kar_client->get_all();
     //
     $monthly = $this->m_kar_report_reservation->monthly($month);
@@ -307,8 +305,6 @@ class Kar_report_reservation extends MY_Karaoke {
       $billing_service = 0;
       $billing_other = 0;
       $total_tax = 0;
-      $total_service = 0;
-      $total_other = 0;
       $billing_total = 0;
       $i=1;
       foreach ($monthly as $row){
@@ -385,7 +381,7 @@ class Kar_report_reservation extends MY_Karaoke {
   public function weekly($date_start, $date_end)
   {
     $data['access'] = $this->access;
-    $data['title'] = 'Laporan Reservasi Mingguan ('.$date_start.' - '.$date_end.')';
+    $data['title'] = 'Laporan Pemesanan Mingguan ('.$date_start.' - '.$date_end.')';
     $data['date_start'] = $date_start;
     $data['date_end'] = $date_end;
 
@@ -397,7 +393,7 @@ class Kar_report_reservation extends MY_Karaoke {
 
   public function weekly_pdf($date_start, $date_end)
   {
-    $data['title'] = 'Laporan Reservasi Mingguan ('.$date_start.' - '.$date_end.')';
+    $data['title'] = 'Laporan Pemesanan Mingguan ('.$date_start.' - '.$date_end.')';
     $data['weekly'] = $this->m_kar_report_reservation->weekly(ind_to_date($date_start),ind_to_date($date_end));
     $data['client'] = $this->m_kar_client->get_all();
     $data['charge_type'] = $this->m_kar_charge_type->list_data_except_tax_karaoke();
@@ -410,7 +406,7 @@ class Kar_report_reservation extends MY_Karaoke {
 
   public function weekly_print($date_start, $date_end)
   {
-    $title = "Laporan Reservasi Mingguan \n (".$date_start." - ".$date_end.")";
+    $title = "Laporan Pemesanan Mingguan \n (".$date_start." - ".$date_end.")";
     $client = $this->m_kar_client->get_all();
     //
     $weekly = $this->m_kar_report_reservation->weekly(ind_to_date($date_start),ind_to_date($date_end));
@@ -456,8 +452,6 @@ class Kar_report_reservation extends MY_Karaoke {
       $billing_service = 0;
       $billing_other = 0;
       $total_tax = 0;
-      $total_service = 0;
-      $total_other = 0;
       $billing_total = 0;
       $i=1;
       foreach ($weekly as $row){
@@ -534,7 +528,7 @@ class Kar_report_reservation extends MY_Karaoke {
   public function daily($date)
   {
     $data['access'] = $this->access;
-    $data['title'] = 'Laporan Reservasi Tanggal '.date_to_ind($date);
+    $data['title'] = 'Laporan Pemesanan Tanggal '.date_to_ind($date);
     $data['date'] = $date;
     //
     $raw = $raw = explode("-", $date);
@@ -549,7 +543,7 @@ class Kar_report_reservation extends MY_Karaoke {
 
   public function daily_pdf($date)
   {
-    $data['title'] = 'Laporan Reservasi Tanggal '.date_to_ind($date);
+    $data['title'] = 'Laporan Pemesanan Tanggal '.date_to_ind($date);
     $data['daily'] = $this->m_kar_report_reservation->daily($date);
     $data['client'] = $this->m_kar_client->get_all();
     $data['charge_type'] = $this->m_kar_charge_type->list_data_except_tax_karaoke();
@@ -562,7 +556,7 @@ class Kar_report_reservation extends MY_Karaoke {
 
   public function daily_print($date)
   {
-    $title = "Laporan Reservasi Tanggal \n".date_to_ind($date);
+    $title = "Laporan Pemesanan Tanggal \n".date_to_ind($date);
     $client = $this->m_kar_client->get_all();
     //
     $daily = $this->m_kar_report_reservation->daily($date);
@@ -608,8 +602,6 @@ class Kar_report_reservation extends MY_Karaoke {
       $billing_service = 0;
       $billing_other = 0;
       $total_tax = 0;
-      $total_service = 0;
-      $total_other = 0;
       $billing_total = 0;
       $i=1;
       foreach ($daily as $row){
@@ -706,7 +698,7 @@ class Kar_report_reservation extends MY_Karaoke {
   public function range($date_start, $date_end)
   {
     $data['access'] = $this->access;
-    $data['title'] = 'Laporan Reservasi Tanggal '.$date_start.' - '.$date_end;
+    $data['title'] = 'Laporan Pemesanan Tanggal '.$date_start.' - '.$date_end;
     $data['date_start'] = $date_start;
     $data['date_end'] = $date_end;
 
@@ -718,7 +710,7 @@ class Kar_report_reservation extends MY_Karaoke {
 
   public function range_pdf($date_start, $date_end)
   {
-    $data['title'] = 'Laporan Reservasi Tanggal ('.$date_start.' - '.$date_end.')';
+    $data['title'] = 'Laporan Pemesanan Tanggal ('.$date_start.' - '.$date_end.')';
     $data['range'] = $this->m_kar_report_reservation->range(ind_to_date($date_start),ind_to_date($date_end));
     $data['client'] = $this->m_kar_client->get_all();
     $data['charge_type'] = $this->m_kar_charge_type->list_data_except_tax_karaoke();
@@ -731,7 +723,7 @@ class Kar_report_reservation extends MY_Karaoke {
 
   public function range_print($date_start, $date_end)
   {
-    $title = "Laporan Reservasi Tanggal \n ".$date_start." - ".$date_end;
+    $title = "Laporan Pemesanan Tanggal \n ".$date_start." - ".$date_end;
     $client = $this->m_kar_client->get_all();
     //
     $range = $this->m_kar_report_reservation->range(ind_to_date($date_start),ind_to_date($date_end));
@@ -777,8 +769,6 @@ class Kar_report_reservation extends MY_Karaoke {
       $billing_service = 0;
       $billing_other = 0;
       $total_tax = 0;
-      $total_service = 0;
-      $total_other = 0;
       $billing_total = 0;
       $i=1;
       foreach ($range as $row){

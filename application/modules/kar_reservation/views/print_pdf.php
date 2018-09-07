@@ -87,7 +87,7 @@
         padding-right: 30px;
       }
       .column-footer {
-        margin-top: 210px;
+        margin-top: 270px;
         text-align: center;
       }
     </style>
@@ -152,17 +152,17 @@
             <td><?=date("d-m-Y")?></td>
           </tr>
           <tr>
-            <th>Check In</th>
+            <th>In (Masuk)</th>
             <td>&nbsp;:&nbsp;</td>
             <td><?=date_to_ind($billing->billing_date_in)?> <?=$billing->billing_time_in?></td>
           </tr>
           <tr>
-            <th>Check Out</th>
+            <th>Out (Keluar)</th>
             <td>&nbsp;:&nbsp;</td>
             <td><?=date_to_ind($billing->billing_date_out)?> <?=$billing->billing_time_out?></td>
           </tr>
           <tr>
-            <th>Resepsionis</th>
+            <th>Kasir</th>
             <td>&nbsp;:&nbsp;</td>
             <td><?=$billing->user_realname?></td>
           </tr>
@@ -181,7 +181,7 @@
         </thead>
         <tbody>
 
-          <!-- Kamar -->
+          <!-- Room -->
           <?php if ($billing->room != null): ?>
             <?php 
             foreach ($billing->room as $row): 
@@ -200,8 +200,8 @@
             //
             ?>
             <tr>
-              <td>Kamar : <?=$row->room_name?></td>
-              <td align="center"><?=round($row->room_type_duration,0,PHP_ROUND_HALF_UP)?> Hari</td>
+              <td>Room : <?=$row->room_name?></td>
+              <td align="center"><?=round($row->room_type_duration,0,PHP_ROUND_HALF_UP)?> Jam</td>
               <td align="right"><?=$room_type_subtotal?></td>
               <td align="right"><?=$room_type_total?></td>
             </tr>
@@ -235,6 +235,33 @@
             <?php endforeach; ?>
           <?php endif; ?>
 
+          <!-- Paket -->
+          <?php if ($billing->paket != null): ?>
+            <?php 
+            foreach ($billing->paket as $row): 
+            //
+            if ($client->client_is_taxed == 0) {
+              $paket_charge_sub_total = num_to_price($row->paket_charge);
+            }else{
+              $paket_charge_sub_total = num_to_price($row->paket_total/$row->paket_amount);
+            }
+            //
+            if ($client->client_is_taxed == 0) {
+              $paket_charge_total = num_to_price($row->paket_subtotal);
+            }else{
+              $paket_charge_total = num_to_price($row->paket_total);
+            }
+            //
+            ?>
+            <tr>
+              <td>Paket : <?=$row->paket_name?></td>
+              <td align="center"><?=round($row->paket_amount,0,PHP_ROUND_HALF_UP)?></td>
+              <td align="right"><?=$paket_charge_sub_total?></td>
+              <td align="right"><?=$paket_charge_total?></td>
+            </tr>
+            <?php endforeach; ?>
+          <?php endif; ?>
+
           <!-- Pelayanan -->
           <?php if ($billing->service != null): ?>
             <?php 
@@ -255,7 +282,7 @@
             ?>
             <tr>
               <td>Pelayanan : <?=$row->service_name?></td>
-              <td align="center"><?=$row->service_amount?></td>
+              <td align="center"><?=round($row->service_amount,0,PHP_ROUND_HALF_UP)?></td>
               <td align="right"><?=$service_charge_sub_total?></td>
               <td align="right"><?=$service_charge_total?></td>
             </tr>
@@ -282,9 +309,23 @@
             ?>
             <tr>
               <td>F&B : <?=$row->fnb_name?></td>
-              <td align="center"><?=$row->fnb_amount?></td>
+              <td align="center"><?=round($row->fnb_amount,0,PHP_ROUND_HALF_UP)?></td>
               <td align="right"><?=$fnb_charge_sub_total?></td>
               <td align="right"><?=$fnb_charge_total?></td>
+            </tr>
+            <?php endforeach; ?>
+          <?php endif; ?>
+
+          <!-- Non Pajak -->
+          <?php if ($billing->non_tax != null): ?>
+            <?php 
+            foreach ($billing->non_tax as $row): 
+            ?>
+            <tr>
+              <td>Non Pajak : <?=$row->non_tax_name?></td>
+              <td align="center"><?=round($row->non_tax_amount,0,PHP_ROUND_HALF_UP)?></td>
+              <td align="right"><?=num_to_price($row->non_tax_charge)?></td>
+              <td align="right"><?=num_to_price($row->non_tax_total)?></td>
             </tr>
             <?php endforeach; ?>
           <?php endif; ?>
@@ -296,6 +337,11 @@
     <div class="column-payment">
       <table>
         <?php if ($client->client_is_taxed == 0): ?>  
+          <tr>
+            <th>Sub Total</th>
+            <th class="colon">:</th>
+            <th class="text-right"><?=num_to_price($billing->billing_subtotal)?></th>
+          </tr>
           <?php 
             foreach ($charge_type as $row): 
             if ($row->charge_type_id == '1') {
@@ -309,7 +355,7 @@
           <tr>
             <th><?=$row->charge_type_name?></th>
             <th class="colon">:</th>
-            <th><?=$charge_type_money?></th>
+            <th class="text-right"><?=$charge_type_money?></th>
           </tr>
           <?php endforeach; ?>
           <tr>
@@ -326,17 +372,17 @@
           ?>
           <th><?=$name_total?></th>
           <th class="colon">:</th>
-          <th><?=num_to_price($billing->billing_total)?></th>
+          <th class="text-right"><?=num_to_price($billing->billing_total)?></th>
         </tr>
         <tr>
           <th>Uang Muka</th>
           <th class="colon">:</th>
-          <th><?=num_to_price($billing->billing_down_payment)?></th>
+          <th class="text-right"><?=num_to_price($billing->billing_down_payment)?></th>
         </tr>
         <tr>
           <th>Sisa Bayar</th>
           <th class="colon">:</th>
-          <th><?=num_to_price($billing->billing_total-$billing->billing_down_payment)?></th>
+          <th class="text-right"><?=num_to_price($billing->billing_total-$billing->billing_down_payment)?></th>
         </tr>
         <tr>
           <th><br></th>
@@ -344,12 +390,12 @@
         <tr>
           <th>Dibayar</th>
           <th class="colon">:</th>
-          <th><?=num_to_price($billing->billing_payment)?></th>
+          <th class="text-right"><?=num_to_price($billing->billing_payment)?></th>
         </tr>
         <tr>
           <th>Kembalian</th>
           <th class="colon">:</th>
-          <th><?=num_to_price($billing->billing_change)?></th>
+          <th class="text-right"><?=num_to_price($billing->billing_change)?></th>
         </tr>
       </table>
     </div>

@@ -28,11 +28,13 @@ class Kar_reservation extends MY_Karaoke {
     $this->load->model('kar_room/m_kar_room');
     $this->load->model('kar_extra/m_kar_extra');
     $this->load->model('kar_service/m_kar_service');
+    $this->load->model('kar_paket/m_kar_paket');
     $this->load->model('kar_fnb/m_kar_fnb');
     $this->load->model('kar_non_tax/m_kar_non_tax');
     $this->load->model('kar_billing_room/m_kar_billing_room');
     $this->load->model('kar_billing_extra/m_kar_billing_extra');
     $this->load->model('kar_billing_service/m_kar_billing_service');
+    $this->load->model('kar_billing_paket/m_kar_billing_paket');
     $this->load->model('kar_billing_fnb/m_kar_billing_fnb');
   }
 
@@ -40,7 +42,7 @@ class Kar_reservation extends MY_Karaoke {
   {
     if ($this->access->_read == 1) {
       $data['access'] = $this->access;
-      $data['title'] = 'Manajemen Reservasi';
+      $data['title'] = 'Manajemen Pemesanan';
 
       if($this->input->post('search_term')){
         $search_term = $this->input->post('search_term');
@@ -88,12 +90,13 @@ class Kar_reservation extends MY_Karaoke {
     $data['room_type'] = $this->m_kar_room_type->get_all();
     $data['extra'] = $this->m_kar_extra->get_all();
     $data['service'] = $this->m_kar_service->get_all();
+    $data['paket'] = $this->m_kar_paket->get_all();
     $data['fnb'] = $this->m_kar_fnb->get_all();
     $data['non_tax'] = $this->m_kar_non_tax->get_all();
     $data['charge_type'] = $this->m_kar_charge_type->get_all();
     if ($id == null) {
       if ($this->access->_create == 1) {
-        $data['title'] = 'Tambah Data Reservasi';
+        $data['title'] = 'Tambah Data Pemesanan';
         $data['action'] = 'insert';
         $data['billing'] = null;
         //make receipt no
@@ -155,8 +158,6 @@ class Kar_reservation extends MY_Karaoke {
 
     $data['billing_status'] = 1;
     $data['billing_date_in'] = ind_to_date($data['billing_date_in']);
-    $data['billing_date_out'] = ind_to_date($data['billing_date_out']);
-    $data['billing_num_day'] = dateDiff($data['billing_date_out'],$data['billing_date_in'])+1;
     $data['billing_down_payment'] = price_to_num($data['billing_down_payment']);
 
     $data['user_id'] = $this->session->userdata('user_id');
@@ -175,20 +176,17 @@ class Kar_reservation extends MY_Karaoke {
     $room = $this->m_kar_reservation->get_billing_room($billing_id);
     $extra = $this->m_kar_reservation->get_billing_extra($billing_id);
     $service = $this->m_kar_reservation->get_billing_service($billing_id);
+    $paket = $this->m_kar_reservation->get_billing_paket($billing_id);
     $fnb = $this->m_kar_reservation->get_billing_fnb($billing_id);
     $non_tax = $this->m_kar_reservation->get_billing_non_tax($billing_id);
 
     $billing_subtotal = 0;
     $billing_tax = 0;
-    $billing_service = 0;
-    $billing_other = 0;
     $billing_total = 0;
 
     foreach ($room as $row) {
       $billing_subtotal += $row->room_type_subtotal;
       $billing_tax += $row->room_type_tax;
-      $billing_service += $row->room_type_service;
-      $billing_other += $row->room_type_other;
       $billing_total += $row->room_type_total;
     }
 
@@ -204,6 +202,12 @@ class Kar_reservation extends MY_Karaoke {
       $billing_total += $row->service_total;
     }
 
+    foreach ($paket as $row) {
+      $billing_subtotal += $row->paket_subtotal;
+      $billing_tax += $row->paket_tax;
+      $billing_total += $row->paket_total;
+    }
+
     foreach ($fnb as $row) {
       $billing_subtotal += $row->fnb_subtotal;
       $billing_tax += $row->fnb_tax;
@@ -217,8 +221,6 @@ class Kar_reservation extends MY_Karaoke {
 
     $data['billing_subtotal'] = $billing_subtotal;
     $data['billing_tax'] = $billing_tax;
-    $data['billing_service'] = $billing_service;
-    $data['billing_other'] = $billing_other;
     $data['billing_total'] = $billing_total;
 
     $this->m_kar_reservation->update($billing_id,$data);
@@ -228,7 +230,7 @@ class Kar_reservation extends MY_Karaoke {
   {
     $data['access'] = $this->access;
     $data['id'] = $id;
-    $data['title'] = 'Detail Reservasi';
+    $data['title'] = 'Detail Pemesanan';
 
     $data['billing'] = $this->m_kar_reservation->get_billing($id);
     $data['charge_type'] = $this->m_kar_charge_type->get_all();
@@ -253,9 +255,9 @@ class Kar_reservation extends MY_Karaoke {
   public function payment_action()
   {
     $data = $_POST;
-    $id = $data['billing_id'];
     $data['updated_by'] = $this->session->userdata('user_realname');
     //
+    $id = $data['billing_id'];
     $save_print = $data['save_print'];
     unset($data['save_print']);
     //
@@ -268,7 +270,7 @@ class Kar_reservation extends MY_Karaoke {
     //
     $this->m_kar_billing->update($id,$data);
     if ($save_print == 'print_pdf') {
-      $this->frame_pdf($id);
+      $this->frame_pdf($id, '');
     }else if($save_print == 'print_struk'){
       $this->reservation_print_struk($id);
     }
@@ -299,7 +301,6 @@ class Kar_reservation extends MY_Karaoke {
     $data['billing_status'] = 1;
     $data['billing_date_in'] = ind_to_date($data['billing_date_in']);
     $data['billing_date_out'] = ind_to_date($data['billing_date_out']);
-    $data['billing_num_day'] = dateDifference($data['billing_date_out'].' '.$data['billing_time_out'],$data['billing_date_in'].' '.$data['billing_time_in'])+1;
     $data['billing_down_payment'] = price_to_num($data['billing_down_payment']);
 
     $data['user_id'] = $this->session->userdata('user_id');
@@ -315,7 +316,7 @@ class Kar_reservation extends MY_Karaoke {
       'billing_time_out' => $data['billing_time_out'],
     );
     
-    $this->update_billing_room($data_update);
+    // $this->update_billing_room($data_update);
     $this->update_all_billing($data['billing_id']);
 
     $this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil diubah!</div>');
@@ -325,7 +326,7 @@ class Kar_reservation extends MY_Karaoke {
 
   public function reservation_print_pdf($billing_id)
   {
-    $data['title'] = "Laporan Reservasi Pembayaran";
+    $data['title'] = "Laporan Pemesanan Pembayaran";
     $data['client'] = $this->m_kar_client->get_all();
     //
     $data['billing'] = $this->m_kar_reservation->get_billing($billing_id);
@@ -335,7 +336,7 @@ class Kar_reservation extends MY_Karaoke {
 
     $this->load->library('pdf');
     $this->pdf->setPaper('A4', 'potrait');
-    $this->pdf->filename = "laporan-reservasi-pembayaran-".$data['billing']->billing_receipt_no.".pdf";
+    $this->pdf->filename = "laporan-Pemesanan-pembayaran-".$data['billing']->billing_receipt_no.".pdf";
     $this->pdf->load_view('print_pdf', $data);
   }
 
@@ -349,7 +350,7 @@ class Kar_reservation extends MY_Karaoke {
 
   public function reservation_print_struk($billing_id, $url)
   {
-    $title = "Laporan Reservasi Pembayaran";
+    $title = "Laporan Pemesanan Pembayaran";
     $client = $this->m_kar_client->get_all();
     //
     $billing = $this->m_kar_reservation->get_billing($billing_id);
@@ -394,10 +395,10 @@ class Kar_reservation extends MY_Karaoke {
       $printer -> feed();
       $printer -> text('--------------------------------');
       //
-      $check_in_left = "CHECK IN";
+      $check_in_left = "IN/Masuk";
       $check_in_right = date_to_ind($billing->billing_date_in).' '.$billing->billing_time_in;
       $printer -> text(print_justify($check_in_left, $check_in_right, 10, 19, 3));
-      $check_out_left = "CHECK OUT";
+      $check_out_left = "OUT/Keluar";
       $check_out_right = date_to_ind($billing->billing_date_out).' '.$billing->billing_time_out;
       $printer -> text(print_justify($check_out_left, $check_out_right, 10, 19, 3));
       $printer -> text('--------------------------------');
@@ -430,7 +431,7 @@ class Kar_reservation extends MY_Karaoke {
       if ($billing->room != null){
         $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
         $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
-        $printer -> text("Kamar :");
+        $printer -> text("Room :");
         $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
         $printer -> feed();
         foreach ($billing->room as $row){
@@ -451,37 +452,37 @@ class Kar_reservation extends MY_Karaoke {
             $room_type_total = num_to_price($row->room_type_total);
           }
           //
-          $printer -> text(round($row->room_type_duration,0,PHP_ROUND_HALF_UP)." X ".$room_type_subtotal." = ".$room_type_total);
+          $printer -> text(round($row->room_type_duration,0,PHP_ROUND_HALF_UP)." Jam X ".$room_type_subtotal." = ".$room_type_total);
           $printer -> feed();
         }
       }
-      // Extra
-      if ($billing->extra != null){
+      // Paket
+      if ($billing->paket != null){
         $printer -> text('--------------------------------');
         $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
         $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
-        $printer -> text("Extra :");
+        $printer -> text("Paket :");
         $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
         $printer -> feed();
-        foreach ($billing->extra as $row){
+        foreach ($billing->paket as $row){
           $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
-          $printer -> text($row->extra_name);
+          $printer -> text($row->paket_name);
           $printer -> feed();
           $printer -> setJustification(Escpos\Printer::JUSTIFY_RIGHT);
           //
           if ($client->client_is_taxed == 0) {
-            $extra_charge_sub_total = num_to_price($row->extra_charge);
+            $paket_charge_sub_total = num_to_price($row->paket_charge);
           }else{
-            $extra_charge_sub_total = num_to_price($row->extra_total/$row->extra_amount);
+            $paket_charge_sub_total = num_to_price($row->paket_total/$row->paket_amount);
           }
           //
           if ($client->client_is_taxed == 0) {
-            $extra_charge_total = num_to_price($row->extra_subtotal);
+            $paket_charge_total = num_to_price($row->paket_subtotal);
           }else{
-            $extra_charge_total = num_to_price($row->extra_total);
+            $paket_charge_total = num_to_price($row->paket_total);
           }
           //
-          $printer -> text($row->extra_amount." X ".$extra_charge_sub_total." = ".$extra_charge_total);
+          $printer -> text(round($row->paket_amount,0,PHP_ROUND_HALF_UP)." X ".$paket_charge_sub_total." = ".$paket_charge_total);
           $printer -> feed();
         }
       }
@@ -511,7 +512,7 @@ class Kar_reservation extends MY_Karaoke {
             $service_charge_total = num_to_price($row->service_total);
           }
           //
-          $printer -> text($row->service_amount." X ".$service_charge_sub_total." = ".$service_charge_total);
+          $printer -> text(round($row->service_amount,0,PHP_ROUND_HALF_UP)." X ".$service_charge_sub_total." = ".$service_charge_total);
           $printer -> feed();
         }
       }
@@ -541,7 +542,7 @@ class Kar_reservation extends MY_Karaoke {
             $fnb_charge_total = num_to_price($row->fnb_total);
           }
           //
-          $printer -> text($row->fnb_amount." X ".$fnb_charge_sub_total." = ".$fnb_charge_total);
+          $printer -> text(round($row->fnb_amount,0,PHP_ROUND_HALF_UP)." X ".$fnb_charge_sub_total." = ".$fnb_charge_total);
           $printer -> feed();
         }
       }
@@ -559,19 +560,7 @@ class Kar_reservation extends MY_Karaoke {
           $printer -> feed();
           $printer -> setJustification(Escpos\Printer::JUSTIFY_RIGHT);
           //
-          if ($client->client_is_taxed == 0) {
-            $non_tax_charge_sub_total = num_to_price($row->non_tax_charge);
-          }else{
-            $non_tax_charge_sub_total = num_to_price($row->non_tax_total/$row->non_tax_amount);
-          }
-          //
-          if ($client->client_is_taxed == 0) {
-            $non_tax_charge_total = num_to_price($row->non_tax_subtotal);
-          }else{
-            $non_tax_charge_total = num_to_price($row->non_tax_total);
-          }
-          //
-          $printer -> text($row->non_tax_amount." X ".$non_tax_charge_sub_total." = ".$non_tax_charge_total);
+          $printer -> text(round($row->non_tax_amount,0,PHP_ROUND_HALF_UP)." X ".num_to_price($row->non_tax_charge)." = ".num_to_price($row->non_tax_total));
           $printer -> feed();
         }
       }
@@ -741,9 +730,9 @@ class Kar_reservation extends MY_Karaoke {
     );
 
     if ($raw == null) {
-      array_push($data['room'], array('id' => '0', 'text' => '-- Pilih Kamar --'));
+      array_push($data['room'], array('id' => '0', 'text' => '-- Pilih Room --'));
     } else {
-      array_push($data['room'], array('id' => '0', 'text' => '-- Pilih Kamar --'));
+      array_push($data['room'], array('id' => '0', 'text' => '-- Pilih Room --'));
       foreach ($raw as $row) {
         array_push($data['room'], array('id' => $row->room_id, 'text' => $row->room_name));
       }
@@ -755,31 +744,26 @@ class Kar_reservation extends MY_Karaoke {
   public function add_room()
   {
     $data = $_POST;
-    $data['billing_date_in'] = ind_to_date($data['billing_date_in']);
-    $data['billing_date_out'] = ind_to_date($data['billing_date_out']);
 
     $client = $this->m_kar_client->get_all();
     $tax = $this->m_kar_charge_type->get_by_id(1);
-    $service = $this->m_kar_charge_type->get_by_id(2);
-    $other = $this->m_kar_charge_type->get_by_id(3);
     $room = $this->m_kar_reservation->room_detail($data['room_id']);
     
     if ($client->client_is_taxed == 0) {
       // Setingan harga sebelum pajak
       $room_type_charge = price_to_num($data['room_type_charge']);
+      // Hitung maju
+      $room_type_subtotal = price_to_num($data['room_type_total']);
+      // $room_type_tax += $room_type_subtotal * $tax->charge_type_ratio;
+      $room_type_tax += $room_type_subtotal * ($tax->charge_type_ratio/100);
+      $room_type_total = $room_type_subtotal + $room_type_tax;
     } else {
       // Settingan harga setelah pajak
-      $room_type_total = price_to_num($data['room_type_charge']);
-      // hitung persen semua setelah pajak
-      $tot_ratio = 100+$tax->charge_type_ratio;
-      if ($service->is_active == 1) {
-        $tot_ratio += $service->charge_type_ratio;
-      }
-      if ($other->is_active == 1) {
-        $tot_ratio += $other->charge_type_ratio;
-      }
-      
-      $room_type_charge = (100/$tot_ratio)*$room_type_total;
+      $room_type_total = price_to_num($data['room_type_total']);
+      // hitung persen semua setelah pajak/ hitung mundur
+      $room_type_tax = ($tax->charge_type_ratio/(100 + $tax->charge_type_ratio))*$room_type_total;
+      $room_type_subtotal = $room_type_total - $room_type_tax;
+      $room_type_charge = $room_type_subtotal / $data['room_type_duration'];
     }
 
     $data_room = array(
@@ -789,62 +773,13 @@ class Kar_reservation extends MY_Karaoke {
       'room_type_id' => $room->room_type_id,
       'room_type_name' => $room->room_type_name,
       'room_type_charge' => $room_type_charge,
+      'room_type_subtotal' => $room_type_subtotal,
+      'room_type_tax' => $room_type_tax,
+      'room_type_total' => $room_type_total,
+      'room_type_duration' => $data['room_type_duration'],
       'created_by' => $this->session->userdata('user_realname')
     );
     $this->m_kar_reservation->add_room($data_room);
-
-    $data_update = array(
-      'billing_id' => $data['billing_id'],
-      'billing_date_in' => $data['billing_date_in'],
-      'billing_time_in' => $data['billing_time_in'],
-      'billing_date_out' => $data['billing_date_out'],
-      'billing_time_out' => $data['billing_time_out'],
-    );
-    $this->update_billing_room($data_update);
-  }
-
-  public function update_billing_room($data)
-  {
-    $in = $data['billing_date_in'].' '.$data['billing_time_in'];
-    $out = $data['billing_date_out'].' '.$data['billing_time_out'];
-
-    $client = $this->m_kar_client->get_all();
-    $room = $this->m_kar_reservation->get_billing_room($data['billing_id']);
-    $tax = $this->m_kar_charge_type->get_by_id(1);
-    $service = $this->m_kar_charge_type->get_by_id(2);
-    $other = $this->m_kar_charge_type->get_by_id(3);
-    $room_type_duration = dateDifference($in,$out)+1;
-
-    foreach ($room as $row) {
-      $room_type_charge = $row->room_type_charge;
-      $room_type_subtotal = $room_type_charge*$room_type_duration;
-      $room_type_tax = $tax->charge_type_ratio*$room_type_subtotal/100;
-  
-      $room_type_service = 0;
-      if ($service->is_active == 1) {
-        $room_type_service = $service->charge_type_ratio*$room_type_subtotal/100;
-      }
-  
-      $room_type_other = 0;
-      if ($other->is_active == 1) {
-        $room_type_other = $other->charge_type_ratio*$room_type_subtotal/100;
-      }
-  
-      $room_type_total = $room_type_subtotal+$room_type_tax+$room_type_service+$room_type_other;
-      $room_type_total = round($room_type_total,0,PHP_ROUND_HALF_UP);
-
-      $data_room = array(
-        'room_type_duration' => $room_type_duration,
-        'room_type_subtotal' => $room_type_subtotal,
-        'room_type_tax' => $room_type_tax,
-        'room_type_service' => $room_type_service,
-        'room_type_other' => $room_type_other,
-        'room_type_total' => $room_type_total,
-        'created_by' => $this->session->userdata('user_realname')
-      );
-
-      $this->m_kar_reservation->update_billing_room($row->billing_room_id,$data_room);
-    }
   }
 
   public function room_list()
@@ -858,9 +793,6 @@ class Kar_reservation extends MY_Karaoke {
   public function get_billing_room()
   {
     $data = $_POST;
-    $data['billing_date_in'] = ind_to_date($data['billing_date_in']);
-    $data['billing_date_out'] = ind_to_date($data['billing_date_out']);
-    $this->update_billing_room($data);
     
     $client = $this->m_kar_client->get_all();
     $billing_id = $this->input->post('billing_id');
@@ -1008,6 +940,76 @@ class Kar_reservation extends MY_Karaoke {
     $this->m_kar_reservation->delete_service($id);
   }
 
+
+
+  public function get_paket()
+  {
+    $paket_id = $this->input->post('paket_id');
+    $client = $this->m_kar_client->get_all();
+    $data = $this->m_kar_paket->get_by_id($paket_id);
+    $tax = $this->m_kar_charge_type->get_by_id(1);
+
+    if ($client->client_is_taxed == 1) {
+      $data->paket_charge += $data->paket_charge*$tax->charge_type_ratio/100;
+    }
+
+    $data->paket_charge = round($data->paket_charge,0,PHP_ROUND_HALF_UP);
+
+    echo json_encode($data);
+  }
+
+  public function add_paket()
+  {
+    $data = $_POST;
+    $client = $this->m_kar_client->get_all();
+    $paket = $this->m_kar_paket->get_by_id($data['paket_id']);
+    $tax = $this->m_kar_charge_type->get_by_id(1);
+
+    if ($client->client_is_taxed == 0) {
+      $paket_charge = price_to_num($data['paket_charge']);
+      $paket_subtotal = $data['paket_amount']*$paket_charge;
+      $paket_tax = $paket_subtotal*$tax->charge_type_ratio/100;
+      $paket_total = $paket_subtotal+$paket_tax;
+    }else{
+      $paket_total = $data['paket_amount']*price_to_num($data['paket_charge']);
+      $tot_ratio = 100+$tax->charge_type_ratio;
+      $paket_tax = ($tax->charge_type_ratio/$tot_ratio)*$paket_total;
+      $paket_subtotal = $paket_total-$paket_tax;
+      $paket_charge = $paket_subtotal/$data['paket_amount'];
+    }
+
+    $data_paket = array(
+      'billing_id' => $data['billing_id'],
+      'paket_id' => $paket->paket_id,
+      'paket_name' => $paket->paket_name,
+      'paket_charge' => $paket_charge,
+      'paket_amount' => $data['paket_amount'],
+      'paket_subtotal' => $paket_subtotal,
+      'paket_tax' => $paket_tax,
+      'paket_total' => $paket_total,
+      'created_by' => $this->session->userdata('user_realname')
+    );
+    $this->m_kar_reservation->add_paket($data_paket);
+  }
+
+  public function get_billing_paket()
+  {
+    $billing_id = $this->input->post('billing_id');
+    $client = $this->m_kar_client->get_all();
+    $data['paket'] = $this->m_kar_reservation->get_billing_paket($billing_id);
+    $data['client_is_taxed'] = $client->client_is_taxed;
+
+    echo json_encode($data);
+  }
+
+  public function delete_paket()
+  {
+    $id = $this->input->post('billing_paket_id');
+    $this->m_kar_reservation->delete_paket($id);
+  }
+
+
+
   public function get_fnb()
   {
     $fnb_id = $this->input->post('fnb_id');
@@ -1129,6 +1131,7 @@ class Kar_reservation extends MY_Karaoke {
     $data['count_room'] = $this->m_kar_reservation->count_room($billing_id);
     $data['count_extra'] = $this->m_kar_reservation->count_extra($billing_id);
     $data['count_service'] = $this->m_kar_reservation->count_service($billing_id);
+    $data['count_paket'] = $this->m_kar_reservation->count_paket($billing_id);
     $data['count_fnb'] = $this->m_kar_reservation->count_fnb($billing_id);
     $data['count_non_tax'] = $this->m_kar_reservation->count_non_tax($billing_id);
 

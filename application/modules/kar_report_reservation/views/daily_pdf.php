@@ -90,8 +90,6 @@
             $billing_service = 0;
             $billing_other = 0;
             $total_tax = 0;
-            $total_service = 0;
-            $total_other = 0;
             $billing_total = 0;
           ?>
           <?php if ($daily != null): ?>
@@ -137,8 +135,6 @@
                 <?php 
                 endforeach; 
                 $total_tax += $row->billing_tax;
-                $total_service += $row->billing_service;
-                $total_other += $row->billing_other;
                 ?>  
                 <!-- End Charge Type -->
 

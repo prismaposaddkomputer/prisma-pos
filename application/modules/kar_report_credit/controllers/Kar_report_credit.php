@@ -148,8 +148,6 @@ class Kar_report_credit extends MY_Karaoke {
       $billing_service = 0;
       $billing_other = 0;
       $total_tax = 0;
-      $total_service = 0;
-      $total_other = 0;
       $billing_total = 0;
       $i=1;
       foreach ($annual as $row){
@@ -311,8 +309,6 @@ class Kar_report_credit extends MY_Karaoke {
       $billing_service = 0;
       $billing_other = 0;
       $total_tax = 0;
-      $total_service = 0;
-      $total_other = 0;
       $billing_total = 0;
       $i=1;
       foreach ($monthly as $row){
@@ -464,8 +460,6 @@ class Kar_report_credit extends MY_Karaoke {
       $billing_service = 0;
       $billing_other = 0;
       $total_tax = 0;
-      $total_service = 0;
-      $total_other = 0;
       $billing_total = 0;
       $i=1;
       foreach ($weekly as $row){
@@ -620,8 +614,6 @@ class Kar_report_credit extends MY_Karaoke {
       $billing_service = 0;
       $billing_other = 0;
       $total_tax = 0;
-      $total_service = 0;
-      $total_other = 0;
       $billing_total = 0;
       $i=1;
       foreach ($daily as $row){
@@ -793,8 +785,6 @@ class Kar_report_credit extends MY_Karaoke {
       $billing_service = 0;
       $billing_other = 0;
       $total_tax = 0;
-      $total_service = 0;
-      $total_other = 0;
       $billing_total = 0;
       $i=1;
       foreach ($range as $row){
