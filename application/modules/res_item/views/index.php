@@ -32,11 +32,12 @@
             <tr>
               <th class="text-center" width="50">No</th>
               <th class="text-center" width="70">Aksi</th>
+              <th class="text-center" width="50">Kode</th>
               <th class="text-center">Nama Item</th>
               <th class="text-center">Kategori</th>
               <th class="text-center" width="70">Satuan</th>
-              <th class="text-center" width="130">Harga<br><small>(Sebelum Pajak)</small></th>
-              <th class="text-center" width="130">Harga<br><small>(Setelah Pajak)</small></th>
+              <th class="text-center" width="130">Harga<br></th>
+              <th class="text-center" width="70">Pajak?</th>
               <th class="text-center" width="80">Aktif</th>
             </tr>
           </thead>
@@ -51,11 +52,26 @@
                       <button class="btn btn-xs btn-danger" onclick="del('<?=$row->item_id?>');"><i class="fa fa-trash"></i></button>
                     <?php endif; ?>
                   </td>
+                  <td><?=$row->item_barcode?></td>
                   <td><?=$row->item_name?></td>
                   <td><?=$row->category_name?></td>
                   <td class="text-center"><?=$row->unit_code?></td>
-                  <td><?= num_to_idr($row->item_price_before_tax);?></td>
-                  <td><?= num_to_idr($row->item_price_after_tax);?></td>
+                  <td>
+                    <?php
+                      if ($client->client_is_taxed == 0) {
+                        echo num_to_idr($row->item_price_before_tax);
+                      } else {
+                        echo num_to_idr($row->item_price_after_tax);
+                      }
+                    ?>
+                  </td>
+                  <td class="text-center">
+                    <?php if ($row->tax_id == 1): ?>
+                      <i class="fa fa-check cl-success"></i>
+                    <?php else: ?>
+                      <i class="fa fa-close cl-danger"></i>
+                    <?php endif; ?>
+                  </td>
                   <td class="text-center">
                     <?php if ($row->is_active == 1): ?>
                       <i class="fa fa-check cl-success"></i>
@@ -72,6 +88,16 @@
             <?php endif; ?>
           </tbody>
         </table>
+        <small>
+          <span class="cl-danger">**</span>
+          Harga
+          <?php if ($client->client_is_taxed == 1) {
+            echo 'sudah termasuk';
+          }else{  
+            echo 'belum termasuk';
+          } ?>
+          pajak di atas.
+        </small>
         <div class="pull-right">
           <?php echo $this->pagination->create_links(); ?>
         </div>

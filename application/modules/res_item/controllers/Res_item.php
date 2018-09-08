@@ -18,6 +18,8 @@ class Res_item extends MY_Restaurant {
     $this->access = $this->m_res_config->get_permission($this->role_id, $this->module_controller);
 
     $this->load->model('m_res_item');
+    $this->load->model('res_tax/m_res_tax');
+    $this->load->model('res_client/m_res_client');
   }
 
 	public function index()
@@ -67,14 +69,15 @@ class Res_item extends MY_Restaurant {
 
   public function form($id = null)
   {
+    $client = $this->m_res_client->get_all();
     $data['access'] = $this->access;
     $this->load->model('res_category/m_res_category');
     $data['category_list'] = $this->m_res_category->get_all();
     $this->load->model('res_unit/m_res_unit');
     $data['unit_list'] = $this->m_res_unit->get_all();
     $this->load->model('res_tax/m_res_tax');
-    $data['tax'] = $this->m_res_tax->get_first();
     $data['item_list'] = $this->m_res_item->get_all();
+    $data['tax_list'] = $this->m_res_tax->get_all();
     if ($id == null) {
       if ($this->access->_create == 1) {
         $data['title'] = 'Tambah Item';
@@ -89,6 +92,11 @@ class Res_item extends MY_Restaurant {
         $data['title'] = 'Ubah Item';
         $data['item'] = $this->m_res_item->get_by_id($id);
         $data['action'] = 'update';
+        if ($client->client_is_taxed == 0) {
+          $data['item']->item_price = $data['item']->item_price_before_tax;
+        }else{
+          $data['item']->item_price = $data['item']->item_price_after_tax;
+        }
         $this->view('res_item/form', $data);
       } else {
         redirect(base_url().'app_error/error/403');
@@ -99,6 +107,8 @@ class Res_item extends MY_Restaurant {
   public function insert()
   {
     $data = $_POST;
+    $client = $this->m_res_client->get_all();
+    $tax = $this->m_res_tax->get_by_id($data['tax_id']);
 
     $last_id = $this->m_res_item->get_last();
     if ($last_id == null) {
@@ -111,9 +121,20 @@ class Res_item extends MY_Restaurant {
     if(!isset($data['is_active'])){
       $data['is_active'] = 0;
     }
-    $data['item_price_before_tax'] = price_to_num($data['item_price_before_tax']);
-    $data['item_tax'] = price_to_num($data['item_tax']);
-    $data['item_price_after_tax'] = price_to_num($data['item_price_after_tax']);
+
+    $item_price = price_to_num($data['item_price']);
+    if ($client->client_is_taxed == 0) {
+      $data['item_price_before_tax'] = $item_price;
+      $data['item_tax'] = ($tax->tax_ratio/100)*$item_price;
+      $data['item_price_after_tax'] = $data['item_price_before_tax']+$data['item_price_after_tax'];
+    }else{
+      $data['item_price_after_tax'] = $item_price;
+      $data['item_tax'] = ($tax->tax_ratio/(100+$tax->tax_ratio))*$data['item_price_after_tax'];
+      $data['item_price_before_tax'] = $data['item_price_after_tax']-$data['item_tax'];
+    }
+    $data['tax_name'] = $tax->tax_name;
+    $data['tax_ratio'] = $tax->tax_ratio;
+    unset($data['item_price']);
 
     // clear package
     $this->m_res_item->clear_package($item_id);
@@ -147,14 +168,27 @@ class Res_item extends MY_Restaurant {
   {
     $data = $_POST;
     $item_id = $data['item_id'];
+    $client = $this->m_res_client->get_all();
+    $tax = $this->m_res_tax->get_by_id($data['tax_id']);
 
     $data['updated_by'] = $this->session->userdata('user_realname');
     if(!isset($data['is_active'])){
       $data['is_active'] = 0;
     }
-    $data['item_price_before_tax'] = price_to_num($data['item_price_before_tax']);
-    $data['item_tax'] = price_to_num($data['item_tax']);
-    $data['item_price_after_tax'] = price_to_num($data['item_price_after_tax']);
+    
+    $item_price = price_to_num($data['item_price']);
+    if ($client->client_is_taxed == 0) {
+      $data['item_price_before_tax'] = $item_price;
+      $data['item_tax'] = ($tax->tax_ratio/100)*$item_price;
+      $data['item_price_after_tax'] = $data['item_price_before_tax']+$data['item_price_after_tax'];
+    }else{
+      $data['item_price_after_tax'] = $item_price;
+      $data['item_tax'] = ($tax->tax_ratio/(100+$tax->tax_ratio))*$data['item_price_after_tax'];
+      $data['item_price_before_tax'] = $data['item_price_after_tax']-$data['item_tax'];
+    }
+    $data['tax_name'] = $tax->tax_name;
+    $data['tax_ratio'] = $tax->tax_ratio;
+    unset($data['item_price']);
     // clear package
     $this->m_res_item->clear_package($item_id);
     // insert package

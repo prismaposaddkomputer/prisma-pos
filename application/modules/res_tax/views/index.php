@@ -31,7 +31,6 @@
           <thead>
             <tr>
               <th class="text-center" width="50">No</th>
-              <th class="text-center" width="70">Aksi</th>
               <th class="text-center" width="70">Kode</th>
               <th class="text-center">Nama Pajak</th>
               <th class="text-center" width="100">Rasio Pajak</th>
@@ -43,12 +42,6 @@
               <?php $i=1;foreach ($tax as $row): ?>
                 <tr>
                   <td class="text-center"><?=$this->uri->segment('3')+$i++?></td>
-                  <td class="text-center">
-                    <?php if ($row->tax_id != 1 ): ?>
-                      <a class="btn btn-xs btn-warning" href="<?=base_url()?>res_tax/form/<?=$row->tax_id?>"><i class="fa fa-pencil"></i></a>
-                      <button class="btn btn-xs btn-danger" onclick="del('<?=$row->tax_id?>');"><i class="fa fa-trash"></i></button>
-                    <?php endif; ?>
-                  </td>
                   <td class="text-center"><?=$row->tax_code?></td>
                   <td><?=$row->tax_name?></td>
                   <td class="text-center"><?=$row->tax_ratio?>%</td>
