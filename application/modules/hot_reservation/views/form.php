@@ -185,9 +185,18 @@
             <option value="0">-- Pilih Kamar --</option>
           </select>
         </div>
-        <div class="form_group">
+        <div class="form-group">
           <label>Harga</label>
           <input class="form-control autonumeric num" id="room_type_charge" type="text" value="0">
+        </div>
+        <div class="form-group">
+          <label>Diskon</label>
+          <select class="form-control select2" id="discount_id_room">
+            <option value="0">-- Pilih Diskon --</option>
+            <?php foreach ($discount_room as $row): ?>
+              <option value="<?=$row->discount_id?>"><?=$row->discount_name?></option>
+            <?php endforeach;?>
+          </select>
         </div>
         <br>
         <em>
@@ -785,6 +794,7 @@
     var billing_time_in = $('#billing_time_in').val();
     var billing_time_out = $('#billing_time_out').val();
     var room_type_charge = $('#room_type_charge').val();
+    var discount_id_room = $('#discount_id_room').val();
     var billing_id = $('#billing_id').val();
 
     $.ajax({
@@ -792,7 +802,8 @@
       url : '<?=base_url()?>hot_reservation/add_room',
       data : 'billing_id='+billing_id+'&room_id='+room_id+'&room_type_charge='+room_type_charge+
               '&billing_date_in='+billing_date_in+'&billing_date_out='+billing_date_out+
-              '&billing_time_in='+billing_time_in+'&billing_time_out='+billing_time_out,
+              '&billing_time_in='+billing_time_in+'&billing_time_out='+billing_time_out+
+              '&discount_id_room='+discount_id_room,
       success : function (data) {
         $('#modal_room_list').modal('show');
         $('#modal_room').modal('hide');

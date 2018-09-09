@@ -91,7 +91,7 @@ class Hot_reservation extends MY_Hotel {
     $data['fnb'] = $this->m_hot_fnb->get_all();
     $data['non_tax'] = $this->m_hot_non_tax->get_all();
     $data['charge_type'] = $this->m_hot_charge_type->get_all();
-    $data['discount_room'] $this->m_hot_reservation->discount_room();
+    $data['discount_room'] = $this->m_hot_reservation->discount_room();
     if ($id == null) {
       if ($this->access->_create == 1) {
         $data['title'] = 'Tambah Data Reservasi';
