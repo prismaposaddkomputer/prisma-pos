@@ -398,9 +398,9 @@ class Kar_reservation extends MY_Karaoke {
       $check_in_left = "IN/Masuk";
       $check_in_right = date_to_ind($billing->billing_date_in).' '.$billing->billing_time_in;
       $printer -> text(print_justify($check_in_left, $check_in_right, 10, 19, 3));
-      $check_out_left = "OUT/Keluar";
-      $check_out_right = date_to_ind($billing->billing_date_out).' '.$billing->billing_time_out;
-      $printer -> text(print_justify($check_out_left, $check_out_right, 10, 19, 3));
+      // $check_out_left = "OUT/Keluar";
+      // $check_out_right = date_to_ind($billing->billing_date_out).' '.$billing->billing_time_out;
+      // $printer -> text(print_justify($check_out_left, $check_out_right, 10, 19, 3));
       $printer -> text('--------------------------------');
       //Keterangan Tamu
       $printer -> setJustification(Escpos\Printer::JUSTIFY_CENTER);
