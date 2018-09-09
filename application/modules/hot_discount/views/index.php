@@ -39,6 +39,7 @@
               <th class="text-center" width="50">No</th>
               <th class="text-center" width="70">Aksi</th>
               <th class="text-center" width="500">Nama Diskon</th>
+              <th class="text-center" width="150">Kategori</th>
               <th class="text-center" width="150">Tipe Diskon</th>
               <th class="text-center" width="150">Jumlah</th>
               <th class="text-center" width="80">Aktif</th>
@@ -54,6 +55,19 @@
                       <button class="btn btn-xs btn-danger" onclick="del('<?=$row->discount_id?>');"><i class="fa fa-trash"></i></button>
                   </td>
                   <td><?=$row->discount_name?></td> 
+                  <td>
+                    <?php
+                      switch ($row->discount_category) {
+                        case 0:
+                          echo 'Diskon Umum';
+                          break;
+                        
+                        default:
+                          # code...
+                          break;
+                      }
+                    ?>
+                  </td>
                   <?php if ($row->discount_type == '1'): ?>
                     <td class="text-center">Persentase (%)</td>
                   <?php elseif($row->discount_type == '2'): ?>

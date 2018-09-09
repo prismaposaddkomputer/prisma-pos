@@ -257,6 +257,13 @@ class M_hot_reservation extends CI_Model {
 		return $data->count_non_tax;
 	}
 
+	public function discount_room()
+	{
+		return $this->db
+			->where('discount_category',0)
+			->get('hot_discount')->result();
+	}
+
 	function num_rows($search_term = null){
 		if($search_term == null){
 			return $this->db->get('hot_billing')->num_rows();
