@@ -126,7 +126,7 @@ class Res_item extends MY_Restaurant {
     if ($client->client_is_taxed == 0) {
       $data['item_price_before_tax'] = $item_price;
       $data['item_tax'] = ($tax->tax_ratio/100)*$item_price;
-      $data['item_price_after_tax'] = $data['item_price_before_tax']+$data['item_price_after_tax'];
+      $data['item_price_after_tax'] = $data['item_price_before_tax']+$data['item_tax'];
     }else{
       $data['item_price_after_tax'] = $item_price;
       $data['item_tax'] = ($tax->tax_ratio/(100+$tax->tax_ratio))*$data['item_price_after_tax'];
