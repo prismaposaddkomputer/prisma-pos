@@ -1321,28 +1321,35 @@ class M_app_version extends CI_Model {
 
         // Create tabel kar_payment
         case '2.6.6':
-        $this->db->query("DROP TABLE IF EXISTS `kar_payment`");
-        $this->db->query("CREATE TABLE `kar_payment`  (
-          `id` int(11) NOT NULL AUTO_INCREMENT,
-          `booking_id` int(155) NOT NULL,
-          `subtotal` int(155) NULL DEFAULT 0,
-          `disc` int(155) NULL DEFAULT 0,
-          `grand_total` int(155) NULL DEFAULT 0,
-          `bayar` int(155) NULL DEFAULT NULL,
-          `sisa` int(155) NULL DEFAULT NULL,
-          `cashed` int(155) NOT NULL,
-          `created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-          `created_by` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
-          `updated` timestamp(0) NOT NULL,
-          `updated_by` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
-          `is_active` tinyint(1) NOT NULL DEFAULT 1,
-          `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
-          `posting_st` tinyint(1) NOT NULL DEFAULT 0,
-          `posting_date` datetime(0) NULL DEFAULT NULL,
-          `status` int(155) NULL DEFAULT NULL,
-          PRIMARY KEY (`id`) USING BTREE
-        ) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;");
+          $this->db->query("DROP TABLE IF EXISTS `kar_payment`");
+          $this->db->query("CREATE TABLE `kar_payment`  (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `booking_id` int(155) NOT NULL,
+            `subtotal` int(155) NULL DEFAULT 0,
+            `disc` int(155) NULL DEFAULT 0,
+            `grand_total` int(155) NULL DEFAULT 0,
+            `bayar` int(155) NULL DEFAULT NULL,
+            `sisa` int(155) NULL DEFAULT NULL,
+            `cashed` int(155) NOT NULL,
+            `created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            `created_by` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
+            `updated` timestamp(0) NOT NULL,
+            `updated_by` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
+            `is_active` tinyint(1) NOT NULL DEFAULT 1,
+            `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
+            `posting_st` tinyint(1) NOT NULL DEFAULT 0,
+            `posting_date` datetime(0) NULL DEFAULT NULL,
+            `status` int(155) NULL DEFAULT NULL,
+            PRIMARY KEY (`id`) USING BTREE
+          ) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact;");
         break;
+
+        case '2.6.7':
+          $this->db->query("ALTER TABLE `hot_discount`
+            ADD COLUMN `discount_category` TINYINT(1) NOT NULL DEFAULT '0' AFTER `discount_id`");
+          $this->db->query("TRUNCATE `hot_discount`");
+          $this->db->query("INSERT INTO `hot_discount` (`discount_name`, `discount_amount`) VALUES ('Non Diskon', '0')");
+          break;
     }
 
     //insert new update history
@@ -1426,50 +1433,30 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"2.4.3","version_release"=>"2018-09-07 11:11:00"));
     // udpate module karaoke
     array_push($version, array("version_now"=>"2.4.4","version_release"=>"2018-09-07 11:15:00"));
-
     array_push($version, array("version_now"=>"2.4.5","version_release"=>"2018-09-07 11:25:00"));
-
     array_push($version, array("version_now"=>"2.4.6","version_release"=>"2018-09-07 11:25:00"));
-
     array_push($version, array("version_now"=>"2.4.7","version_release"=>"2018-09-07 14:59:00"));
-
     array_push($version, array("version_now"=>"2.4.8","version_release"=>"2018-09-07 14:59:00"));
-
     array_push($version, array("version_now"=>"2.4.9","version_release"=>"2018-09-07 14:59:00"));
-
     array_push($version, array("version_now"=>"2.5.0","version_release"=>"2018-09-07 14:59:00"));
-
     array_push($version, array("version_now"=>"2.5.1","version_release"=>"2018-09-07 14:59:00"));
-
     array_push($version, array("version_now"=>"2.5.2","version_release"=>"2018-09-07 14:59:00"));
-
     array_push($version, array("version_now"=>"2.5.3","version_release"=>"2018-09-07 14:59:00"));
-
     array_push($version, array("version_now"=>"2.5.4","version_release"=>"2018-09-07 14:59:00"));
-
     array_push($version, array("version_now"=>"2.5.5","version_release"=>"2018-09-07 14:59:00"));
-
     array_push($version, array("version_now"=>"2.5.6","version_release"=>"2018-09-07 14:59:00"));
-
     array_push($version, array("version_now"=>"2.5.7","version_release"=>"2018-09-07 14:59:00"));
-
     array_push($version, array("version_now"=>"2.5.8","version_release"=>"2018-09-07 14:59:00"));
-
     array_push($version, array("version_now"=>"2.5.9","version_release"=>"2018-09-07 14:59:00"));
-
     array_push($version, array("version_now"=>"2.6.0","version_release"=>"2018-09-07 14:59:00"));
-
     array_push($version, array("version_now"=>"2.6.1","version_release"=>"2018-09-07 14:59:00"));
-
     array_push($version, array("version_now"=>"2.6.2","version_release"=>"2018-09-07 14:59:00"));
-
     array_push($version, array("version_now"=>"2.6.3","version_release"=>"2018-09-07 14:59:00"));
-
     array_push($version, array("version_now"=>"2.6.4","version_release"=>"2018-09-07 14:59:00"));
-
     array_push($version, array("version_now"=>"2.6.5","version_release"=>"2018-09-07 15:34:00"));
-
     array_push($version, array("version_now"=>"2.6.6","version_release"=>"2018-09-07 15:34:00"));
+    // UPDATE HOTEL
+    array_push($version, array("version_now"=>"2.6.7","version_release"=>"2018-09-10 10:27:00"));
 
     foreach ($version as $key => $val) {
       //check version
