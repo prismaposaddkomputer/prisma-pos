@@ -184,6 +184,7 @@ class Hot_reservation extends MY_Hotel {
     $billing_tax = 0;
     $billing_service = 0;
     $billing_other = 0;
+    $billing_discount = 0;
     $billing_total = 0;
 
     foreach ($room as $row) {
@@ -191,6 +192,7 @@ class Hot_reservation extends MY_Hotel {
       $billing_tax += $row->room_type_tax;
       $billing_service += $row->room_type_service;
       $billing_other += $row->room_type_other;
+      $billing_discount += $row->room_type_discount;
       $billing_total += $row->room_type_total;
     }
 
@@ -221,6 +223,7 @@ class Hot_reservation extends MY_Hotel {
     $data['billing_tax'] = $billing_tax;
     $data['billing_service'] = $billing_service;
     $data['billing_other'] = $billing_other;
+    $data['billing_discount'] = $billing_discount;
     $data['billing_total'] = $billing_total;
 
     $this->m_hot_reservation->update($billing_id,$data);
@@ -781,7 +784,6 @@ class Hot_reservation extends MY_Hotel {
       'room_type_name' => $room->room_type_name,
       'room_type_charge' => $room_type_charge,
       'discount_id' => $discount->discount_id,
-      'discount_name' => $discount->discount_name,
       'discount_type' => $discount->discount_type,
       'discount_amount' => $discount->discount_amount,
       'created_by' => $this->session->userdata('user_realname')
@@ -814,15 +816,6 @@ class Hot_reservation extends MY_Hotel {
       $room_type_charge = $row->room_type_charge;
       $room_type_subtotal = $room_type_charge*$room_type_duration;
 
-      if ($row->discount_type == 1) {
-        $room_type_discount = $row->discount_amount*$room_type_subtotal/100;
-      } else {
-        $room_type_discount = $row->discount_amount;
-      }
-
-      $room_type_subtotal_raw = $room_type_subtotal;
-      $room_type_subtotal -= $room_type_discount;
-
       $room_type_tax = $tax->charge_type_ratio*$room_type_subtotal/100;
   
       $room_type_service = 0;
@@ -838,14 +831,21 @@ class Hot_reservation extends MY_Hotel {
       $room_type_total = $room_type_subtotal+$room_type_tax+$room_type_service+$room_type_other;
       $room_type_total = round($room_type_total,0,PHP_ROUND_HALF_UP);
 
+      if ($row->discount_type == 1) {
+        $room_type_discount = $row->discount_amount*$room_type_total/100;
+      } else {
+        $room_type_discount = $row->discount_amount;
+      }
+
       $data_room = array(
         'room_type_duration' => $room_type_duration,
-        'room_type_subtotal' => $room_type_subtotal_raw,
-        'room_type_discount' => $room_type_discount,
+        'room_type_subtotal' => $room_type_subtotal,
         'room_type_tax' => $room_type_tax,
         'room_type_service' => $room_type_service,
         'room_type_other' => $room_type_other,
-        'room_type_total' => $room_type_total,
+        'room_type_before_discount' => $room_type_total,
+        'room_type_discount' => $room_type_discount,
+        'room_type_total' => $room_type_total-$room_type_discount,
         'created_by' => $this->session->userdata('user_realname')
       );
 

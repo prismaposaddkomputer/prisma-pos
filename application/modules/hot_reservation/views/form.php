@@ -121,7 +121,7 @@
 <!-- Modals -->
 <!-- Room List -->
 <div id="modal_room_list" class="modal fade"  role="dialog" aria-labelledby="modal_room_list">
-  <div class="modal-dialog modal-md" role="document">
+  <div style="width:800px;" class="modal-dialog modal-md" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -136,6 +136,8 @@
               <th class="text-center">Jenis Kamar</th>
               <th class="text-center">Kamar</th>
               <th class="text-center" width="150">Harga</th>
+              <th class="text-center" width="150">Diskon</th>
+              <th class="text-center" width="150">Total</th>
               <th class="text-center" width="50">Aksi</th>
             </tr>
           </thead>
@@ -192,7 +194,6 @@
         <div class="form-group">
           <label>Diskon</label>
           <select class="form-control select2" id="discount_id_room">
-            <option value="0">-- Pilih Diskon --</option>
             <?php foreach ($discount_room as $row): ?>
               <option value="<?=$row->discount_id?>"><?=$row->discount_name?></option>
             <?php endforeach;?>
@@ -662,6 +663,7 @@
       $('#room_type_id').val('0').trigger('change');
       get_room(0);
       $('#room_id').val(0).trigger('change');
+      $('#discount_id_room').val(1).trigger('change');
       $('#room_type_charge').val(0);
       $('#modal_room').modal('show');
       $('#modal_room_list').modal('hide');
@@ -829,7 +831,7 @@
         $("#row_room_list").html('');
         if (data.room == null || data.room == '') {
           var row = '<tr>'+
-            '<td class="text-center" colspan="4">Data tidak ada!</td>'+
+            '<td class="text-center" colspan="6">Data tidak ada!</td>'+
           '</tr>';
           $("#row_room_list").append(row);
         } else {
@@ -839,6 +841,8 @@
                 '<td>'+item.room_type_name+'</td>'+
                 '<td>'+item.room_name+'</td>'+
                 '<td>'+sys_to_cur(item.room_type_subtotal)+'</td>'+
+                '<td>'+sys_to_cur(item.room_type_discount)+'</td>'+
+                '<td>'+sys_to_cur(item.room_type_subtotal-item.room_type_discount)+'</td>'+
                 '<td class="text-center">'+
                   '<button class="btn btn-xs btn-danger" onclick="delete_room('+item.billing_room_id+')"><i class="fa fa-trash"></i></button>'+
                 '</td>'+
@@ -850,6 +854,8 @@
               var row = '<tr>'+
                 '<td>'+item.room_type_name+'</td>'+
                 '<td>'+item.room_name+'</td>'+
+                '<td>'+sys_to_cur(item.room_type_before_discount)+'</td>'+
+                '<td>'+sys_to_cur(item.room_type_discount)+'</td>'+
                 '<td>'+sys_to_cur(item.room_type_total)+'</td>'+
                 '<td class="text-center">'+
                   '<button class="btn btn-xs btn-danger" onclick="delete_room('+item.billing_room_id+')"><i class="fa fa-trash"></i></button>'+
