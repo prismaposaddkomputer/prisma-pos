@@ -51,19 +51,25 @@
                 <tr>
                   <td class="text-center"><?=$this->uri->segment('3')+$i++?></td>
                   <td class="text-center">
+                    <?php if ($row->discount_id != 1): ?>
                       <a class="btn btn-xs btn-warning" href="<?=base_url()?>hot_discount/form/<?=$row->discount_id?>"><i class="fa fa-pencil"></i></a>
                       <button class="btn btn-xs btn-danger" onclick="del('<?=$row->discount_id?>');"><i class="fa fa-trash"></i></button>
+                    <?php endif;?>
                   </td>
                   <td><?=$row->discount_name?></td> 
                   <td>
                     <?php
                       switch ($row->discount_category) {
-                        case 0:
+                        case 1:
                           echo 'Diskon Umum';
                           break;
                         
+                        case 2:
+                          echo 'Diskon Kamar';
+                          break;
+
                         default:
-                          # code...
+                          echo 'Diskon';
                           break;
                       }
                     ?>

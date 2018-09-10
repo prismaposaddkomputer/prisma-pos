@@ -261,6 +261,7 @@ class M_hot_reservation extends CI_Model {
 	{
 		return $this->db
 			->where('discount_category',0)
+			->or_where('discount_category',2)
 			->get('hot_discount')->result();
 	}
 

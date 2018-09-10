@@ -34,6 +34,7 @@ class Hot_reservation extends MY_Hotel {
     $this->load->model('hot_billing_extra/m_hot_billing_extra');
     $this->load->model('hot_billing_service/m_hot_billing_service');
     $this->load->model('hot_billing_fnb/m_hot_billing_fnb');
+    $this->load->model('hot_discount/m_hot_discount');
   }
 
 	public function index()
@@ -752,6 +753,7 @@ class Hot_reservation extends MY_Hotel {
     $service = $this->m_hot_charge_type->get_by_id(2);
     $other = $this->m_hot_charge_type->get_by_id(3);
     $room = $this->m_hot_reservation->room_detail($data['room_id']);
+    $discount = $this->m_hot_discount->get_by_id($data['discount_id_room']);
     
     if ($client->client_is_taxed == 0) {
       // Setingan harga sebelum pajak
@@ -778,6 +780,10 @@ class Hot_reservation extends MY_Hotel {
       'room_type_id' => $room->room_type_id,
       'room_type_name' => $room->room_type_name,
       'room_type_charge' => $room_type_charge,
+      'discount_id' => $discount->discount_id,
+      'discount_name' => $discount->discount_name,
+      'discount_type' => $discount->discount_type,
+      'discount_amount' => $discount->discount_amount,
       'created_by' => $this->session->userdata('user_realname')
     );
     $this->m_hot_reservation->add_room($data_room);
@@ -807,6 +813,16 @@ class Hot_reservation extends MY_Hotel {
     foreach ($room as $row) {
       $room_type_charge = $row->room_type_charge;
       $room_type_subtotal = $room_type_charge*$room_type_duration;
+
+      if ($row->discount_type == 1) {
+        $room_type_discount = $row->discount_amount*$room_type_subtotal/100;
+      } else {
+        $room_type_discount = $row->discount_amount;
+      }
+
+      $room_type_subtotal_raw = $room_type_subtotal;
+      $room_type_subtotal -= $room_type_discount;
+
       $room_type_tax = $tax->charge_type_ratio*$room_type_subtotal/100;
   
       $room_type_service = 0;
@@ -824,7 +840,8 @@ class Hot_reservation extends MY_Hotel {
 
       $data_room = array(
         'room_type_duration' => $room_type_duration,
-        'room_type_subtotal' => $room_type_subtotal,
+        'room_type_subtotal' => $room_type_subtotal_raw,
+        'room_type_discount' => $room_type_discount,
         'room_type_tax' => $room_type_tax,
         'room_type_service' => $room_type_service,
         'room_type_other' => $room_type_other,

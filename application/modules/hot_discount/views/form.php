@@ -14,8 +14,8 @@
         <div class="form-group">
           <label>Kategori</label>
           <select class="form-control select2" name="discount_category" id="discount_category">
-            <option value="0" <?php if($discount != null){if($discount->discount_category == '1'){echo 'selected';}};?>>Diskon Umum</option>
-            <option value="1" <?php if($discount != null){if($discount->discount_category == '2'){echo 'selected';}};?>>Diskon Kamar</option>
+            <option value="1" <?php if($discount != null){if($discount->discount_category == '1'){echo 'selected';}};?>>Diskon Umum</option>
+            <option value="2" <?php if($discount != null){if($discount->discount_category == '2'){echo 'selected';}};?>>Diskon Kamar</option>
           </select>
         </div>
         <div class="form-group">
