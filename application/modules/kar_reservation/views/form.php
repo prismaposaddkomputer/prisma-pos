@@ -32,7 +32,7 @@
           </div>
         </div>
 
-        <?php if ($billing != null): ?>
+        <!-- <?php if ($billing != null): ?>
         <h5 class="cl-danger"><strong><i class="fa fa-arrow-up"></i> Out (Keluar)</strong></h5>
         <div class="row">
           <div class="col-md-6">
@@ -48,7 +48,7 @@
             </div>
           </div>
         </div>
-      <?php endif; ?>
+      <?php endif; ?> -->
 
         <div class="row">
           <div class="col-md-6">

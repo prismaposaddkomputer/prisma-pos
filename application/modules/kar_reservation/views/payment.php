@@ -16,11 +16,11 @@
             <td>:</td>
             <td><?=date_to_ind($billing->billing_date_in)?> <?=$billing->billing_time_in?></td>
           </tr>
-          <tr>
+          <!-- <tr>
             <td class="cl-danger"><i class="fa fa-arrow-up"></i> Out (Keluar)</td>
             <td>:</td>
             <td><?=date_to_ind(date("Y-m-d"))?> <?=date("H:i:s")?></td>
-          </tr>
+          </tr> -->
         </tbody>
       </table>
     </div>
@@ -425,8 +425,8 @@
       <table class="table table-condensed">
         <form class="" action="<?=base_url()?>kar_reservation/<?=$action?>" method="post" name="myForm" onsubmit="return validateForm()">
         <input type="hidden" name="billing_id" value="<?=$id?>">
-        <input type="hidden" name="billing_date_out" value="<?=date("Y-m-d")?>">
-        <input type="hidden" name="billing_time_out" value="<?=date("H:i:s")?>">
+        <!-- <input type="hidden" name="billing_date_out" value="<?=date("Y-m-d")?>"> -->
+        <!-- <input type="hidden" name="billing_time_out" value="<?=date("H:i:s")?>"> -->
         <tbody>
           <tr>
             <td width="300">Total</td>
