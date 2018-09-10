@@ -83,7 +83,7 @@
               <?php endforeach; ?>
             <?php else: ?>
               <tr>
-                <td class="text-center" colspan="7">Tidak ada data!</td>
+                <td class="text-center" colspan="9">Tidak ada data!</td>
               </tr>
             <?php endif; ?>
           </tbody>
