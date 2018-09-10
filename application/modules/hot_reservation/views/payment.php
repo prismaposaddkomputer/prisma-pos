@@ -447,7 +447,11 @@
           <tr>
             <td width="300">Kekurangan</td>
             <td width="20">:</td>
-            <td><?=num_to_idr($billing->billing_total-$billing->billing_down_payment)?></td>
+            <?php if ($billing->billing_down_payment > $billing->billing_total): ?>
+              <td><?=num_to_idr(0)?></td>
+            <?php else: ?>
+              <td><?=num_to_idr($billing->billing_total-$billing->billing_down_payment)?></td>
+            <?php endif; ?>
             <input type="hidden" name="" id="total_payment" value="<?=$billing->billing_total-$billing->billing_down_payment?>">
           </tr>
           <tr>
@@ -460,7 +464,11 @@
                 $echo = $billing->billing_payment; 
               }
               ?>
-              <input id="billing_payment" name="billing_payment" style="width:100%; height: 40px; border: 2px solid green; font-size: 20px; font-weight: bold; text-align: right; padding-right: 10px;" class="autonumeric num" type="text" value="<?=$echo?>" dir="rtl" onchange="calc_change()">
+              <?php if ($billing->billing_down_payment > $billing->billing_total || $billing->billing_down_payment == $billing->billing_total): ?>
+                <input style="width:100%; border: none; font-size: 18px; text-align: right;" type="text" value="" readonly>
+              <?php else: ?>
+                <input id="billing_payment" name="billing_payment" style="width:100%; height: 40px; border: 2px solid green; font-size: 20px; font-weight: bold; text-align: right; padding-right: 10px;" class="autonumeric num" type="text" value="<?=$echo?>" dir="rtl" onchange="calc_change()">
+              <?php endif; ?>
             </td>
           </tr>
           <tr>
@@ -468,7 +476,11 @@
             <th width="20">:</th>
             <th>
               <?php if ($billing->billing_change == 0) {
-                $billing_change_echo = 0;
+                if ($billing->billing_down_payment > $billing->billing_total) {
+                  $billing_change_echo = num_to_price($billing->billing_down_payment-$billing->billing_total);
+                }else{
+                  $billing_change_echo = 0;
+                }
               }else{
                 $billing_change_echo = num_to_price($billing->billing_change); 
               }
