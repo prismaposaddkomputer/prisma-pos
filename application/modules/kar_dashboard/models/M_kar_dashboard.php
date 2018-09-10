@@ -80,7 +80,8 @@ class M_kar_dashboard extends CI_Model {
   {
     $billing = $this->db->query(
       "SELECT
-        *
+        *,
+        SUM(billing_total) AS billing_total      
       FROM kar_billing
       WHERE
         billing_date_in LIKE '$month%' AND

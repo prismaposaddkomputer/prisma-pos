@@ -58,6 +58,7 @@
     <!-- Chart JS -->
     <script src="<?=base_url()?>vendor/chart-js/Chart.min.js" charset="utf-8"></script>
     <script src="<?=base_url()?>vendor/chart-js/Chart.bundle.min.js" charset="utf-8"></script>
+    <script src="<?=base_url()?>vendor/chart-js/utils.js" charset="utf-8"></script>
     <!-- Recta JS For Printer -->
     <script src="<?=base_url()?>vendor/recta/recta.js" charset="utf-8"></script>
     <!-- Nabapos JS -->
