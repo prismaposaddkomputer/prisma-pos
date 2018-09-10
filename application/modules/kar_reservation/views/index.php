@@ -40,7 +40,7 @@
               <th class="text-center" width="100">Aksi</th>
               <th class="text-center">No. Nota</th>
               <th class="text-center cl-success"><i class="fa fa-arrow-down"></i> In (Masuk)</th>
-              <th class="text-center cl-danger"><i class="fa fa-arrow-up"></i> Out (Keluar)</th>
+              <!-- <th class="text-center cl-danger"><i class="fa fa-arrow-up"></i> Out (Keluar)</th> -->
               <th class="text-center">Tamu</th>
               <th class="text-center" width="150">Total</th>
               <th class="text-center" width="80">Status</th>
@@ -60,11 +60,11 @@
                   </td>
                   <td class="text-center">TRS-<?=$row->billing_receipt_no?></td> 
                   <td class="text-center"><?=date_to_ind($row->billing_date_in).' '.$row->billing_time_in?></td>
-                  <?php if ($row->billing_date_out == 0 && $row->billing_time_out == 0): ?>
+                  <!-- <?php if ($row->billing_date_out == 0 && $row->billing_time_out == 0): ?>
                     <td class="text-center">-</td>
                   <?php else: ?>
                     <td class="text-center"><?=date_to_ind($row->billing_date_out).' '.$row->billing_time_out?></td>
-                  <?php endif; ?>
+                  <?php endif; ?> -->
                   <td><?=$row->guest_name?></td>
                   <td><?=num_to_idr($row->billing_total)?></td>
                   <td class="text-center">

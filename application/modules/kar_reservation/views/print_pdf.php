@@ -156,11 +156,11 @@
             <td>&nbsp;:&nbsp;</td>
             <td><?=date_to_ind($billing->billing_date_in)?> <?=$billing->billing_time_in?></td>
           </tr>
-          <tr>
+          <!-- <tr>
             <th>Out (Keluar)</th>
             <td>&nbsp;:&nbsp;</td>
             <td><?=date_to_ind($billing->billing_date_out)?> <?=$billing->billing_time_out?></td>
-          </tr>
+          </tr> -->
           <tr>
             <th>Kasir</th>
             <td>&nbsp;:&nbsp;</td>

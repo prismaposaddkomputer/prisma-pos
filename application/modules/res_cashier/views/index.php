@@ -888,7 +888,11 @@
             '<td class="lbl-barcode">'+item.item_barcode+'</td>'+
             '<td class="lbl-item_name">'+item.item_name+'</td>'+
             '<td class="lbl-category_name">'+item.category_name+'</td>'+
+            <?php if($client->client_is_taxed == 0): ?>
+            '<td class="lbl-item_price_after_tax text-right">'+sys_to_ind(item.item_price_before_tax)+'</td>'+
+            <?php else: ?>
             '<td class="lbl-item_price_after_tax text-right">'+sys_to_ind(item.item_price_after_tax)+'</td>'+
+            <?php endif; ?>
             '</tr>';
           $("#item-row").append(row);
         })
@@ -940,7 +944,11 @@
             $("#add_item_id").val(data.item_id);
             $("#add_item_name").html(data.item_name);
             $("#add_item_barcode").html(data.item_barcode);
+            <?php if($client->client_is_taxed == 0):?>
+            $("#add_item_price_after_tax").html(sys_to_ind(data.item_price_before_tax));
+            <?php else:?>
             $("#add_item_price_after_tax").html(sys_to_ind(data.item_price_after_tax));
+            <?php endif; ?>
             $("#add_category_name").html(data.category_name);
             $("#add_unit_code").html(data.unit_code);
             $("#modal_add_item").modal('show');
