@@ -1350,6 +1350,11 @@ class M_app_version extends CI_Model {
           $this->db->query("TRUNCATE `hot_discount`");
           $this->db->query("INSERT INTO `hot_discount` (`discount_name`, `discount_amount`) VALUES ('Non Diskon', '0')");
           break;
+
+        case '2.6.8':
+        $this->db->query("ALTER TABLE `kar_billing`
+            ADD COLUMN `billing_down_payment_type` tinyint(1) NOT NULL AFTER `billing_payment_type`");
+        break;
     }
 
     //insert new update history
@@ -1457,6 +1462,7 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"2.6.6","version_release"=>"2018-09-07 15:34:00"));
     // UPDATE HOTEL
     array_push($version, array("version_now"=>"2.6.7","version_release"=>"2018-09-10 10:27:00"));
+    array_push($version, array("version_now"=>"2.6.8","version_release"=>"2018-09-10 10:27:00"));
 
     foreach ($version as $key => $val) {
       //check version
