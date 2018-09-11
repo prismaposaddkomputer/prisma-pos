@@ -164,12 +164,20 @@ class Hot_reservation extends MY_Hotel {
     $data['user_id'] = $this->session->userdata('user_id');
     $data['user_realname'] = $this->session->userdata('user_realname');
     
+    $action = $data['action'];
+    unset($data['action']);
+
     $this->m_hot_reservation->update($data['billing_id'],$data);
 
     $this->update_all_billing($data['billing_id']);
 
     $this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil ditambahkan!</div>');
-    redirect(base_url().'hot_reservation/payment/'.$data['billing_id']);
+    if ($action == 'save_payment') {
+      redirect(base_url().'hot_reservation/payment/'.$data['billing_id']);
+    } else {
+      redirect(base_url().'hot_reservation/index');
+    }
+    
   }
 
   public function update_all_billing($billing_id)

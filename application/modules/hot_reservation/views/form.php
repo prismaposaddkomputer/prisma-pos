@@ -111,7 +111,8 @@
       <div class="col-md-12">
         <div class="form-group pull-right">
           <a class="btn btn-default" href="<?=base_url()?>hot_room/index"><i class="fa fa-close"></i> Batal</a>
-          <button class="btn btn-success" type="submit">Simpan & Lanjut Pembayaran <i class="fa fa-arrow-right"></i></button>
+          <button class="btn btn-warning" type="submit" name="action" value="save_temp">Simpan Sementara <i class="fa fa-save"></i></button>
+          <button class="btn btn-success" type="submit" name="action" value="save_payment">Simpan & Lanjut Pembayaran <i class="fa fa-arrow-right"></i></button>
         </div>
       </div>
     </div>
