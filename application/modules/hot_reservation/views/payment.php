@@ -74,16 +74,18 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
       <h4><b><i class="fa fa-bed"></i></b> A. Kamar</h4>
       <table class="table table-bordered table-condensed">
         <thead>
           <tr>
             <th class="text-center" width="20">No.</th>
             <th class="text-center">Kamar</th>
-            <th class="text-center" width="120">Tarif</th>
-            <th class="text-center" width="20">Durasi</th>
-            <th class="text-center" width="120">Total</th>
+            <th class="text-center" width="150">Tarif</th>
+            <th class="text-center" width="100">Durasi</th>
+            <th class="text-center" width="150">Subtotal</th>
+            <th class="text-center" width="150">Diskon</th>
+            <th class="text-center" width="150">Total</th>
           </tr>              
         </thead>
         <tbody>
@@ -97,11 +99,29 @@
                     if ($client->client_is_taxed == 0) {
                       echo num_to_idr($row->room_type_charge);
                     }else{
-                      echo num_to_idr($row->room_type_total/$row->room_type_duration);
+                      echo num_to_idr($row->room_type_before_discount/$row->room_type_duration);
                     }
                   ?>
                 </td>
                 <td class="text-center"><?=round($row->room_type_duration,0,PHP_ROUND_HALF_UP)?> Hari</td>
+                <td>
+                  <?php 
+                    if ($client->client_is_taxed == 0) {
+                      echo num_to_idr($row->room_type_subtotal);
+                    }else{
+                      echo num_to_idr($row->room_type_before_discount);
+                    }
+                  ?>
+                </td>
+                <td>
+                  <?php 
+                    if ($client->client_is_taxed == 0) {
+                      echo num_to_idr($row->room_type_discount);
+                    }else{
+                      echo num_to_idr($row->room_type_discount);
+                    }
+                  ?>
+                </td>
                 <td>
                   <?php 
                     if ($client->client_is_taxed == 0) {
@@ -122,18 +142,20 @@
             <?php endforeach;?>
           <?php else: ?>
             <tr>
-              <td class="text-center" colspan="5"><i>Tidak ada data!</i></td>
+              <td class="text-center" colspan="7"><i>Tidak ada data!</i></td>
             </tr>
           <?php endif;?>
         </tbody>
         <tfoot>
           <tr>
-            <th class="text-center" colspan="4">Total</th>
+            <th class="text-center" colspan="6">Total</th>
             <th><?=num_to_idr($tot_room)?></th>
           </tr>
         </tfoot>
       </table>
     </div>
+  </div>
+  <div class="row">
     <div class="col-md-6">
       <h4><b><i class="fa fa-plus-square"></i></b> B. Ekstra</h4>
       <table class="table table-bordered table-condensed">
@@ -194,8 +216,6 @@
         </tfoot>
       </table>
     </div>
-  </div>
-  <div class="row">
     <div class="col-md-6">
       <h4><b><i class="fa fa-bell"></i></b> C. Pelayanan</h4>
       <table class="table table-bordered table-condensed">
@@ -398,7 +418,6 @@
               <td><?=$charge_type_money?></td>
             </tr>
             <?php endforeach; ?>
-
             <tr>
               <th width="300">Total</th>
               <th width="20">:</th>
@@ -436,7 +455,6 @@
             <td width="300">Total</td>
             <td width="20">:</td>
             <td><?=num_to_idr($billing->billing_total)?></td>
-            <!-- <input id="billing_total" type="hidden" value="<?=$billing->billing_total?>"> -->
             <input id="billing_total" type="hidden" value="<?=$billing->billing_total-$billing->billing_down_payment?>">
           </tr>
           <tr>
