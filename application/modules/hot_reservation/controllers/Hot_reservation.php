@@ -344,7 +344,7 @@ class Hot_reservation extends MY_Hotel {
     $this->pdf->load_view('print_pdf', $data);
   }
 
-  public function frame_pdf($billing_id, $url)
+  public function frame_pdf($billing_id=null, $url=null)
   {
     $data['billing_id'] = $billing_id;
     $data['url'] = $url;

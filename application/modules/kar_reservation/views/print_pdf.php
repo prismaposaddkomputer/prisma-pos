@@ -377,12 +377,32 @@
         <tr>
           <th>Uang Muka</th>
           <th class="colon">:</th>
-          <th class="text-right"><?=num_to_price($billing->billing_down_payment)?></th>
+          <?php if ($billing->billing_down_payment_type == 1): ?>
+            <th class="text-right"><?=num_to_price($billing->billing_down_payment)?></th>
+          <?php else: ?>
+            <th class="text-right"><?=round($billing->billing_down_payment,0,PHP_ROUND_HALF_UP)?> %</th>
+          <?php endif; ?>
         </tr>
         <tr>
           <th>Sisa Bayar</th>
           <th class="colon">:</th>
-          <th class="text-right"><?=num_to_price($billing->billing_total-$billing->billing_down_payment)?></th>
+          <?php if ($billing->billing_down_payment > $billing->billing_total): ?>
+            <th class="text-right"><?=num_to_price(0)?></th>
+          <?php else: ?>
+            <?php if ($billing->billing_down_payment_type == 1): ?>
+              <th class="text-right"><?=num_to_price($billing->billing_total-$billing->billing_down_payment)?></th>
+            <?php else: ?>
+              <?php 
+              $dp_prosen = $billing->billing_total*($billing->billing_down_payment/100);
+              ?>
+              <?php if ($dp_prosen > $billing->billing_total): ?>
+                <th class="text-right"><?=num_to_price(0)?></th>
+              <?php else: ?>
+                <th class="text-right"><?=num_to_price($billing->billing_total-$dp_prosen)?></th>
+              <?php endif; ?>
+            <?php endif; ?>
+          <?php endif; ?>
+
         </tr>
         <tr>
           <th><br></th>

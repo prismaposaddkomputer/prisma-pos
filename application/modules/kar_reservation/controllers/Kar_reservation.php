@@ -265,7 +265,21 @@ class Kar_reservation extends MY_Karaoke {
     $billing_total = $billing->billing_total - $billing->billing_down_payment;
     //
     $data['billing_payment'] = price_to_num($data['billing_payment']);
-    $data['billing_change'] = $data['billing_payment'] - $billing_total;
+    if ($billing->billing_down_payment_type == 1) {
+      $data['billing_change'] = $data['billing_payment'] - $billing_total;
+    }else {
+      $dp_prosen = $billing->billing_total*($billing->billing_down_payment/100);
+      //
+      if ($billing->billing_down_payment > $billing->billing_total) {
+        $data['billing_change'] = $billing->billing_down_payment-$billing->billing_total;
+      }else{
+        if ($dp_prosen > $billing->billing_total) {
+          $data['billing_change'] = $dp_prosen - $billing->billing_total;
+        }else {
+          $data['billing_change'] = $data['billing_payment'] - ($billing->billing_total - $dp_prosen);
+        }
+      }
+    }
     $data['billing_status'] = 2;
     //
     $this->m_kar_billing->update($id,$data);

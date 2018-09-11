@@ -87,7 +87,7 @@
         padding-right: 30px;
       }
       .column-footer {
-        margin-top: 210px;
+        margin-top: 270px;
         text-align: center;
       }
     </style>
@@ -295,6 +295,11 @@
 
     <div class="column-payment">
       <table>
+        <tr>
+          <th>Subtotal</th>
+          <th class="colon">:</th>
+          <th><?=num_to_price($billing->billing_subtotal)?></th>
+        </tr>
         <?php if ($client->client_is_taxed == 0): ?>  
           <?php 
             foreach ($charge_type as $row): 
@@ -336,7 +341,11 @@
         <tr>
           <th>Sisa Bayar</th>
           <th class="colon">:</th>
-          <th><?=num_to_price($billing->billing_total-$billing->billing_down_payment)?></th>
+          <?php if ($billing->billing_down_payment > $billing->billing_total): ?>
+            <th><?=num_to_price(0)?></th>
+          <?php else: ?>
+            <th><?=num_to_price($billing->billing_total-$billing->billing_down_payment)?></th>
+          <?php endif; ?>
         </tr>
         <tr>
           <th><br></th>
