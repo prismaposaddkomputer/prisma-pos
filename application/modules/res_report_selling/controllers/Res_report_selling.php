@@ -150,15 +150,15 @@ class Res_report_selling extends MY_Restaurant {
         $printer -> feed();
 
         //
-        $before_left = "Pembelian";
+        $before_left = "Penjualan(NonTax)";
         $before_right = num_to_price($row->tx_total_before_tax);
-        $printer -> text(print_justify($before_left, $before_right, 16, 13, 3));
+        $printer -> text(print_justify($before_left, $before_right, 17, 13, 2));
         //
-        $pajak_left = "Penjualan (NonTax)";
+        $pajak_left = "Pajak";
         $pajak_right = num_to_price($row->tx_total_tax);
         $printer -> text(print_justify($pajak_left, $pajak_right, 16, 13, 3));
         //
-        $after_left = "Setelah Pajak";
+        $after_left = "Penjualan(Tax)";
         $after_right = num_to_price($row->tx_total_after_tax);
         $printer -> text(print_justify($after_left, $after_right, 16, 13, 3));
         //
@@ -189,7 +189,13 @@ class Res_report_selling extends MY_Restaurant {
       $date = date("Y-m-d");
       $time = date("H:i:s");
       $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
-      $printer -> text("Dicetak : ".date_to_ind($date)." ".$time);
+      //
+      $printer -> text("(NonTax) : Sebelum Pajak");
+      $printer -> feed();
+      $printer -> text("(Tax)    : Setelah Pajak");
+      $printer -> feed(2);
+      //
+      $printer -> text("Dicetak  : ".date_to_ind($date)." ".$time);
       //
       $printer -> feed();
       $printer -> feed();
@@ -238,7 +244,7 @@ class Res_report_selling extends MY_Restaurant {
     $raw = $raw = explode("-", $month);
     $num_month = $raw[1];
     //
-    $title = 'Laporan Penjualan Bulan '.month_name_ind($num_month).' '.$raw[0];
+    $title = "Laporan Penjualan\nBulan ".month_name_ind($num_month)." ".$raw[0];
     $client = $this->m_res_client->get_all();
     //
     $monthly = $this->m_res_report_selling->monthly($month);
@@ -286,21 +292,21 @@ class Res_report_selling extends MY_Restaurant {
       $i=1;
       foreach ($monthly as $row){
         $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
-        $printer -> text(month_name_ind($row->tx_month));
+        $printer -> text(date_to_ind($row->tx_date));
         $printer -> feed();
         $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
         $printer -> feed();
 
         //
-        $before_left = "Sebelum Pajak";
+        $before_left = "Penjualan(NonTax)";
         $before_right = num_to_price($row->tx_total_before_tax);
-        $printer -> text(print_justify($before_left, $before_right, 16, 13, 3));
+        $printer -> text(print_justify($before_left, $before_right, 17, 13, 2));
         //
         $pajak_left = "Pajak";
         $pajak_right = num_to_price($row->tx_total_tax);
         $printer -> text(print_justify($pajak_left, $pajak_right, 16, 13, 3));
         //
-        $after_left = "Setelah Pajak";
+        $after_left = "Penjualan(Tax)";
         $after_right = num_to_price($row->tx_total_after_tax);
         $printer -> text(print_justify($after_left, $after_right, 16, 13, 3));
         //
@@ -321,7 +327,7 @@ class Res_report_selling extends MY_Restaurant {
 
       $printer -> text('--------------------------------');
       $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
-      $total_left = "Total Bln ".$num_month;
+      $total_left = "Total Bln ".month_name_ind($num_month);
       $total_right = num_to_price($tx_total_grand);
       $printer -> text(print_justify($total_left, $total_right, 16, 13, 3));
       $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
@@ -331,7 +337,13 @@ class Res_report_selling extends MY_Restaurant {
       $date = date("Y-m-d");
       $time = date("H:i:s");
       $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
-      $printer -> text("Dicetak : ".date_to_ind($date)." ".$time);
+      //
+      $printer -> text("(NonTax) : Sebelum Pajak");
+      $printer -> feed();
+      $printer -> text("(Tax)    : Setelah Pajak");
+      $printer -> feed(2);
+      //
+      $printer -> text("Dicetak  : ".date_to_ind($date)." ".$time);
       //
       $printer -> feed();
       $printer -> feed();
@@ -420,21 +432,21 @@ class Res_report_selling extends MY_Restaurant {
       $i=1;
       foreach ($weekly as $row){
         $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
-        $printer -> text(month_name_ind($row->tx_month));
+        $printer -> text(date_to_ind($row->tx_date));
         $printer -> feed();
         $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
         $printer -> feed();
 
         //
-        $before_left = "Sebelum Pajak";
+        $before_left = "Penjualan(NonTax)";
         $before_right = num_to_price($row->tx_total_before_tax);
-        $printer -> text(print_justify($before_left, $before_right, 16, 13, 3));
+        $printer -> text(print_justify($before_left, $before_right, 17, 13, 2));
         //
         $pajak_left = "Pajak";
         $pajak_right = num_to_price($row->tx_total_tax);
         $printer -> text(print_justify($pajak_left, $pajak_right, 16, 13, 3));
         //
-        $after_left = "Setelah Pajak";
+        $after_left = "Penjualan(Tax)";
         $after_right = num_to_price($row->tx_total_after_tax);
         $printer -> text(print_justify($after_left, $after_right, 16, 13, 3));
         //
@@ -465,7 +477,13 @@ class Res_report_selling extends MY_Restaurant {
       $date = date("Y-m-d");
       $time = date("H:i:s");
       $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
-      $printer -> text("Dicetak : ".date_to_ind($date)." ".$time);
+      //
+      $printer -> text("(NonTax) : Sebelum Pajak");
+      $printer -> feed();
+      $printer -> text("(Tax)    : Setelah Pajak");
+      $printer -> feed(2);
+      //
+      $printer -> text("Dicetak  : ".date_to_ind($date)." ".$time);
       //
       $printer -> feed();
       $printer -> feed();
@@ -505,7 +523,7 @@ class Res_report_selling extends MY_Restaurant {
 
   public function daily_print($date)
   {
-    $title = "Laporan Penjualan\nTanggal".date_to_ind($date);
+    $title = "Laporan Penjualan\nTanggal ".date_to_ind($date);
     $client = $this->m_res_client->get_all();
     //
     $daily = $this->m_res_report_selling->daily($date);
@@ -552,7 +570,7 @@ class Res_report_selling extends MY_Restaurant {
       $i=1;
       foreach ($daily as $row){
         $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
-        $printer -> text(month_name_ind($row->tx_type.'-'.$row->tx_receipt_no));
+        $printer -> text($row->tx_type.'-'.$row->tx_receipt_no);
         $printer -> feed();
         $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
         $printer -> feed();
@@ -601,7 +619,7 @@ class Res_report_selling extends MY_Restaurant {
 
       $printer -> text('--------------------------------');
       $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
-      $total_left = "Total Tgl ".$date;
+      $total_left = "Total Tgl ".date_to_ind($date);
       $total_right = num_to_price($tx_total_grand);
       $printer -> text(print_justify($total_left, $total_right, 16, 13, 3));
       $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
@@ -700,21 +718,21 @@ class Res_report_selling extends MY_Restaurant {
       $i=1;
       foreach ($range as $row){
         $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
-        $printer -> text(month_name_ind($row->tx_month));
+        $printer -> text(date_to_ind($row->tx_date));
         $printer -> feed();
         $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
         $printer -> feed();
 
         //
-        $before_left = "Sebelum Pajak";
+        $before_left = "Penjualan(NonTax)";
         $before_right = num_to_price($row->tx_total_before_tax);
-        $printer -> text(print_justify($before_left, $before_right, 16, 13, 3));
+        $printer -> text(print_justify($before_left, $before_right, 17, 13, 2));
         //
         $pajak_left = "Pajak";
         $pajak_right = num_to_price($row->tx_total_tax);
         $printer -> text(print_justify($pajak_left, $pajak_right, 16, 13, 3));
         //
-        $after_left = "Setelah Pajak";
+        $after_left = "Penjualan(Tax)";
         $after_right = num_to_price($row->tx_total_after_tax);
         $printer -> text(print_justify($after_left, $after_right, 16, 13, 3));
         //
@@ -745,7 +763,13 @@ class Res_report_selling extends MY_Restaurant {
       $date = date("Y-m-d");
       $time = date("H:i:s");
       $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
-      $printer -> text("Dicetak : ".date_to_ind($date)." ".$time);
+      //
+      $printer -> text("(NonTax) : Sebelum Pajak");
+      $printer -> feed();
+      $printer -> text("(Tax)    : Setelah Pajak");
+      $printer -> feed(2);
+      //
+      $printer -> text("Dicetak  : ".date_to_ind($date)." ".$time);
       //
       $printer -> feed();
       $printer -> feed();

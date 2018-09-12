@@ -15,7 +15,8 @@ class M_res_report_selling_user extends CI_Model {
 				SUM(tx_total_after_tax) AS tx_total_after_tax,
 				SUM(tx_total_discount) AS tx_total_discount,
 				SUM(tx_total_profit_before_tax) AS tx_total_profit_before_tax,
-				SUM(tx_total_profit_after_tax) AS tx_total_profit_after_tax
+				SUM(tx_total_profit_after_tax) AS tx_total_profit_after_tax,
+				SUM(tx_total_grand) AS tx_total_grand
 			FROM res_billing
 			WHERE
 				user_id = $user_id AND
@@ -39,7 +40,8 @@ class M_res_report_selling_user extends CI_Model {
 				SUM(tx_total_after_tax) AS tx_total_after_tax,
 				SUM(tx_total_discount) AS tx_total_discount,
 				SUM(tx_total_profit_before_tax) AS tx_total_profit_before_tax,
-				SUM(tx_total_profit_after_tax) AS tx_total_profit_after_tax
+				SUM(tx_total_profit_after_tax) AS tx_total_profit_after_tax,
+				SUM(tx_total_grand) AS tx_total_grand
 			FROM res_billing
 			WHERE
 				user_id = $user_id AND
@@ -63,7 +65,8 @@ class M_res_report_selling_user extends CI_Model {
 				SUM(tx_total_after_tax) AS tx_total_after_tax,
 				SUM(tx_total_discount) AS tx_total_discount,
 				SUM(tx_total_profit_before_tax) AS tx_total_profit_before_tax,
-				SUM(tx_total_profit_after_tax) AS tx_total_profit_after_tax
+				SUM(tx_total_profit_after_tax) AS tx_total_profit_after_tax,
+				SUM(tx_total_grand) AS tx_total_grand
 			FROM res_billing
 			WHERE
 				user_id = $user_id AND
@@ -101,7 +104,8 @@ class M_res_report_selling_user extends CI_Model {
 				SUM(tx_total_after_tax) AS tx_total_after_tax,
 				SUM(tx_total_discount) AS tx_total_discount,
 				SUM(tx_total_profit_before_tax) AS tx_total_profit_before_tax,
-				SUM(tx_total_profit_after_tax) AS tx_total_profit_after_tax
+				SUM(tx_total_profit_after_tax) AS tx_total_profit_after_tax,
+				SUM(tx_total_grand) AS tx_total_grand
 			FROM res_billing
 			WHERE
 				user_id = $user_id AND
