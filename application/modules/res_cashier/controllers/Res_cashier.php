@@ -945,7 +945,7 @@ class Res_cashier extends MY_Restaurant {
         $printer -> text('--------------------------------');
         $printer -> feed();
         $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
-        $printer -> text(substr($billing->user_realname,0,12).' '.date_to_ind($billing->tx_date).' '.$billing->tx_time);
+        $printer -> text(substr($billing->user_realname,0,12).' '.date_to_ind(date("Y-m-d")).' '.date("H:i:s"));
         $printer -> feed();
         $printer -> text('--------------------------------');
         foreach ($billing->detail as $row) {
