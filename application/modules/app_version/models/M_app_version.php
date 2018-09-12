@@ -1390,6 +1390,11 @@ class M_app_version extends CI_Model {
           $this->db->query("ALTER TABLE `kar_billing`
 	          ADD COLUMN `billing_discount` FLOAT(10,2) NOT NULL AFTER `billing_tax`");
           break;
+
+        case '2.6.12':
+        $this->db->query("ALTER TABLE `hot_billing`
+            ADD COLUMN `billing_down_payment_type` tinyint(1) NOT NULL AFTER `billing_payment_type`");
+        break;
     }
 
     //insert new update history
@@ -1503,6 +1508,7 @@ class M_app_version extends CI_Model {
     // Update diskon karaoke
     array_push($version, array("version_now"=>"2.6.10","version_release"=>"2018-09-12 09:51:00"));
     array_push($version, array("version_now"=>"2.6.11","version_release"=>"2018-09-12 09:59:00"));
+    array_push($version, array("version_now"=>"2.6.12","version_release"=>"2018-09-12 09:59:00"));
 
     foreach ($version as $key => $val) {
       //check version
