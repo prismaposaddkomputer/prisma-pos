@@ -1355,6 +1355,20 @@ class M_app_version extends CI_Model {
         $this->db->query("ALTER TABLE `kar_billing`
             ADD COLUMN `billing_down_payment_type` tinyint(1) NOT NULL AFTER `billing_payment_type`");
         break;
+
+        case '2.6.9':
+          $this->db->query("ALTER TABLE `hot_billing_room`
+            ADD COLUMN `discount_id` INT NOT NULL AFTER `room_name`");
+          $this->db->query("ALTER TABLE `hot_billing_room`
+            ADD COLUMN `discount_type` TINYINT(1) NOT NULL AFTER `discount_id`");
+          $this->db->query("ALTER TABLE `hot_billing_room`
+            ADD COLUMN `discount_amount` FLOAT(10,2) NOT NULL AFTER `discount_type`");
+          $this->db->query("ALTER TABLE `hot_billing_room`
+            ADD COLUMN `room_type_before_discount` FLOAT(10,2) NOT NULL AFTER `room_type_other`,
+            ADD COLUMN `room_type_discount` FLOAT(10,2) NOT NULL AFTER `room_type_before_discount`");
+          $this->db->query("ALTER TABLE `hot_billing`
+	          ADD COLUMN `billing_discount` FLOAT(10,2) NOT NULL AFTER `billing_other`");
+          break;
     }
 
     //insert new update history
@@ -1463,6 +1477,8 @@ class M_app_version extends CI_Model {
     // UPDATE HOTEL
     array_push($version, array("version_now"=>"2.6.7","version_release"=>"2018-09-10 10:27:00"));
     array_push($version, array("version_now"=>"2.6.8","version_release"=>"2018-09-10 10:27:00"));
+    // Update Diskon
+    array_push($version, array("version_now"=>"2.6.9","version_release"=>"2018-09-12 09:32:00"));
 
     foreach ($version as $key => $val) {
       //check version
