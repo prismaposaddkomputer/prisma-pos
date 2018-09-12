@@ -192,11 +192,13 @@ class Kar_reservation extends MY_Karaoke {
     $billing_subtotal = 0;
     $billing_tax = 0;
     $billing_total = 0;
+    $billing_discount = 0;
 
     foreach ($room as $row) {
       $billing_subtotal += $row->room_type_subtotal;
       $billing_tax += $row->room_type_tax;
       $billing_total += $row->room_type_total;
+      $billing_discount += $row->room_type_discount;
     }
 
     foreach ($extra as $row) {
@@ -230,6 +232,7 @@ class Kar_reservation extends MY_Karaoke {
 
     $data['billing_subtotal'] = $billing_subtotal;
     $data['billing_tax'] = $billing_tax;
+    $data['billing_discount'] = $billing_discount;
     $data['billing_total'] = $billing_total;
 
     $this->m_kar_reservation->update($billing_id,$data);
