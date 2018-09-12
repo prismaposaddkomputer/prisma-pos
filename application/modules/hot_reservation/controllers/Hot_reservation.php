@@ -584,6 +584,7 @@ class Hot_reservation extends MY_Hotel {
         strlen(num_to_price($billing->billing_total-$billing->billing_down_payment)),
         strlen(num_to_price($billing->billing_payment)),
         strlen(num_to_price($billing->billing_change)),
+        strlen(num_to_price($billing->billing_discount))
       );
       $l_max = max($space_array);
       $l_1 = $l_max - strlen(num_to_price($billing->billing_total));
@@ -615,6 +616,11 @@ class Hot_reservation extends MY_Hotel {
       $s_6 = '';
       for ($i=0; $i < $l_6; $i++) {
         $s_6 .= ' ';
+      };
+      $l_7 = $l_max - strlen(num_to_price($billing->billing_discount));
+      $s_7 = '';
+      for ($i=0; $i < $l_7; $i++) {
+        $s_7 .= ' ';
       };
 
       foreach ($charge_type as $row){
@@ -667,6 +673,8 @@ class Hot_reservation extends MY_Hotel {
       }else {
         $name_total = "Total Bersih";
       }
+      $printer -> text('Diskon = '.$s_7.num_to_price($billing->billing_discount));
+      $printer -> feed();
       $printer -> text($name_total.' = '.$s_1.num_to_price($billing->billing_total));
       $printer -> feed();
       $printer -> text('Uang Muka = '.$s_2.num_to_price($billing->billing_down_payment));

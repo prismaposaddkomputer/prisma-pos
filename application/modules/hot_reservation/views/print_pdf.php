@@ -295,11 +295,11 @@
 
     <div class="column-payment">
       <table>
-        <tr>
+        <!-- <tr>
           <th>Subtotal</th>
           <th class="colon">:</th>
           <th><?=num_to_price($billing->billing_subtotal)?></th>
-        </tr>
+        </tr> -->
         <?php if ($client->client_is_taxed == 0): ?>  
           <?php 
             foreach ($charge_type as $row): 
@@ -321,6 +321,11 @@
             <th><br></th>
           </tr>
         <?php endif; ?>
+        <tr>
+          <th>Diskon</th>
+          <th class="colon">:</th>
+          <th><?=num_to_price($billing->billing_discount)?></th>
+        </tr>
         <tr>
           <?php
           if ($client->client_is_taxed == 0){
