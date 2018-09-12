@@ -1376,6 +1376,20 @@ class M_app_version extends CI_Model {
           $this->db->query("TRUNCATE `kar_discount`");
           $this->db->query("INSERT INTO `kar_discount` (`discount_name`, `discount_amount`) VALUES ('Non Diskon', '0')");
           break;
+
+        case '2.6.11':
+          $this->db->query("ALTER TABLE `kar_billing_room`
+            ADD COLUMN `discount_id` INT NOT NULL AFTER `room_name`");
+          $this->db->query("ALTER TABLE `kar_billing_room`
+            ADD COLUMN `discount_type` TINYINT(1) NOT NULL AFTER `discount_id`");
+          $this->db->query("ALTER TABLE `kar_billing_room`
+            ADD COLUMN `discount_amount` FLOAT(10,2) NOT NULL AFTER `discount_type`");
+          $this->db->query("ALTER TABLE `kar_billing_room`
+            ADD COLUMN `room_type_before_discount` FLOAT(10,2) NOT NULL AFTER `room_type_tax`,
+            ADD COLUMN `room_type_discount` FLOAT(10,2) NOT NULL AFTER `room_type_before_discount`");
+          $this->db->query("ALTER TABLE `kar_billing`
+	          ADD COLUMN `billing_discount` FLOAT(10,2) NOT NULL AFTER `billing_tax`");
+          break;
     }
 
     //insert new update history
@@ -1488,6 +1502,7 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"2.6.9","version_release"=>"2018-09-12 09:32:00"));
     // Update diskon karaoke
     array_push($version, array("version_now"=>"2.6.10","version_release"=>"2018-09-12 09:51:00"));
+    array_push($version, array("version_now"=>"2.6.11","version_release"=>"2018-09-12 09:59:00"));
 
     foreach ($version as $key => $val) {
       //check version

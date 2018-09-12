@@ -142,7 +142,8 @@
       <div class="col-md-12">
         <div class="form-group pull-right">
           <a class="btn btn-default" href="<?=base_url()?>kar_reservation/index"><i class="fa fa-close"></i> Batal</a>
-          <button class="btn btn-success" type="submit">Simpan & Lanjut Pembayaran <i class="fa fa-arrow-right"></i></button>
+          <button class="btn btn-warning" type="submit" name="action" value="save_temp">Simpan Sementara <i class="fa fa-save"></i></button>
+          <button class="btn btn-success" type="submit" name="action" value="save_payment">Simpan & Lanjut Pembayaran <i class="fa fa-arrow-right"></i></button>
         </div>
       </div>
     </div>
@@ -152,7 +153,7 @@
 <!-- Modals -->
 <!-- Room List -->
 <div id="modal_room_list" class="modal fade"  role="dialog" aria-labelledby="modal_room_list">
-  <div class="modal-dialog modal-md" role="document">
+  <div style="width:800px;" class="modal-dialog modal-md" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -168,6 +169,8 @@
               <th class="text-center">Room</th>
               <th class="text-center">Durasi</th>
               <th class="text-center" width="150">Harga</th>
+              <th class="text-center" width="150">Diskon</th>
+              <th class="text-center" width="150">Total</th>
               <th class="text-center" width="50">Aksi</th>
             </tr>
           </thead>
@@ -217,7 +220,6 @@
             <option value="0">-- Pilih Room --</option>
           </select>
         </div>
-
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
@@ -235,10 +237,19 @@
             </div>
           </div>
         </div>
-
-        <div class="form_group">
+        <div class="form-group">
           <label>Total</label>
           <input class="form-control autonumeric num" id="room_type_total" type="text" value="0" readonly="">
+        </div>
+        <div class="form-group">
+          <label>Diskon</label>
+          <select class="form-control select2" id="discount_id_room">
+            <?php foreach ($discount_room as $row): ?>
+              <option value="<?=$row->discount_id?>">
+                <?=$row->discount_name?> (<?php if($row->discount_type == 0){echo $row->discount_amount."%";}else{echo num_to_price($row->discount_amount);}?>)
+              </option>
+            <?php endforeach;?>
+          </select>
         </div>
         <br>
         <em>
@@ -1025,13 +1036,15 @@
     var room_type_charge = $('#room_type_charge').val();
     var room_type_duration = $('#room_type_duration').val();
     var room_type_total = $('#room_type_total').val();
+    var discount_id_room = $('#discount_id_room').val();
     var billing_id = $('#billing_id').val();
 
     $.ajax({
       type : 'post',
       url : '<?=base_url()?>kar_reservation/add_room',
       data : 'billing_id='+billing_id+'&room_id='+room_id+'&room_type_charge='+room_type_charge+
-              '&room_type_duration='+room_type_duration+'&room_type_total='+room_type_total,
+              '&room_type_duration='+room_type_duration+'&room_type_total='+room_type_total+
+              '&discount_id_room='+discount_id_room,
       success : function (data) {
         $('#modal_room_list').modal('show');
         $('#modal_room').modal('hide');
@@ -1063,6 +1076,8 @@
                 '<td>'+item.room_name+'</td>'+
                 '<td class="text-center">'+Math.round(item.room_type_duration)+' Jam </td>'+
                 '<td>'+sys_to_cur(item.room_type_subtotal)+'</td>'+
+                '<td>'+sys_to_cur(item.room_type_discount)+'</td>'+
+                '<td>'+sys_to_cur(item.room_type_subtotal-item.room_type_discount)+'</td>'+
                 '<td class="text-center">'+
                   '<button class="btn btn-xs btn-danger" onclick="delete_room('+item.billing_room_id+')"><i class="fa fa-trash"></i></button>'+
                 '</td>'+
@@ -1075,6 +1090,8 @@
                 '<td>'+item.room_type_name+'</td>'+
                 '<td>'+item.room_name+'</td>'+
                 '<td class="text-center">'+Math.round(item.room_type_duration)+' Jam </td>'+
+                '<td>'+sys_to_cur(item.room_type_before_discount)+'</td>'+
+                '<td>'+sys_to_cur(item.room_type_discount)+'</td>'+
                 '<td>'+sys_to_cur(item.room_type_total)+'</td>'+
                 '<td class="text-center">'+
                   '<button class="btn btn-xs btn-danger" onclick="delete_room('+item.billing_room_id+')"><i class="fa fa-trash"></i></button>'+

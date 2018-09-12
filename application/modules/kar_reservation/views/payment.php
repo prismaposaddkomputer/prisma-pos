@@ -74,7 +74,7 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
       <h4><b><i class="fa fa-bed"></i></b> A. Kamar</h4>
       <table class="table table-bordered table-condensed">
         <thead>
@@ -83,7 +83,9 @@
             <th class="text-center">Kamar</th>
             <th class="text-center" width="120">Tarif</th>
             <th class="text-center" width="20">Durasi</th>
-            <th class="text-center" width="120">Total</th>
+            <th class="text-center" width="150">Subtotal</th>
+            <th class="text-center" width="150">Diskon</th>
+            <th class="text-center" width="150">Total</th>
           </tr>              
         </thead>
         <tbody>
@@ -97,11 +99,29 @@
                     if ($client->client_is_taxed == 0) {
                       echo num_to_idr($row->room_type_charge);
                     }else{
-                      echo num_to_idr($row->room_type_total/$row->room_type_duration);
+                      echo num_to_idr($row->room_type_before_discount/$row->room_type_duration);
                     }
                   ?>
                 </td>
                 <td class="text-center"><?=round($row->room_type_duration,0,PHP_ROUND_HALF_UP)?> Jam</td>
+                <td>
+                  <?php 
+                    if ($client->client_is_taxed == 0) {
+                      echo num_to_idr($row->room_type_subtotal);
+                    }else{
+                      echo num_to_idr($row->room_type_before_discount);
+                    }
+                  ?>
+                </td>
+                <td>
+                  <?php 
+                    if ($client->client_is_taxed == 0) {
+                      echo num_to_idr($row->room_type_discount);
+                    }else{
+                      echo num_to_idr($row->room_type_discount);
+                    }
+                  ?>
+                </td>
                 <td>
                   <?php 
                     if ($client->client_is_taxed == 0) {
@@ -128,12 +148,14 @@
         </tbody>
         <tfoot>
           <tr>
-            <th class="text-center" colspan="4">Total</th>
+            <th class="text-center" colspan="6">Total</th>
             <th><?=num_to_idr($tot_room)?></th>
           </tr>
         </tfoot>
       </table>
     </div>
+  </div>
+  <div class="row">
     <div class="col-md-6">
       <h4><b><i class="fa fa-cubes"></i></b> B. Paket</h4>
       <table class="table table-bordered table-condensed">
@@ -194,8 +216,6 @@
         </tfoot>
       </table>
     </div>
-  </div>
-  <div class="row">
     <div class="col-md-6">
       <h4><b><i class="fa fa-bell"></i></b> C. Pelayanan</h4>
       <table class="table table-bordered table-condensed">

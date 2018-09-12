@@ -36,6 +36,7 @@ class Kar_reservation extends MY_Karaoke {
     $this->load->model('kar_billing_service/m_kar_billing_service');
     $this->load->model('kar_billing_paket/m_kar_billing_paket');
     $this->load->model('kar_billing_fnb/m_kar_billing_fnb');
+    $this->load->model('kar_discount/m_kar_discount');
   }
 
 	public function index()
@@ -94,6 +95,7 @@ class Kar_reservation extends MY_Karaoke {
     $data['fnb'] = $this->m_kar_fnb->get_all();
     $data['non_tax'] = $this->m_kar_non_tax->get_all();
     $data['charge_type'] = $this->m_kar_charge_type->get_all();
+    $data['discount_room'] = $this->m_kar_reservation->discount_room();
     if ($id == null) {
       if ($this->access->_create == 1) {
         $data['title'] = 'Tambah Data Pemesanan';
@@ -162,13 +164,20 @@ class Kar_reservation extends MY_Karaoke {
 
     $data['user_id'] = $this->session->userdata('user_id');
     $data['user_realname'] = $this->session->userdata('user_realname');
+
+    $action = $data['action'];
+    unset($data['action']);
     
     $this->m_kar_reservation->update($data['billing_id'],$data);
 
     $this->update_all_billing($data['billing_id']);
 
     $this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil ditambahkan!</div>');
-    redirect(base_url().'kar_reservation/payment/'.$data['billing_id']);
+    if ($action == 'save_payment') {
+      redirect(base_url().'kar_reservation/payment/'.$data['billing_id']);
+    } else {
+      redirect(base_url().'kar_reservation/index');
+    }
   }
 
   public function update_all_billing($billing_id)
@@ -762,6 +771,7 @@ class Kar_reservation extends MY_Karaoke {
     $client = $this->m_kar_client->get_all();
     $tax = $this->m_kar_charge_type->get_by_id(1);
     $room = $this->m_kar_reservation->room_detail($data['room_id']);
+    $discount = $this->m_kar_discount->get_by_id($data['discount_id_room']);
     
     if ($client->client_is_taxed == 0) {
       // Setingan harga sebelum pajak
@@ -770,15 +780,18 @@ class Kar_reservation extends MY_Karaoke {
       $room_type_subtotal = price_to_num($data['room_type_total']);
       // $room_type_tax += $room_type_subtotal * $tax->charge_type_ratio;
       $room_type_tax += $room_type_subtotal * ($tax->charge_type_ratio/100);
-      $room_type_total = $room_type_subtotal + $room_type_tax;
+      $room_type_before_discount = $room_type_subtotal + $room_type_tax;
     } else {
       // Settingan harga setelah pajak
-      $room_type_total = price_to_num($data['room_type_total']);
+      $room_type_before_discount = price_to_num($data['room_type_total']);
       // hitung persen semua setelah pajak/ hitung mundur
-      $room_type_tax = ($tax->charge_type_ratio/(100 + $tax->charge_type_ratio))*$room_type_total;
-      $room_type_subtotal = $room_type_total - $room_type_tax;
+      $room_type_tax = ($tax->charge_type_ratio/(100 + $tax->charge_type_ratio))*$room_type_before_discount;
+      $room_type_subtotal = $room_type_before_discount - $room_type_tax;
       $room_type_charge = $room_type_subtotal / $data['room_type_duration'];
     }
+
+    $room_type_discount = $discount->discount_amount*$room_type_before_discount/100;
+    $room_type_total = $room_type_before_discount-$room_type_discount;
 
     $data_room = array(
       'billing_id' => $data['billing_id'],
@@ -787,8 +800,13 @@ class Kar_reservation extends MY_Karaoke {
       'room_type_id' => $room->room_type_id,
       'room_type_name' => $room->room_type_name,
       'room_type_charge' => $room_type_charge,
+      'discount_id' => $discount->discount_id,
+      'discount_type' => $discount->discount_type,
+      'discount_amount' => $discount->discount_amount,
       'room_type_subtotal' => $room_type_subtotal,
       'room_type_tax' => $room_type_tax,
+      'room_type_before_discount' => $room_type_before_discount,
+      'room_type_discount' => $room_type_discount,
       'room_type_total' => $room_type_total,
       'room_type_duration' => $data['room_type_duration'],
       'created_by' => $this->session->userdata('user_realname')
