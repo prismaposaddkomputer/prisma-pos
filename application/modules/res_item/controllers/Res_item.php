@@ -132,8 +132,8 @@ class Res_item extends MY_Restaurant {
       $data['item_tax'] = ($tax->tax_ratio/(100+$tax->tax_ratio))*$data['item_price_after_tax'];
       $data['item_price_before_tax'] = $data['item_price_after_tax']-$data['item_tax'];
     }
-    $data['tax_name'] = $tax->tax_name;
-    $data['tax_ratio'] = $tax->tax_ratio;
+    // $data['tax_name'] = $tax->tax_name;
+    // $data['tax_ratio'] = $tax->tax_ratio;
     unset($data['item_price']);
 
     // clear package
