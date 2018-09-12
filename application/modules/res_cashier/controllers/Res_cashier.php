@@ -180,7 +180,7 @@ class Res_cashier extends MY_Restaurant {
     // cek item exist
     $item_exist = $this->m_res_cashier->item_exist($tx_id, $item_id);
     if ($item_exist != null) {
-      $data['tx_amount'] .= $item_exist->tx_amount;
+      $data['tx_amount'] += $item_exist->tx_amount;
     }
 
     //get item buy price
