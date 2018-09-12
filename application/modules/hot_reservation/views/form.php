@@ -46,14 +46,38 @@
             </div>
           </div>
         </div>
-        <div class="row">
+        <!-- <div class="row">
           <div class="col-md-6">
             <div class="form-group">
               <label>Uang Muka</label>
               <input class="form-control autonumeric keyboard " type="text" name="billing_down_payment" id="billing_down_payment" value="<?php if($billing != null){echo $billing->billing_down_payment;}else{echo 0;}?>">
             </div>
           </div>
+        </div> -->
+        <div class="form-group">
+          <label>Pilih Jenis Uang Muka</label>
+          <br>
+            <label class="radio-inline">
+               <input type="radio" name="billing_down_payment_type" value="1" <?php if($billing != null){if($billing->billing_down_payment_type == '1'){echo 'checked';}}else{echo 'checked';}?>/> Nominal (Rp)
+            </label>
+            &nbsp;&nbsp;&nbsp;
+            <label class="radio-inline">
+               <input type="radio" name="billing_down_payment_type" value="2" <?php if($billing != null){if($billing->billing_down_payment_type == '2'){echo 'checked';}}?>/> Presentase (%)
+            </label>
         </div>
+        <div class="row" id="discountAmmount">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label><span id="name_field"></span> </label>
+              <div class="input-group">
+                <div class="input-group-addon" id="rp_icon"></div>
+                <input class="form-control autonumeric num " type="text" name="billing_down_payment" id="billing_down_payment" value="<?php if($billing != null){echo $billing->billing_down_payment;}else{echo 0;}?>">
+                <div class="input-group-addon" id="prosen_icon"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <button class="btn btn-info" id="btn_room_list" type="button"><i class="fa fa-bed"></i> Kamar <span class="badge" id="lbl_count_room">0</span></button>
         <button class="btn btn-info" id="btn_extra_list" type="button"><i class="fa fa-plus-square"></i> Ekstra <span class="badge" id="lbl_count_extra">0</span></button>
         <button class="btn btn-info" id="btn_service_list" type="button"><i class="fa fa-plus-square"></i> Pelayanan <span class="badge" id="lbl_count_service">0</span></button>
@@ -601,6 +625,43 @@
 
 <script type="text/javascript">
   $(document).ready(function () {
+
+    $('#name_field').html('Nominal');
+    $('#rp_icon').html('Rp');
+    $('#prosen_icon').hide();
+    //
+    <?php
+      if($billing != null){if($billing->billing_down_payment_type == '1'){
+    ?>
+    $('#name_field').html('Nominal');
+    $('#rp_icon').html('Rp');
+    $('#prosen_icon').hide();
+    $('#rp_icon').show();
+    <?php
+      }else if($billing->billing_down_payment_type == '2'){
+    ?>
+    $('#name_field').html('Persentase');
+    $('#prosen_icon').html('%');
+    $('#rp_icon').hide();
+    $('#prosen_icon').show();
+    <?php
+      }}
+    ?>
+    //
+    $('#form input[type=radio]').on('change', function() {
+      var billing_down_payment_type = $('input[name=billing_down_payment_type]:checked', '#form').val();
+      if (billing_down_payment_type == '1') {
+        $('#name_field').html('Nominal');
+        $('#rp_icon').html('Rp');
+        $('#prosen_icon').hide();
+        $('#rp_icon').show();
+      }else if (billing_down_payment_type == '2') {
+        $('#name_field').html('Persentase');
+        $('#prosen_icon').html('%');
+        $('#prosen_icon').show();
+        $('#rp_icon').hide();
+      }
+    });
     
     $("#form").validate({
       rules: {

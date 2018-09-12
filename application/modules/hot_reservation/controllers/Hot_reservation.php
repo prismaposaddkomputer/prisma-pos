@@ -276,7 +276,21 @@ class Hot_reservation extends MY_Hotel {
     $billing_total = $billing->billing_total - $billing->billing_down_payment;
     //
     $data['billing_payment'] = price_to_num($data['billing_payment']);
-    $data['billing_change'] = $data['billing_payment'] - $billing_total;
+    if ($billing->billing_down_payment_type == 1) {
+      $data['billing_change'] = $data['billing_payment'] - $billing_total;
+    }else {
+      $dp_prosen = $billing->billing_total*($billing->billing_down_payment/100);
+      //
+      if ($billing->billing_down_payment > $billing->billing_total) {
+        $data['billing_change'] = $billing->billing_down_payment-$billing->billing_total;
+      }else{
+        if ($dp_prosen > $billing->billing_total) {
+          $data['billing_change'] = $dp_prosen - $billing->billing_total;
+        }else {
+          $data['billing_change'] = $data['billing_payment'] - ($billing->billing_total - $dp_prosen);
+        }
+      }
+    }
     $data['billing_status'] = 2;
     //
     $this->m_hot_billing->update($id,$data);
@@ -318,6 +332,9 @@ class Hot_reservation extends MY_Hotel {
     $data['user_id'] = $this->session->userdata('user_id');
     $data['user_realname'] = $this->session->userdata('user_realname');
     
+    $action = $data['action'];
+    unset($data['action']);
+
     $this->m_hot_reservation->update($data['billing_id'],$data);
 
     $data_update = array(
@@ -333,7 +350,11 @@ class Hot_reservation extends MY_Hotel {
 
     $this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil diubah!</div>');
     // redirect(base_url().'hot_reservation/index');
-    redirect(base_url().'hot_reservation/payment/'.$data['billing_id']);
+    if ($action == 'save_payment') {
+      redirect(base_url().'hot_reservation/payment/'.$data['billing_id']);
+    } else {
+      redirect(base_url().'hot_reservation/index');
+    }
   }
 
   public function reservation_print_pdf($billing_id)
@@ -578,10 +599,36 @@ class Hot_reservation extends MY_Hotel {
       }
       $printer -> text('--------------------------------');
       //
+      if ($billing->billing_down_payment_type == 1){
+        $uang_muka = num_to_price($billing->billing_down_payment);
+      }
+      else{
+        $uang_muka = round($billing->billing_down_payment,0,PHP_ROUND_HALF_UP)." %";
+      }
+
+      if ($billing->billing_down_payment > $billing->billing_total){
+        $sisa_bayar = num_to_price(0);
+      }
+      else{
+        if ($billing->billing_down_payment_type == 1){
+          $sisa_bayar = num_to_price($billing->billing_total-$billing->billing_down_payment);
+        }
+        else{
+          $dp_prosen = $billing->billing_total*($billing->billing_down_payment/100);
+
+          if ($dp_prosen > $billing->billing_total){
+            $sisa_bayar = num_to_price(0);
+          }
+          else{
+            $sisa_bayar = num_to_price($billing->billing_total-$dp_prosen);
+          }
+        }
+      }
+      //
       $space_array = array(
         strlen(num_to_price($billing->billing_total)),
-        strlen(num_to_price($billing->billing_down_payment)),
-        strlen(num_to_price($billing->billing_total-$billing->billing_down_payment)),
+        strlen($uang_muka),
+        strlen($sisa_bayar),
         strlen(num_to_price($billing->billing_payment)),
         strlen(num_to_price($billing->billing_change)),
         strlen(num_to_price($billing->billing_discount))
@@ -592,12 +639,12 @@ class Hot_reservation extends MY_Hotel {
       for ($i=0; $i < $l_1; $i++) {
         $s_1 .= ' ';
       };
-      $l_2 = $l_max - strlen(num_to_price($billing->billing_down_payment));
+      $l_2 = $l_max - strlen($uang_muka);
       $s_2 = '';
       for ($i=0; $i < $l_2; $i++) {
         $s_2 .= ' ';
       };
-      $l_3 = $l_max - strlen(num_to_price($billing->billing_total-$billing->billing_down_payment));
+      $l_3 = $l_max - strlen($sisa_bayar);
       $s_3 = '';
       for ($i=0; $i < $l_3; $i++) {
         $s_3 .= ' ';
@@ -673,13 +720,14 @@ class Hot_reservation extends MY_Hotel {
       }else {
         $name_total = "Total Bersih";
       }
+
       $printer -> text('Diskon = '.$s_7.num_to_price($billing->billing_discount));
       $printer -> feed();
       $printer -> text($name_total.' = '.$s_1.num_to_price($billing->billing_total));
       $printer -> feed();
-      $printer -> text('Uang Muka = '.$s_2.num_to_price($billing->billing_down_payment));
+      $printer -> text('Uang Muka = '.$s_2.$uang_muka);
       $printer -> feed();
-      $printer -> text('Sisa Bayar = '.$s_3.num_to_price($billing->billing_total-$billing->billing_down_payment));
+      $printer -> text('Sisa Bayar = '.$s_3.$sisa_bayar);
       $printer -> feed();
       $printer -> feed();
       $printer -> text('Dibayar = '.$s_4.num_to_price($billing->billing_payment));

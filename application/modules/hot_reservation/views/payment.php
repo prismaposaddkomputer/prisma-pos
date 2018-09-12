@@ -470,7 +470,11 @@
           <tr>
             <td width="300">Uang Muka</td>
             <td width="20">:</td>
-            <td><?=num_to_idr($billing->billing_down_payment)?></td>
+            <?php if ($billing->billing_down_payment_type == 1): ?>
+              <td><?=num_to_idr($billing->billing_down_payment)?></td>
+            <?php else: ?>
+              <td align="right"><?=round($billing->billing_down_payment,0,PHP_ROUND_HALF_UP)?> %</td>
+            <?php endif; ?>
           </tr>
           <tr>
             <td width="300">Kekurangan</td>
@@ -478,9 +482,21 @@
             <?php if ($billing->billing_down_payment > $billing->billing_total): ?>
               <td><?=num_to_idr(0)?></td>
             <?php else: ?>
-              <td><?=num_to_idr($billing->billing_total-$billing->billing_down_payment)?></td>
+              <?php if ($billing->billing_down_payment_type == 1): ?>
+                <td><?=num_to_idr($billing->billing_total-$billing->billing_down_payment)?></td>
+                <input type="hidden" name="" id="total_payment" value="<?=$billing->billing_total-$billing->billing_down_payment?>">
+              <?php else: ?>
+                <?php 
+                $dp_prosen = $billing->billing_total*($billing->billing_down_payment/100);
+                ?>
+                <?php if ($dp_prosen > $billing->billing_total): ?>
+                  <td><?=num_to_idr(0)?></td>
+                <?php else: ?>
+                  <td><?=num_to_idr($billing->billing_total-$dp_prosen)?></td>
+                <?php endif; ?>
+                <input type="hidden" name="" id="total_payment" value="<?=$billing->billing_total-$dp_prosen?>">
+              <?php endif; ?>
             <?php endif; ?>
-            <input type="hidden" name="" id="total_payment" value="<?=$billing->billing_total-$billing->billing_down_payment?>">
           </tr>
           <tr>
             <td width="300">Pembayaran</td>
@@ -493,9 +509,13 @@
               }
               ?>
               <?php if ($billing->billing_down_payment > $billing->billing_total || $billing->billing_down_payment == $billing->billing_total): ?>
-                <input style="width:100%; border: none; font-size: 18px; text-align: right;" type="text" name="billing_payment" value="0" readonly>
+                <input style="width:100%; border: none; font-size: 18px; text-align: right;" type="text" name="billing_payment" value="" readonly>
               <?php else: ?>
-                <input id="billing_payment" name="billing_payment" style="width:100%; height: 40px; border: 2px solid green; font-size: 20px; font-weight: bold; text-align: right; padding-right: 10px;" class="autonumeric num" type="text" value="<?=$echo?>" dir="rtl" onchange="calc_change()">
+                <?php if (@$dp_prosen > $billing->billing_total || @$dp_prosen == $billing->billing_total): ?>
+                  <input style="width:100%; border: none; font-size: 18px; text-align: right;" type="text" name="billing_payment" value="" readonly>
+                <?php else: ?>
+                  <input id="billing_payment" name="billing_payment" style="width:100%; height: 40px; border: 2px solid green; font-size: 20px; font-weight: bold; text-align: right; padding-right: 10px;" class="autonumeric num" type="text" value="<?=$echo?>" dir="rtl" onchange="calc_change()">
+                <?php endif; ?>
               <?php endif; ?>
             </td>
           </tr>
@@ -507,7 +527,11 @@
                 if ($billing->billing_down_payment > $billing->billing_total) {
                   $billing_change_echo = num_to_price($billing->billing_down_payment-$billing->billing_total);
                 }else{
-                  $billing_change_echo = 0;
+                  if (@$dp_prosen > $billing->billing_total) {
+                    $billing_change_echo = num_to_price($dp_prosen - $billing->billing_total);
+                  }else {
+                    $billing_change_echo = 0;
+                  }
                 }
               }else{
                 $billing_change_echo = num_to_price($billing->billing_change); 
@@ -531,7 +555,13 @@
 <script>
   function validateForm() {
     var billing_payment = ind_to_sys($('#billing_payment').val());
-    var total_payment = <?=$billing->billing_total-$billing->billing_down_payment?>;
+    <?php if ($billing->billing_down_payment_type == 1): ?>
+      var total_payment = <?=$billing->billing_total-$billing->billing_down_payment?>;
+    <?php else: ?>
+      <?php $dp_prosen = $billing->billing_total*($billing->billing_down_payment/100); ?>
+      var total_payment = <?=$billing->billing_total-$dp_prosen?>;
+    <?php endif; ?>
+    console.log(total_payment);
     if (billing_payment == "") {
         swal({
           text: "Pembayaran Belum Diisi",

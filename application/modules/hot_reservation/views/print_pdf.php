@@ -324,7 +324,7 @@
         <tr>
           <th>Diskon</th>
           <th class="colon">:</th>
-          <th><?=num_to_price($billing->billing_discount)?></th>
+          <th class="text-right"><?=num_to_price($billing->billing_discount)?></th>
         </tr>
         <tr>
           <?php
@@ -336,20 +336,35 @@
           ?>
           <th><?=$name_total?></th>
           <th class="colon">:</th>
-          <th><?=num_to_price($billing->billing_total)?></th>
+          <th class="text-right"><?=num_to_price($billing->billing_total)?></th>
         </tr>
         <tr>
           <th>Uang Muka</th>
           <th class="colon">:</th>
-          <th><?=num_to_price($billing->billing_down_payment)?></th>
+          <?php if ($billing->billing_down_payment_type == 1): ?>
+            <th class="text-right"><?=num_to_price($billing->billing_down_payment)?></th>
+          <?php else: ?>
+            <th class="text-right"><?=round($billing->billing_down_payment,0,PHP_ROUND_HALF_UP)?> %</th>
+          <?php endif; ?>
         </tr>
         <tr>
           <th>Sisa Bayar</th>
           <th class="colon">:</th>
           <?php if ($billing->billing_down_payment > $billing->billing_total): ?>
-            <th><?=num_to_price(0)?></th>
+            <th class="text-right"><?=num_to_price(0)?></th>
           <?php else: ?>
-            <th><?=num_to_price($billing->billing_total-$billing->billing_down_payment)?></th>
+            <?php if ($billing->billing_down_payment_type == 1): ?>
+              <th class="text-right"><?=num_to_price($billing->billing_total-$billing->billing_down_payment)?></th>
+            <?php else: ?>
+              <?php 
+              $dp_prosen = $billing->billing_total*($billing->billing_down_payment/100);
+              ?>
+              <?php if ($dp_prosen > $billing->billing_total): ?>
+                <th class="text-right"><?=num_to_price(0)?></th>
+              <?php else: ?>
+                <th class="text-right"><?=num_to_price($billing->billing_total-$dp_prosen)?></th>
+              <?php endif; ?>
+            <?php endif; ?>
           <?php endif; ?>
         </tr>
         <tr>
@@ -358,12 +373,12 @@
         <tr>
           <th>Dibayar</th>
           <th class="colon">:</th>
-          <th><?=num_to_price($billing->billing_payment)?></th>
+          <th class="text-right"><?=num_to_price($billing->billing_payment)?></th>
         </tr>
         <tr>
           <th>Kembalian</th>
           <th class="colon">:</th>
-          <th><?=num_to_price($billing->billing_change)?></th>
+          <th class="text-right"><?=num_to_price($billing->billing_change)?></th>
         </tr>
       </table>
     </div>
