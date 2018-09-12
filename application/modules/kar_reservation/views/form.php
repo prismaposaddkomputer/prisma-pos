@@ -4,7 +4,7 @@
 </div>
 <div class="content-body">
   <form id="form" class="" action="<?=base_url()?>kar_reservation/<?=$action?>" method="post">
-    <h4><i class="fa fa-file-o"></i> Data Reservasi</h4>
+    <h4><i class="fa fa-file-o"></i> Data Pemesanan</h4>
     <div class="row">
       <div class="col-md-6">
         <input class="form-control" type="hidden" name="billing_id" id="billing_id" value="<?php if($billing != null){echo $billing->billing_id;}else{echo $billing_id;}?>">

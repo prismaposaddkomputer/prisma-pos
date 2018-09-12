@@ -363,6 +363,11 @@
           </tr>
         <?php endif; ?>
         <tr>
+          <th>Diskon</th>
+          <th class="colon">:</th>
+          <th class="text-right"><?=num_to_price($billing->billing_discount)?></th>
+        </tr>
+        <tr>
           <?php
           if ($client->client_is_taxed == 0){
             $name_total = "Total";

@@ -8,12 +8,14 @@ class M_hot_reservation extends CI_Model {
 		if($search_term == null){
 			return $this->db
 				->where('is_deleted','0')
+				->where('billing_status !=','0')
 				->order_by('billing_id','desc')
 				->get('hot_billing',$number,$offset)
 				->result();
 		}else{
 			return $this->db
 				->like('guest_name',$search_term,'both')
+				->where('billing_status !=','0')
 				->where('is_deleted','0')
 				->order_by('billing_id','desc')
 				->get('hot_billing',$number,$offset)

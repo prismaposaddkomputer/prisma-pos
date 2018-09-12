@@ -328,6 +328,9 @@ class Kar_reservation extends MY_Karaoke {
 
     $data['user_id'] = $this->session->userdata('user_id');
     $data['user_realname'] = $this->session->userdata('user_realname');
+
+    $action = $data['action'];
+    unset($data['action']);
     
     $this->m_kar_reservation->update($data['billing_id'],$data);
 
@@ -344,7 +347,11 @@ class Kar_reservation extends MY_Karaoke {
 
     $this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil diubah!</div>');
     // redirect(base_url().'kar_reservation/index');
-    redirect(base_url().'kar_reservation/payment/'.$data['billing_id']);
+    if ($action == 'save_payment') {
+      redirect(base_url().'kar_reservation/payment/'.$data['billing_id']);
+    } else {
+      redirect(base_url().'kar_reservation/index');
+    }
   }
 
   public function reservation_print_pdf($billing_id)
