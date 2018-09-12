@@ -1369,6 +1369,13 @@ class M_app_version extends CI_Model {
           $this->db->query("ALTER TABLE `hot_billing`
 	          ADD COLUMN `billing_discount` FLOAT(10,2) NOT NULL AFTER `billing_other`");
           break;
+        
+        case '2.6.10':
+          $this->db->query("ALTER TABLE `kar_discount`
+            ADD COLUMN `discount_category` TINYINT(1) NOT NULL DEFAULT '0' AFTER `discount_id`");
+          $this->db->query("TRUNCATE `kar_discount`");
+          $this->db->query("INSERT INTO `kar_discount` (`discount_name`, `discount_amount`) VALUES ('Non Diskon', '0')");
+          break;
     }
 
     //insert new update history
@@ -1479,6 +1486,8 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"2.6.8","version_release"=>"2018-09-10 10:27:00"));
     // Update Diskon
     array_push($version, array("version_now"=>"2.6.9","version_release"=>"2018-09-12 09:32:00"));
+    // Update diskon karaoke
+    array_push($version, array("version_now"=>"2.6.10","version_release"=>"2018-09-12 09:51:00"));
 
     foreach ($version as $key => $val) {
       //check version
