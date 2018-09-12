@@ -599,10 +599,36 @@ class Kar_reservation extends MY_Karaoke {
       }
       $printer -> text('--------------------------------');
       //
+      if ($billing->billing_down_payment_type == 1){
+        $uang_muka = num_to_price($billing->billing_down_payment);
+      }
+      else{
+        $uang_muka = round($billing->billing_down_payment,0,PHP_ROUND_HALF_UP)." %";
+      }
+
+      if ($billing->billing_down_payment > $billing->billing_total){
+        $sisa_bayar = num_to_price(0);
+      }
+      else{
+        if ($billing->billing_down_payment_type == 1){
+          $sisa_bayar = num_to_price($billing->billing_total-$billing->billing_down_payment);
+        }
+        else{
+          $dp_prosen = $billing->billing_total*($billing->billing_down_payment/100);
+
+          if ($dp_prosen > $billing->billing_total){
+            $sisa_bayar = num_to_price(0);
+          }
+          else{
+            $sisa_bayar = num_to_price($billing->billing_total-$dp_prosen);
+          }
+        }
+      }
+      //
       $space_array = array(
         strlen(num_to_price($billing->billing_total)),
-        strlen(num_to_price($billing->billing_down_payment)),
-        strlen(num_to_price($billing->billing_total-$billing->billing_down_payment)),
+        strlen($uang_muka),
+        strlen($sisa_bayar),
         strlen(num_to_price($billing->billing_payment)),
         strlen(num_to_price($billing->billing_change)),
       );
@@ -617,7 +643,7 @@ class Kar_reservation extends MY_Karaoke {
       for ($i=0; $i < $l_2; $i++) {
         $s_2 .= ' ';
       };
-      $l_3 = $l_max - strlen(num_to_price($billing->billing_total-$billing->billing_down_payment));
+      $l_3 = $l_max - strlen($sisa_bayar);
       $s_3 = '';
       for ($i=0; $i < $l_3; $i++) {
         $s_3 .= ' ';
@@ -688,11 +714,13 @@ class Kar_reservation extends MY_Karaoke {
       }else {
         $name_total = "Total Bersih";
       }
+      $printer -> text('Diskon = '.$s_7.num_to_price($billing->billing_discount));
+      $printer -> feed();
       $printer -> text($name_total.' = '.$s_1.num_to_price($billing->billing_total));
       $printer -> feed();
-      $printer -> text('Uang Muka = '.$s_2.num_to_price($billing->billing_down_payment));
+      $printer -> text('Uang Muka = '.$s_2.$uang_muka);
       $printer -> feed();
-      $printer -> text('Sisa Bayar = '.$s_3.num_to_price($billing->billing_total-$billing->billing_down_payment));
+      $printer -> text('Sisa Bayar = '.$s_3.$sisa_bayar);
       $printer -> feed();
       $printer -> feed();
       $printer -> text('Dibayar = '.$s_4.num_to_price($billing->billing_payment));

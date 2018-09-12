@@ -1065,7 +1065,7 @@
         $("#row_room_list").html('');
         if (data.room == null || data.room == '') {
           var row = '<tr>'+
-            '<td class="text-center" colspan="5">Data tidak ada!</td>'+
+            '<td class="text-center" colspan="7">Data tidak ada!</td>'+
           '</tr>';
           $("#row_room_list").append(row);
         } else {
