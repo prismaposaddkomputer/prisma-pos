@@ -221,7 +221,7 @@
           <select class="form-control select2" id="discount_id_room">
             <?php foreach ($discount_room as $row): ?>
               <option value="<?=$row->discount_id?>">
-                <?=$row->discount_name?> (<?php if($row->discount_type == 0){echo $row->discount_amount."%";}else{echo num_to_price($row->discount_amount);}?>)
+                <?=$row->discount_name?> (<?php if($row->discount_type == 1){echo $row->discount_amount." %";}else{echo num_to_price($row->discount_amount);}?>)
               </option>
             <?php endforeach;?>
           </select>
