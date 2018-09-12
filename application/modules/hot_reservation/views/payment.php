@@ -419,11 +419,21 @@
             </tr>
             <?php endforeach; ?>
             <tr>
+              <td width="300">Diskon</td>
+              <td width="20">:</td>
+              <td><?=num_to_idr($billing->billing_discount)?></td>
+            </tr>
+            <tr>
               <th width="300">Total</th>
               <th width="20">:</th>
               <th><?=num_to_idr($billing->billing_total)?></th>
             </tr>
           <?php else: ?>
+            <tr>
+              <td width="300">Diskon</td>
+              <td width="20">:</td>
+              <td><?=num_to_idr($billing->billing_discount)?></td>
+            </tr>
             <tr>
               <th width="300">Total</th>
               <th width="20">:</th>
