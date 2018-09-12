@@ -4,7 +4,7 @@ class M_app_version extends CI_Model {
 
   public function get_last()
   {
-    return $this->db->order_by('version_now','DESC')->get('app_version')->row();
+    return $this->db->order_by('version_id','DESC', 'version_now','DESC')->get('app_version')->row();
   }
 
   public function update_version($ver)
