@@ -931,6 +931,15 @@ class Res_cashier extends MY_Restaurant {
         $connector = new Escpos\PrintConnectors\WindowsPrintConnector("POS-58");
   
         $printer = new Escpos\Printer($connector);
+
+        //print image
+        if ($client->client_logo !='') {
+          $img = Escpos\EscposImage::load("img/".$client->client_logo);
+          $printer -> setJustification(Escpos\Printer::JUSTIFY_CENTER);
+          $printer -> bitImage($img);
+          $printer -> feed();
+        }
+        
         $printer -> setJustification(Escpos\Printer::JUSTIFY_CENTER);
         $printer -> text($client->client_brand);
         $printer -> feed();

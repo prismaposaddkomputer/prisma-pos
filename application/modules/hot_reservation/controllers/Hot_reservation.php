@@ -35,6 +35,7 @@ class Hot_reservation extends MY_Hotel {
     $this->load->model('hot_billing_service/m_hot_billing_service');
     $this->load->model('hot_billing_fnb/m_hot_billing_fnb');
     $this->load->model('hot_discount/m_hot_discount');
+    $this->load->model('hot_guest/m_hot_guest');
   }
 
 	public function index()
@@ -93,6 +94,7 @@ class Hot_reservation extends MY_Hotel {
     $data['non_tax'] = $this->m_hot_non_tax->get_all();
     $data['charge_type'] = $this->m_hot_charge_type->get_all();
     $data['discount_room'] = $this->m_hot_reservation->discount_room();
+    $data['list_member'] = $this->m_hot_guest->get_all();
     if ($id == null) {
       if ($this->access->_create == 1) {
         $data['title'] = 'Tambah Data Reservasi';
@@ -151,6 +153,17 @@ class Hot_reservation extends MY_Hotel {
     }
   }
 
+  function get_arr_checked_value($data) {
+      // format result : 01#02
+      $result = '';
+      foreach($data as $key => $val) {
+          if($val != '') {
+              $result .= $val;
+          }
+      }
+      return $result;
+  }
+
   public function insert()
   {
     $data = $_POST;   
@@ -164,6 +177,49 @@ class Hot_reservation extends MY_Hotel {
     $data['user_id'] = $this->session->userdata('user_id');
     $data['user_realname'] = $this->session->userdata('user_realname');
     
+    $guest_type = $data['guest_type'];
+
+    // Tamu Baru
+    // $guest_name = $data['guest_name'];
+    // $guest_gender = $data['guest_gender'];
+    // $guest_phone = $data['guest_phone'];
+    // $guest_id_type = $data['guest_id_type'];
+    // $guest_id_no = $data['guest_id_no'];
+
+    //Member (Tamu Langganan)
+    // $form_guest_name = $data['form_guest_name'];
+    // $form_guest_gender = $data['form_guest_gender'];
+    // $form_guest_phone = $data['form_guest_phone'];
+    // $form_guest_id_type = $data['form_guest_id_type'];
+    // $form_guest_id_no = $data['form_guest_id_no'];
+
+    if ($data['form_guest_gender'] == "Laki-laki") {
+      $form_guest_gender = "L";
+    }else if($data['form_guest_gender'] == "Perempuan"){
+      $form_guest_gender = "P";
+    }
+
+    if ($guest_type == '0') {
+      unset($data['form_guest_id'], $data['form_guest_name'], $data['form_guest_gender'], $data['form_guest_phone'], $data['form_guest_id_type'], $data['form_guest_id_no']);
+      //
+      $data['guest_id'] = $data['guest_id'];
+      $data['guest_name'] = $data['guest_name'];
+      // $data['guest_gender'] = $data['guest_gender'];
+      $data['guest_gender'] = ($data['guest_gender'] != '') ? $this->get_arr_checked_value($data['guest_gender']) : '';
+      $data['guest_phone'] = $data['guest_phone'];
+      $data['guest_id_type'] = $data['guest_id_type'];
+      $data['guest_id_no'] = $data['guest_id_no'];
+    }else if ($guest_type == '1') {
+      $data['guest_id'] = $data['form_guest_id'];
+      $data['guest_name'] = $data['form_guest_name'];
+      $data['guest_gender'] = $data['form_guest_gender'];
+      $data['guest_phone'] = $data['form_guest_phone'];
+      $data['guest_id_type'] = $data['form_guest_id_type'];
+      $data['guest_id_no'] = $data['form_guest_id_no'];
+      //
+      unset($data['form_guest_id'], $data['form_guest_name'], $data['form_guest_gender'], $data['form_guest_phone'], $data['form_guest_id_type'], $data['form_guest_id_no']);
+    }
+
     $action = $data['action'];
     unset($data['action']);
 
@@ -331,6 +387,48 @@ class Hot_reservation extends MY_Hotel {
 
     $data['user_id'] = $this->session->userdata('user_id');
     $data['user_realname'] = $this->session->userdata('user_realname');
+
+    $guest_type = $data['guest_type'];
+
+    // Tamu Baru
+    // $guest_name = $data['guest_name'];
+    // $guest_gender = $data['guest_gender'];
+    // $guest_phone = $data['guest_phone'];
+    // $guest_id_type = $data['guest_id_type'];
+    // $guest_id_no = $data['guest_id_no'];
+
+    //Member (Tamu Langganan)
+    // $form_guest_name = $data['form_guest_name'];
+    // $form_guest_gender = $data['form_guest_gender'];
+    // $form_guest_phone = $data['form_guest_phone'];
+    // $form_guest_id_type = $data['form_guest_id_type'];
+    // $form_guest_id_no = $data['form_guest_id_no'];
+
+    if ($data['form_guest_gender'] == "Laki-laki") {
+      $form_guest_gender = "L";
+    }else if($data['form_guest_gender'] == "Perempuan"){
+      $form_guest_gender = "P";
+    }
+
+    if ($guest_type == '0') {
+      unset($data['form_guest_id'], $data['form_guest_name'], $data['form_guest_gender'], $data['form_guest_phone'], $data['form_guest_id_type'], $data['form_guest_id_no']);
+      //
+      $data['guest_id'] = $data['guest_id'];
+      $data['guest_name'] = $data['guest_name'];
+      $data['guest_gender'] = ($data['guest_gender'] != '') ? $this->get_arr_checked_value($data['guest_gender']) : '';
+      $data['guest_phone'] = $data['guest_phone'];
+      $data['guest_id_type'] = $data['guest_id_type'];
+      $data['guest_id_no'] = $data['guest_id_no'];
+    }else if ($guest_type == '1') {
+      $data['guest_id'] = $data['form_guest_id'];
+      $data['guest_name'] = $data['form_guest_name'];
+      $data['guest_gender'] = $data['form_guest_gender'];
+      $data['guest_phone'] = $data['form_guest_phone'];
+      $data['guest_id_type'] = $data['form_guest_id_type'];
+      $data['guest_id_no'] = $data['form_guest_id_no'];
+      //
+      unset($data['form_guest_id'], $data['form_guest_name'], $data['form_guest_gender'], $data['form_guest_phone'], $data['form_guest_id_type'], $data['form_guest_id_no']);
+    }
     
     $action = $data['action'];
     unset($data['action']);
@@ -442,7 +540,7 @@ class Hot_reservation extends MY_Hotel {
       $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
       $printer -> feed();
       $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
-      $printer -> text("Nama : ".$billing->guest_name);
+      $printer -> text("Nama    : ".substr($billing->guest_name,0,22));
       $printer -> feed();
       if ($billing->guest_phone !='') {
         $phone = $billing->guest_phone;
@@ -450,13 +548,22 @@ class Hot_reservation extends MY_Hotel {
         $phone = "-";
       }
       $printer -> text("No Telp : ".$phone);
-      if ($billing->guest_id_no !='') {
-        $id_no = $billing->guest_id_no;
-      }else {
-        $id_no = "-";
+
+      if ($billing->guest_id_type == '1') {
+        $kategori_id = "-";
+      }elseif ($billing->guest_id_type == '2') {
+        $kategori_id = "KTP";
+        $id_no = "(".$billing->guest_id_no.")";
+      }elseif ($billing->guest_id_type == '3') {
+        $kategori_id = "SIM";
+        $id_no = "(".$billing->guest_id_no.")";
+      }elseif ($billing->guest_id_type == '4') {
+        $kategori_id = "Lainnya";
+        $id_no = "(".$billing->guest_id_no.")";
       }
+
       $printer -> feed();
-      $printer -> text("No Identitas : ".$id_no);
+      $printer -> text("No ID   : ".$kategori_id.$id_no);
       $printer -> feed();
       $printer -> text('--------------------------------');
       //Keterangan Pemesanan
@@ -805,6 +912,40 @@ class Hot_reservation extends MY_Hotel {
         array_push($data['room'], array('id' => $row->room_id, 'text' => $row->room_name));
       }
     }
+    
+    echo json_encode($data);
+  }
+
+  public function get_tamu_langganan()
+  {
+    $client = $this->m_hot_client->get_all();
+    $guest_id = $this->input->post('guest_id');
+    $guest = $this->m_hot_guest->get_by_id($guest_id);
+
+    $guest->guest_name = $guest->guest_name;
+    if ($guest->guest_gender == 'L') {
+      $guest_gender = "Laki-laki";
+    }else{
+      $guest_gender = "Perempuan";
+    }
+    $guest->guest_gender = $guest_gender;
+    $guest->guest_phone = $guest->guest_phone;
+    $guest->guest_id_type = $guest->guest_id_type;
+    $guest->guest_id_no = $guest->guest_id_no;
+    if ($guest->guest_id_type == '1') {
+      $guest_name = "(Tidak Ada)";
+    }elseif ($guest->guest_id_type == '2') {
+      $guest_name = "(KTP)";
+    }elseif ($guest->guest_id_type == '3') {
+      $guest_name = "(SIM)";
+    }elseif ($guest->guest_id_type == '4') {
+      $guest_name = "(Lainnya)";
+    }
+    $guest->guest_id_type_name = $guest_name;
+
+    $data = array(
+      'guest' => $guest
+    );
     
     echo json_encode($data);
   }

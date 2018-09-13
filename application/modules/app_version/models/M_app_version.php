@@ -1414,6 +1414,10 @@ class M_app_version extends CI_Model {
         case '2.6.15':
         $this->db->query("INSERT INTO `prisma_pos`.`res_tax`(`tax_code`, `tax_name`, `tax_ratio`) VALUES ('NONPJK', 'Non Pajak', 0)");
         break;
+
+        case '2.6.16':
+        $this->db->query("UPDATE `prisma_pos`.`hot_module` SET `module_name` = 'Tamu Langganan' WHERE `module_id` = '02.05'");
+        break;
     }
 
     //insert new update history
@@ -1531,6 +1535,7 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"2.6.13","version_release"=>"2018-09-12 18:10:00"));
     array_push($version, array("version_now"=>"2.6.14","version_release"=>"2018-09-13 12:35:00"));
     array_push($version, array("version_now"=>"2.6.15","version_release"=>"2018-09-13 12:44:00"));
+    array_push($version, array("version_now"=>"2.6.16","version_release"=>"2018-09-13 21:37:00"));
 
     foreach ($version as $key => $val) {
       //check version

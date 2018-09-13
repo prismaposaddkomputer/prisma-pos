@@ -211,7 +211,7 @@
           <div id="tx-actions">
             <div class="lbl-bill">
               <?php if ($client->client_is_taxed == 0): ?>
-              <b>SUBTOTAL <span id="bill_tx_total_after_tax_nominal" class="pull-right"></span></b>
+              <b>SUBTOTAL <span id="bill_tx_total_before_tax_nominal" class="pull-right"></span></b>
               <?php else: ?>
               <br>
               <?php endif; ?>
@@ -776,8 +776,9 @@
             $("#bill_tx_id").val(data.tx_id);
             $("#bill_tx_id_name").html('TXS-'+data.tx_id);
             $("#bill_tx_total_after_tax_nominal").html(sys_to_ind(data.tx_total_after_tax));
+            $("#bill_tx_total_before_tax_nominal").html(sys_to_ind(Math.round(data.tx_total_before_tax)));
             $("#bill_tx_total_after_tax").val(data.tx_total_after_tax);
-            $("#bill_tx_total_tax_nominal").html(sys_to_ind(data.tx_total_tax));
+            $("#bill_tx_total_tax_nominal").html(sys_to_ind(Math.round(data.tx_total_tax)));
             $("#bill_tx_total_tax").val(data.tx_total_tax);
             $("#bill_tx_total_discount").val(data.tx_total_discount);
             $("#bill_tx_total_discount_nominal").html(sys_to_ind(data.tx_total_discount));
@@ -1004,21 +1005,33 @@
           dataType : 'json',
           success : function (data) {
             $("#bill_tx_total_after_tax_nominal").html(sys_to_ind(data.tx_total_after_tax));
+            $("#bill_tx_total_before_tax_nominal").html(sys_to_ind(Math.round(data.tx_total_before_tax)));
             $("#bill_tx_total_after_tax").val(data.tx_total_after_tax);
-            $("#bill_tx_total_tax_nominal").html(sys_to_ind(data.tx_total_tax));
+            $("#bill_tx_total_tax_nominal").html(sys_to_ind(Math.round(data.tx_total_tax)));
             $("#bill_tx_total_tax").val(data.tx_total_tax);
             $("#bill_tx_total_discount").val(data.tx_total_discount);
             $("#bill_tx_total_discount_nominal").html(sys_to_ind(data.tx_total_discount));
             $("#bill_tx_total_discount").val(data.tx_total_discount);
-            $("#bill_tx_total_grand_nominal").html(sys_to_ind(data.tx_total_grand));
+            $("#bill_tx_total_grand_nominal").html(sys_to_ind(Math.round(data.tx_total_grand)));
             $("#bill_tx_total_grand").val(data.tx_total_grand);
             $("#bill-list").html('');
             $.each(data.detail, function(i, item) {
-              var html = '<li onclick=edit_item_show('+data.detail[i].billing_detail_id+')>'+
-                '<div class="amount">'+data.detail[i].tx_amount+'</div>'+
-                '<div class="name">'+data.detail[i].item_name+' <span class="price">'+sys_to_ind(data.detail[i].tx_subtotal_after_tax)+'</span></div>'+
-                '<ul>'+
-                  '<li>@ '+sys_to_ind(data.detail[i].item_price_after_tax);
+              var client_is_taxed = <?=$client->client_is_taxed?>;
+              if (client_is_taxed == 0) {
+                // Harga Sebelum Pajak
+                var html = '<li onclick=edit_item_show('+data.detail[i].billing_detail_id+')>'+
+                  '<div class="amount">'+data.detail[i].tx_amount+'</div>'+
+                  '<div class="name">'+data.detail[i].item_name+' <span class="price">'+sys_to_ind(Math.round(data.detail[i].tx_subtotal_before_tax))+'</span></div>'+
+                  '<ul>'+
+                    '<li>@ '+sys_to_ind(Math.round(data.detail[i].item_price_before_tax));
+              }else{
+                // Harga Sesudah Pajak
+                var html = '<li onclick=edit_item_show('+data.detail[i].billing_detail_id+')>'+
+                  '<div class="amount">'+data.detail[i].tx_amount+'</div>'+
+                  '<div class="name">'+data.detail[i].item_name+' <span class="price">'+sys_to_ind(Math.round(data.detail[i].tx_subtotal_after_tax))+'</span></div>'+
+                  '<ul>'+
+                    '<li>@ '+sys_to_ind(Math.round(data.detail[i].item_price_after_tax));
+              }
 
               if(data.detail[i].tx_subtotal_discount != 0){
                 html += ' Disc ('+sys_to_ind(data.detail[i].tx_subtotal_discount)+')</li>';
@@ -1154,6 +1167,7 @@
             success : function (data) {
               $("#payment_section").hide();
               $("#change_section").show();
+              $("#bill_tx_total_before_tax_nominal").html('');
               printBill();
               $("#change_label").html('<h5>Kembalian</h5><h3>'+sys_to_cur(tx_change)+'</h3>');
               new_billing();
