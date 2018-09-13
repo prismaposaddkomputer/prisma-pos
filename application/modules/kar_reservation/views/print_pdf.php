@@ -135,7 +135,21 @@
           <tr>
             <th>Jenis Identitas</th>
             <td>&nbsp;:&nbsp;</td>
-            <td>-</td>
+            <?php
+            if ($billing->guest_id_type == '1') {
+              $kategori_id = "-";
+            }elseif ($billing->guest_id_type == '2') {
+              $kategori_id = "KTP";
+              $id_no = "(".$billing->guest_id_no.")";
+            }elseif ($billing->guest_id_type == '3') {
+              $kategori_id = "SIM";
+              $id_no = "(".$billing->guest_id_no.")";
+            }elseif ($billing->guest_id_type == '4') {
+              $kategori_id = "Lainnya";
+              $id_no = "(".$billing->guest_id_no.")";
+            }
+            ?>
+            <td><?=$kategori_id?> <?=@$id_no?></td>
           </tr>
         </table>
       </div>

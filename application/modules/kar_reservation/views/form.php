@@ -96,45 +96,95 @@
           <label>Jenis Tamu <small class="required-field">*</small></label>
           <br>
           <label class="radio-inline">
-            <input type="radio" name="guest_type" id="guest_type" value="0"  checked/> Tamu Baru
+            <input type="radio" name="guest_type" value="0" <?php if($billing != null){if($billing->guest_type == '0'){echo 'checked';}}else{echo 'checked';}?>/> Tamu Baru
           </label>
           &nbsp;&nbsp;&nbsp;
           <label class="radio-inline">
-            <input type="radio" name="guest_type" id="guest_type" value="1"/> Tamu Langganan (guest)
+            <input type="radio" name="guest_type" value="1" <?php if($billing != null){if($billing->guest_type == '1'){echo 'checked';}}?>/> Member (Tamu Langganan)
           </label>
         </div>
-        <div class="form-group" id="guest_name_div">
-          <label>Nama Tamu / Plat Nomor Kendaraan <small class="required-field">*</small></label>
-          <input class="form-control keyboard " type="text" name="guest_name" id="guest_name" value="<?php if($billing != null){echo $billing->guest_name;} ?>">
+        <div id="tamu_baru">
+          <div class="form-group" id="guest_name_div">
+            <label>Nama Tamu / Plat Nomor Kendaraan <small class="required-field">*</small></label>
+            <input class="form-control keyboard " type="text" name="guest_name" id="guest_name" value="<?php if($billing != null){echo $billing->guest_name;} ?>">
+          </div>
+          <div class="form-group">
+            <label>Jenis Kelamin <small class="required-field">*</small></label>
+            <br>
+              <!-- <label class="radio-inline">
+                <input type="radio" name="guest_gender" value="L" <?php if($billing != null){if($billing->guest_gender == 'L'){echo 'checked';}}else{echo 'checked';}?>/> Laki-laki
+              </label>
+              &nbsp;&nbsp;&nbsp;
+              <label class="radio-inline">
+                <input type="radio" name="guest_gender" value="P" <?php if($billing != null){if($billing->guest_gender == 'P'){echo 'checked';}}?> /> Perempuan
+              </label> -->
+              <div class="row">
+                <label class="radio-inline">
+                  <input type="checkbox" class="cb_guest_gender" name="guest_gender[]" value="L" <?php if($billing != null){if($billing->guest_gender == 'L'){echo 'checked';}}else{echo 'checked';}?>> <span>Laki-laki</span>
+                </label>
+                <label class="radio-inline">
+                  <input type="checkbox" class="cb_guest_gender" name="guest_gender[]" value="P" <?php if($billing != null){if($billing->guest_gender == 'P'){echo 'checked';}}?>> <span>Perempuan</span>
+                </label>
+              </div>
+          </div>
+          <div class="form-group">
+            <label>No Telpon <small class="cl-warning">&nbsp;&nbsp;(Tidak Wajib Diisi)</small></label>
+            <input class="form-control num " type="text" name="guest_phone" id="guest_phone" value="<?php if($billing != null){echo $billing->guest_phone;} ?>">
+          </div>
+          <div class="form-group">
+            <label>Pilih Identitas <small class="cl-warning">&nbsp;&nbsp;(Tidak Wajib Diisi)</small></label>
+            <select class="form-control select2 " name="guest_id_type" id="guest_id_type">
+              <option value="1" <?php if($billing != null){if($billing->guest_id_type == '1'){echo 'selected';}}else{echo 'selected';}?>>Tidak Ada</option>
+              <option value="2" <?php if($billing != null){if($billing->guest_id_type == '2'){echo 'selected';}}?>>KTP</option>
+              <option value="3" <?php if($billing != null){if($billing->guest_id_type == '3'){echo 'selected';}}?>>SIM</option>
+              <option value="4" <?php if($billing != null){if($billing->guest_id_type == '4'){echo 'selected';}}?>>Lainnya</option>
+            </select>
+          </div>
+          <div class="form-group" id="no">
+            <label>No Identitas <span id="label"></span> <small class="cl-warning">&nbsp;&nbsp;(Tidak Wajib Diisi)</small></label>
+            <input class="form-control num " type="text" name="guest_id_no" id="guest_id_no" value="<?php if($billing != null){echo $billing->guest_id_no;} ?>">
+          </div>
         </div>
-        <div class="form-group">
-          <label>Jenis Kelamin <small class="required-field">*</small></label>
-          <br>
-            <label class="radio-inline">
-              <input type="radio" name="guest_gender" value="L" <?php if($billing != null){if($billing->guest_gender == 'L'){echo 'checked';}}else{echo 'checked';}?>/> Laki-laki
-            </label>
-            &nbsp;&nbsp;&nbsp;
-            <label class="radio-inline">
-              <input type="radio" name="guest_gender" value="P" <?php if($billing != null){if($billing->guest_gender == 'P'){echo 'checked';}}?> /> Perempuan
-            </label>
+
+
+        <div id="tamu_langganan">
+          <div class="form-group">
+            <label>Pilih Tamu Langganan / Plat Nomor Kendaraan</label>
+            <select class="form-control select2" name="form_guest_id" id="jenis_tamu_langganan">
+              <option value="">Tidak Ada</option>
+              <?php foreach ($list_member as $data): ?>
+              <option value="<?=$data->guest_id?>" <?php if($billing != null){if($billing->guest_id == $data->guest_id){echo 'selected';}}?>><?=$data->guest_name?></option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+          <!-- <div class="form-group"> -->
+            <!-- <label>Nama Tamu / Plat Nomor Kendaraan</label> -->
+            <input class="form-control" id="form_guest_name" name="form_guest_name" type="hidden" value="<?php if($billing != null){echo $billing->guest_name;} ?>" readonly="">
+          <!-- </div> -->
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Jenis Kelamin</label>
+                <input class="form-control" type="text" name="form_guest_gender" id="form_guest_gender" value="<?php if($billing != null){if($billing->guest_gender == 'L'){echo 'Laki-laki';}else{echo 'Perempuan';}} ?>" readonly>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>No Telpon</label>
+                <input class="form-control" type="text" name="form_guest_phone" id="form_guest_phone" value="<?php if($billing != null){echo $billing->guest_phone;} ?>" readonly>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>No Identitas <span id="label_guest_id_type"></span></label>
+            <input class="form-control" id="form_guest_id_no" name="form_guest_id_no" type="text" value="<?php if($billing != null){echo $billing->guest_id_no;} ?>" readonly="">
+            <input class="form-control" id="form_guest_id_type" name="form_guest_id_type" type="hidden" value="<?php if($billing != null){echo $billing->guest_id_type;} ?>" readonly="">
+          </div>
         </div>
-        <div class="form-group">
-          <label>No Telpon <small class="cl-warning">&nbsp;&nbsp;(Tidak Wajib Diisi)</small></label>
-          <input class="form-control num " type="text" name="guest_phone" id="guest_phone" value="<?php if($billing != null){echo $billing->guest_phone;} ?>">
-        </div>
-        <div class="form-group">
-          <label>Pilih Identitas <small class="cl-warning">&nbsp;&nbsp;(Tidak Wajib Diisi)</small></label>
-          <select class="form-control select2 " name="guest_id_type" id="guest_id_type">
-            <option value="1">Tidak Ada</option>
-            <option value="2">KTP</option>
-            <option value="3">SIM</option>
-            <option value="4">Lainnya</option>
-          </select>
-        </div>
-        <div class="form-group" id="no">
-          <label>No Identitas <span id="label"></span> <small class="cl-warning">&nbsp;&nbsp;(Tidak Wajib Diisi)</small></label>
-          <input class="form-control num " type="text" name="guest_id_no" id="guest_id_no" value="<?php if($billing != null){echo $billing->guest_id_no;} ?>">
-        </div>
+
+
       </div>
     </div>
     <hr>
@@ -753,6 +803,11 @@
 <script type="text/javascript">
   $(document).ready(function () {
 
+    $(".cb_guest_gender").change(function() {
+      $(".cb_guest_gender").prop('checked',false);
+      $(this).prop('checked',true);
+    });
+
     $('#name_field').html('Nominal');
     $('#rp_icon').html('Rp');
     $('#prosen_icon').hide();
@@ -775,6 +830,23 @@
       }}
     ?>
     //
+    <?php
+      if(@$billing != null){if(@$billing->guest_type == '0'){
+    ?>
+    $('#tamu_langganan').hide();
+    <?php 
+      }else if(@$billing->guest_type == '1'){
+    ?>
+    $('#tamu_baru').hide();
+    $('#tamu_langganan').show();
+    <?php
+      }}
+    ?>
+
+    <?php if (@$billing == '') { ?>
+    $('#tamu_langganan').hide();
+    <?php } ?>
+    //
     $('#form input[type=radio]').on('change', function() {
       var billing_down_payment_type = $('input[name=billing_down_payment_type]:checked', '#form').val();
       if (billing_down_payment_type == '1') {
@@ -787,6 +859,33 @@
         $('#prosen_icon').html('%');
         $('#prosen_icon').show();
         $('#rp_icon').hide();
+      }
+
+      var guest_type = $('input[name=guest_type]:checked', '#form').val();
+      if (guest_type == '0') {
+
+        <?php if (@$billing->guest_type == '1'): ?>
+          $('input[name=guest_name]').val('');
+          $('input[name=guest_gender]').val('');
+          $('input[name=guest_phone]').val('');
+          $('select[name=guest_id_type]').val('');
+          $('input[name=guest_id_no]').val('');
+        <?php endif; ?>
+
+        $('#tamu_baru').show();
+        $('#tamu_langganan').hide();
+      }else if (guest_type == '1') {
+
+        <?php if (@$billing->guest_type == '0'): ?>
+          $('input[name=form_guest_name]').val('');
+          $('input[name=form_guest_gender]').val('');
+          $('input[name=form_guest_phone]').val('');
+          $('input[name=form_guest_id_type]').val('');
+          $('input[name=form_guest_id_no]').val('');
+        <?php endif; ?>
+
+        $('#tamu_baru').hide();
+        $('#tamu_langganan').show();
       }
     });
     
@@ -1030,6 +1129,33 @@
       }
     })
   }
+
+
+
+  $('#jenis_tamu_langganan').on('change', function() {
+    get_member(this.value);
+  });
+
+  function get_member(guest_id) {
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>kar_reservation/get_tamu_langganan',
+      data : 'guest_id='+guest_id,
+      dataType : 'json',
+      success : function (data) {
+        console.log(data.guest.guest_id_no);
+        $('#form_guest_name').val(data.guest.guest_name);
+        $('#form_guest_gender').val(data.guest.guest_gender);
+        $('#form_guest_phone').val(data.guest.guest_phone);
+        $('#form_guest_id_type').val(data.guest.guest_id_type);
+        $('#form_guest_id_no').val(data.guest.guest_id_no);
+        $('#label_guest_id_type').html(data.guest.guest_id_type_name);
+      }
+    })
+  }
+
+
+
 
   function add_room() {
     var room_id = $('#room_id').val();

@@ -52,14 +52,17 @@
                 switch ($billing->guest_id_type) {
                   case 2:
                     echo 'KTP';
+                    echo ' ('.$billing->guest_id_no.')';
                     break;
                   
                   case 3:
                     echo 'SIM';
+                    echo ' ('.$billing->guest_id_no.')';
                     break;
                   
                   case 4:
                     echo 'Lainnya';
+                    echo ' ('.$billing->guest_id_no.')';
                     break;
                   
                   default:
