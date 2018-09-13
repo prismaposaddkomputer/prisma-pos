@@ -60,6 +60,11 @@
     <script src="<?=base_url()?>vendor/chart-js/Chart.bundle.min.js" charset="utf-8"></script>
     <!-- Nabapos JS -->
     <script src="<?=base_url()?>dist/js/prismapos.js" charset="utf-8"></script>
+    <!-- Sweetalert -->
+    <script src="<?=base_url()?>vendor/sweetalert/sweetalert.min.js"></script>
+    <!-- Pace loader -->
+    <link rel="stylesheet" href="<?=base_url()?>vendor/pace/pace-theme-loading-bar.css" />
+    <script src="<?=base_url()?>vendor/pace/pace.js"></script>
     <!-- Common JS -->
     <script type="text/javascript">
       $(document).ready(function () {
