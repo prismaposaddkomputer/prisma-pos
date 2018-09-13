@@ -4,7 +4,7 @@
 <div class="content-body">
   <div class="row">
     <div class="col-md-4">
-      <a class="btn btn-info" href="<?=base_url()?>kar_guest/form"><i class="fa fa-plus"></i> Tambah Tamu</a>
+      <a class="btn btn-info" href="<?=base_url()?>kar_guest/form"><i class="fa fa-plus"></i> Tambah Member (Tamu Langganan)</a>
     </div>
     <div class="col-md-4 pull-right">
       <form class="" action="<?=base_url()?>kar_guest/index" method="post">

@@ -135,7 +135,21 @@
           <tr>
             <th>Jenis Identitas</th>
             <td>&nbsp;:&nbsp;</td>
-            <td>-</td>
+            <?php
+            if ($billing->guest_id_type == '1') {
+              $kategori_id = "-";
+            }elseif ($billing->guest_id_type == '2') {
+              $kategori_id = "KTP";
+              $id_no = "(".$billing->guest_id_no.")";
+            }elseif ($billing->guest_id_type == '3') {
+              $kategori_id = "SIM";
+              $id_no = "(".$billing->guest_id_no.")";
+            }elseif ($billing->guest_id_type == '4') {
+              $kategori_id = "Lainnya";
+              $id_no = "(".$billing->guest_id_no.")";
+            }
+            ?>
+            <td><?=$kategori_id?> <?=@$id_no?></td>
           </tr>
         </table>
       </div>
@@ -363,6 +377,11 @@
           </tr>
         <?php endif; ?>
         <tr>
+          <th>Diskon</th>
+          <th class="colon">:</th>
+          <th class="text-right"><?=num_to_price($billing->billing_discount)?></th>
+        </tr>
+        <tr>
           <?php
           if ($client->client_is_taxed == 0){
             $name_total = "Total";
@@ -377,12 +396,32 @@
         <tr>
           <th>Uang Muka</th>
           <th class="colon">:</th>
-          <th class="text-right"><?=num_to_price($billing->billing_down_payment)?></th>
+          <?php if ($billing->billing_down_payment_type == 1): ?>
+            <th class="text-right"><?=num_to_price($billing->billing_down_payment)?></th>
+          <?php else: ?>
+            <th class="text-right"><?=round($billing->billing_down_payment,0,PHP_ROUND_HALF_UP)?> %</th>
+          <?php endif; ?>
         </tr>
         <tr>
           <th>Sisa Bayar</th>
           <th class="colon">:</th>
-          <th class="text-right"><?=num_to_price($billing->billing_total-$billing->billing_down_payment)?></th>
+          <?php if ($billing->billing_down_payment > $billing->billing_total): ?>
+            <th class="text-right"><?=num_to_price(0)?></th>
+          <?php else: ?>
+            <?php if ($billing->billing_down_payment_type == 1): ?>
+              <th class="text-right"><?=num_to_price($billing->billing_total-$billing->billing_down_payment)?></th>
+            <?php else: ?>
+              <?php 
+              $dp_prosen = $billing->billing_total*($billing->billing_down_payment/100);
+              ?>
+              <?php if ($dp_prosen > $billing->billing_total): ?>
+                <th class="text-right"><?=num_to_price(0)?></th>
+              <?php else: ?>
+                <th class="text-right"><?=num_to_price($billing->billing_total-$dp_prosen)?></th>
+              <?php endif; ?>
+            <?php endif; ?>
+          <?php endif; ?>
+
         </tr>
         <tr>
           <th><br></th>

@@ -210,15 +210,27 @@
           </div>
           <div id="tx-actions">
             <div class="lbl-bill">
+              <?php if ($client->client_is_taxed == 0): ?>
               <b>SUBTOTAL <span id="bill_tx_total_after_tax_nominal" class="pull-right"></span></b>
+              <?php else: ?>
+              <br>
+              <?php endif; ?>
               <input id="bill_tx_total_after_tax" type="hidden" name="" value="">
             </div>
             <div class="lbl-bill">
+              <?php if ($client->client_is_taxed == 0): ?>
               DISKON<span id="bill_tx_total_discount_nominal" class="pull-right"></span>
+              <?php else: ?>
+              <br>
+              <?php endif; ?>
               <input id="bill_tx_total_discount" type="hidden" name="" value="">
             </div>
             <div class="lbl-bill">
+              <?php if ($client->client_is_taxed == 0): ?>
               PAJAK<span id="bill_tx_total_tax_nominal" class="pull-right"></span>
+              <?php else: ?>
+              <br>
+              <?php endif; ?>
               <input id="bill_tx_total_tax" type="hidden" name="" value="">
             </div>
             <div class="lbl-bill">
@@ -889,9 +901,9 @@
             '<td class="lbl-item_name">'+item.item_name+'</td>'+
             '<td class="lbl-category_name">'+item.category_name+'</td>'+
             <?php if($client->client_is_taxed == 0): ?>
-            '<td class="lbl-item_price_after_tax text-right">'+sys_to_ind(item.item_price_before_tax)+'</td>'+
+            '<td class="lbl-item_price_after_tax text-right">'+sys_to_ind(Math.round(item.item_price_before_tax))+'</td>'+
             <?php else: ?>
-            '<td class="lbl-item_price_after_tax text-right">'+sys_to_ind(item.item_price_after_tax)+'</td>'+
+            '<td class="lbl-item_price_after_tax text-right">'+sys_to_ind(Math.round(item.item_price_after_tax))+'</td>'+
             <?php endif; ?>
             '</tr>';
           $("#item-row").append(row);
@@ -945,9 +957,9 @@
             $("#add_item_name").html(data.item_name);
             $("#add_item_barcode").html(data.item_barcode);
             <?php if($client->client_is_taxed == 0):?>
-            $("#add_item_price_after_tax").html(sys_to_ind(data.item_price_before_tax));
+            $("#add_item_price_after_tax").html(sys_to_ind(Math.round(data.item_price_before_tax)));
             <?php else:?>
-            $("#add_item_price_after_tax").html(sys_to_ind(data.item_price_after_tax));
+            $("#add_item_price_after_tax").html(sys_to_ind(Math.round(data.item_price_after_tax)));
             <?php endif; ?>
             $("#add_category_name").html(data.category_name);
             $("#add_unit_code").html(data.unit_code);

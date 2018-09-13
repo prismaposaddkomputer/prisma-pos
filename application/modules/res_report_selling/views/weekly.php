@@ -4,8 +4,12 @@
 <div class="content-body">
   <div class="row">
     <div class="col-md-12">
-      <a class="btn btn-primary" href="<?=base_url()?>res_report_selling/weekly_pdf/<?=$date_start?>/<?=$date_end?>" target="_blank"><i class="fa fa-print"></i> Download PDF</a>
-      <br><br>
+      <form method="post" action="<?=base_url()?>res_report_selling/frame_pdf">
+        <input type="hidden" name="url" value="<?=base_url()?>res_report_selling/weekly_pdf/<?=$date_start?>/<?=$date_end?>">
+        <button class="btn btn-primary" type="submit"><i class="fa fa-print"></i> Download PDF</button>
+        <a href="<?=base_url()?>res_report_selling/weekly_print/<?=$date_start?>/<?=$date_end?>" class="btn btn-warning"><i class="fa fa-print"></i> Print Laporan</a>
+      </form> 
+      <br>
       <table class="table table-striped table-bordered table-condensed">
         <thead>
           <tr>

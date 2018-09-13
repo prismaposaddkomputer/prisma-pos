@@ -46,14 +46,38 @@
             </div>
           </div>
         </div>
-        <div class="row">
+        <!-- <div class="row">
           <div class="col-md-6">
             <div class="form-group">
               <label>Uang Muka</label>
               <input class="form-control autonumeric keyboard " type="text" name="billing_down_payment" id="billing_down_payment" value="<?php if($billing != null){echo $billing->billing_down_payment;}else{echo 0;}?>">
             </div>
           </div>
+        </div> -->
+        <div class="form-group">
+          <label>Pilih Jenis Uang Muka</label>
+          <br>
+            <label class="radio-inline">
+               <input type="radio" name="billing_down_payment_type" value="1" <?php if($billing != null){if($billing->billing_down_payment_type == '1'){echo 'checked';}}else{echo 'checked';}?>/> Nominal (Rp)
+            </label>
+            &nbsp;&nbsp;&nbsp;
+            <label class="radio-inline">
+               <input type="radio" name="billing_down_payment_type" value="2" <?php if($billing != null){if($billing->billing_down_payment_type == '2'){echo 'checked';}}?>/> Presentase (%)
+            </label>
         </div>
+        <div class="row" id="discountAmmount">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label><span id="name_field"></span> </label>
+              <div class="input-group">
+                <div class="input-group-addon" id="rp_icon"></div>
+                <input class="form-control autonumeric num " type="text" name="billing_down_payment" id="billing_down_payment" value="<?php if($billing != null){echo $billing->billing_down_payment;}else{echo 0;}?>">
+                <div class="input-group-addon" id="prosen_icon"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <button class="btn btn-info" id="btn_room_list" type="button"><i class="fa fa-bed"></i> Kamar <span class="badge" id="lbl_count_room">0</span></button>
         <button class="btn btn-info" id="btn_extra_list" type="button"><i class="fa fa-plus-square"></i> Ekstra <span class="badge" id="lbl_count_extra">0</span></button>
         <button class="btn btn-info" id="btn_service_list" type="button"><i class="fa fa-plus-square"></i> Pelayanan <span class="badge" id="lbl_count_service">0</span></button>
@@ -111,7 +135,8 @@
       <div class="col-md-12">
         <div class="form-group pull-right">
           <a class="btn btn-default" href="<?=base_url()?>hot_room/index"><i class="fa fa-close"></i> Batal</a>
-          <button class="btn btn-success" type="submit">Simpan & Lanjut Pembayaran <i class="fa fa-arrow-right"></i></button>
+          <button class="btn btn-warning" type="submit" name="action" value="save_temp">Simpan Sementara <i class="fa fa-save"></i></button>
+          <button class="btn btn-success" type="submit" name="action" value="save_payment">Simpan & Lanjut Pembayaran <i class="fa fa-arrow-right"></i></button>
         </div>
       </div>
     </div>
@@ -121,7 +146,7 @@
 <!-- Modals -->
 <!-- Room List -->
 <div id="modal_room_list" class="modal fade"  role="dialog" aria-labelledby="modal_room_list">
-  <div class="modal-dialog modal-md" role="document">
+  <div style="width:800px;" class="modal-dialog modal-md" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -136,6 +161,8 @@
               <th class="text-center">Jenis Kamar</th>
               <th class="text-center">Kamar</th>
               <th class="text-center" width="150">Harga</th>
+              <th class="text-center" width="150">Diskon</th>
+              <th class="text-center" width="150">Total</th>
               <th class="text-center" width="50">Aksi</th>
             </tr>
           </thead>
@@ -185,9 +212,19 @@
             <option value="0">-- Pilih Kamar --</option>
           </select>
         </div>
-        <div class="form_group">
+        <div class="form-group">
           <label>Harga</label>
           <input class="form-control autonumeric num" id="room_type_charge" type="text" value="0">
+        </div>
+        <div class="form-group">
+          <label>Diskon</label>
+          <select class="form-control select2" id="discount_id_room">
+            <?php foreach ($discount_room as $row): ?>
+              <option value="<?=$row->discount_id?>">
+                <?=$row->discount_name?> (<?php if($row->discount_type == 1){echo $row->discount_amount." %";}else{echo num_to_price($row->discount_amount);}?>)
+              </option>
+            <?php endforeach;?>
+          </select>
         </div>
         <br>
         <em>
@@ -588,6 +625,43 @@
 
 <script type="text/javascript">
   $(document).ready(function () {
+
+    $('#name_field').html('Nominal');
+    $('#rp_icon').html('Rp');
+    $('#prosen_icon').hide();
+    //
+    <?php
+      if($billing != null){if($billing->billing_down_payment_type == '1'){
+    ?>
+    $('#name_field').html('Nominal');
+    $('#rp_icon').html('Rp');
+    $('#prosen_icon').hide();
+    $('#rp_icon').show();
+    <?php
+      }else if($billing->billing_down_payment_type == '2'){
+    ?>
+    $('#name_field').html('Persentase');
+    $('#prosen_icon').html('%');
+    $('#rp_icon').hide();
+    $('#prosen_icon').show();
+    <?php
+      }}
+    ?>
+    //
+    $('#form input[type=radio]').on('change', function() {
+      var billing_down_payment_type = $('input[name=billing_down_payment_type]:checked', '#form').val();
+      if (billing_down_payment_type == '1') {
+        $('#name_field').html('Nominal');
+        $('#rp_icon').html('Rp');
+        $('#prosen_icon').hide();
+        $('#rp_icon').show();
+      }else if (billing_down_payment_type == '2') {
+        $('#name_field').html('Persentase');
+        $('#prosen_icon').html('%');
+        $('#prosen_icon').show();
+        $('#rp_icon').hide();
+      }
+    });
     
     $("#form").validate({
       rules: {
@@ -653,6 +727,7 @@
       $('#room_type_id').val('0').trigger('change');
       get_room(0);
       $('#room_id').val(0).trigger('change');
+      $('#discount_id_room').val(1).trigger('change');
       $('#room_type_charge').val(0);
       $('#modal_room').modal('show');
       $('#modal_room_list').modal('hide');
@@ -785,6 +860,7 @@
     var billing_time_in = $('#billing_time_in').val();
     var billing_time_out = $('#billing_time_out').val();
     var room_type_charge = $('#room_type_charge').val();
+    var discount_id_room = $('#discount_id_room').val();
     var billing_id = $('#billing_id').val();
 
     $.ajax({
@@ -792,7 +868,8 @@
       url : '<?=base_url()?>hot_reservation/add_room',
       data : 'billing_id='+billing_id+'&room_id='+room_id+'&room_type_charge='+room_type_charge+
               '&billing_date_in='+billing_date_in+'&billing_date_out='+billing_date_out+
-              '&billing_time_in='+billing_time_in+'&billing_time_out='+billing_time_out,
+              '&billing_time_in='+billing_time_in+'&billing_time_out='+billing_time_out+
+              '&discount_id_room='+discount_id_room,
       success : function (data) {
         $('#modal_room_list').modal('show');
         $('#modal_room').modal('hide');
@@ -818,7 +895,7 @@
         $("#row_room_list").html('');
         if (data.room == null || data.room == '') {
           var row = '<tr>'+
-            '<td class="text-center" colspan="4">Data tidak ada!</td>'+
+            '<td class="text-center" colspan="6">Data tidak ada!</td>'+
           '</tr>';
           $("#row_room_list").append(row);
         } else {
@@ -828,6 +905,8 @@
                 '<td>'+item.room_type_name+'</td>'+
                 '<td>'+item.room_name+'</td>'+
                 '<td>'+sys_to_cur(item.room_type_subtotal)+'</td>'+
+                '<td>'+sys_to_cur(item.room_type_discount)+'</td>'+
+                '<td>'+sys_to_cur(item.room_type_subtotal-item.room_type_discount)+'</td>'+
                 '<td class="text-center">'+
                   '<button class="btn btn-xs btn-danger" onclick="delete_room('+item.billing_room_id+')"><i class="fa fa-trash"></i></button>'+
                 '</td>'+
@@ -839,6 +918,8 @@
               var row = '<tr>'+
                 '<td>'+item.room_type_name+'</td>'+
                 '<td>'+item.room_name+'</td>'+
+                '<td>'+sys_to_cur(item.room_type_before_discount)+'</td>'+
+                '<td>'+sys_to_cur(item.room_type_discount)+'</td>'+
                 '<td>'+sys_to_cur(item.room_type_total)+'</td>'+
                 '<td class="text-center">'+
                   '<button class="btn btn-xs btn-danger" onclick="delete_room('+item.billing_room_id+')"><i class="fa fa-trash"></i></button>'+

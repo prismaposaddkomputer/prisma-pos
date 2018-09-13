@@ -101,6 +101,137 @@ class Res_report_selling_user extends MY_Restaurant {
     $this->pdf->load_view('annual_pdf', $data);
   }
 
+  public function annual_print($year, $user_id)
+  {
+    $user = $this->m_res_user->get_by_id($user_id);
+    $title = "Laporan Penjualan Kasir\n'".$user->user_realname."' \nTahun ".$year;
+    $client = $this->m_res_client->get_all();
+    //
+    $annual = $this->m_res_report_selling_user->annual($year,$user_id);
+    //
+
+    //print
+    $this->load->library("EscPos.php");
+
+    try {
+      $connector = new Escpos\PrintConnectors\WindowsPrintConnector("POS-58");
+         
+      $printer = new Escpos\Printer($connector);
+
+      //print image
+      if ($client->client_logo !='') {
+        $img = Escpos\EscposImage::load("img/".$client->client_logo);
+        $printer -> setJustification(Escpos\Printer::JUSTIFY_CENTER);
+        $printer -> bitImage($img);
+        $printer -> feed();
+      }
+      //Keterangan Wajib Pajak
+      $printer -> setJustification(Escpos\Printer::JUSTIFY_CENTER);
+
+      if ($client->client_logo == '') {
+        $printer -> setUnderline(Escpos\Printer::UNDERLINE_DOUBLE);
+        $printer -> text($client->client_name."\n");
+        $printer -> setUnderline(Escpos\Printer::UNDERLINE_NONE);
+      }
+
+      $printer -> text($client->client_street.','.$client->client_district."\n");
+      $printer -> text($client->client_city."\n");
+      $printer -> text("NPWPD : ".$client->client_npwpd."\n"); 
+      $printer -> text('--------------------------------');
+      //Judul
+      $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+      $printer -> text($title."\n");
+      $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
+      $printer -> text('--------------------------------');
+
+      $tx_total_buy_average = 0;
+      $tx_total_before_tax = 0;
+      $tx_total_tax = 0;
+      $tx_total_after_tax = 0;
+      $tx_total_discount = 0;
+      $tx_total_profit_before_tax = 0;
+      $tx_total_profit_after_tax = 0;
+      $i=1;
+      foreach ($annual as $row){
+        $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+        $printer -> text(month_name_ind($row->tx_month));
+        $printer -> feed();
+        $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
+        $printer -> feed();
+
+        $pembelian_left = "Pembelian";
+        $pembelian_right = num_to_price($row->tx_total_buy_average);
+        $printer -> text(print_justify($pembelian_left, $pembelian_right, 16, 13, 3));
+        //
+        $before_left = "Penjualan(NonTax)";
+        $before_right = num_to_price($row->tx_total_before_tax);
+        $printer -> text(print_justify($before_left, $before_right, 17, 13, 2));
+        //
+        $pajak_left = "Pajak";
+        $pajak_right = num_to_price($row->tx_total_tax);
+        $printer -> text(print_justify($pajak_left, $pajak_right, 16, 13, 3));
+        //
+        $after_left = "Penjualan(Tax)";
+        $after_right = num_to_price($row->tx_total_after_tax);
+        $printer -> text(print_justify($after_left, $after_right, 16, 13, 3));
+        //
+        $diskon_left = "Diskon";
+        $diskon_right = num_to_price($row->tx_total_discount);
+        $printer -> text(print_justify($diskon_left, $diskon_right, 16, 13, 3));
+        //
+        $keuntungannontax_left = "Keuntungan(NonTax)";
+        $keuntungannontax_right = num_to_price($row->tx_total_profit_before_tax);
+        $printer -> text(print_justify($keuntungannontax_left, $keuntungannontax_right, 18, 13, 1));
+        //
+        $keuntungantax_left = "Keuntungan(Tax)";
+        $keuntungantax_right = num_to_price($row->tx_total_profit_after_tax);
+        $printer -> text(print_justify($keuntungantax_left, $keuntungantax_right, 16, 13, 3));
+        //
+        $printer -> text('--------------------------------');
+        $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+        $total_left = "Total";
+        $total_right = num_to_price($row->tx_total_grand);
+        $printer -> text(print_justify($total_left, $total_right, 16, 13, 3));
+        $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
+        $printer -> text('--------------------------------');
+        //
+        $tx_total_grand += $row->tx_total_grand;
+      }
+
+      $printer -> text('--------------------------------');
+      $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+      $total_left = "Total Thn ".$year;
+      $total_right = num_to_price($tx_total_grand);
+      $printer -> text(print_justify($total_left, $total_right, 16, 13, 3));
+      $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
+      $printer -> text('--------------------------------');
+      $printer -> feed();
+      //
+      $date = date("Y-m-d");
+      $time = date("H:i:s");
+      $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+      //
+      $printer -> text("(NonTax) : Sebelum Pajak");
+      $printer -> feed();
+      $printer -> text("(Tax)    : Setelah Pajak");
+      $printer -> feed(2);
+      //
+      $printer -> text("Dicetak  : ".date_to_ind($date)." ".$time);
+      //
+      $printer -> feed();
+      $printer -> feed();
+      $printer -> feed();
+      $printer -> feed();
+
+      /* Close printer */
+      $printer -> close();
+    } catch (Exception $e) {
+      echo "Couldn't print to this printer: " . $e -> getMessage() . "\n";
+    }
+    //
+    redirect(base_url().'res_report_selling_user/annual/'.$year.'/'.$user_id);
+  }
+
   public function monthly($month,$user_id)
   {
     $raw = $raw = explode("-", $month);
@@ -133,6 +264,140 @@ class Res_report_selling_user extends MY_Restaurant {
     $this->pdf->load_view('monthly_pdf', $data);
   }
 
+  public function monthly_print($month, $user_id)
+  {
+    $raw = $raw = explode("-", $month);
+    $num_month = $raw[1];
+
+    $user = $this->m_res_user->get_by_id($user_id);
+    $title = "Laporan Penjualan Kasir\n'".$user->user_realname."'\nBulan ".month_name_ind($num_month)." ".$raw[0];
+    $client = $this->m_res_client->get_all();
+    //
+    $monthly = $this->m_res_report_selling_user->monthly($month,$user_id);
+    //
+
+    //print
+    $this->load->library("EscPos.php");
+
+    try {
+      $connector = new Escpos\PrintConnectors\WindowsPrintConnector("POS-58");
+         
+      $printer = new Escpos\Printer($connector);
+
+      //print image
+      if ($client->client_logo !='') {
+        $img = Escpos\EscposImage::load("img/".$client->client_logo);
+        $printer -> setJustification(Escpos\Printer::JUSTIFY_CENTER);
+        $printer -> bitImage($img);
+        $printer -> feed();
+      }
+      //Keterangan Wajib Pajak
+      $printer -> setJustification(Escpos\Printer::JUSTIFY_CENTER);
+
+      if ($client->client_logo == '') {
+        $printer -> setUnderline(Escpos\Printer::UNDERLINE_DOUBLE);
+        $printer -> text($client->client_name."\n");
+        $printer -> setUnderline(Escpos\Printer::UNDERLINE_NONE);
+      }
+
+      $printer -> text($client->client_street.','.$client->client_district."\n");
+      $printer -> text($client->client_city."\n");
+      $printer -> text("NPWPD : ".$client->client_npwpd."\n"); 
+      $printer -> text('--------------------------------');
+      //Judul
+      $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+      $printer -> text($title."\n");
+      $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
+      $printer -> text('--------------------------------');
+
+      $tx_total_buy_average = 0;
+      $tx_total_before_tax = 0;
+      $tx_total_tax = 0;
+      $tx_total_after_tax = 0;
+      $tx_total_discount = 0;
+      $tx_total_profit_before_tax = 0;
+      $tx_total_profit_after_tax = 0;
+      $i=1;
+      foreach ($monthly as $row){
+        $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+        $printer -> text(date_to_ind($row->tx_date));
+        $printer -> feed();
+        $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
+        $printer -> feed();
+
+        $pembelian_left = "Pembelian";
+        $pembelian_right = num_to_price($row->tx_total_buy_average);
+        $printer -> text(print_justify($pembelian_left, $pembelian_right, 16, 13, 3));
+        //
+        $before_left = "Penjualan(NonTax)";
+        $before_right = num_to_price($row->tx_total_before_tax);
+        $printer -> text(print_justify($before_left, $before_right, 17, 13, 2));
+        //
+        $pajak_left = "Pajak";
+        $pajak_right = num_to_price($row->tx_total_tax);
+        $printer -> text(print_justify($pajak_left, $pajak_right, 16, 13, 3));
+        //
+        $after_left = "Penjualan(Tax)";
+        $after_right = num_to_price($row->tx_total_after_tax);
+        $printer -> text(print_justify($after_left, $after_right, 16, 13, 3));
+        //
+        $diskon_left = "Diskon";
+        $diskon_right = num_to_price($row->tx_total_discount);
+        $printer -> text(print_justify($diskon_left, $diskon_right, 16, 13, 3));
+        //
+        $keuntungannontax_left = "Keuntungan(NonTax)";
+        $keuntungannontax_right = num_to_price($row->tx_total_profit_before_tax);
+        $printer -> text(print_justify($keuntungannontax_left, $keuntungannontax_right, 18, 13, 1));
+        //
+        $keuntungantax_left = "Keuntungan(Tax)";
+        $keuntungantax_right = num_to_price($row->tx_total_profit_after_tax);
+        $printer -> text(print_justify($keuntungantax_left, $keuntungantax_right, 16, 13, 3));
+        //
+        $printer -> text('--------------------------------');
+        $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+        $total_left = "Total";
+        $total_right = num_to_price($row->tx_total_grand);
+        $printer -> text(print_justify($total_left, $total_right, 16, 13, 3));
+        $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
+        $printer -> text('--------------------------------');
+        //
+        $tx_total_grand += $row->tx_total_grand;
+      }
+
+      $printer -> text('--------------------------------');
+      $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+      $total_left = "Total Bln ".month_name_ind($num_month);
+      $total_right = num_to_price($tx_total_grand);
+      $printer -> text(print_justify($total_left, $total_right, 16, 13, 3));
+      $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
+      $printer -> text('--------------------------------');
+      $printer -> feed();
+      //
+      $date = date("Y-m-d");
+      $time = date("H:i:s");
+      $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+      //
+      $printer -> text("(NonTax) : Sebelum Pajak");
+      $printer -> feed();
+      $printer -> text("(Tax)    : Setelah Pajak");
+      $printer -> feed(2);
+      //
+      $printer -> text("Dicetak  : ".date_to_ind($date)." ".$time);
+      //
+      $printer -> feed();
+      $printer -> feed();
+      $printer -> feed();
+      $printer -> feed();
+
+      /* Close printer */
+      $printer -> close();
+    } catch (Exception $e) {
+      echo "Couldn't print to this printer: " . $e -> getMessage() . "\n";
+    }
+    //
+    redirect(base_url().'res_report_selling_user/monthly/'.$month.'/'.$user_id);
+  }
+
   public function weekly($date_start, $date_end, $user_id)
   {
     $data['access'] = $this->access;
@@ -160,6 +425,137 @@ class Res_report_selling_user extends MY_Restaurant {
     $this->pdf->load_view('weekly_pdf', $data);
   }
 
+  public function weekly_print($date_start, $date_end, $user_id)
+  {
+    $user = $this->m_res_user->get_by_id($user_id);
+    $title = "Laporan Penjualan Kasir\n'".$user->user_realname."'\nMingguan\n(".$date_start." - ".$date_end.")";
+    $client = $this->m_res_client->get_all();
+    //
+    $weekly = $this->m_res_report_selling_user->weekly(ind_to_date($date_start),ind_to_date($date_end),$user_id);
+    //
+
+    //print
+    $this->load->library("EscPos.php");
+
+    try {
+      $connector = new Escpos\PrintConnectors\WindowsPrintConnector("POS-58");
+         
+      $printer = new Escpos\Printer($connector);
+
+      //print image
+      if ($client->client_logo !='') {
+        $img = Escpos\EscposImage::load("img/".$client->client_logo);
+        $printer -> setJustification(Escpos\Printer::JUSTIFY_CENTER);
+        $printer -> bitImage($img);
+        $printer -> feed();
+      }
+      //Keterangan Wajib Pajak
+      $printer -> setJustification(Escpos\Printer::JUSTIFY_CENTER);
+
+      if ($client->client_logo == '') {
+        $printer -> setUnderline(Escpos\Printer::UNDERLINE_DOUBLE);
+        $printer -> text($client->client_name."\n");
+        $printer -> setUnderline(Escpos\Printer::UNDERLINE_NONE);
+      }
+
+      $printer -> text($client->client_street.','.$client->client_district."\n");
+      $printer -> text($client->client_city."\n");
+      $printer -> text("NPWPD : ".$client->client_npwpd."\n"); 
+      $printer -> text('--------------------------------');
+      //Judul
+      $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+      $printer -> text($title."\n");
+      $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
+      $printer -> text('--------------------------------');
+
+      $tx_total_buy_average = 0;
+      $tx_total_before_tax = 0;
+      $tx_total_tax = 0;
+      $tx_total_after_tax = 0;
+      $tx_total_discount = 0;
+      $tx_total_profit_before_tax = 0;
+      $tx_total_profit_after_tax = 0;
+      $i=1;
+      foreach ($weekly as $row){
+        $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+        $printer -> text(date_to_ind($row->tx_date));
+        $printer -> feed();
+        $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
+        $printer -> feed();
+
+        $pembelian_left = "Pembelian";
+        $pembelian_right = num_to_price($row->tx_total_buy_average);
+        $printer -> text(print_justify($pembelian_left, $pembelian_right, 16, 13, 3));
+        //
+        $before_left = "Penjualan(NonTax)";
+        $before_right = num_to_price($row->tx_total_before_tax);
+        $printer -> text(print_justify($before_left, $before_right, 17, 13, 2));
+        //
+        $pajak_left = "Pajak";
+        $pajak_right = num_to_price($row->tx_total_tax);
+        $printer -> text(print_justify($pajak_left, $pajak_right, 16, 13, 3));
+        //
+        $after_left = "Penjualan(Tax)";
+        $after_right = num_to_price($row->tx_total_after_tax);
+        $printer -> text(print_justify($after_left, $after_right, 16, 13, 3));
+        //
+        $diskon_left = "Diskon";
+        $diskon_right = num_to_price($row->tx_total_discount);
+        $printer -> text(print_justify($diskon_left, $diskon_right, 16, 13, 3));
+        //
+        $keuntungannontax_left = "Keuntungan(NonTax)";
+        $keuntungannontax_right = num_to_price($row->tx_total_profit_before_tax);
+        $printer -> text(print_justify($keuntungannontax_left, $keuntungannontax_right, 18, 13, 1));
+        //
+        $keuntungantax_left = "Keuntungan(Tax)";
+        $keuntungantax_right = num_to_price($row->tx_total_profit_after_tax);
+        $printer -> text(print_justify($keuntungantax_left, $keuntungantax_right, 16, 13, 3));
+        //
+        $printer -> text('--------------------------------');
+        $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+        $total_left = "Total";
+        $total_right = num_to_price($row->tx_total_grand);
+        $printer -> text(print_justify($total_left, $total_right, 16, 13, 3));
+        $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
+        $printer -> text('--------------------------------');
+        //
+        $tx_total_grand += $row->tx_total_grand;
+      }
+
+      $printer -> text('--------------------------------');
+      $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+      $total_left = "Total Mingguan";
+      $total_right = num_to_price($tx_total_grand);
+      $printer -> text(print_justify($total_left, $total_right, 16, 13, 3));
+      $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
+      $printer -> text('--------------------------------');
+      $printer -> feed();
+      //
+      $date = date("Y-m-d");
+      $time = date("H:i:s");
+      $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+      //
+      $printer -> text("(NonTax) : Sebelum Pajak");
+      $printer -> feed();
+      $printer -> text("(Tax)    : Setelah Pajak");
+      $printer -> feed(2);
+      //
+      $printer -> text("Dicetak  : ".date_to_ind($date)." ".$time);
+      //
+      $printer -> feed();
+      $printer -> feed();
+      $printer -> feed();
+      $printer -> feed();
+
+      /* Close printer */
+      $printer -> close();
+    } catch (Exception $e) {
+      echo "Couldn't print to this printer: " . $e -> getMessage() . "\n";
+    }
+    //
+    redirect(base_url().'res_report_selling_user/weekly/'.$date_start.'/'.$date_end.'/'.$user_id);
+  }
+
   public function daily($date, $user_id)
   {
     $data['access'] = $this->access;
@@ -184,6 +580,131 @@ class Res_report_selling_user extends MY_Restaurant {
     $this->pdf->setPaper('A4', 'potrait');
     $this->pdf->filename = "laporan-penjualan-kasir('.$user->user_realname.')-tanggal-".date_to_ind($date).".pdf";
     $this->pdf->load_view('daily_pdf', $data);
+  }
+
+  public function daily_print($date, $user_id)
+  {
+    $user = $this->m_res_user->get_by_id($user_id);
+    $title = "Laporan Penjualan Kasir\n'".$user->user_realname."'\nTanggal\n".date_to_ind($date);
+    $client = $this->m_res_client->get_all();
+    //
+    $daily = $this->m_res_report_selling_user->daily($date, $user_id);
+    //
+
+    //print
+    $this->load->library("EscPos.php");
+
+    try {
+      $connector = new Escpos\PrintConnectors\WindowsPrintConnector("POS-58");
+         
+      $printer = new Escpos\Printer($connector);
+
+      //print image
+      if ($client->client_logo !='') {
+        $img = Escpos\EscposImage::load("img/".$client->client_logo);
+        $printer -> setJustification(Escpos\Printer::JUSTIFY_CENTER);
+        $printer -> bitImage($img);
+        $printer -> feed();
+      }
+      //Keterangan Wajib Pajak
+      $printer -> setJustification(Escpos\Printer::JUSTIFY_CENTER);
+
+      if ($client->client_logo == '') {
+        $printer -> setUnderline(Escpos\Printer::UNDERLINE_DOUBLE);
+        $printer -> text($client->client_name."\n");
+        $printer -> setUnderline(Escpos\Printer::UNDERLINE_NONE);
+      }
+
+      $printer -> text($client->client_street.','.$client->client_district."\n");
+      $printer -> text($client->client_city."\n");
+      $printer -> text("NPWPD : ".$client->client_npwpd."\n"); 
+      $printer -> text('--------------------------------');
+      //Judul
+      $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+      $printer -> text($title."\n");
+      $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
+      $printer -> text('--------------------------------');
+
+      $total_before_tax = 0;
+      $total_discount = 0;
+      $total_tax = 0;
+      $total_grand = 0;
+      $i=1;
+      foreach ($daily as $row){
+        $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+        $printer -> text($row->tx_type.'-'.$row->tx_receipt_no);
+        $printer -> feed();
+        $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
+        $printer -> feed();
+
+        //
+        $waktu_left = "Waktu";
+        $waktu_right = $row->tx_time;
+        $printer -> text(print_justify($waktu_left, $waktu_right, 16, 13, 3));
+        //
+        if ($row->tx_status == -2) {
+          $status = "Batal";
+        }else if ($row->tx_status == -1) {
+          $status = "Tahan";
+        }else if ($row->tx_status == 0) {
+          $status = "Proses";
+        }else if ($row->tx_status == 1) {
+          $status = "Sukses";
+        }
+        //
+        $status_left = "Status";
+        $status_right = $status;
+        $printer -> text(print_justify($status_left, $status_right, 16, 13, 3));
+        //
+        $subtotal_left = "Subtotal";
+        $subtotal_right = num_to_price($row->tx_total_before_tax);
+        $printer -> text(print_justify($subtotal_left, $subtotal_right, 16, 13, 3));
+        //
+        $diskon_left = "Diskon";
+        $diskon_right = num_to_price($row->tx_total_discount);
+        $printer -> text(print_justify($diskon_left, $diskon_right, 16, 13, 3));
+        //
+        $pajak_left = "Pajak";
+        $pajak_right = num_to_price($row->tx_total_tax);
+        $printer -> text(print_justify($pajak_left, $pajak_right, 16, 13, 3));
+        //
+        $printer -> text('--------------------------------');
+        $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+        $total_left = "Total";
+        $total_right = num_to_price($row->tx_total_grand);
+        $printer -> text(print_justify($total_left, $total_right, 16, 13, 3));
+        $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
+        $printer -> text('--------------------------------');
+        //
+        $tx_total_grand += $row->tx_total_grand;
+      }
+
+      $printer -> text('--------------------------------');
+      $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+      $total_left = "Total Tgl ".$date;
+      $total_right = num_to_price($tx_total_grand);
+      $printer -> text(print_justify($total_left, $total_right, 16, 13, 3));
+      $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
+      $printer -> text('--------------------------------');
+      $printer -> feed();
+      //
+      $date = date("Y-m-d");
+      $time = date("H:i:s");
+      $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+      $printer -> text("Dicetak : ".date_to_ind($date)." ".$time);
+      //
+      $printer -> feed();
+      $printer -> feed();
+      $printer -> feed();
+      $printer -> feed();
+
+      /* Close printer */
+      $printer -> close();
+    } catch (Exception $e) {
+      echo "Couldn't print to this printer: " . $e -> getMessage() . "\n";
+    }
+    //
+    redirect(base_url().'res_report_selling_user/daily/'.$date.'/'.$user_id);
   }
 
   public function range($date_start, $date_end, $user_id)
@@ -213,6 +734,137 @@ class Res_report_selling_user extends MY_Restaurant {
     $this->pdf->load_view('range_pdf', $data);
   }
 
+  public function range_print($date_start, $date_end, $user_id)
+  {
+    $user = $this->m_res_user->get_by_id($user_id);
+    $title = "Laporan Penjualan Kasir\n'".$user->user_realname."'\nTanggal\n(".$date_start." - ".$date_end.")";
+    $client = $this->m_res_client->get_all();
+    //
+    $range = $this->m_res_report_selling_user->range(ind_to_date($date_start),ind_to_date($date_end),$user_id);
+    //
+
+    //print
+    $this->load->library("EscPos.php");
+
+    try {
+      $connector = new Escpos\PrintConnectors\WindowsPrintConnector("POS-58");
+         
+      $printer = new Escpos\Printer($connector);
+
+      //print image
+      if ($client->client_logo !='') {
+        $img = Escpos\EscposImage::load("img/".$client->client_logo);
+        $printer -> setJustification(Escpos\Printer::JUSTIFY_CENTER);
+        $printer -> bitImage($img);
+        $printer -> feed();
+      }
+      //Keterangan Wajib Pajak
+      $printer -> setJustification(Escpos\Printer::JUSTIFY_CENTER);
+
+      if ($client->client_logo == '') {
+        $printer -> setUnderline(Escpos\Printer::UNDERLINE_DOUBLE);
+        $printer -> text($client->client_name."\n");
+        $printer -> setUnderline(Escpos\Printer::UNDERLINE_NONE);
+      }
+
+      $printer -> text($client->client_street.','.$client->client_district."\n");
+      $printer -> text($client->client_city."\n");
+      $printer -> text("NPWPD : ".$client->client_npwpd."\n"); 
+      $printer -> text('--------------------------------');
+      //Judul
+      $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+      $printer -> text($title."\n");
+      $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
+      $printer -> text('--------------------------------');
+
+      $tx_total_buy_average = 0;
+      $tx_total_before_tax = 0;
+      $tx_total_tax = 0;
+      $tx_total_after_tax = 0;
+      $tx_total_discount = 0;
+      $tx_total_profit_before_tax = 0;
+      $tx_total_profit_after_tax = 0;
+      $i=1;
+      foreach ($range as $row){
+        $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+        $printer -> text(date_to_ind($row->tx_date));
+        $printer -> feed();
+        $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
+        $printer -> feed();
+
+        $pembelian_left = "Pembelian";
+        $pembelian_right = num_to_price($row->tx_total_buy_average);
+        $printer -> text(print_justify($pembelian_left, $pembelian_right, 16, 13, 3));
+        //
+        $before_left = "Penjualan(NonTax)";
+        $before_right = num_to_price($row->tx_total_before_tax);
+        $printer -> text(print_justify($before_left, $before_right, 17, 13, 2));
+        //
+        $pajak_left = "Pajak";
+        $pajak_right = num_to_price($row->tx_total_tax);
+        $printer -> text(print_justify($pajak_left, $pajak_right, 16, 13, 3));
+        //
+        $after_left = "Penjualan(Tax)";
+        $after_right = num_to_price($row->tx_total_after_tax);
+        $printer -> text(print_justify($after_left, $after_right, 16, 13, 3));
+        //
+        $diskon_left = "Diskon";
+        $diskon_right = num_to_price($row->tx_total_discount);
+        $printer -> text(print_justify($diskon_left, $diskon_right, 16, 13, 3));
+        //
+        $keuntungannontax_left = "Keuntungan(NonTax)";
+        $keuntungannontax_right = num_to_price($row->tx_total_profit_before_tax);
+        $printer -> text(print_justify($keuntungannontax_left, $keuntungannontax_right, 18, 13, 1));
+        //
+        $keuntungantax_left = "Keuntungan(Tax)";
+        $keuntungantax_right = num_to_price($row->tx_total_profit_after_tax);
+        $printer -> text(print_justify($keuntungantax_left, $keuntungantax_right, 16, 13, 3));
+        //
+        $printer -> text('--------------------------------');
+        $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+        $total_left = "Total";
+        $total_right = num_to_price($row->tx_total_grand);
+        $printer -> text(print_justify($total_left, $total_right, 16, 13, 3));
+        $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
+        $printer -> text('--------------------------------');
+        //
+        $tx_total_grand += $row->tx_total_grand;
+      }
+
+      $printer -> text('--------------------------------');
+      $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+      $total_left = "Total Mingguan";
+      $total_right = num_to_price($tx_total_grand);
+      $printer -> text(print_justify($total_left, $total_right, 16, 13, 3));
+      $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
+      $printer -> text('--------------------------------');
+      $printer -> feed();
+      //
+      $date = date("Y-m-d");
+      $time = date("H:i:s");
+      $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+      //
+      $printer -> text("(NonTax) : Sebelum Pajak");
+      $printer -> feed();
+      $printer -> text("(Tax)    : Setelah Pajak");
+      $printer -> feed(2);
+      //
+      $printer -> text("Dicetak  : ".date_to_ind($date)." ".$time);
+      //
+      $printer -> feed();
+      $printer -> feed();
+      $printer -> feed();
+      $printer -> feed();
+
+      /* Close printer */
+      $printer -> close();
+    } catch (Exception $e) {
+      echo "Couldn't print to this printer: " . $e -> getMessage() . "\n";
+    }
+    //
+    redirect(base_url().'res_report_selling_user/range/'.$date_start.'/'.$date_end.'/'.$user_id);
+  }
+
   public function detail($tx_id)
   {
     $data['access'] = $this->access;
@@ -221,6 +873,12 @@ class Res_report_selling_user extends MY_Restaurant {
     $data['billing'] = $this->m_res_report_selling_user->detail($tx_id);
     $this->view('detail', $data);
 
+  }
+
+  public function frame_pdf()
+  {
+    $data = $_POST;
+    $this->view('res_report_selling_user/frame_pdf', $data);
   }
 
 }

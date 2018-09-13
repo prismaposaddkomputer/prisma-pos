@@ -36,6 +36,8 @@ class Kar_reservation extends MY_Karaoke {
     $this->load->model('kar_billing_service/m_kar_billing_service');
     $this->load->model('kar_billing_paket/m_kar_billing_paket');
     $this->load->model('kar_billing_fnb/m_kar_billing_fnb');
+    $this->load->model('kar_discount/m_kar_discount');
+    $this->load->model('kar_guest/m_kar_guest');
   }
 
 	public function index()
@@ -94,6 +96,8 @@ class Kar_reservation extends MY_Karaoke {
     $data['fnb'] = $this->m_kar_fnb->get_all();
     $data['non_tax'] = $this->m_kar_non_tax->get_all();
     $data['charge_type'] = $this->m_kar_charge_type->get_all();
+    $data['discount_room'] = $this->m_kar_reservation->discount_room();
+    $data['list_member'] = $this->m_kar_guest->get_all();
     if ($id == null) {
       if ($this->access->_create == 1) {
         $data['title'] = 'Tambah Data Pemesanan';
@@ -152,6 +156,17 @@ class Kar_reservation extends MY_Karaoke {
     }
   }
 
+  function get_arr_checked_value($data) {
+        // format result : 01#02
+        $result = '';
+        foreach($data as $key => $val) {
+            if($val != '') {
+                $result .= $val;
+            }
+        }
+        return $result;
+    }
+
   public function insert()
   {
     $data = $_POST;   
@@ -162,13 +177,63 @@ class Kar_reservation extends MY_Karaoke {
 
     $data['user_id'] = $this->session->userdata('user_id');
     $data['user_realname'] = $this->session->userdata('user_realname');
+
+    $guest_type = $data['guest_type'];
+
+    // Tamu Baru
+    // $guest_name = $data['guest_name'];
+    // $guest_gender = $data['guest_gender'];
+    // $guest_phone = $data['guest_phone'];
+    // $guest_id_type = $data['guest_id_type'];
+    // $guest_id_no = $data['guest_id_no'];
+
+    //Member (Tamu Langganan)
+    // $form_guest_name = $data['form_guest_name'];
+    // $form_guest_gender = $data['form_guest_gender'];
+    // $form_guest_phone = $data['form_guest_phone'];
+    // $form_guest_id_type = $data['form_guest_id_type'];
+    // $form_guest_id_no = $data['form_guest_id_no'];
+
+    if ($data['form_guest_gender'] == "Laki-laki") {
+      $form_guest_gender = "L";
+    }else if($data['form_guest_gender'] == "Perempuan"){
+      $form_guest_gender = "P";
+    }
+
+    if ($guest_type == '0') {
+      unset($data['form_guest_id'], $data['form_guest_name'], $data['form_guest_gender'], $data['form_guest_phone'], $data['form_guest_id_type'], $data['form_guest_id_no']);
+      //
+      $data['guest_id'] = $data['guest_id'];
+      $data['guest_name'] = $data['guest_name'];
+      // $data['guest_gender'] = $data['guest_gender'];
+      $data['guest_gender'] = ($data['guest_gender'] != '') ? $this->get_arr_checked_value($data['guest_gender']) : '';
+      $data['guest_phone'] = $data['guest_phone'];
+      $data['guest_id_type'] = $data['guest_id_type'];
+      $data['guest_id_no'] = $data['guest_id_no'];
+    }else if ($guest_type == '1') {
+      $data['guest_id'] = $data['form_guest_id'];
+      $data['guest_name'] = $data['form_guest_name'];
+      $data['guest_gender'] = $data['form_guest_gender'];
+      $data['guest_phone'] = $data['form_guest_phone'];
+      $data['guest_id_type'] = $data['form_guest_id_type'];
+      $data['guest_id_no'] = $data['form_guest_id_no'];
+      //
+      unset($data['form_guest_id'], $data['form_guest_name'], $data['form_guest_gender'], $data['form_guest_phone'], $data['form_guest_id_type'], $data['form_guest_id_no']);
+    }
+
+    $action = $data['action'];
+    unset($data['action']);
     
     $this->m_kar_reservation->update($data['billing_id'],$data);
 
     $this->update_all_billing($data['billing_id']);
 
     $this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil ditambahkan!</div>');
-    redirect(base_url().'kar_reservation/payment/'.$data['billing_id']);
+    if ($action == 'save_payment') {
+      redirect(base_url().'kar_reservation/payment/'.$data['billing_id']);
+    } else {
+      redirect(base_url().'kar_reservation/index');
+    }
   }
 
   public function update_all_billing($billing_id)
@@ -183,11 +248,13 @@ class Kar_reservation extends MY_Karaoke {
     $billing_subtotal = 0;
     $billing_tax = 0;
     $billing_total = 0;
+    $billing_discount = 0;
 
     foreach ($room as $row) {
       $billing_subtotal += $row->room_type_subtotal;
       $billing_tax += $row->room_type_tax;
       $billing_total += $row->room_type_total;
+      $billing_discount += $row->room_type_discount;
     }
 
     foreach ($extra as $row) {
@@ -221,6 +288,7 @@ class Kar_reservation extends MY_Karaoke {
 
     $data['billing_subtotal'] = $billing_subtotal;
     $data['billing_tax'] = $billing_tax;
+    $data['billing_discount'] = $billing_discount;
     $data['billing_total'] = $billing_total;
 
     $this->m_kar_reservation->update($billing_id,$data);
@@ -265,7 +333,21 @@ class Kar_reservation extends MY_Karaoke {
     $billing_total = $billing->billing_total - $billing->billing_down_payment;
     //
     $data['billing_payment'] = price_to_num($data['billing_payment']);
-    $data['billing_change'] = $data['billing_payment'] - $billing_total;
+    if ($billing->billing_down_payment_type == 1) {
+      $data['billing_change'] = $data['billing_payment'] - $billing_total;
+    }else {
+      $dp_prosen = $billing->billing_total*($billing->billing_down_payment/100);
+      //
+      if ($billing->billing_down_payment > $billing->billing_total) {
+        $data['billing_change'] = $billing->billing_down_payment-$billing->billing_total;
+      }else{
+        if ($dp_prosen > $billing->billing_total) {
+          $data['billing_change'] = $dp_prosen - $billing->billing_total;
+        }else {
+          $data['billing_change'] = $data['billing_payment'] - ($billing->billing_total - $dp_prosen);
+        }
+      }
+    }
     $data['billing_status'] = 2;
     //
     $this->m_kar_billing->update($id,$data);
@@ -300,11 +382,56 @@ class Kar_reservation extends MY_Karaoke {
 
     $data['billing_status'] = 1;
     $data['billing_date_in'] = ind_to_date($data['billing_date_in']);
-    $data['billing_date_out'] = ind_to_date($data['billing_date_out']);
+    // $data['billing_date_out'] = ind_to_date($data['billing_date_out']);
     $data['billing_down_payment'] = price_to_num($data['billing_down_payment']);
 
     $data['user_id'] = $this->session->userdata('user_id');
     $data['user_realname'] = $this->session->userdata('user_realname');
+
+    $guest_type = $data['guest_type'];
+
+    // Tamu Baru
+    // $guest_name = $data['guest_name'];
+    // $guest_gender = $data['guest_gender'];
+    // $guest_phone = $data['guest_phone'];
+    // $guest_id_type = $data['guest_id_type'];
+    // $guest_id_no = $data['guest_id_no'];
+
+    //Member (Tamu Langganan)
+    // $form_guest_name = $data['form_guest_name'];
+    // $form_guest_gender = $data['form_guest_gender'];
+    // $form_guest_phone = $data['form_guest_phone'];
+    // $form_guest_id_type = $data['form_guest_id_type'];
+    // $form_guest_id_no = $data['form_guest_id_no'];
+
+    if ($data['form_guest_gender'] == "Laki-laki") {
+      $form_guest_gender = "L";
+    }else if($data['form_guest_gender'] == "Perempuan"){
+      $form_guest_gender = "P";
+    }
+
+    if ($guest_type == '0') {
+      unset($data['form_guest_id'], $data['form_guest_name'], $data['form_guest_gender'], $data['form_guest_phone'], $data['form_guest_id_type'], $data['form_guest_id_no']);
+      //
+      $data['guest_id'] = $data['guest_id'];
+      $data['guest_name'] = $data['guest_name'];
+      $data['guest_gender'] = ($data['guest_gender'] != '') ? $this->get_arr_checked_value($data['guest_gender']) : '';
+      $data['guest_phone'] = $data['guest_phone'];
+      $data['guest_id_type'] = $data['guest_id_type'];
+      $data['guest_id_no'] = $data['guest_id_no'];
+    }else if ($guest_type == '1') {
+      $data['guest_id'] = $data['form_guest_id'];
+      $data['guest_name'] = $data['form_guest_name'];
+      $data['guest_gender'] = $data['form_guest_gender'];
+      $data['guest_phone'] = $data['form_guest_phone'];
+      $data['guest_id_type'] = $data['form_guest_id_type'];
+      $data['guest_id_no'] = $data['form_guest_id_no'];
+      //
+      unset($data['form_guest_id'], $data['form_guest_name'], $data['form_guest_gender'], $data['form_guest_phone'], $data['form_guest_id_type'], $data['form_guest_id_no']);
+    }
+
+    $action = $data['action'];
+    unset($data['action']);
     
     $this->m_kar_reservation->update($data['billing_id'],$data);
 
@@ -312,8 +439,8 @@ class Kar_reservation extends MY_Karaoke {
       'billing_id' => $data['billing_id'],
       'billing_date_in' => $data['billing_date_in'],
       'billing_time_in' => $data['billing_time_in'],
-      'billing_date_out' => $data['billing_date_out'],
-      'billing_time_out' => $data['billing_time_out'],
+      // 'billing_date_out' => $data['billing_date_out'],
+      // 'billing_time_out' => $data['billing_time_out'],
     );
     
     // $this->update_billing_room($data_update);
@@ -321,7 +448,11 @@ class Kar_reservation extends MY_Karaoke {
 
     $this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil diubah!</div>');
     // redirect(base_url().'kar_reservation/index');
-    redirect(base_url().'kar_reservation/payment/'.$data['billing_id']);
+    if ($action == 'save_payment') {
+      redirect(base_url().'kar_reservation/payment/'.$data['billing_id']);
+    } else {
+      redirect(base_url().'kar_reservation/index');
+    }
   }
 
   public function reservation_print_pdf($billing_id)
@@ -391,7 +522,8 @@ class Kar_reservation extends MY_Karaoke {
       $printer -> text('--------------------------------');
       $printer -> feed();
       $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
-      $printer -> text(substr($billing->user_realname,0,12).' '.convert_date($billing->created));
+      // $printer -> text(substr($billing->user_realname,0,12).' '.convert_date($billing->created));
+      $printer -> text(substr($billing->user_realname,0,12).' '.date_to_ind(date("Y-m-d")).' '.date("H:i:s"));
       $printer -> feed();
       $printer -> text('--------------------------------');
       //
@@ -409,7 +541,7 @@ class Kar_reservation extends MY_Karaoke {
       $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
       $printer -> feed();
       $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
-      $printer -> text("Nama : ".$billing->guest_name);
+      $printer -> text("Nama    : ".substr($billing->guest_name,0,22));
       $printer -> feed();
       if ($billing->guest_phone !='') {
         $phone = $billing->guest_phone;
@@ -417,13 +549,22 @@ class Kar_reservation extends MY_Karaoke {
         $phone = "-";
       }
       $printer -> text("No Telp : ".$phone);
-      if ($billing->guest_id_no !='') {
-        $id_no = $billing->guest_id_no;
-      }else {
-        $id_no = "-";
+
+      if ($billing->guest_id_type == '1') {
+        $kategori_id = "-";
+      }elseif ($billing->guest_id_type == '2') {
+        $kategori_id = "KTP";
+        $id_no = "(".$billing->guest_id_no.")";
+      }elseif ($billing->guest_id_type == '3') {
+        $kategori_id = "SIM";
+        $id_no = "(".$billing->guest_id_no.")";
+      }elseif ($billing->guest_id_type == '4') {
+        $kategori_id = "Lainnya";
+        $id_no = "(".$billing->guest_id_no.")";
       }
+
       $printer -> feed();
-      $printer -> text("No Identitas : ".$id_no);
+      $printer -> text("No ID   : ".$kategori_id.$id_no);
       $printer -> feed();
       $printer -> text('--------------------------------');
       //Keterangan Pemesanan
@@ -566,12 +707,39 @@ class Kar_reservation extends MY_Karaoke {
       }
       $printer -> text('--------------------------------');
       //
+      if ($billing->billing_down_payment_type == 1){
+        $uang_muka = num_to_price($billing->billing_down_payment);
+      }
+      else{
+        $uang_muka = round($billing->billing_down_payment,0,PHP_ROUND_HALF_UP)." %";
+      }
+
+      if ($billing->billing_down_payment > $billing->billing_total){
+        $sisa_bayar = num_to_price(0);
+      }
+      else{
+        if ($billing->billing_down_payment_type == 1){
+          $sisa_bayar = num_to_price($billing->billing_total-$billing->billing_down_payment);
+        }
+        else{
+          $dp_prosen = $billing->billing_total*($billing->billing_down_payment/100);
+
+          if ($dp_prosen > $billing->billing_total){
+            $sisa_bayar = num_to_price(0);
+          }
+          else{
+            $sisa_bayar = num_to_price($billing->billing_total-$dp_prosen);
+          }
+        }
+      }
+      //
       $space_array = array(
         strlen(num_to_price($billing->billing_total)),
-        strlen(num_to_price($billing->billing_down_payment)),
-        strlen(num_to_price($billing->billing_total-$billing->billing_down_payment)),
+        strlen($uang_muka),
+        strlen($sisa_bayar),
         strlen(num_to_price($billing->billing_payment)),
         strlen(num_to_price($billing->billing_change)),
+        strlen(num_to_price($billing->billing_discount)),
       );
       $l_max = max($space_array);
       $l_1 = $l_max - strlen(num_to_price($billing->billing_total));
@@ -584,7 +752,7 @@ class Kar_reservation extends MY_Karaoke {
       for ($i=0; $i < $l_2; $i++) {
         $s_2 .= ' ';
       };
-      $l_3 = $l_max - strlen(num_to_price($billing->billing_total-$billing->billing_down_payment));
+      $l_3 = $l_max - strlen($sisa_bayar);
       $s_3 = '';
       for ($i=0; $i < $l_3; $i++) {
         $s_3 .= ' ';
@@ -603,6 +771,11 @@ class Kar_reservation extends MY_Karaoke {
       $s_6 = '';
       for ($i=0; $i < $l_6; $i++) {
         $s_6 .= ' ';
+      };
+      $l_7 = $l_max - strlen(num_to_price($billing->billing_discount));
+      $s_7 = '';
+      for ($i=0; $i < $l_7; $i++) {
+        $s_7 .= ' ';
       };
 
       foreach ($charge_type as $row){
@@ -655,11 +828,13 @@ class Kar_reservation extends MY_Karaoke {
       }else {
         $name_total = "Total Bersih";
       }
+      $printer -> text('Diskon = '.$s_7.num_to_price($billing->billing_discount));
+      $printer -> feed();
       $printer -> text($name_total.' = '.$s_1.num_to_price($billing->billing_total));
       $printer -> feed();
-      $printer -> text('Uang Muka = '.$s_2.num_to_price($billing->billing_down_payment));
+      $printer -> text('Uang Muka = '.$s_2.$uang_muka);
       $printer -> feed();
-      $printer -> text('Sisa Bayar = '.$s_3.num_to_price($billing->billing_total-$billing->billing_down_payment));
+      $printer -> text('Sisa Bayar = '.$s_3.$sisa_bayar);
       $printer -> feed();
       $printer -> feed();
       $printer -> text('Dibayar = '.$s_4.num_to_price($billing->billing_payment));
@@ -741,6 +916,40 @@ class Kar_reservation extends MY_Karaoke {
     echo json_encode($data);
   }
 
+  public function get_tamu_langganan()
+  {
+    $client = $this->m_kar_client->get_all();
+    $guest_id = $this->input->post('guest_id');
+    $guest = $this->m_kar_guest->get_by_id($guest_id);
+
+    $guest->guest_name = $guest->guest_name;
+    if ($guest->guest_gender == 'L') {
+      $guest_gender = "Laki-laki";
+    }else{
+      $guest_gender = "Perempuan";
+    }
+    $guest->guest_gender = $guest_gender;
+    $guest->guest_phone = $guest->guest_phone;
+    $guest->guest_id_type = $guest->guest_id_type;
+    $guest->guest_id_no = $guest->guest_id_no;
+    if ($guest->guest_id_type == '1') {
+      $guest_name = "(Tidak Ada)";
+    }elseif ($guest->guest_id_type == '2') {
+      $guest_name = "(KTP)";
+    }elseif ($guest->guest_id_type == '3') {
+      $guest_name = "(SIM)";
+    }elseif ($guest->guest_id_type == '4') {
+      $guest_name = "(Lainnya)";
+    }
+    $guest->guest_id_type_name = $guest_name;
+
+    $data = array(
+      'guest' => $guest
+    );
+    
+    echo json_encode($data);
+  }
+
   public function add_room()
   {
     $data = $_POST;
@@ -748,6 +957,7 @@ class Kar_reservation extends MY_Karaoke {
     $client = $this->m_kar_client->get_all();
     $tax = $this->m_kar_charge_type->get_by_id(1);
     $room = $this->m_kar_reservation->room_detail($data['room_id']);
+    $discount = $this->m_kar_discount->get_by_id($data['discount_id_room']);
     
     if ($client->client_is_taxed == 0) {
       // Setingan harga sebelum pajak
@@ -756,15 +966,18 @@ class Kar_reservation extends MY_Karaoke {
       $room_type_subtotal = price_to_num($data['room_type_total']);
       // $room_type_tax += $room_type_subtotal * $tax->charge_type_ratio;
       $room_type_tax += $room_type_subtotal * ($tax->charge_type_ratio/100);
-      $room_type_total = $room_type_subtotal + $room_type_tax;
+      $room_type_before_discount = $room_type_subtotal + $room_type_tax;
     } else {
       // Settingan harga setelah pajak
-      $room_type_total = price_to_num($data['room_type_total']);
+      $room_type_before_discount = price_to_num($data['room_type_total']);
       // hitung persen semua setelah pajak/ hitung mundur
-      $room_type_tax = ($tax->charge_type_ratio/(100 + $tax->charge_type_ratio))*$room_type_total;
-      $room_type_subtotal = $room_type_total - $room_type_tax;
+      $room_type_tax = ($tax->charge_type_ratio/(100 + $tax->charge_type_ratio))*$room_type_before_discount;
+      $room_type_subtotal = $room_type_before_discount - $room_type_tax;
       $room_type_charge = $room_type_subtotal / $data['room_type_duration'];
     }
+
+    $room_type_discount = $discount->discount_amount*$room_type_before_discount/100;
+    $room_type_total = $room_type_before_discount-$room_type_discount;
 
     $data_room = array(
       'billing_id' => $data['billing_id'],
@@ -773,8 +986,13 @@ class Kar_reservation extends MY_Karaoke {
       'room_type_id' => $room->room_type_id,
       'room_type_name' => $room->room_type_name,
       'room_type_charge' => $room_type_charge,
+      'discount_id' => $discount->discount_id,
+      'discount_type' => $discount->discount_type,
+      'discount_amount' => $discount->discount_amount,
       'room_type_subtotal' => $room_type_subtotal,
       'room_type_tax' => $room_type_tax,
+      'room_type_before_discount' => $room_type_before_discount,
+      'room_type_discount' => $room_type_discount,
       'room_type_total' => $room_type_total,
       'room_type_duration' => $data['room_type_duration'],
       'created_by' => $this->session->userdata('user_realname')
