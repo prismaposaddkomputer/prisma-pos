@@ -7,7 +7,7 @@
     <form id="form" class="" action="<?=base_url()?>hot_guest/<?=$action?>" method="post">
       <div class="col-md-6">
         <input class="form-control" type="hidden" name="guest_id" value="<?php if($guest_type != null){echo $guest_type->guest_id;}?>">
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label>Jenis Tamu <small class="required-field">*</small></label>
           <br>
           <label class="radio-inline">
@@ -17,7 +17,8 @@
           <label class="radio-inline">
             <input type="radio" name="guest_type" value="1" <?php if($guest_type != null){if($guest_type->guest_type == 1){echo 'checked';}}?>/> Member (Tamu Langganan)
           </label>
-        </div>
+        </div> -->
+        <input type="hidden" name="guest_type" value="1">
         <div class="form-group">
           <label>Nama Tamu / Plat Nomor Kendaraan <small class="required-field">*</small></label>
           <input class="form-control keyboard" type="text" name="guest_name" value="<?php if($guest_type != null){echo $guest_type->guest_name;}?>">

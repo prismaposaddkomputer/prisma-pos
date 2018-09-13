@@ -24,7 +24,7 @@ class Hot_guest extends MY_Hotel {
   {
     if ($this->access->_read == 1) {
       $data['access'] = $this->access;
-      $data['title'] = 'Manajemen Tamu';
+      $data['title'] = 'Manajemen Member (Tamu Langganan)';
 
       if($this->input->post('search_term')){
         $search_term = $this->input->post('search_term');
@@ -70,7 +70,7 @@ class Hot_guest extends MY_Hotel {
     $data['access'] = $this->access;
     if ($id == null) {
       if ($this->access->_create == 1) {
-        $data['title'] = 'Tambah Tamu';
+        $data['title'] = 'Tambah Member (Tamu Langganan)';
         $data['action'] = 'insert';
         $data['guest_type'] = null;
         $this->view('hot_guest/form', $data);

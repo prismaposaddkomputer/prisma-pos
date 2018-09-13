@@ -157,15 +157,15 @@ class Kar_reservation extends MY_Karaoke {
   }
 
   function get_arr_checked_value($data) {
-        // format result : 01#02
-        $result = '';
-        foreach($data as $key => $val) {
-            if($val != '') {
-                $result .= $val;
-            }
-        }
-        return $result;
-    }
+      // format result : 01#02
+      $result = '';
+      foreach($data as $key => $val) {
+          if($val != '') {
+              $result .= $val;
+          }
+      }
+      return $result;
+  }
 
   public function insert()
   {
