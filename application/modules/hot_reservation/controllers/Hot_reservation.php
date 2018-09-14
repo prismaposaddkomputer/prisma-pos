@@ -479,7 +479,7 @@ class Hot_reservation extends MY_Hotel {
     $this->view('hot_reservation/frame_pdf', $data);
   }
 
-  public function reservation_print_struk($billing_id, $url)
+  public function reservation_print_struk($billing_id, $url = '')
   {
     $title = "Laporan Reservasi Pembayaran";
     $client = $this->m_hot_client->get_all();
