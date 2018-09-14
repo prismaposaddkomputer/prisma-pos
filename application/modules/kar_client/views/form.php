@@ -128,6 +128,7 @@
           <?php endif; ?>
           <br><br>
           <input type="file" name="client_logo" value="">
+          <input type="hidden" name="client_logo_input" value="<?=$client->client_logo?>">
           <small>Gambar akan dikompress dengan Tinggi : 150px & Lebar : 300px dan distruk akan menjadi hitam putih</small>
         </div>
         <div class="form-group pull-right">

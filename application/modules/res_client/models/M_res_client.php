@@ -38,7 +38,20 @@ class M_res_client extends CI_Model {
     //     $data_change['customer_img'] = $this->process_file('customer_img','customer',@$customer_id);
     // }
     //
-    $data['client_logo'] = $this->compress_image('client_logo');
+
+    $client_logo = $this->compress_image('client_logo');
+
+    if ($data['client_logo_input'] !='') {
+      if ($client_logo !='') {
+        $data['client_logo'] = $client_logo;
+      }else{
+        $data['client_logo'] = $data['client_logo_input'];
+      }
+    }elseif ($client_logo !='') {
+      $data['client_logo'] = $client_logo;
+    }
+    //
+    unset($data['client_logo_input']);
     //
     $this->db->where('client_id',$id)->update('res_client',$data);
   }
