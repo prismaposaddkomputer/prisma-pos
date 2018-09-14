@@ -437,6 +437,7 @@ class M_res_cashier extends CI_Model {
       ->where('user_id',$user_id)
       ->where('tx_date',$date)
       ->where('tx_status',-1)
+      ->order_by('tx_receipt_no','DESC')
       ->get('res_billing')->result();
   }
 

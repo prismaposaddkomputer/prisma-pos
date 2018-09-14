@@ -609,7 +609,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Pencarian</label>
-                  <input id="search_name" class="form-control" type="text" name="search_name" value="">
+                  <input id="search_name" class="form-control keyboard" type="text" name="search_name" value="">
                 </div>
               </div>
               <div class="col-md-2">
@@ -1138,7 +1138,7 @@
         var tx_change = parseFloat(ind_to_sys(tx_payment)) - parseFloat(tx_total_grand);
 
         if (tx_change >= 0) {
-          $("#payment_tx_change").val(sys_to_ind(tx_change));
+          $("#payment_tx_change").val(sys_to_ind(Math.round(tx_change)));
         }
       }
 
@@ -1169,7 +1169,7 @@
               $("#change_section").show();
               $("#bill_tx_total_before_tax_nominal").html('');
               printBill();
-              $("#change_label").html('<h5>Kembalian</h5><h3>'+sys_to_cur(tx_change)+'</h3>');
+              $("#change_label").html('<h5>Kembalian</h5><h3>'+sys_to_cur(Math.round(tx_change))+'</h3>');
               new_billing();
               send_dashboard(data);
             }

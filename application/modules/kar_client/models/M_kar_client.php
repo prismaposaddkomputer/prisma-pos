@@ -63,49 +63,49 @@ class M_kar_client extends CI_Model {
 
 
   function compress_image($src_file_name = null) {
-        // data tanggal
-        $this->load->library('upload');
-        $this->load->library('image_lib');
+    // data tanggal
+    $this->load->library('upload');
+    $this->load->library('image_lib');
 
-        $config['upload_path'] = 'img/'; //path folder
-        $config['allowed_types'] = 'jpg|png|jpeg'; //type yang dapat diakses bisa anda sesuaikan
- 
-        $this->upload->initialize($config);
-        if(!empty($_FILES[$src_file_name]['name'])){
-            
-            if ($this->upload->do_upload($src_file_name)){
-                $gbr = array('upload_data' => $this->upload->data()); 
-                // cek resolusi gambar
-                $nama_gambar = 'img/'.$gbr['upload_data']['file_name'];
-                $data = getimagesize($nama_gambar);
-                $width_normal = $data[0];
-                $height_normal = $data[1];
-                // pembagian
-                // $bagi_width = $width / 4;
-                // $bagi_height = $height / 4;
-                //
-                $width_akhir = 300;
-                // $height_akhir = ($width_akhir / $width_normal) * $height_normal;
-                $height_akhir = 150;
-                //Compress Image
-                $config['image_library']='gd2';
-                $config['source_image'] = $gbr['upload_data']['full_path'];
-                $config['create_thumb']= FALSE;
-                $config['maintain_ratio']= FALSE;
-                $config['quality']= '100%';
-                $config['width']= $width_akhir;
-                $config['height']= $height_akhir;
-                $config['new_image']= 'img/'.$gbr['upload_data']['file_name'];
-                $this->image_lib->initialize($config);
-                // $this->load->library('image_lib', $config);
-                $this->image_lib->resize();
-                $this->image_lib->clear();
- 
-                $client_logo=$gbr['upload_data']['file_name'];
-            }
+    $config['upload_path'] = 'img/'; //path folder
+    $config['allowed_types'] = 'jpg|png|jpeg'; //type yang dapat diakses bisa anda sesuaikan
+
+    $this->upload->initialize($config);
+    if(!empty($_FILES[$src_file_name]['name'])){
+        
+        if ($this->upload->do_upload($src_file_name)){
+            $gbr = array('upload_data' => $this->upload->data()); 
+            // cek resolusi gambar
+            $nama_gambar = 'img/'.$gbr['upload_data']['file_name'];
+            $data = getimagesize($nama_gambar);
+            $width_normal = $data[0];
+            $height_normal = $data[1];
+            // pembagian
+            // $bagi_width = $width / 4;
+            // $bagi_height = $height / 4;
             //
-            return $client_logo;  
-        }           
-    }
+            $width_akhir = 300;
+            // $height_akhir = ($width_akhir / $width_normal) * $height_normal;
+            $height_akhir = 150;
+            //Compress Image
+            $config['image_library']='gd2';
+            $config['source_image'] = $gbr['upload_data']['full_path'];
+            $config['create_thumb']= FALSE;
+            $config['maintain_ratio']= FALSE;
+            $config['quality']= '100%';
+            $config['width']= $width_akhir;
+            $config['height']= $height_akhir;
+            $config['new_image']= 'img/'.$gbr['upload_data']['file_name'];
+            $this->image_lib->initialize($config);
+            // $this->load->library('image_lib', $config);
+            $this->image_lib->resize();
+            $this->image_lib->clear();
+
+            $client_logo=$gbr['upload_data']['file_name'];
+        }
+        //
+        return $client_logo;  
+    }           
+  }
 
 }
