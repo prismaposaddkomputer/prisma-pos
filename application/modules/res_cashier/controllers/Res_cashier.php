@@ -962,7 +962,7 @@ class Res_cashier extends MY_Restaurant {
           $printer -> text($row->item_name);
           $printer -> feed();
           $printer -> setJustification(Escpos\Printer::JUSTIFY_RIGHT);
-          $printer -> text($row->tx_amount.' X '.num_to_price($row->item_price_after_tax).' = '.num_to_price($row->tx_subtotal_after_tax));
+          $printer -> text($row->tx_amount.' X '.num_to_price(round($row->item_price_after_tax,0,PHP_ROUND_HALF_UP)).' = '.num_to_price(round($row->tx_subtotal_after_tax,0,PHP_ROUND_HALF_UP)));
           $printer -> feed();
         };
         $space_array = array(
@@ -1006,7 +1006,7 @@ class Res_cashier extends MY_Restaurant {
         };
         $printer -> setJustification(Escpos\Printer::JUSTIFY_RIGHT);
         $printer -> text('--------------------------------');
-        $printer -> text('Total Bersih = '.$s_1.num_to_price($billing->tx_total_after_tax));
+        $printer -> text('Total Bersih = '.$s_1.num_to_price(round($billing->tx_total_after_tax,0,PHP_ROUND_HALF_UP)));
         $printer -> feed();
         $printer -> text('Diskon = '.$s_5.num_to_price(0));
         $printer -> feed();
@@ -1014,9 +1014,9 @@ class Res_cashier extends MY_Restaurant {
         $printer -> feed();
         $printer -> text('Sisa Bayar = '.$s_6.num_to_price(0));
         $printer -> feed(2);
-        $printer -> text('Dibayar = '.$s_2.num_to_price($billing->tx_payment));
+        $printer -> text('Dibayar = '.$s_2.num_to_price(round($billing->tx_payment,0,PHP_ROUND_HALF_UP)));
         $printer -> feed();
-        $printer -> text('Kembalian = '.$s_3.num_to_price($billing->tx_change));
+        $printer -> text('Kembalian = '.$s_3.num_to_price(round($billing->tx_change,0,PHP_ROUND_HALF_UP)));
         $printer -> feed(2);
         if ($billing->buyget != null) {
           $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
@@ -1030,9 +1030,9 @@ class Res_cashier extends MY_Restaurant {
         }
         $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
         $printer -> feed();
-        $printer -> text('HPP = '.num_to_price($billing->tx_total_before_tax));
+        $printer -> text('HPP = '.num_to_price(round($billing->tx_total_before_tax,0,PHP_ROUND_HALF_UP)));
         $printer -> feed();
-        $printer -> text('Pajak Restoran = '.num_to_price($billing->tx_total_tax));
+        $printer -> text('Pajak Restoran = '.num_to_price(round($billing->tx_total_tax,0,PHP_ROUND_HALF_UP)));
         $printer -> feed(2);
         $printer -> setJustification(Escpos\Printer::JUSTIFY_CENTER);
         $printer -> text('Terimakasih atas kunjungan anda.');
@@ -1071,7 +1071,7 @@ class Res_cashier extends MY_Restaurant {
           $printer -> text($row->item_name);
           $printer -> feed();
           $printer -> setJustification(Escpos\Printer::JUSTIFY_RIGHT);
-          $printer -> text($row->tx_amount.' X '.num_to_price($row->item_price_before_tax).' = '.num_to_price($row->tx_subtotal_before_tax));
+          $printer -> text($row->tx_amount.' X '.num_to_price(round($row->item_price_before_tax,0,PHP_ROUND_HALF_UP)).' = '.num_to_price(round($row->tx_subtotal_before_tax,0,PHP_ROUND_HALF_UP)));
           $printer -> feed();
         };
         $space_array = array(
@@ -1110,26 +1110,26 @@ class Res_cashier extends MY_Restaurant {
         };
         $printer -> setJustification(Escpos\Printer::JUSTIFY_RIGHT);
         $printer -> text('--------------------------------');
-        $printer -> text('Subtotal = '.$s_1.num_to_price($billing->tx_total_before_tax));
+        $printer -> text('Subtotal = '.$s_1.num_to_price(round($billing->tx_total_before_tax,0,PHP_ROUND_HALF_UP)));
         $printer -> feed();
-        $printer -> text('Pajak Restoran = '.$s_2.num_to_price($billing->tx_total_tax));
+        $printer -> text('Pajak Restoran = '.$s_2.num_to_price(round($billing->tx_total_tax,0,PHP_ROUND_HALF_UP)));
         $printer -> feed(2);
 
-        $printer -> text('Total = '.$s_3.num_to_price($billing->tx_total_after_tax));
+        $printer -> text('Total = '.$s_3.num_to_price(round($billing->tx_total_after_tax,0,PHP_ROUND_HALF_UP)));
         $printer -> feed();
         $printer -> text('Uang Muka = '.$s_4.num_to_price(0));
         $printer -> feed();
         $printer -> text('Sisa Bayar = '.$s_5.num_to_price(0));
 
         $printer -> feed(2);
-        $printer -> text('Dibayar = '.num_to_price($billing->tx_payment));
+        $printer -> text('Dibayar = '.num_to_price(round($billing->tx_payment,0,PHP_ROUND_HALF_UP)));
         $printer -> feed();
         $l_6 = $l_max - strlen(num_to_price($billing->tx_change));
         $s_6 = '';
         for ($i=0; $i < $l_6; $i++) {
           $s_6 .= ' ';
         };
-        $printer -> text('Kembalian = '.$s_3.num_to_price($billing->tx_change));
+        $printer -> text('Kembalian = '.$s_3.num_to_price(round($billing->tx_change,0,PHP_ROUND_HALF_UP)));
         $printer -> feed(2);
         if ($billing->buyget != null) {
           $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);

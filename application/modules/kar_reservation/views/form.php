@@ -151,7 +151,7 @@
           <div class="form-group">
             <label>Pilih Tamu Langganan / Plat Nomor Kendaraan</label>
             <select class="form-control select2" name="form_guest_id" id="jenis_tamu_langganan">
-              <option value="">Tidak Ada</option>
+              <option value="">Kosong</option>
               <?php foreach ($list_member as $data): ?>
               <option value="<?=$data->guest_id?>" <?php if($billing != null){if($billing->guest_id == $data->guest_id){echo 'selected';}}?>><?=$data->guest_name?></option>
               <?php endforeach; ?>
@@ -912,6 +912,9 @@
         'billing_charge': {
           required: true,
           number: true
+        },
+        'form_guest_id': {
+          required: true
         }
       },
       messages: {
@@ -936,6 +939,9 @@
         'billing_charge': {
           required: '<i style="color:red">Wajib diisi!</i>',
           number: '<i style="color:red">Harus berupa angka!</i>'
+        },
+        'form_guest_id': {
+          required: '<i style="color:red">Wajib dipilih, Tidak boleh Kosong!</i>'
         }
       }
     });
