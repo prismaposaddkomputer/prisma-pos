@@ -4,7 +4,7 @@
 </div>
 <div class="content-body">
   <div class="row">
-    <form id="form" action="<?=base_url()?>res_client/<?=$action?>" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+    <form id="form" action="<?=base_url()?>res_client/<?=$action?>" enctype="multipart/form-data" method="post">
       <div class="col-md-6">
         <input class="form-control keyboard keyboard" type="hidden" name="client_id" value="<?php if($client != null){echo $client->client_id;}?>">
         <h4>Profil Perusahaan</h4>
@@ -128,6 +128,7 @@
           <?php endif; ?>
           <br><br>
           <input type="file" name="client_logo" value="">
+          <input type="hidden" name="client_logo_input" value="<?=$client->client_logo?>">
           <small>Gambar akan dikompress dengan Tinggi : 150px & Lebar : 300px dan distruk akan menjadi hitam putih</small>
         </div>
         <div class="form-group pull-right">
