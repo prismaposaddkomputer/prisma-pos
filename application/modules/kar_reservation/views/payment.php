@@ -12,15 +12,15 @@
             <td>TXS-<?=$billing->billing_receipt_no?></td>
           </tr>
           <tr>
-            <td class="cl-success"><i class="fa fa-arrow-down"></i> In (Masuk)</td>
+            <td>Check In</td>
             <td>:</td>
             <td><?=date_to_ind($billing->billing_date_in)?> <?=$billing->billing_time_in?></td>
           </tr>
-          <!-- <tr>
-            <td class="cl-danger"><i class="fa fa-arrow-up"></i> Out (Keluar)</td>
+          <tr>
+            <td>Check Out</td>
             <td>:</td>
-            <td><?=date_to_ind(date("Y-m-d"))?> <?=date("H:i:s")?></td>
-          </tr> -->
+            <td><?=date_to_ind($billing->billing_date_out)?> <?=$billing->billing_time_out?></td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -84,8 +84,8 @@
           <tr>
             <th class="text-center" width="20">No.</th>
             <th class="text-center">Kamar</th>
-            <th class="text-center" width="120">Tarif</th>
-            <th class="text-center" width="20">Durasi</th>
+            <th class="text-center" width="150">Tarif</th>
+            <th class="text-center" width="100">Durasi</th>
             <th class="text-center" width="150">Subtotal</th>
             <th class="text-center" width="150">Diskon</th>
             <th class="text-center" width="150">Total</th>
@@ -106,7 +106,7 @@
                     }
                   ?>
                 </td>
-                <td class="text-center"><?=round($row->room_type_duration,0,PHP_ROUND_HALF_UP)?> Jam</td>
+                <td class="text-center"><?=round($row->room_type_duration,0,PHP_ROUND_HALF_UP)?> Hari</td>
                 <td>
                   <?php 
                     if ($client->client_is_taxed == 0) {
@@ -145,7 +145,7 @@
             <?php endforeach;?>
           <?php else: ?>
             <tr>
-              <td class="text-center" colspan="5"><i>Tidak ada data!</i></td>
+              <td class="text-center" colspan="7"><i>Tidak ada data!</i></td>
             </tr>
           <?php endif;?>
         </tbody>
@@ -160,47 +160,47 @@
   </div>
   <div class="row">
     <div class="col-md-6">
-      <h4><b><i class="fa fa-cubes"></i></b> B. Paket</h4>
+      <h4><b><i class="fa fa-plus-square"></i></b> B. Ekstra</h4>
       <table class="table table-bordered table-condensed">
         <thead>
           <tr>
             <th class="text-center" width="20">No.</th>
-            <th class="text-center">Paket</th>
+            <th class="text-center">Ekstra</th>
             <th class="text-center" width="120">Tarif</th>
             <th class="text-center" width="20">Banyak</th>
             <th class="text-center" width="120">Total</th>
           </tr>              
         </thead>
         <tbody>
-          <?php $tot_paket=0; if ($billing->paket != null): ?>
-            <?php $i=1;foreach ($billing->paket as $row): ?>
+          <?php $tot_extra=0; if ($billing->extra != null): ?>
+            <?php $tot_extra=0;$i=1;foreach ($billing->extra as $row): ?>
               <tr>
                 <td class="text-center"><?=$i++?></td>
-                <td><?=$row->paket_name?></td>
+                <td><?=$row->extra_name?></td>
                 <td>
                   <?php 
                     if ($client->client_is_taxed == 0) {
-                      echo num_to_idr($row->paket_charge);
+                      echo num_to_idr($row->extra_charge);
                     }else{
-                      echo num_to_idr($row->paket_total/$row->paket_amount);
+                      echo num_to_idr($row->extra_total/$row->extra_amount);
                     }
                   ?>
                 </td>
-                <td class="text-center"><?=round($row->paket_amount,0,PHP_ROUND_HALF_UP)?></td>
+                <td class="text-center"><?=round($row->extra_amount,0,PHP_ROUND_HALF_UP)?></td>
                 <td>
                   <?php 
                     if ($client->client_is_taxed == 0) {
-                      echo num_to_idr($row->paket_subtotal);
+                      echo num_to_idr($row->extra_subtotal);
                     }else{
-                      echo num_to_idr($row->paket_total);
+                      echo num_to_idr($row->extra_total);
                     }
                   ?>
                 </td>
                 <?php 
                   if ($client->client_is_taxed == 0) {
-                    $tot_paket += $row->paket_subtotal;
+                    $tot_extra += $row->extra_subtotal;
                   }else{
-                    $tot_paket += $row->paket_total;
+                    $tot_extra += $row->extra_total;
                   }
                 ?>
               </tr>
@@ -214,7 +214,7 @@
         <tfoot>
           <tr>
             <th class="text-center" colspan="4">Total</th>
-            <th><?=num_to_idr($tot_paket)?></th>
+            <th><?=num_to_idr($tot_extra)?></th>
           </tr>
         </tfoot>
       </table>
@@ -359,12 +359,18 @@
                 <td><?=$row->non_tax_name?></td>
                 <td>
                   <?php 
-                    echo num_to_idr($row->non_tax_charge);
+                    if ($client->client_is_taxed == 0) {
+                      echo num_to_idr($row->non_tax_charge);
+                    }else{
+                      echo num_to_idr($row->non_tax_total/$row->non_tax_amount);
+                    }
                   ?>
                 </td>
                 <td class="text-center"><?=round($row->non_tax_amount,0,PHP_ROUND_HALF_UP)?></td>
                 <td>
-                  <?=num_to_idr($row->non_tax_total);?>
+                  <?php 
+                    echo num_to_idr($row->non_tax_total);
+                  ?>
                 </td>
                 <?php 
                   $tot_non_tax += $row->non_tax_total;
@@ -415,7 +421,6 @@
               <td><?=$charge_type_money?></td>
             </tr>
             <?php endforeach; ?>
-
             <tr>
               <td width="300">Diskon</td>
               <td width="20">:</td>
@@ -456,16 +461,12 @@
     <div class="col-md-6">
       <h4><b><i class="fa fa-money"></i></b> Pembayaran</h4>
       <table class="table table-condensed">
-        <form class="" action="<?=base_url()?>kar_reservation/<?=$action?>" method="post" name="myForm" onsubmit="return validateForm()">
-        <input type="hidden" name="billing_id" value="<?=$id?>">
-        <!-- <input type="hidden" name="billing_date_out" value="<?=date("Y-m-d")?>"> -->
-        <!-- <input type="hidden" name="billing_time_out" value="<?=date("H:i:s")?>"> -->
+        <input type="hidden" name="billing_id" id="billing_id" value="<?=$id?>">
         <tbody>
           <tr>
             <td width="300">Total</td>
             <td width="20">:</td>
             <td><?=num_to_idr($billing->billing_total)?></td>
-            <!-- <input id="billing_total" type="hidden" value="<?=$billing->billing_total?>"> -->
             <input id="billing_total" type="hidden" value="<?=$billing->billing_total-$billing->billing_down_payment?>">
           </tr>
           <tr>
@@ -543,18 +544,18 @@
           </tr>
           <tr>
             <td colspan="3" class="text-right">
-              <button type="submit" name="save_print" value="print_pdf" class="btn btn-primary">Simpan & Cetak PDF <i class="fa fa-file-pdf-o"></i></button>
-              <button type="submit" name="save_print" value="print_struk" class="btn btn-success">Simpan & Cetak Struk <i class="fa fa-print"></i></button>
+              <button type="button" id="print_pdf" class="btn btn-primary">Simpan & Cetak PDF <i class="fa fa-file-pdf-o"></i></button>
+              <button type="button" id="print_struk" class="btn btn-success">Simpan & Cetak Struk <i class="fa fa-print"></i></button>
             </td>
           </tr>
         </tbody>
-        </form>
       </table>
     </div>
   </div>
 </div>
 <script>
-  function validateForm() {
+  $("#print_struk").click(function () {
+    var billing_id = $('#billing_id').val();
     var billing_payment = ind_to_sys($('#billing_payment').val());
     <?php if ($billing->billing_down_payment_type == 1): ?>
       var total_payment = <?=$billing->billing_total-$billing->billing_down_payment?>;
@@ -562,7 +563,7 @@
       <?php $dp_prosen = $billing->billing_total*($billing->billing_down_payment/100); ?>
       var total_payment = <?=$billing->billing_total-$dp_prosen?>;
     <?php endif; ?>
-    console.log(total_payment);
+
     if (billing_payment == "") {
         swal({
           text: "Pembayaran Belum Diisi",
@@ -577,7 +578,74 @@
           button: "OK",
         });
         return false;
+    }else{
+      $.ajax({
+        type : 'POST',
+        url : '<?=base_url()?>kar_reservation/payment_action',
+        data : 'billing_id='+billing_id+'&billing_payment='+billing_payment,
+        dataType : 'json',
+        success : function (data) {
+          send_dashboard(data);
+          window.location.replace("<?=base_url()?>kar_reservation/reservation_print_struk/"+billing_id);
+        },
+      })
     }
+  })
+
+  $("#print_pdf").click(function () {
+    var billing_id = $('#billing_id').val();
+    var billing_payment = ind_to_sys($('#billing_payment').val());
+    <?php if ($billing->billing_down_payment_type == 1): ?>
+      var total_payment = <?=$billing->billing_total-$billing->billing_down_payment?>;
+    <?php else: ?>
+      <?php $dp_prosen = $billing->billing_total*($billing->billing_down_payment/100); ?>
+      var total_payment = <?=$billing->billing_total-$dp_prosen?>;
+    <?php endif; ?>
+
+    if (billing_payment == "") {
+        swal({
+          text: "Pembayaran Belum Diisi",
+          icon: "warning",
+          button: "OK",
+        });
+        return false;
+    }else if (billing_payment < total_payment) {
+      swal({
+          text: "Pembayaran Kurang",
+          icon: "warning",
+          button: "OK",
+        });
+        return false;
+    }else{
+      $.ajax({
+        type : 'POST',
+        url : '<?=base_url()?>kar_reservation/payment_action',
+        data : 'billing_id='+billing_id+'&billing_payment='+billing_payment,
+        dataType : 'json',
+        success : function (data) {
+          send_dashboard(data);
+          window.location.replace("<?=base_url()?>kar_reservation/frame_pdf/"+billing_id);
+        },
+      })
+    }
+  })
+
+  function send_dashboard(data) {
+    $.ajax({
+      type : 'GET',
+      // url : 'http://addkomputer.com/prismapos/index.php/api/json/store',
+      url : 'http://182.253.114.52/dashboard_pos/index.php/api/json/store',
+      data : data,
+      dataType : 'json',
+      success : function (data) {
+        console.log(data);
+      },
+      error: function(jqXHR, textStatus, errorThrown) { // if error occured
+        console.log(jqXHR.status);
+        console.log(errorThrown);
+      }
+    })
+    // console.log(data);
   }
 
   function calc_change() {
