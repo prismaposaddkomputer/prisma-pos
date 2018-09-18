@@ -461,8 +461,7 @@
     <div class="col-md-6">
       <h4><b><i class="fa fa-money"></i></b> Pembayaran</h4>
       <table class="table table-condensed">
-        <form class="" action="<?=base_url()?>hot_reservation/<?=$action?>" method="post" name="myForm" onsubmit="return validateForm()">
-        <input type="hidden" name="billing_id" value="<?=$id?>">
+        <input type="hidden" name="billing_id" id="billing_id" value="<?=$id?>">
         <tbody>
           <tr>
             <td width="300">Total</td>
@@ -545,18 +544,18 @@
           </tr>
           <tr>
             <td colspan="3" class="text-right">
-              <button type="submit" name="save_print" value="print_pdf" class="btn btn-primary">Simpan & Cetak PDF <i class="fa fa-file-pdf-o"></i></button>
-              <button type="submit" name="save_print" value="print_struk" class="btn btn-success">Simpan & Cetak Struk <i class="fa fa-print"></i></button>
+              <button type="button" id="print_pdf" class="btn btn-primary">Simpan & Cetak PDF <i class="fa fa-file-pdf-o"></i></button>
+              <button type="button" id="print_struk" class="btn btn-success">Simpan & Cetak Struk <i class="fa fa-print"></i></button>
             </td>
           </tr>
         </tbody>
-        </form>
       </table>
     </div>
   </div>
 </div>
 <script>
-  function validateForm() {
+  $("#print_struk").click(function () {
+    var billing_id = $('#billing_id').val();
     var billing_payment = ind_to_sys($('#billing_payment').val());
     <?php if ($billing->billing_down_payment_type == 1): ?>
       var total_payment = <?=$billing->billing_total-$billing->billing_down_payment?>;
@@ -564,7 +563,7 @@
       <?php $dp_prosen = $billing->billing_total*($billing->billing_down_payment/100); ?>
       var total_payment = <?=$billing->billing_total-$dp_prosen?>;
     <?php endif; ?>
-    console.log(total_payment);
+
     if (billing_payment == "") {
         swal({
           text: "Pembayaran Belum Diisi",
@@ -579,7 +578,74 @@
           button: "OK",
         });
         return false;
+    }else{
+      $.ajax({
+        type : 'POST',
+        url : '<?=base_url()?>hot_reservation/payment_action',
+        data : 'billing_id='+billing_id+'&billing_payment='+billing_payment,
+        dataType : 'json',
+        success : function (data) {
+          send_dashboard(data);
+          window.location.replace("<?=base_url()?>hot_reservation/reservation_print_struk/"+billing_id);
+        },
+      })
     }
+  })
+
+  $("#print_pdf").click(function () {
+    var billing_id = $('#billing_id').val();
+    var billing_payment = ind_to_sys($('#billing_payment').val());
+    <?php if ($billing->billing_down_payment_type == 1): ?>
+      var total_payment = <?=$billing->billing_total-$billing->billing_down_payment?>;
+    <?php else: ?>
+      <?php $dp_prosen = $billing->billing_total*($billing->billing_down_payment/100); ?>
+      var total_payment = <?=$billing->billing_total-$dp_prosen?>;
+    <?php endif; ?>
+
+    if (billing_payment == "") {
+        swal({
+          text: "Pembayaran Belum Diisi",
+          icon: "warning",
+          button: "OK",
+        });
+        return false;
+    }else if (billing_payment < total_payment) {
+      swal({
+          text: "Pembayaran Kurang",
+          icon: "warning",
+          button: "OK",
+        });
+        return false;
+    }else{
+      $.ajax({
+        type : 'POST',
+        url : '<?=base_url()?>hot_reservation/payment_action',
+        data : 'billing_id='+billing_id+'&billing_payment='+billing_payment,
+        dataType : 'json',
+        success : function (data) {
+          send_dashboard(data);
+          window.location.replace("<?=base_url()?>hot_reservation/frame_pdf/"+billing_id);
+        },
+      })
+    }
+  })
+
+  function send_dashboard(data) {
+    $.ajax({
+      type : 'GET',
+      // url : 'http://addkomputer.com/prismapos/index.php/api/json/store',
+      url : 'http://182.253.114.52/dashboard_pos/index.php/api/json/store',
+      data : data,
+      dataType : 'json',
+      success : function (data) {
+        console.log(data);
+      },
+      error: function(jqXHR, textStatus, errorThrown) { // if error occured
+        console.log(jqXHR.status);
+        console.log(errorThrown);
+      }
+    })
+    // console.log(data);
   }
 
   function calc_change() {

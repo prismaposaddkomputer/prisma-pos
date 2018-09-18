@@ -325,8 +325,8 @@ class Hot_reservation extends MY_Hotel {
     $id = $data['billing_id'];
     $data['updated_by'] = $this->session->userdata('user_realname');
     //
-    $save_print = $data['save_print'];
-    unset($data['save_print']);
+    // $save_print = $data['save_print'];
+    // unset($data['save_print']);
     //
     $billing = $this->m_hot_reservation->get_billing($id);
     $billing_total = $billing->billing_total - $billing->billing_down_payment;
@@ -350,13 +350,43 @@ class Hot_reservation extends MY_Hotel {
     $data['billing_status'] = 2;
     //
     $this->m_hot_billing->update($id,$data);
-    if ($save_print == 'print_pdf') {
-      $this->frame_pdf($id, '');
-    }else if($save_print == 'print_struk'){
-      $this->reservation_print_struk($id);
-    }
+    // if ($save_print == 'print_pdf') {
+    //   $this->frame_pdf($id, '');
+    // }else if($save_print == 'print_struk'){
+    //   $this->reservation_print_struk($id);
+    // }
 
     $this->m_hot_reservation->update($data['billing_id'],$data);
+    $id = $data['billing_id'];
+
+    $client = $this->m_hot_client->get_all();
+    $bill = $this->m_hot_reservation->get_billing($id);
+    $tax = $this->m_hot_charge_type->get_by_id(1);
+
+    $dashboard = array(
+      'auth'=> 'prismapos.addkomputer',
+      'apikey'=> '69f86eadd81650164619f585bb017316',
+      'app_type_id'=> 3,
+      'client_id'=> $client->client_id,
+      'pos_sn'=> $client->client_serial_number,
+      'npwpd'=> $client->client_npwpd,
+      'customer_name'=> $bill->guest_name,
+      'no_receipt'=> 'TRS-'.$bill->billing_receipt_no,
+      'tx_id'=> $bill->billing_id,
+      'tx_date'=> $bill->billing_date_in,
+      'tx_time'=> $bill->billing_time_in,
+      'tx_total_before_tax'=> $bill->billing_subtotal,
+      'tax_code'=> $tax->charge_type_code,
+      'tax_ratio'=> $tax->charge_type_ratio,
+      'tx_total_tax'=> $bill->billing_tax,
+      'tx_total_after_tax'=> $bill->billing_subtotal+$bill->billing_tax,
+      'tx_total_grand'=> $bill->billing_subtotal+$bill->billing_tax,
+      'user_id'=> $bill->user_id,
+      'user_realname'=> $bill->user_realname,
+      'created'=> $bill->created,
+    );
+
+    echo json_encode($dashboard);
   }
 
   public function edit($id)
@@ -1344,6 +1374,11 @@ class Hot_reservation extends MY_Hotel {
     $data['count_non_tax'] = $this->m_hot_reservation->count_non_tax($billing_id);
 
     echo json_encode($data);
+  }
+
+  public function send_api()
+  {
+    
   }
 
 
