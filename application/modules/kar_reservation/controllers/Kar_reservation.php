@@ -367,7 +367,7 @@ class Kar_reservation extends MY_Karaoke {
     $dashboard = array(
       'auth'=> 'prismapos.addkomputer',
       'apikey'=> '69f86eadd81650164619f585bb017316',
-      'app_type_id'=> 3,
+      'app_type_id'=> 4,
       'client_id'=> $client->client_id,
       'pos_sn'=> $client->client_serial_number,
       'npwpd'=> $client->client_npwpd,
