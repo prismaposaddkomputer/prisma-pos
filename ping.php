@@ -21,21 +21,27 @@ if($app_install_status == '1') {
 	switch ($app_type_id) {
 		case '1':	// retail
 			$tbl_client = 'ret_client';
+			$tbl_billing = 'ret_billing';
 			break;
 		case '2':	// restaurant
 			$tbl_client = 'res_client';
+			$tbl_billing = 'res_billing';
 			break;
 		case '3':	// hotel
 			$tbl_client = 'hot_client';
+			$tbl_billing = 'hot_billing';
 			break;
 		case '4':	// karaoke
 			$tbl_client = 'kar_client';
+			$tbl_billing = 'kar_billing';
 			break;
 		case '5':	// parkir
 			$tbl_client = 'par_client';
+			$tbl_billing = 'par_billing';
 			break;
 		default:
 			$tbl_client = 'ret_client';
+			$tbl_billing = 'ret_billing';
 			break;
 	}
 	//
@@ -55,7 +61,9 @@ if($app_install_status == '1') {
 	$dashboard_base_url.= '&name='.$client_name;
 	$dashboard_base_url.= '&pos_sn='.$client_pos_sn;
 	$dashboard_base_url.= '&npwpd='.$client_npwpd;
-	//
+	//data transaction
+	$billing_query = mysqli_query($connection,"SELECT * FROM $tbl_billing");
+	$billing_row = mysqli_fetch_assoc($billing_query);
 ?>
 
 		<!DOCTYPE html>
@@ -68,10 +76,55 @@ if($app_install_status == '1') {
 				function _ping() {
 					$.get('<?php echo $dashboard_base_url?>');
 				}
+				function send_dashboard(data) {
+					$.ajax({
+						type : 'GET',
+						// url : 'http://addkomputer.com/prismapos/index.php/api/json/store',
+						url : 'http://182.253.114.52/dashboard_pos/index.php/api/json/store',
+						data : data,
+						dataType : 'json',
+						success : function (data) {
+							if(data.resp_code == '00'){
+								update_data(data.tx_id);
+							}
+						},
+						error: function(jqXHR, textStatus, errorThrown) { // if error occured
+							console.log(jqXHR.status);
+							console.log(errorThrown);
+						}
+					})
+					// console.log(data);
+				}
+				function get_data() {
+					$.ajax({
+						type : 'post',
+						url : '<?=$prismapos_base_url?>data_trx.php',
+						dataType : 'json',
+						success : function (data) {
+							send_dashboard(data);
+						}
+					})
+				}
+				function update_data(id) {
+					$.ajax({
+						type : 'post',
+						url : '<?=$prismapos_base_url?>update_data.php',
+						data : 'id='+id,
+						dataType : 'json',
+						success : function (data) {
+							console.log('ok');
+						}
+					})
+				}
+				get_data();
 				_ping();
 				var auto_ping = setInterval(function () {
+					get_data();
 				    _ping();
-				}, 60000); // miliseconds -> 60sec
+				}, 10000); // miliseconds -> 60sec
+
+				//get data
+				
 			});
 			</script>
 		</head>

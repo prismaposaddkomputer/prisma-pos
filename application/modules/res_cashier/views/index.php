@@ -1263,7 +1263,9 @@
           data : data,
           dataType : 'json',
           success : function (data) {
-            console.log(data);
+            if(data.resp_code == '00'){
+              update_data(data.tx_id);
+            }
           },
           error: function(jqXHR, textStatus, errorThrown) { // if error occured
             console.log(jqXHR.status);
@@ -1271,6 +1273,18 @@
           }
         })
         // console.log(data);
+      }
+
+      function update_data(id) {
+        $.ajax({
+          type : 'post',
+          url : '<?=$prismapos_base_url?>update_data.php',
+          data : 'id='+id,
+          dataType : 'json',
+          success : function (data) {
+            console.log('ok');
+          }
+        })
       }
 
       //pending show
