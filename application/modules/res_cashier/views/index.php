@@ -1399,7 +1399,40 @@
       }
 
       function add_custom_show() {
+        $("#add_custom_name").val('');
+        $("#add_custom_price").val('0');
+        $("#add_custom_amount").val('1');
         $('#modal_add_custom').modal('show');
+      }
+
+      function add_custom_action() {
+        var tx_id = $("#bill_tx_id").val();
+        var tx_receipt_no = $("#bill_tx_receipt_no").val();
+        var customer_id = $("#bill_customer_id").val();
+        var tx_date = $("#bill_tx_date").val();
+        var tx_time = $("#bill_tx_time").val();
+        var item_name = $("#add_custom_name").val();
+        var item_price = $("#add_custom_price").val();
+        var tx_amount = $("#add_custom_amount").val();
+
+        if(item_name == '' || item_price == 0){
+          alert('Isi semua data');
+        }else{
+          $.ajax({
+          type : 'post',
+          url : '<?=base_url()?>res_cashier/add_custom_action',
+          data : 'tx_id='+tx_id+'&tx_receipt_no='+tx_receipt_no+'&customer_id='+customer_id+'&tx_date='+tx_date+
+            '&tx_time='+tx_time+'&item_name='+item_name+'&tx_amount='+tx_amount+'&item_price='+item_price,
+          success : function (data) {
+            get_billing_now();
+            $("#modal_add_custom").modal('hide');
+            // enable button
+            $("#bill_btn_payment").prop('disabled', false);
+            $("#bill_btn_pending").prop('disabled', false);
+            $("#bill_btn_cancel").prop('disabled', false);
+          }
+        })
+        }
       }
 
       // Shortcut keyboard
