@@ -184,6 +184,11 @@
               </tbody>
             </table>
           </div>
+          <div id="item-footer">
+            <button class="btn btn-sm btn-info" onclick="add_custom_show()"><i class="fa fa-list"></i> Item Kustom</button>
+            <button class="btn btn-sm btn-info"><i class="fa fa-money"></i> Down Payment</button>
+            <button class="btn btn-sm btn-info"><i class="fa fa-reply"></i> Retur</button>
+          </div>
         </div>
         <div id="bill" class="col-md-4 col-xs-12 right full-height-col">
           <div id="bill-info">
@@ -275,7 +280,9 @@
               <tr>
                 <td>Harga</td>
                 <td>:</td>
-                <td class="cl-success" id="add_item_price_after_tax"></td>
+                <td>
+                  <input class="form-control num autonumeric" type="text" id="add_item_price_after_tax" value="0">
+                </td>
               </tr>
               <tr>
                 <td>Satuan</td>
@@ -307,6 +314,41 @@
       </div>
     </div>
 
+    <!-- Modal add item -->
+    <div id="modal_add_custom" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Tambah Item Kustom</h4>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label>Nama Item</label>
+              <input class="form-control keyboard" name="add_custom_name" id="add_custom_name" type="text" value="">
+            </div>
+            <div class="row">
+              <div class="col-md-8">
+                <div class="form-group">
+                  <label>Harga</label>
+                  <input class="form-control num autonumeric" name="add_custom_price" id="add_custom_price" type="text" value="">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Jumlah</label>
+                  <input class="form-control num autonumeric" name="add_custom_amount" id="add_custom_amount" type="text" value="">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
+            <button type="button" class="btn btn-info" onclick="add_custom_action()"><i class="fa fa-plus"></i> Tambah</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Modal edit item -->
     <div id="modal_edit_item" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
       <div style="width:310px;" class="modal-dialog modal-sm" role="document">
@@ -333,7 +375,9 @@
               <tr>
                 <td>Harga</td>
                 <td>:</td>
-                <td class="cl-success" id="edit_item_price_after_tax"></td>
+                <td>
+                  <input class="form-control num autonumeric" type="text" id="edit_item_price_after_tax" value="0">
+                </td>
               </tr>
               <tr>
                 <td>Satuan</td>
@@ -958,9 +1002,9 @@
             $("#add_item_name").html(data.item_name);
             $("#add_item_barcode").html(data.item_barcode);
             <?php if($client->client_is_taxed == 0):?>
-            $("#add_item_price_after_tax").html(sys_to_ind(Math.round(data.item_price_before_tax)));
+            $("#add_item_price_after_tax").val(sys_to_ind(Math.round(data.item_price_before_tax)));
             <?php else:?>
-            $("#add_item_price_after_tax").html(sys_to_ind(Math.round(data.item_price_after_tax)));
+            $("#add_item_price_after_tax").val(sys_to_ind(Math.round(data.item_price_after_tax)));
             <?php endif; ?>
             $("#add_category_name").html(data.category_name);
             $("#add_unit_code").html(data.unit_code);
@@ -979,12 +1023,13 @@
         var tx_time = $("#bill_tx_time").val();
         var item_id = $("#add_item_id").val();
         var tx_amount = $("#add_tx_amount").val();
+        var item_price = $("#add_item_price_after_tax").val();
 
         $.ajax({
           type : 'post',
           url : '<?=base_url()?>res_cashier/add_item_action',
           data : 'tx_id='+tx_id+'&tx_receipt_no='+tx_receipt_no+'&customer_id='+customer_id+'&tx_date='+tx_date+
-            '&tx_time='+tx_time+'&item_id='+item_id+'&tx_amount='+tx_amount,
+            '&tx_time='+tx_time+'&item_id='+item_id+'&tx_amount='+tx_amount+'&item_price='+item_price,
           success : function (data) {
             get_billing_now();
             $("#modal_add_item").modal('hide');
@@ -1071,7 +1116,7 @@
             $("#edit_item_id").val(data.item_id);
             $("#edit_item_name").html(data.item_name);
             $("#edit_item_barcode").html(data.item_barcode);
-            $("#edit_item_price_after_tax").html(sys_to_ind(data.item_price_after_tax));
+            $("#edit_item_price_after_tax").val(sys_to_ind(data.item_price_after_tax));
             $("#edit_category_name").html(data.category_name);
             $("#edit_unit_code").html(data.unit_code);
             $("#edit_tx_amount").val(data.tx_amount);
@@ -1086,12 +1131,13 @@
         var item_id = $("#edit_item_id").val();
         var tx_amount = $("#edit_tx_amount").val();
         var billing_detail_id = $("#edit_billing_detail_id").val();
+        var item_price = $("#edit_item_price_after_tax").val();
 
         $.ajax({
           type : 'post',
           url : '<?=base_url()?>res_cashier/edit_item_action',
           data : 'tx_id='+tx_id+'&item_id='+item_id+'&tx_amount='+tx_amount+
-            '&billing_detail_id='+billing_detail_id,
+            '&billing_detail_id='+billing_detail_id+'&item_price='+item_price,
           success : function () {
             $("#modal_edit_item").modal('hide');
             get_billing_now();
@@ -1336,6 +1382,10 @@
             }
           });
         }
+      }
+
+      function add_custom_show() {
+        $('#modal_add_custom').modal('show');
       }
 
       // Shortcut keyboard

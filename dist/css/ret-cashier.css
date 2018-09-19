@@ -113,6 +113,9 @@ html, body {
     #item #item-table tbody tr:hover {
       background-color: #0abde3;
       color: white; }
+  #item #item-footer {
+    padding: 5px 5px 0px 5px; 
+    margin-top: -2px;}
 
 #bill {
   padding: 0px; }
@@ -168,7 +171,7 @@ html, body {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 215px; }
+    height: 219px; }
     #bill #tx-actions .lbl-bill {
       padding: 5px;
       border-bottom: 1px solid #e1e5ea; }
