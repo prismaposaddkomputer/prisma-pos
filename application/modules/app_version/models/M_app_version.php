@@ -1416,8 +1416,13 @@ class M_app_version extends CI_Model {
         break;
 
         case '2.6.16':
-        $this->db->query("UPDATE `prisma_pos`.`hot_module` SET `module_name` = 'Tamu Langganan' WHERE `module_id` = '02.05'");
+          $this->db->query("UPDATE `prisma_pos`.`hot_module` SET `module_name` = 'Tamu Langganan' WHERE `module_id` = '02.05'");
         break;
+
+        case '2.6.17':
+          $this->db->query("ALTER TABLE `res_billing_detail`
+            ADD COLUMN `is_custom` TINYINT(1) NOT NULL DEFAULT '0' AFTER `item_id`");
+          break;
     }
 
     //insert new update history
@@ -1536,7 +1541,9 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"2.6.14","version_release"=>"2018-09-13 12:35:00"));
     array_push($version, array("version_now"=>"2.6.15","version_release"=>"2018-09-13 12:44:00"));
     array_push($version, array("version_now"=>"2.6.16","version_release"=>"2018-09-13 21:37:00"));
-
+    //custom menu
+    array_push($version, array("version_now"=>"2.6.17","version_release"=>"2018-09-19 15:18:00"));
+    
     foreach ($version as $key => $val) {
       //check version
       $check = null;

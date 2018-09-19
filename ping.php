@@ -101,7 +101,9 @@ if($app_install_status == '1') {
 						url : '<?=$prismapos_base_url?>data_trx.php',
 						dataType : 'json',
 						success : function (data) {
-							send_dashboard(data);
+							if(data != null || data != ''){
+								send_dashboard(data);
+							}
 						}
 					})
 				}
