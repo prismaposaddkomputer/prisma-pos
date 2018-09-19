@@ -653,7 +653,7 @@
   function update_data(id) {
     $.ajax({
       type : 'post',
-      url : '<?=$prismapos_base_url?>update_data.php',
+      url : '<?=base_url()?>update_data.php',
       data : 'id='+id,
       dataType : 'json',
       success : function (data) {
