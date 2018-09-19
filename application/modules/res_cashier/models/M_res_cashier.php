@@ -189,13 +189,24 @@ class M_res_cashier extends CI_Model {
       ->get('res_item')->result();
   }
 
-  public function item_exist($tx_id,$item_id)
+  public function item_exist($tx_id,$item_id,$item_price)
   {
-    return $this->db
-      ->where('tx_id',$tx_id)
-      ->where('item_id',$item_id)
-      ->get('res_billing_detail')
-      ->row();
+    $client = $this->db->get('res_client')->row();
+    if($client->client_is_taxed == 0){
+      return $this->db
+        ->where('tx_id',$tx_id)
+        ->where('item_id',$item_id)
+        ->where('item_price_before_tax',$item_price)
+        ->get('res_billing_detail')
+        ->row();
+    }else{
+      return $this->db
+        ->where('tx_id',$tx_id)
+        ->where('item_id',$item_id)
+        ->where('item_price_after_tax',$item_price)
+        ->get('res_billing_detail')
+        ->row();
+    }
   }
 
   public function add_item_show($id)

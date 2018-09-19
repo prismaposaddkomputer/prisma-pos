@@ -177,12 +177,6 @@ class Res_cashier extends MY_Restaurant {
 
     $item_id = $data['item_id'];
 
-    // cek item exist
-    $item_exist = $this->m_res_cashier->item_exist($tx_id, $item_id);
-    if ($item_exist != null) {
-      $data['tx_amount'] += $item_exist->tx_amount;
-    }
-
     //get item buy price
     $data_price = $this->m_res_cashier->get_item_price_buy_average($item_id);
     $item_price_buy_average = 0;
@@ -198,9 +192,23 @@ class Res_cashier extends MY_Restaurant {
     $tax = $this->m_res_tax->get_by_id($item->tax_id);
 
     //item price
-    $item_price_before_tax = $item->item_price_before_tax;
-    $item_tax = $item_price_before_tax*$tax->tax_ratio/100;
-    $item_price_after_tax = $item_price_before_tax+$item_tax;
+    $client = $this->m_res_client->get_all();
+    if ($client->client_is_taxed == 0) {
+      $item_price_before_tax = price_to_num($data['item_price']);
+      $item_tax = $item_price_before_tax*$tax->tax_ratio/100;
+      $item_price_after_tax = $item_price_before_tax+$item_tax;
+    }else{
+      $item_price_after_tax = price_to_num($data['item_price']);
+      $item_tax = ($tax->tax_ratio/(100+$tax->tax_ratio))*$item_price_after_tax;
+      $item_price_before_tax = $item_price_after_tax-$item_tax;
+    }
+    
+    // cek item exist
+    $item_exist = $this->m_res_cashier->item_exist($tx_id, $item_id, price_to_num($data['item_price']));
+    if ($item_exist != null) {
+      $data['tx_amount'] += $item_exist->tx_amount;
+    }
+
     //subtotal
     $tx_subtotal_tax = $data['tx_amount']*$item_tax;
     $tx_subtotal_discount = 0;
@@ -407,9 +415,16 @@ class Res_cashier extends MY_Restaurant {
     $tax = $this->m_res_tax->get_by_id($item->tax_id);
 
     //item price
-    $item_price_before_tax = $item->item_price_before_tax;
-    $item_tax = $item_price_before_tax*$tax->tax_ratio/100;
-    $item_price_after_tax = $item_price_before_tax+$item_tax;
+    $client = $this->m_res_client->get_all();
+    if ($client->client_is_taxed == 0) {
+      $item_price_before_tax = price_to_num($data['item_price']);
+      $item_tax = $item_price_before_tax*$tax->tax_ratio/100;
+      $item_price_after_tax = $item_price_before_tax+$item_tax;
+    }else{
+      $item_price_after_tax = price_to_num($data['item_price']);
+      $item_tax = ($tax->tax_ratio/(100+$tax->tax_ratio))*$item_price_after_tax;
+      $item_price_before_tax = $item_price_after_tax-$item_tax;
+    }
     //subtotal
     $tx_subtotal_tax = $data['tx_amount']*$item_tax;
     $tx_subtotal_discount = 0;
