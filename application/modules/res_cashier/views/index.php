@@ -186,8 +186,9 @@
           </div>
           <div id="item-footer">
             <button class="btn btn-sm btn-info" onclick="add_custom_show()"><i class="fa fa-list"></i> Item Kustom</button>
-            <button class="btn btn-sm btn-info"><i class="fa fa-money"></i> Down Payment</button>
+            <button class="btn btn-sm btn-info" onclick="down_payment_show()"><i class="fa fa-money"></i> Uang Muka</button>
             <button class="btn btn-sm btn-info"><i class="fa fa-reply"></i> Retur</button>
+            <button class="btn btn-sm btn-info" onclick="print_receipt_show()"><i class="fa fa-print"></i> Cetak Struk</button>
           </div>
         </div>
         <div id="bill" class="col-md-4 col-xs-12 right full-height-col">
@@ -541,6 +542,18 @@
               <button type="button" class="btn btn-success btn-block" data-dismiss="modal"><i class="fa fa-flag-checkered"></i> Selesai</button>
             </div>
             <div id="payment_section">
+              <div class="form-group">
+                <label>Total</label>
+                <input class="form-control" id="payment_tx_total_grand" type="text" val="0" readonly>
+              </div>
+              <div class="form-group">
+                <label>Uang Muka</label>
+                <input class="form-control" id="payment_down_payment" type="text" val="0" readonly>
+              </div>
+              <div class="form-group">
+                <label>Sisa Bayar</label>
+                <input class="form-control" id="payment_nominal" type="text" val="0" readonly>
+              </div>
               <!-- Nav tabs -->
               <ul class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#cash" aria-controls="cash" role="tab" data-toggle="tab">Tunai</a></li>
@@ -721,6 +734,53 @@
         </div>
       </div>
     </div>
+
+    <!-- Modal print struk -->
+    <div id="modal_print_receipt" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Cetak Struk</h4>
+          </div>
+          <div class="modal-body">
+            <div class="input-group">
+              <span class="input-group-addon">TXS-</span>
+              <input id="print_receipt_no" type="text" class="form-control" aria-label="Masukkan ID Struk">
+              <div class="input-group-btn">
+                <button class="btn btn-info" onclick="print_receipt_action()"><i class="fa fa-print"></i> Cetak</button>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal down payment -->
+    <div id="modal_down_payment" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Uang Muka</h4>
+          </div>
+          <div class="modal-body">
+            <div class="input-group">
+              <input id="tx_down_payment" type="text" class="form-control autonumeric num" aria-label="Masukkan ID Struk">
+              <div class="input-group-btn">
+                <button class="btn btn-info" onclick="down_payment_action()"> Ok</button>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
     <script type="text/javascript">
       $(document).ready(function () {
         $("#item-list").slimscroll({
@@ -867,6 +927,7 @@
             $("#bill_tx_total_grand_nominal").html(sys_to_ind(data.tx_total_grand));
             $("#bill_tx_total_grand").val(data.tx_total_grand);
             $("#bill-list").html('');
+            $("#tx_down_payment").val(sys_to_ind(Math.round(data.tx_down_payment)));
             $.each(data.detail, function(i, item) {
               var html = '<li onclick=edit_item_show('+data.detail[i].billing_detail_id+')>'+
                 '<div class="amount">'+data.detail[i].tx_amount+'</div>'+
@@ -1238,6 +1299,7 @@
             $("#bill_tx_total_grand_nominal").html(sys_to_ind(Math.round(data.tx_total_grand)));
             $("#bill_tx_total_grand").val(data.tx_total_grand);
             $("#bill-list").html('');
+            $("#tx_down_payment").val(sys_to_ind(Math.round(data.tx_down_payment)));
             $.each(data.detail, function(i, item) {
               var client_is_taxed = <?=$client->client_is_taxed?>;
               if (client_is_taxed == 0) {
@@ -1297,30 +1359,44 @@
 
       // payment show
       function payment_show() {
-        $("#change_section").hide();
-        $("#payment_section").show();
-        $("#payment_card_bank_card_no").val('');
-        $("#payment_card_bank_reference_no").val('');
-        $("#payment_tx_payment").val('');
-        $("#payment_tx_change").val('');
-        $("#modal_payment").modal('show');
+        var tx_id = $("#bill_tx_id").val();
+        $.ajax({
+          type: 'post',
+          url : '<?=base_url()?>res_cashier/get_billing_now',
+          data : 'tx_id='+tx_id,
+          dataType : 'json',
+          success : function (data) {
+            $("#payment_tx_total_grand").val(sys_to_ind(Math.round(data.tx_total_grand)));
+            $("#payment_down_payment").val(sys_to_ind(Math.round(data.tx_down_payment)));
+            $("#payment_nominal").val(sys_to_ind(Math.round(data.tx_total_grand-data.tx_down_payment)));
+            $("#change_section").hide();
+            $("#payment_section").show();
+            $("#payment_card_bank_card_no").val('');
+            $("#payment_card_bank_reference_no").val('');
+            $("#payment_tx_payment").val('');
+            $("#payment_tx_change").val('');
+            $("#modal_payment").modal('show');
+          }
+        });
       }
 
       function calc_change() {
-        var tx_total_grand = $("#bill_tx_total_grand").val();
+        var payment_nominal = ind_to_sys($("#payment_nominal").val());
         var tx_payment = ind_to_sys($("#payment_tx_payment").val());
-        var tx_change = parseFloat(ind_to_sys(tx_payment)) - parseFloat(tx_total_grand);
+        var tx_change = parseFloat(ind_to_sys(tx_payment)) - parseFloat(payment_nominal);
 
         if (tx_change >= 0) {
           $("#payment_tx_change").val(sys_to_ind(Math.round(tx_change)));
+        }else{
+          $("#payment_tx_change").val('NaN');
         }
       }
 
       function payment_cash_action() {
         var tx_id = $("#bill_tx_id").val();
-        var tx_total_grand = $("#bill_tx_total_grand").val();
+        var payment_nominal = ind_to_sys($("#payment_nominal").val());
         var tx_payment = ind_to_sys($("#payment_tx_payment").val());
-        var tx_change = parseFloat(ind_to_sys(tx_payment)) - parseFloat(tx_total_grand);
+        var tx_change = parseFloat(ind_to_sys(tx_payment)) - parseFloat(payment_nominal);
 
         if (tx_payment == '') {
           $("#payment_cash_status").html('<i class="cl-danger">Silakan isi nominal !</i>');
@@ -1353,8 +1429,8 @@
 
       function payment_card_action() {
         var tx_id = $("#bill_tx_id").val();
-        var tx_total_grand = $("#bill_tx_total_grand").val();
-        var tx_payment = tx_total_grand;
+        var payment_nominal = ind_to_sys($("#payment_nominal").val());
+        var tx_payment = payment_nominal;
         var tx_change = 0;
         var bank_id = $("#payment_card_bank_id").val();
         var bank_card_no = $("#payment_card_bank_card_no").val();
@@ -1522,6 +1598,57 @@
             }
           });
         }
+      }
+
+      // print receipt
+      function print_receipt_show() {
+        $('#print_receipt_no').val('');
+        $('#modal_print_receipt').modal('show');
+      }
+
+      function print_receipt_action() {
+        var tx_receipt_no = $("#print_receipt_no").val();
+
+        $.ajax({
+          type : 'post',
+          url : '<?=base_url()?>res_cashier/get_billing_by_receipt',
+          data : 'tx_receipt_no='+tx_receipt_no,
+          dataType : 'json',
+          success : function (data) {
+            if(data != null){
+              var tx_id = data.tx_id;
+              $.ajax({
+                type: 'post',
+                url : '<?=base_url()?>res_cashier/print_bill',
+                data : 'tx_id='+tx_id,
+                success : function () {
+
+                }
+              })
+            }else{
+              alert('No. Struk Salah!');
+            }
+          }
+        })
+      }
+
+      // down payment
+      function down_payment_show() {
+        $("#modal_down_payment").modal('show');
+      }
+
+      function down_payment_action() {
+        var tx_id = $("#bill_tx_id").val();
+        var tx_down_payment = $("#tx_down_payment").val();
+        $.ajax({
+          type: 'post',
+          url : '<?=base_url()?>res_cashier/down_payment_action',
+          data : 'tx_id='+tx_id+'&tx_down_payment='+tx_down_payment,
+          success : function () {
+            get_billing_now();
+            $("#modal_down_payment").modal('hide');
+          }
+        })
       }
 
       // Shortcut keyboard

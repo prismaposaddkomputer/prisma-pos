@@ -1347,6 +1347,19 @@ class Res_cashier extends MY_Restaurant {
     echo json_encode($res);
   }
 
+  public function get_billing_by_receipt()
+  {
+    $data = $_POST;
+    $bill = $this->m_res_cashier->get_billing_by_receipt($data['tx_receipt_no']);
+    echo json_encode($bill);
+  }
+
+  public function down_payment_action()
+  {
+    $data = $_POST;
+    $this->m_res_cashier->update_billing($data['tx_id'],array('tx_down_payment' => price_to_num($data['tx_down_payment'])));
+  }
+
   public function print_bill()
   {
     $tx_id = $this->input->post('tx_id');

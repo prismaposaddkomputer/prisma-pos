@@ -1423,6 +1423,11 @@ class M_app_version extends CI_Model {
           $this->db->query("ALTER TABLE `res_billing_detail`
             ADD COLUMN `is_custom` TINYINT(1) NOT NULL DEFAULT '0' AFTER `item_id`");
           break;
+
+        case '2.6.18':
+          $this->db->query("ALTER TABLE `res_billing`
+            ADD COLUMN `tx_down_payment` FLOAT(10,2) NOT NULL AFTER `payment_type_id`");
+          break;
     }
 
     //insert new update history
@@ -1543,6 +1548,8 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"2.6.16","version_release"=>"2018-09-13 21:37:00"));
     //custom menu
     array_push($version, array("version_now"=>"2.6.17","version_release"=>"2018-09-19 15:18:00"));
+    // downpayment
+    array_push($version, array("version_now"=>"2.6.18","version_release"=>"2018-09-20 10:52:00"));
     
     foreach ($version as $key => $val) {
       //check version

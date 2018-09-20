@@ -46,6 +46,14 @@ class M_res_cashier extends CI_Model {
       ->row();
   }
 
+  public function get_billing_by_receipt($id)
+  {
+    return $this->db
+      ->where('tx_receipt_no',$id)
+      ->get('res_billing')
+      ->row();
+  }
+
   public function get_billing_now($id)
   {
     $billing = $this->db->where('tx_id',$id)->get('res_billing')->row();
