@@ -314,41 +314,6 @@
       </div>
     </div>
 
-    <!-- Modal add item -->
-    <div id="modal_add_custom" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-      <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title">Tambah Item Kustom</h4>
-          </div>
-          <div class="modal-body">
-            <div class="form-group">
-              <label>Nama Item</label>
-              <input class="form-control keyboard" name="add_custom_name" id="add_custom_name" type="text" value="">
-            </div>
-            <div class="row">
-              <div class="col-md-8">
-                <div class="form-group">
-                  <label>Harga</label>
-                  <input class="form-control num autonumeric" name="add_custom_price" id="add_custom_price" type="text" value="">
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label>Jumlah</label>
-                  <input class="form-control num autonumeric" name="add_custom_amount" id="add_custom_amount" type="text" value="">
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
-            <button type="button" class="btn btn-info" onclick="add_custom_action()"><i class="fa fa-plus"></i> Tambah</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- Modal edit item -->
     <div id="modal_edit_item" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
       <div style="width:310px;" class="modal-dialog modal-sm" role="document">
@@ -405,6 +370,78 @@
             <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
             <button id="edit_btn_action" type="button" class="btn btn-success" onclick="edit_item_action()"><i class="fa fa-refresh"></i> Perbarui</button>
             <button id="delete_btn_action" type="button" class="btn btn-danger" onclick="delete_item_action()"><i class="fa fa-trash"></i> Hapus</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal add item -->
+    <div id="modal_add_custom" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Tambah Item Kustom</h4>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label>Nama Item</label>
+              <input class="form-control keyboard" name="add_custom_name" id="add_custom_name" type="text" value="">
+            </div>
+            <div class="row">
+              <div class="col-md-8">
+                <div class="form-group">
+                  <label>Harga</label>
+                  <input class="form-control num autonumeric" name="add_custom_price" id="add_custom_price" type="text" value="">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Jumlah</label>
+                  <input class="form-control num autonumeric" name="add_custom_amount" id="add_custom_amount" type="text" value="">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
+            <button type="button" class="btn btn-info" onclick="add_custom_action()"><i class="fa fa-plus"></i> Tambah</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal edit item -->
+    <div id="modal_edit_custom" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Tambah Item Kustom</h4>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="edit_billing_detail_id" value="0" />
+            <div class="form-group">
+              <label>Nama Item</label>
+              <input class="form-control keyboard" name="edit_custom_name" id="edit_custom_name" type="text" value="">
+            </div>
+            <div class="row">
+              <div class="col-md-8">
+                <div class="form-group">
+                  <label>Harga</label>
+                  <input class="form-control num autonumeric" name="edit_custom_price" id="edit_custom_price" type="text" value="">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Jumlah</label>
+                  <input class="form-control num autonumeric" name="edit_custom_amount" id="edit_custom_amount" type="text" value="">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
+            <button id="edit_btn_action" type="button" class="btn btn-success" onclick="edit_custom_action()"><i class="fa fa-refresh"></i> Perbarui</button>
+            <button id="delete_btn_action" type="button" class="btn btn-danger" onclick="delete_custom_action()"><i class="fa fa-trash"></i> Hapus</button>
           </div>
         </div>
       </div>
@@ -1040,90 +1077,6 @@
           }
         })
       }
-      // get all detail action / append to billing
-      function get_billing_now() {
-        var tx_id = $("#bill_tx_id").val();
-        $.ajax({
-          type: 'post',
-          url : '<?=base_url()?>res_cashier/get_billing_now',
-          data : 'tx_id='+tx_id,
-          dataType : 'json',
-          success : function (data) {
-            $("#bill_tx_total_after_tax_nominal").html(sys_to_ind(data.tx_total_after_tax));
-            $("#bill_tx_total_before_tax_nominal").html(sys_to_ind(Math.round(data.tx_total_before_tax)));
-            $("#bill_tx_total_after_tax").val(data.tx_total_after_tax);
-            $("#bill_tx_total_tax_nominal").html(sys_to_ind(Math.round(data.tx_total_tax)));
-            $("#bill_tx_total_tax").val(data.tx_total_tax);
-            $("#bill_tx_total_discount").val(data.tx_total_discount);
-            $("#bill_tx_total_discount_nominal").html(sys_to_ind(data.tx_total_discount));
-            $("#bill_tx_total_discount").val(data.tx_total_discount);
-            $("#bill_tx_total_grand_nominal").html(sys_to_ind(Math.round(data.tx_total_grand)));
-            $("#bill_tx_total_grand").val(data.tx_total_grand);
-            $("#bill-list").html('');
-            $.each(data.detail, function(i, item) {
-              var client_is_taxed = <?=$client->client_is_taxed?>;
-              if (client_is_taxed == 0) {
-                // Harga Sebelum Pajak
-                var html = '<li onclick=edit_item_show('+data.detail[i].billing_detail_id+')>'+
-                  '<div class="amount">'+data.detail[i].tx_amount+'</div>'+
-                  '<div class="name">'+data.detail[i].item_name+' <span class="price">'+sys_to_ind(Math.round(data.detail[i].tx_subtotal_before_tax))+'</span></div>'+
-                  '<ul>'+
-                    '<li>@ '+sys_to_ind(Math.round(data.detail[i].item_price_before_tax));
-              }else{
-                // Harga Sesudah Pajak
-                var html = '<li onclick=edit_item_show('+data.detail[i].billing_detail_id+')>'+
-                  '<div class="amount">'+data.detail[i].tx_amount+'</div>'+
-                  '<div class="name">'+data.detail[i].item_name+' <span class="price">'+sys_to_ind(Math.round(data.detail[i].tx_subtotal_after_tax))+'</span></div>'+
-                  '<ul>'+
-                    '<li>@ '+sys_to_ind(Math.round(data.detail[i].item_price_after_tax));
-              }
-
-              if(data.detail[i].tx_subtotal_discount != 0){
-                html += ' Disc ('+sys_to_ind(data.detail[i].tx_subtotal_discount)+')</li>';
-              }
-
-              html +=
-                '</ul>'+
-              '</li>';
-
-              $("#bill-list").append(html);
-            })
-            $("#buyget_section").html('');
-            if(data.buyget != ''){
-              $("#buyget_section").append('<div class="list-group"></div>');
-              $("#buyget_section .list-group").append('<a class="list-group-item active">Anda berhak mendapatkan</a>');
-              $.each(data.buyget, function(i, item) {
-                var html = '<a class="list-group-item">'+
-                  '<span class="badge">'+data.buyget[i].get_amount+'</span>'+
-                  data.buyget[i].item_name+
-                  '</a>';
-                $("#buyget_section .list-group").append(html);
-              })
-            }
-          }
-        })
-      }
-
-      //edit item show
-      function edit_item_show(id) {
-        $.ajax({
-          type : 'post',
-          url : '<?=base_url()?>res_cashier/edit_item_show',
-          data : 'billing_detail_id='+id,
-          dataType : 'json',
-          success : function (data) {
-            $("#edit_billing_detail_id").val(data.billing_detail_id);
-            $("#edit_item_id").val(data.item_id);
-            $("#edit_item_name").html(data.item_name);
-            $("#edit_item_barcode").html(data.item_barcode);
-            $("#edit_item_price_after_tax").val(sys_to_ind(data.item_price_after_tax));
-            $("#edit_category_name").html(data.category_name);
-            $("#edit_unit_code").html(data.unit_code);
-            $("#edit_tx_amount").val(data.tx_amount);
-            $("#modal_edit_item").modal('show');
-          }
-        })
-      }
 
       function edit_item_action()
       {
@@ -1158,6 +1111,181 @@
           success : function () {
             $("#modal_edit_item").modal('hide');
             get_billing_now();
+          }
+        })
+      }
+
+      function add_custom_show() {
+        $("#add_custom_name").val('');
+        $("#add_custom_price").val('0');
+        $("#add_custom_amount").val('1');
+        $('#modal_add_custom').modal('show');
+      }
+
+      function add_custom_action() {
+        var tx_id = $("#bill_tx_id").val();
+        var tx_receipt_no = $("#bill_tx_receipt_no").val();
+        var customer_id = $("#bill_customer_id").val();
+        var tx_date = $("#bill_tx_date").val();
+        var tx_time = $("#bill_tx_time").val();
+        var item_name = $("#add_custom_name").val();
+        var item_price = $("#add_custom_price").val();
+        var tx_amount = $("#add_custom_amount").val();
+
+        if(item_name == '' || item_price == 0){
+          alert('Isi semua data');
+        }else{
+          $.ajax({
+          type : 'post',
+          url : '<?=base_url()?>res_cashier/add_custom_action',
+          data : 'tx_id='+tx_id+'&tx_receipt_no='+tx_receipt_no+'&customer_id='+customer_id+'&tx_date='+tx_date+
+            '&tx_time='+tx_time+'&item_name='+item_name+'&tx_amount='+tx_amount+'&item_price='+item_price,
+          success : function (data) {
+            get_billing_now();
+            $("#modal_add_custom").modal('hide');
+            // enable button
+            $("#bill_btn_payment").prop('disabled', false);
+            $("#bill_btn_pending").prop('disabled', false);
+            $("#bill_btn_cancel").prop('disabled', false);
+          }
+        })
+        }
+      }
+
+      //edit item show
+      function edit_item_show(id) {
+        $.ajax({
+          type : 'post',
+          url : '<?=base_url()?>res_cashier/edit_item_show',
+          data : 'billing_detail_id='+id,
+          dataType : 'json',
+          success : function (data) {
+            $("#edit_billing_detail_id").val(data.billing_detail_id);
+            $("#edit_item_id").val(data.item_id);
+            $("#edit_item_name").html(data.item_name);
+            $("#edit_item_barcode").html(data.item_barcode);
+            $("#edit_item_price_after_tax").val(sys_to_ind(data.item_price_after_tax));
+            $("#edit_category_name").html(data.category_name);
+            $("#edit_unit_code").html(data.unit_code);
+            $("#edit_tx_amount").val(data.tx_amount);
+            $("#modal_edit_item").modal('show');
+          }
+        })
+      }
+
+      function edit_custom_show(id) {
+        $.ajax({
+          type : 'post',
+          url : '<?=base_url()?>res_cashier/edit_custom_show',
+          data : 'billing_detail_id='+id,
+          dataType : 'json',
+          success : function (data) {
+            console.log(data);
+            $("#edit_billing_detail_id").val(data.billing_detail_id);
+            $("#edit_custom_name").val(data.item_name);
+            <?php if($client->client_is_taxed == 0): ?>
+              $("#edit_custom_price").val(sys_to_ind(data.item_price_before_tax));
+            <?php else:?>
+              $("#edit_custom_price").val(sys_to_ind(data.item_price_after_tax));
+            <?php endif;?>
+            $("#edit_custom_amount").val(data.tx_amount);
+            $("#modal_edit_custom").modal('show');
+          }
+        })
+      }
+      
+      function edit_custom_action(){
+        var tx_id = $("#bill_tx_id").val();
+        var billing_detail_id = $("#edit_billing_detail_id").val();
+        var edit_custom_name = $("#edit_custom_name").val();
+        var edit_custom_price = $("#edit_custom_price").val();
+        var edit_custom_amount = $("#edit_custom_amount").val();
+        var customer_id = $("#bill_customer_id").val();
+        var tx_date = $("#bill_tx_date").val();
+        var tx_time = $("#bill_tx_time").val();
+
+        $.ajax({
+          type : 'post',
+          url : '<?=base_url()?>res_cashier/edit_custom_action',
+          data : 'tx_id='+tx_id+'&billing_detail_id='+billing_detail_id+
+                '&item_name='+edit_custom_name+'&item_price='+edit_custom_price+
+                '&tx_amount='+edit_custom_amount+'&customer_id='+customer_id+
+                '&tx_date='+tx_date+'&tx_time='+tx_time,
+          success : function () {
+            $("#modal_edit_custom").modal('hide');
+            get_billing_now();
+          }
+        })
+      }
+      
+      // get all detail action / append to billing
+      function get_billing_now() {
+        var tx_id = $("#bill_tx_id").val();
+        $.ajax({
+          type: 'post',
+          url : '<?=base_url()?>res_cashier/get_billing_now',
+          data : 'tx_id='+tx_id,
+          dataType : 'json',
+          success : function (data) {
+            $("#bill_tx_total_after_tax_nominal").html(sys_to_ind(data.tx_total_after_tax));
+            $("#bill_tx_total_before_tax_nominal").html(sys_to_ind(Math.round(data.tx_total_before_tax)));
+            $("#bill_tx_total_after_tax").val(data.tx_total_after_tax);
+            $("#bill_tx_total_tax_nominal").html(sys_to_ind(Math.round(data.tx_total_tax)));
+            $("#bill_tx_total_tax").val(data.tx_total_tax);
+            $("#bill_tx_total_discount").val(data.tx_total_discount);
+            $("#bill_tx_total_discount_nominal").html(sys_to_ind(data.tx_total_discount));
+            $("#bill_tx_total_discount").val(data.tx_total_discount);
+            $("#bill_tx_total_grand_nominal").html(sys_to_ind(Math.round(data.tx_total_grand)));
+            $("#bill_tx_total_grand").val(data.tx_total_grand);
+            $("#bill-list").html('');
+            $.each(data.detail, function(i, item) {
+              var client_is_taxed = <?=$client->client_is_taxed?>;
+              if (client_is_taxed == 0) {
+                // Harga Sebelum Pajak
+                if(data.detail[i].is_custom == 0){
+                  var html = '<li onclick=edit_item_show('+data.detail[i].billing_detail_id+')>';
+                }else{
+                  var html = '<li onclick=edit_custom_show('+data.detail[i].billing_detail_id+')>';
+                };
+                html += '<div class="amount">'+data.detail[i].tx_amount+'</div>'+
+                  '<div class="name">'+data.detail[i].item_name+' <span class="price">'+sys_to_ind(Math.round(data.detail[i].tx_subtotal_before_tax))+'</span></div>'+
+                  '<ul>'+
+                    '<li>@ '+sys_to_ind(Math.round(data.detail[i].item_price_before_tax));
+              }else{
+                // Harga Sesudah Pajak
+                if(data.detail[i].is_custom == 0){
+                  var html = '<li onclick=edit_item_show('+data.detail[i].billing_detail_id+')>';
+                }else{
+                  var html = '<li onclick=edit_custom_show('+data.detail[i].billing_detail_id+')>';
+                };
+                html += '<div class="amount">'+data.detail[i].tx_amount+'</div>'+
+                  '<div class="name">'+data.detail[i].item_name+' <span class="price">'+sys_to_ind(Math.round(data.detail[i].tx_subtotal_after_tax))+'</span></div>'+
+                  '<ul>'+
+                    '<li>@ '+sys_to_ind(Math.round(data.detail[i].item_price_after_tax));
+              }
+
+              if(data.detail[i].tx_subtotal_discount != 0){
+                html += ' Disc ('+sys_to_ind(data.detail[i].tx_subtotal_discount)+')</li>';
+              }
+
+              html +=
+                '</ul>'+
+              '</li>';
+
+              $("#bill-list").append(html);
+            })
+            $("#buyget_section").html('');
+            if(data.buyget != ''){
+              $("#buyget_section").append('<div class="list-group"></div>');
+              $("#buyget_section .list-group").append('<a class="list-group-item active">Anda berhak mendapatkan</a>');
+              $.each(data.buyget, function(i, item) {
+                var html = '<a class="list-group-item">'+
+                  '<span class="badge">'+data.buyget[i].get_amount+'</span>'+
+                  data.buyget[i].item_name+
+                  '</a>';
+                $("#buyget_section .list-group").append(html);
+              })
+            }
           }
         })
       }
@@ -1364,8 +1492,6 @@
         })
       }
 
-
-
       function open_search() {
         $("#modal_search").modal('show');
       }
@@ -1395,43 +1521,6 @@
               })
             }
           });
-        }
-      }
-
-      function add_custom_show() {
-        $("#add_custom_name").val('');
-        $("#add_custom_price").val('0');
-        $("#add_custom_amount").val('1');
-        $('#modal_add_custom').modal('show');
-      }
-
-      function add_custom_action() {
-        var tx_id = $("#bill_tx_id").val();
-        var tx_receipt_no = $("#bill_tx_receipt_no").val();
-        var customer_id = $("#bill_customer_id").val();
-        var tx_date = $("#bill_tx_date").val();
-        var tx_time = $("#bill_tx_time").val();
-        var item_name = $("#add_custom_name").val();
-        var item_price = $("#add_custom_price").val();
-        var tx_amount = $("#add_custom_amount").val();
-
-        if(item_name == '' || item_price == 0){
-          alert('Isi semua data');
-        }else{
-          $.ajax({
-          type : 'post',
-          url : '<?=base_url()?>res_cashier/add_custom_action',
-          data : 'tx_id='+tx_id+'&tx_receipt_no='+tx_receipt_no+'&customer_id='+customer_id+'&tx_date='+tx_date+
-            '&tx_time='+tx_time+'&item_name='+item_name+'&tx_amount='+tx_amount+'&item_price='+item_price,
-          success : function (data) {
-            get_billing_now();
-            $("#modal_add_custom").modal('hide');
-            // enable button
-            $("#bill_btn_payment").prop('disabled', false);
-            $("#bill_btn_pending").prop('disabled', false);
-            $("#bill_btn_cancel").prop('disabled', false);
-          }
-        })
         }
       }
 

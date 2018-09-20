@@ -255,6 +255,11 @@ class M_res_cashier extends CI_Model {
       ->row();
   }
 
+  public function edit_custom_show($id)
+  {
+    return $this->db->query("SELECT * FROM res_billing_detail WHERE billing_detail_id = '$id'")->row();
+  }
+
   public function edit_item_action($id, $data)
   {
     $this->db->where('billing_detail_id',$id)->update('res_billing_detail', $data);
@@ -446,7 +451,7 @@ class M_res_cashier extends CI_Model {
       ->update('res_billing_buyall',$data);
   }
 
-  public function delete_promo_buyall($tx_id)
+  public function delete_promo_buyall($tx_id,$item_id)
   {
     $this->db
       ->where('buy_item_id', $item_id)
