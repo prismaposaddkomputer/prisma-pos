@@ -187,7 +187,7 @@
           <div id="item-footer">
             <button class="btn btn-sm btn-info" onclick="add_custom_show()"><i class="fa fa-list"></i> Item Kustom</button>
             <button class="btn btn-sm btn-info" onclick="down_payment_show()"><i class="fa fa-money"></i> Uang Muka</button>
-            <button class="btn btn-sm btn-info"><i class="fa fa-reply"></i> Retur</button>
+            <button class="btn btn-sm btn-info" onclick="return_show()"><i class="fa fa-reply"></i> Retur</button>
             <button class="btn btn-sm btn-info" onclick="print_receipt_show()"><i class="fa fa-print"></i> Cetak Struk</button>
           </div>
         </div>
@@ -779,7 +779,29 @@
         </div>
       </div>
     </div>
-
+      
+    <!-- Modal return -->
+    <div id="modal_return" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Retur Penjualan</h4>
+          </div>
+          <div class="modal-body">
+            <div class="input-group">
+              <span class="input-group-addon">TXS-</span>
+              <input id="return_tx_receipt_no" type="text" class="form-control num" aria-label="Masukkan ID Struk">
+              <div class="input-group-btn">
+                <button class="btn btn-info" onclick="return_action()"> Ok</button>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <script type="text/javascript">
       $(document).ready(function () {
@@ -916,27 +938,27 @@
           success : function (data) {
             $("#bill_tx_id").val(data.tx_id);
             $("#bill_tx_id_name").html('TXS-'+data.tx_id);
-            $("#bill_tx_total_after_tax_nominal").html(sys_to_ind(data.tx_total_after_tax));
+            $("#bill_tx_total_after_tax_nominal").html(sys_to_ind(Math.round(data.tx_total_after_tax)));
             $("#bill_tx_total_before_tax_nominal").html(sys_to_ind(Math.round(data.tx_total_before_tax)));
             $("#bill_tx_total_after_tax").val(data.tx_total_after_tax);
             $("#bill_tx_total_tax_nominal").html(sys_to_ind(Math.round(data.tx_total_tax)));
-            $("#bill_tx_total_tax").val(data.tx_total_tax);
-            $("#bill_tx_total_discount").val(data.tx_total_discount);
-            $("#bill_tx_total_discount_nominal").html(sys_to_ind(data.tx_total_discount));
-            $("#bill_tx_total_discount").val(data.tx_total_discount);
-            $("#bill_tx_total_grand_nominal").html(sys_to_ind(data.tx_total_grand));
-            $("#bill_tx_total_grand").val(data.tx_total_grand);
+            $("#bill_tx_total_tax").val(Math.round(data.tx_total_tax));
+            $("#bill_tx_total_discount").val(Math.round(data.tx_total_discount));
+            $("#bill_tx_total_discount_nominal").html(sys_to_ind(Math.round(data.tx_total_discount)));
+            $("#bill_tx_total_discount").val(Math.round(data.tx_total_discount));
+            $("#bill_tx_total_grand_nominal").html(sys_to_ind(Math.round(data.tx_total_grand)));
+            $("#bill_tx_total_grand").val(Math.round(data.tx_total_grand));
             $("#bill-list").html('');
             $("#tx_down_payment").val(sys_to_ind(Math.round(data.tx_down_payment)));
             $.each(data.detail, function(i, item) {
               var html = '<li onclick=edit_item_show('+data.detail[i].billing_detail_id+')>'+
                 '<div class="amount">'+data.detail[i].tx_amount+'</div>'+
-                '<div class="name">'+data.detail[i].item_name+' <span class="price">'+sys_to_ind(data.detail[i].tx_subtotal_after_tax)+'</span></div>'+
+                '<div class="name">'+data.detail[i].item_name+' <span class="price">'+sys_to_ind(Math.round(data.detail[i].tx_subtotal_after_tax))+'</span></div>'+
                 '<ul>'+
-                  '<li>@ '+sys_to_ind(data.detail[i].item_price_after_tax);
+                  '<li>@ '+sys_to_ind(Math.round(data.detail[i].item_price_after_tax));
 
               if(data.detail[i].tx_subtotal_discount != 0){
-                html += ' Disc ('+sys_to_ind(data.detail[i].tx_subtotal_discount)+')</li>';
+                html += ' Disc ('+sys_to_ind(Math.round(data.detail[i].tx_subtotal_discount))+')</li>';
               }
 
               html +=
@@ -1649,6 +1671,29 @@
             $("#modal_down_payment").modal('hide');
           }
         })
+      }
+
+      // down payment
+      function return_show() {
+        $("#modal_return").modal('show');
+      }
+
+      function return_action() {
+        var tx_receipt_no = $("#return_tx_receipt_no").val();
+        $.ajax({
+            type : 'post',
+            url : '<?=base_url()?>res_cashier/get_billing_by_receipt',
+            data : 'tx_receipt_no='+tx_receipt_no,
+            dataType : 'json',
+            success : function (data) {
+              if(data != null){
+                var tx_id = data.tx_id;
+                get_billing_id(tx_id);
+              }else{
+                alert('No. Struk Salah!');
+              }
+            }
+          })
       }
 
       // Shortcut keyboard
