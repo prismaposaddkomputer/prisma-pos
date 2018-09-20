@@ -46,6 +46,14 @@ class M_res_cashier extends CI_Model {
       ->row();
   }
 
+  public function get_billing_by_receipt($id)
+  {
+    return $this->db
+      ->where('tx_receipt_no',$id)
+      ->get('res_billing')
+      ->row();
+  }
+
   public function get_billing_now($id)
   {
     $billing = $this->db->where('tx_id',$id)->get('res_billing')->row();
@@ -209,6 +217,26 @@ class M_res_cashier extends CI_Model {
     }
   }
 
+  public function item_exist_custom($tx_id,$item_name,$item_price)
+  {
+    $client = $this->db->get('res_client')->row();
+    if($client->client_is_taxed == 0){
+      return $this->db
+        ->where('tx_id',$tx_id)
+        ->where('item_name',$item_name)
+        ->where('item_price_before_tax',$item_price)
+        ->get('res_billing_detail')
+        ->row();
+    }else{
+      return $this->db
+        ->where('tx_id',$tx_id)
+        ->where('item_name',$item_name)
+        ->where('item_price_after_tax',$item_price)
+        ->get('res_billing_detail')
+        ->row();
+    }
+  }
+
   public function add_item_show($id)
   {
     return $this->db
@@ -233,6 +261,11 @@ class M_res_cashier extends CI_Model {
       ->where('billing_detail_id', $id)
       ->get('res_billing_detail')
       ->row();
+  }
+
+  public function edit_custom_show($id)
+  {
+    return $this->db->query("SELECT * FROM res_billing_detail WHERE billing_detail_id = '$id'")->row();
   }
 
   public function edit_item_action($id, $data)
@@ -426,7 +459,7 @@ class M_res_cashier extends CI_Model {
       ->update('res_billing_buyall',$data);
   }
 
-  public function delete_promo_buyall($tx_id)
+  public function delete_promo_buyall($tx_id,$item_id)
   {
     $this->db
       ->where('buy_item_id', $item_id)
