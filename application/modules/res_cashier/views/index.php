@@ -1644,7 +1644,7 @@
                 url : '<?=base_url()?>res_cashier/print_bill',
                 data : 'tx_id='+tx_id,
                 success : function () {
-
+                  $("#modal_print_receipt").modal('hide');
                 }
               })
             }else{
@@ -1676,6 +1676,7 @@
       // down payment
       function return_show() {
         $("#modal_return").modal('show');
+        $('#return_tx_receipt_no').val('');
       }
 
       function return_action() {
@@ -1689,6 +1690,7 @@
               if(data != null){
                 var tx_id = data.tx_id;
                 get_billing_id(tx_id);
+                $("#modal_return").modal('hide');
               }else{
                 alert('No. Struk Salah!');
               }
