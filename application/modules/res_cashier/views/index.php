@@ -377,7 +377,7 @@
     </div>
 
     <!-- Modal add item -->
-    <div id="modal_add_custom" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div id="modal_add_custom" class="modal fade bs-example-modal-sm" role="dialog" aria-labelledby="mySmallModalLabel">
       <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -412,7 +412,7 @@
     </div>
 
     <!-- Modal edit item -->
-    <div id="modal_edit_custom" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div id="modal_edit_custom" class="modal fade bs-example-modal-sm" role="dialog" aria-labelledby="mySmallModalLabel">
       <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -736,7 +736,7 @@
     </div>
 
     <!-- Modal print struk -->
-    <div id="modal_print_receipt" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div id="modal_print_receipt" class="modal fade bs-example-modal-sm" role="dialog" aria-labelledby="mySmallModalLabel">
       <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -745,7 +745,7 @@
           <div class="modal-body">
             <div class="input-group">
               <span class="input-group-addon">TXS-</span>
-              <input id="print_receipt_no" type="text" class="form-control" aria-label="Masukkan ID Struk">
+              <input id="print_receipt_no" type="text" class="form-control keyboard" aria-label="Masukkan ID Struk">
               <div class="input-group-btn">
                 <button class="btn btn-info" onclick="print_receipt_action()"><i class="fa fa-print"></i> Cetak</button>
               </div>
@@ -759,7 +759,7 @@
     </div>
 
     <!-- Modal down payment -->
-    <div id="modal_down_payment" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div id="modal_down_payment" class="modal fade bs-example-modal-sm" role="dialog" aria-labelledby="mySmallModalLabel">
       <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -781,7 +781,7 @@
     </div>
       
     <!-- Modal return -->
-    <div id="modal_return" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div id="modal_return" class="modal fade bs-example-modal-sm" role="dialog" aria-labelledby="mySmallModalLabel">
       <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
           <div class="modal-header">
