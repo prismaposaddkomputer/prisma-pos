@@ -21,8 +21,8 @@
             <th class="text-center">Status</th>
             <th class="text-center">Pembayaran</th>
             <th class="text-center">Subtotal</th>
-            <th class="text-center">Diskon</th>
             <th class="text-center">Pajak</th>
+            <th class="text-center">Diskon</th>
             <th class="text-center">Total</th>
           </tr>
         </thead>
