@@ -298,7 +298,7 @@
                     <span class="input-group-btn">
                       <button id="add_btn_decrement" class="btn btn-default" type="button"><i class="fa fa-minus"></i></button>
                     </span>
-                    <input id="add_tx_amount" type="number" class="form-control num" value="1">
+                    <input id="add_tx_amount" type="number" class="form-control" value="1" readonly="">
                     <span class="input-group-btn">
                       <button id="add_btn_increment" class="btn btn-default" type="button"><i class="fa fa-plus"></i></button>
                     </span>
