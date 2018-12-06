@@ -153,7 +153,7 @@ class M_res_cashier extends CI_Model {
       ->join('res_category','res_item.category_id = res_category.category_id')
 			->where('res_item.is_deleted','0')
 			->where('res_item.is_active','1')
-      ->order_by('res_item.item_name', 'ASC')
+      ->order_by('res_item.item_barcode', 'ASC')
 			->get('res_item')->result();
   }
 
@@ -166,7 +166,7 @@ class M_res_cashier extends CI_Model {
       ->where('res_item.category_id',$id)
       ->where('res_item.is_deleted','0')
       ->where('res_item.is_active','1')
-      ->order_by('res_item.item_name', 'ASC')
+      ->order_by('res_item.item_barcode', 'ASC')
       ->get('res_item')->result();
   }
 
@@ -180,7 +180,7 @@ class M_res_cashier extends CI_Model {
       ->or_like('res_item.item_barcode',$search_term)
       ->where('res_item.is_deleted','0')
       ->where('res_item.is_active','1')
-      ->order_by('res_item.item_name', 'ASC')
+      ->order_by('res_item.item_barcode', 'ASC')
       ->get('res_item')->result();
   }
 
