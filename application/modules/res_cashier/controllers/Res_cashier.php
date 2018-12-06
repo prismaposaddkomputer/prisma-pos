@@ -684,8 +684,6 @@ class Res_cashier extends MY_Restaurant {
     );
     // update item
     $this->m_res_cashier->update_detail($data['billing_detail_id'], $data_detail);
-    var_dump($data_detail);
-    exit();
     //cek promo buyget
     $promo_buyget = $this->m_res_cashier->get_promo_buyget($item_id, $data['tx_amount']);
     if ($promo_buyget != null) {
@@ -1358,6 +1356,18 @@ class Res_cashier extends MY_Restaurant {
   {
     $data = $_POST;
     $this->m_res_cashier->update_billing($data['tx_id'],array('tx_down_payment' => price_to_num($data['tx_down_payment'])));
+  }
+
+  public function update_discount_action()
+  {
+    $data = $_POST;
+    $billing = $this->m_res_cashier->get_billing_by_id($data['tx_id']);
+    $data_billing = array(
+      'tx_total_discount' => price_to_num($data['tx_total_discount']),
+      'tx_total_grand' => $billing->tx_total_after_tax-price_to_num($data['tx_total_discount'])
+    );
+    // echo json_encode($billing);
+    $this->m_res_cashier->update_billing($data['tx_id'],$data_billing);
   }
 
   public function print_bill()
