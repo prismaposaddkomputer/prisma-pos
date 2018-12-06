@@ -189,6 +189,7 @@
             <button class="btn btn-sm btn-info" onclick="down_payment_show()"><i class="fa fa-money"></i> Uang Muka</button>
             <button class="btn btn-sm btn-info" onclick="return_show()"><i class="fa fa-reply"></i> Retur</button>
             <button class="btn btn-sm btn-info" onclick="print_receipt_show()"><i class="fa fa-print"></i> Cetak Struk</button>
+            <button class="btn btn-sm btn-info" onclick="discount_show()"><i class="fa fa-cut"></i> Diskon</button>
           </div>
         </div>
         <div id="bill" class="col-md-4 col-xs-12 right full-height-col">
@@ -298,7 +299,7 @@
                     <span class="input-group-btn">
                       <button id="add_btn_decrement" class="btn btn-default" type="button"><i class="fa fa-minus"></i></button>
                     </span>
-                    <input id="add_tx_amount" type="number" class="form-control" value="1" readonly="">
+                    <input id="add_tx_amount" type="text" class="form-control num" value="1">
                     <span class="input-group-btn">
                       <button id="add_btn_increment" class="btn btn-default" type="button"><i class="fa fa-plus"></i></button>
                     </span>
@@ -358,7 +359,7 @@
                     <span class="input-group-btn">
                       <button id="edit_btn_decrement" class="btn btn-default" type="button"><i class="fa fa-minus"></i></button>
                     </span>
-                    <input id="edit_tx_amount" type="number" class="form-control num" value="1">
+                    <input id="edit_tx_amount" type="text" class="form-control num" value="1">
                     <span class="input-group-btn">
                       <button id="edit_btn_increment" class="btn btn-default" type="button"><i class="fa fa-plus"></i></button>
                     </span>
@@ -802,6 +803,26 @@
         </div>
       </div>
     </div>
+    <!-- Modal add item -->
+    <div id="modal_discount" class="modal fade bs-example-modal-sm" role="dialog" aria-labelledby="mySmallModalLabel">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Tambah Diskon</h4>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label>Harga</label>
+              <input class="form-control num autonumeric" name="tx_total_discount" id="tx_total_discount" type="text" value="">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
+            <button type="button" class="btn btn-info" onclick="edit_discount()"><i class="fa fa-plus"></i> Tambah</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <script type="text/javascript">
       $(document).ready(function () {
@@ -949,6 +970,7 @@
             $("#bill_tx_total_grand_nominal").html(sys_to_ind(Math.round(data.tx_total_grand)));
             $("#bill_tx_total_grand").val(Math.round(data.tx_total_grand));
             $("#bill-list").html('');
+            $("#tx_total_discount").val(sys_to_id(Math.round(data.tx_total_discount)));
             $("#tx_down_payment").val(sys_to_ind(Math.round(data.tx_down_payment)));
             $.each(data.detail, function(i, item) {
               var html = '<li onclick=edit_item_show('+data.detail[i].billing_detail_id+')>'+
@@ -1316,7 +1338,7 @@
             $("#bill_tx_total_tax_nominal").html(sys_to_ind(Math.round(data.tx_total_tax)));
             $("#bill_tx_total_tax").val(data.tx_total_tax);
             $("#bill_tx_total_discount").val(data.tx_total_discount);
-            $("#bill_tx_total_discount_nominal").html(sys_to_ind(data.tx_total_discount));
+            $("#bill_tx_total_discount_nominal").html(sys_to_ind(Math.round(data.tx_total_discount)));
             $("#bill_tx_total_discount").val(data.tx_total_discount);
             $("#bill_tx_total_grand_nominal").html(sys_to_ind(Math.round(data.tx_total_grand)));
             $("#bill_tx_total_grand").val(data.tx_total_grand);
@@ -1669,6 +1691,28 @@
           success : function () {
             get_billing_now();
             $("#modal_down_payment").modal('hide');
+          }
+        })
+      }
+
+      //discount
+      function discount_show() {
+        $("#modal_discount").modal('show');
+        var tx_id = $("#bill_tx_id").val();
+        get_billing_id(tx_id);
+      }
+
+      function edit_discount() {
+        var tx_id = $("#bill_tx_id").val();
+        var tx_total_discount = $("#tx_total_discount").val();
+        
+        $.ajax({
+          type: 'post',
+          url : '<?=base_url()?>res_cashier/update_discount_action',
+          data : 'tx_id='+tx_id+'&tx_total_discount='+tx_total_discount,
+          success : function () {
+            get_billing_now();
+            $("#modal_discount").modal('hide');
           }
         })
       }

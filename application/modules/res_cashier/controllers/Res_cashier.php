@@ -325,7 +325,7 @@ class Res_cashier extends MY_Restaurant {
     if ($promo_buyall != null) {
       // add discount discount
       $grand_discount = $tx_total_grand_before_discount*$promo_buyall->get_discount/100;
-      $tx_total_discount .= $grand_discount;
+      $tx_total_discount += $grand_discount;
 
       $data_buyall = array(
         'promo_buyall_id' => $promo_buyall->promo_buyall_id,
@@ -533,7 +533,7 @@ class Res_cashier extends MY_Restaurant {
     if ($promo_buyall != null) {
       // add discount discount
       $grand_discount = $tx_total_grand_before_discount*$promo_buyall->get_discount/100;
-      $tx_total_discount .= $grand_discount;
+      $tx_total_discount += $grand_discount;
 
       $data_buyall = array(
         'promo_buyall_id' => $promo_buyall->promo_buyall_id,
@@ -684,8 +684,6 @@ class Res_cashier extends MY_Restaurant {
     );
     // update item
     $this->m_res_cashier->update_detail($data['billing_detail_id'], $data_detail);
-    var_dump($data_detail);
-    exit();
     //cek promo buyget
     $promo_buyget = $this->m_res_cashier->get_promo_buyget($item_id, $data['tx_amount']);
     if ($promo_buyget != null) {
@@ -723,13 +721,13 @@ class Res_cashier extends MY_Restaurant {
     //get all detail and count it
     $detail = $this->m_res_cashier->get_billing_detail($tx_id);
     foreach ($detail as $row) {
-      $tx_total_buy_average .= $row->tx_subtotal_buy_average;
-      $tx_total_before_tax .= $row->tx_subtotal_before_tax;
-      $tx_total_after_tax .= $row->tx_subtotal_after_tax;
-      $tx_total_tax .= $row->tx_subtotal_tax;
-      $tx_total_discount .= $row->tx_subtotal_discount;
-      $tx_total_profit_before_tax .= $row->tx_subtotal_profit_before_tax;
-      $tx_total_profit_after_tax .= $row->tx_subtotal_profit_after_tax;
+      $tx_total_buy_average += $row->tx_subtotal_buy_average;
+      $tx_total_before_tax += $row->tx_subtotal_before_tax;
+      $tx_total_after_tax += $row->tx_subtotal_after_tax;
+      $tx_total_tax += $row->tx_subtotal_tax;
+      $tx_total_discount += $row->tx_subtotal_discount;
+      $tx_total_profit_before_tax += $row->tx_subtotal_profit_before_tax;
+      $tx_total_profit_after_tax += $row->tx_subtotal_profit_after_tax;
     }
 
     // grand total before discount
@@ -739,7 +737,7 @@ class Res_cashier extends MY_Restaurant {
     $promo_buyall = $this->m_res_cashier->get_promo_buyall($tx_total_grand_before_discount);
     if ($promo_buyall != null) {
       // add discount discount
-      $tx_total_discount .= $tx_total_grand_before_discount*$promo_buyall->get_discount/100;
+      $tx_total_discount += $tx_total_grand_before_discount*$promo_buyall->get_discount/100;
 
       $data_buyall = array(
         'promo_buyall_id' => $promo_buyall->promo_buyall_id,
@@ -935,13 +933,13 @@ class Res_cashier extends MY_Restaurant {
     //get all detail and count it
     $detail = $this->m_res_cashier->get_billing_detail($tx_id);
     foreach ($detail as $row) {
-      $tx_total_buy_average .= $row->tx_subtotal_buy_average;
-      $tx_total_before_tax .= $row->tx_subtotal_before_tax;
-      $tx_total_after_tax .= $row->tx_subtotal_after_tax;
-      $tx_total_tax .= $row->tx_subtotal_tax;
-      $tx_total_discount .= $row->tx_subtotal_discount;
-      $tx_total_profit_before_tax .= $row->tx_subtotal_profit_before_tax;
-      $tx_total_profit_after_tax .= $row->tx_subtotal_profit_after_tax;
+      $tx_total_buy_average += $row->tx_subtotal_buy_average;
+      $tx_total_before_tax += $row->tx_subtotal_before_tax;
+      $tx_total_after_tax += $row->tx_subtotal_after_tax;
+      $tx_total_tax += $row->tx_subtotal_tax;
+      $tx_total_discount += $row->tx_subtotal_discount;
+      $tx_total_profit_before_tax += $row->tx_subtotal_profit_before_tax;
+      $tx_total_profit_after_tax += $row->tx_subtotal_profit_after_tax;
     }
 
     // grand total before discount
@@ -951,7 +949,7 @@ class Res_cashier extends MY_Restaurant {
     $promo_buyall = $this->m_res_cashier->get_promo_buyall($tx_total_grand_before_discount);
     if ($promo_buyall != null) {
       // add discount discount
-      $tx_total_discount .= $tx_total_grand_before_discount*$promo_buyall->get_discount/100;
+      $tx_total_discount += $tx_total_grand_before_discount*$promo_buyall->get_discount/100;
 
       $data_buyall = array(
         'promo_buyall_id' => $promo_buyall->promo_buyall_id,
@@ -1032,13 +1030,13 @@ class Res_cashier extends MY_Restaurant {
     //get all detail and count it
     $detail = $this->m_res_cashier->get_billing_detail($tx_id);
     foreach ($detail as $row) {
-      $tx_total_buy_average .= $row->tx_subtotal_buy_average;
-      $tx_total_before_tax .= $row->tx_subtotal_before_tax;
-      $tx_total_after_tax .= $row->tx_subtotal_after_tax;
-      $tx_total_tax .= $row->tx_subtotal_tax;
-      $tx_total_discount .= $row->tx_subtotal_discount;
-      $tx_total_profit_before_tax .= $row->tx_subtotal_profit_before_tax;
-      $tx_total_profit_after_tax .= $row->tx_subtotal_profit_after_tax;
+      $tx_total_buy_average += $row->tx_subtotal_buy_average;
+      $tx_total_before_tax += $row->tx_subtotal_before_tax;
+      $tx_total_after_tax += $row->tx_subtotal_after_tax;
+      $tx_total_tax += $row->tx_subtotal_tax;
+      $tx_total_discount += $row->tx_subtotal_discount;
+      $tx_total_profit_before_tax += $row->tx_subtotal_profit_before_tax;
+      $tx_total_profit_after_tax += $row->tx_subtotal_profit_after_tax;
     }
 
     // grand total before discount
@@ -1048,7 +1046,7 @@ class Res_cashier extends MY_Restaurant {
     $promo_buyall = $this->m_res_cashier->get_promo_buyall($tx_total_grand_before_discount);
     if ($promo_buyall != null) {
       // add discount discount
-      $tx_total_discount .= $tx_total_grand_before_discount*$promo_buyall->get_discount/100;
+      $tx_total_discount += $tx_total_grand_before_discount*$promo_buyall->get_discount/100;
 
       $data_buyall = array(
         'promo_buyall_id' => $promo_buyall->promo_buyall_id,
@@ -1358,6 +1356,18 @@ class Res_cashier extends MY_Restaurant {
   {
     $data = $_POST;
     $this->m_res_cashier->update_billing($data['tx_id'],array('tx_down_payment' => price_to_num($data['tx_down_payment'])));
+  }
+
+  public function update_discount_action()
+  {
+    $data = $_POST;
+    $billing = $this->m_res_cashier->get_billing_by_id($data['tx_id']);
+    $data_billing = array(
+      'tx_total_discount' => price_to_num($data['tx_total_discount']),
+      'tx_total_grand' => $billing->tx_total_after_tax-price_to_num($data['tx_total_discount'])
+    );
+    // echo json_encode($billing);
+    $this->m_res_cashier->update_billing($data['tx_id'],$data_billing);
   }
 
   public function print_bill()
