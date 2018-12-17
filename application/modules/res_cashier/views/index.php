@@ -97,7 +97,7 @@
                           'a s d f g h j k l',
                           '{s} z x c v b n m {b}',
                           '{c} {space} {a}'],
-              'shift' : ['1 2 3 4 5 6 7 8 9 0',
+              'shift' : ['! @ # $ % ^ & * ( ) / -',
                           'Q W E R T Y U I O P',
                           'A S D F G H J K L',
                           '{s} Z X C V B N M {b}',
@@ -958,7 +958,9 @@
           dataType : 'json',
           success : function (data) {
             $("#bill_tx_id").val(data.tx_id);
-            $("#bill_tx_id_name").html('TXS-'+data.tx_id);
+            $("#bill_tx_id_name").html('TXS-'+data.tx_receipt_no);
+            $("#bill_customer_name").html(data.customer_name);
+            $("#customer_id").val(data.customer_id);
             $("#bill_tx_total_after_tax_nominal").html(sys_to_ind(Math.round(data.tx_total_after_tax)));
             $("#bill_tx_total_before_tax_nominal").html(sys_to_ind(Math.round(data.tx_total_before_tax)));
             $("#bill_tx_total_after_tax").val(data.tx_total_after_tax);
@@ -970,7 +972,7 @@
             $("#bill_tx_total_grand_nominal").html(sys_to_ind(Math.round(data.tx_total_grand)));
             $("#bill_tx_total_grand").val(Math.round(data.tx_total_grand));
             $("#bill-list").html('');
-            $("#tx_total_discount").val(sys_to_id(Math.round(data.tx_total_discount)));
+            $("#tx_total_discount").val(sys_to_ind(Math.round(data.tx_total_discount)));
             $("#tx_down_payment").val(sys_to_ind(Math.round(data.tx_down_payment)));
             $.each(data.detail, function(i, item) {
               var html = '<li onclick=edit_item_show('+data.detail[i].billing_detail_id+')>'+
@@ -1215,6 +1217,30 @@
           data : 'tx_id='+tx_id+'&billing_detail_id='+billing_detail_id+"&item_id="+item_id,
           success : function () {
             $("#modal_edit_item").modal('hide');
+            get_billing_now();
+          }
+        })
+      }
+
+      function delete_custom_action(){
+        var tx_id = $("#bill_tx_id").val();
+        var billing_detail_id = $("#edit_billing_detail_id").val();
+        var edit_custom_name = $("#edit_custom_name").val();
+        var edit_custom_price = $("#edit_custom_price").val();
+        var edit_custom_amount = $("#edit_custom_amount").val();
+        var customer_id = $("#bill_customer_id").val();
+        var tx_date = $("#bill_tx_date").val();
+        var tx_time = $("#bill_tx_time").val();
+
+        $.ajax({
+          type : 'post',
+          url : '<?=base_url()?>res_cashier/delete_custom_action',
+          data : 'tx_id='+tx_id+'&billing_detail_id='+billing_detail_id+
+                '&item_name='+edit_custom_name+'&item_price='+edit_custom_price+
+                '&tx_amount='+edit_custom_amount+'&customer_id='+customer_id+
+                '&tx_date='+tx_date+'&tx_time='+tx_time,
+          success : function () {
+            $("#modal_edit_custom").modal('hide');
             get_billing_now();
           }
         })

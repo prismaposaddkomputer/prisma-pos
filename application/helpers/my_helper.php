@@ -140,7 +140,7 @@
 
   function num_to_price($v)
   {
-    $res = number_format($v, 2, ",", ".");
+    $res = number_format($v, 0, ",", ".");
     return $res;
   }
 

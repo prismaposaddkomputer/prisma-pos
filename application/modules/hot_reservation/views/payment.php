@@ -422,21 +422,11 @@
             </tr>
             <?php endforeach; ?>
             <tr>
-              <td width="300">Diskon</td>
-              <td width="20">:</td>
-              <td><?=num_to_idr($billing->billing_discount)?></td>
-            </tr>
-            <tr>
               <th width="300">Total</th>
               <th width="20">:</th>
               <th><?=num_to_idr($billing->billing_total)?></th>
             </tr>
           <?php else: ?>
-            <tr>
-              <td width="300">Diskon</td>
-              <td width="20">:</td>
-              <td><?=num_to_idr($billing->billing_discount)?></td>
-            </tr>
             <tr>
               <th width="300">Total</th>
               <th width="20">:</th>
@@ -470,7 +460,14 @@
             <input id="billing_total" type="hidden" value="<?=$billing->billing_total-$billing->billing_down_payment?>">
           </tr>
           <tr>
-            <td width="300">Uang Muka</td>
+            <td width="300">(Diskon)</td>
+            <td width="20">:</td>
+            <td>
+              <input id="billing_discount" name="billing_discount" style="width:100%; height: 40px; border: 2px solid green; font-size: 20px; font-weight: bold; text-align: right; padding-right: 10px;" class="autonumeric num" type="text" value="<?=$billing->billing_discount?>" dir="rtl" onchange="calc_discount()">
+            </td>
+          </tr>
+          <tr>
+            <td width="300">(Uang Muka)</td>
             <td width="20">:</td>
             <?php if ($billing->billing_down_payment_type == 1): ?>
               <td><?=num_to_idr($billing->billing_down_payment)?></td>
@@ -485,18 +482,18 @@
               <td><?=num_to_idr(0)?></td>
             <?php else: ?>
               <?php if ($billing->billing_down_payment_type == 1): ?>
-                <td><?=num_to_idr($billing->billing_total-$billing->billing_down_payment)?></td>
-                <input type="hidden" name="" id="total_payment" value="<?=$billing->billing_total-$billing->billing_down_payment?>">
+                <td id="text_total_payment"><?=num_to_idr($billing->billing_total-$billing->billing_down_payment-$billing->billing_discount)?></td>
+                <input type="hidden" name="" id="total_payment" value="<?=$billing->billing_total-$billing->billing_down_payment-$billing->billing_discount?>">
               <?php else: ?>
                 <?php 
                 $dp_prosen = $billing->billing_total*($billing->billing_down_payment/100);
                 ?>
                 <?php if ($dp_prosen > $billing->billing_total): ?>
-                  <td><?=num_to_idr(0)?></td>
+                  <td id="text_total_payment"><?=num_to_idr(0)?></td>
                 <?php else: ?>
-                  <td><?=num_to_idr($billing->billing_total-$dp_prosen)?></td>
+                  <td id="text_total_payment"><?=num_to_idr($billing->billing_total-$dp_prosen-$billing->billing_discount)?></td>
                 <?php endif; ?>
-                <input type="hidden" name="" id="total_payment" value="<?=$billing->billing_total-$dp_prosen?>">
+                <input type="hidden" name="" id="total_payment" value="<?=$billing->billing_total-$dp_prosen-$billing->billing_discount?>">
               <?php endif; ?>
             <?php endif; ?>
           </tr>
@@ -511,10 +508,10 @@
               }
               ?>
               <?php if ($billing->billing_down_payment > $billing->billing_total || $billing->billing_down_payment == $billing->billing_total): ?>
-                <input style="width:100%; border: none; font-size: 18px; text-align: right;" type="text" name="billing_payment" value="" readonly>
+                <input style="width:100%; border: none; font-size: 18px; text-align: right;" type="text" name="billing_payment" value="" readonly onchange="calc_change()">
               <?php else: ?>
                 <?php if (@$dp_prosen > $billing->billing_total || @$dp_prosen == $billing->billing_total): ?>
-                  <input style="width:100%; border: none; font-size: 18px; text-align: right;" type="text" name="billing_payment" value="" readonly>
+                  <input style="width:100%; border: none; font-size: 18px; text-align: right;" type="text" name="billing_payment" value="" readonly onchange="calc_change()">
                 <?php else: ?>
                   <input id="billing_payment" name="billing_payment" style="width:100%; height: 40px; border: 2px solid green; font-size: 20px; font-weight: bold; text-align: right; padding-right: 10px;" class="autonumeric num" type="text" value="<?=$echo?>" dir="rtl" onchange="calc_change()">
                 <?php endif; ?>
@@ -557,6 +554,7 @@
   $("#print_struk").click(function () {
     var billing_id = $('#billing_id').val();
     var billing_payment = ind_to_sys($('#billing_payment').val());
+    var billing_discount = ind_to_sys($('#billing_discount').val());
     <?php if ($billing->billing_down_payment_type == 1): ?>
       var total_payment = <?=$billing->billing_total-$billing->billing_down_payment?>;
     <?php else: ?>
@@ -582,7 +580,7 @@
       $.ajax({
         type : 'POST',
         url : '<?=base_url()?>hot_reservation/payment_action',
-        data : 'billing_id='+billing_id+'&billing_payment='+billing_payment,
+        data : 'billing_id='+billing_id+'&billing_payment='+billing_payment+'&billing_discount='+billing_discount,
         dataType : 'json',
         success : function (data) {
           send_dashboard(data);
@@ -595,6 +593,7 @@
   $("#print_pdf").click(function () {
     var billing_id = $('#billing_id').val();
     var billing_payment = ind_to_sys($('#billing_payment').val());
+    var billing_discount = ind_to_sys($('#billing_discount').val());
     <?php if ($billing->billing_down_payment_type == 1): ?>
       var total_payment = <?=$billing->billing_total-$billing->billing_down_payment?>;
     <?php else: ?>
@@ -620,7 +619,7 @@
       $.ajax({
         type : 'POST',
         url : '<?=base_url()?>hot_reservation/payment_action',
-        data : 'billing_id='+billing_id+'&billing_payment='+billing_payment,
+        data : 'billing_id='+billing_id+'&billing_payment='+billing_payment+'&billing_discount='+billing_discount,
         dataType : 'json',
         success : function (data) {
           send_dashboard(data);
@@ -665,9 +664,17 @@
   function calc_change() {
     var total_payment = $('#total_payment').val();
     var billing_payment = ind_to_sys($('#billing_payment').val());
-    var billing_change = billing_payment-total_payment;
+    var billing_discount = ind_to_sys($('#billing_discount').val());
+    var billing_change = billing_payment-total_payment-billing_discount;
     console.log(billing_change);
     $('#billing_change').val(sys_to_ind(billing_change.toFixed(2)));
+  }
+
+  function calc_discount(params) {
+    var total_payment = $('#total_payment').val();
+    var billing_discount = ind_to_sys($('#billing_discount').val());
+    $("#text_total_payment").html(sys_to_cur(total_payment-billing_discount));
+    calc_change();
   }
 </script>
 <style type="text/css">
