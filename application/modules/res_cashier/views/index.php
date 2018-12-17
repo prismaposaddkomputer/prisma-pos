@@ -958,7 +958,9 @@
           dataType : 'json',
           success : function (data) {
             $("#bill_tx_id").val(data.tx_id);
-            $("#bill_tx_id_name").html('TXS-'+data.tx_id);
+            $("#bill_tx_id_name").html('TXS-'+data.tx_receipt_no);
+            $("#bill_customer_name").html(data.customer_name);
+            $("#customer_id").val(data.customer_id);
             $("#bill_tx_total_after_tax_nominal").html(sys_to_ind(Math.round(data.tx_total_after_tax)));
             $("#bill_tx_total_before_tax_nominal").html(sys_to_ind(Math.round(data.tx_total_before_tax)));
             $("#bill_tx_total_after_tax").val(data.tx_total_after_tax);
@@ -970,7 +972,7 @@
             $("#bill_tx_total_grand_nominal").html(sys_to_ind(Math.round(data.tx_total_grand)));
             $("#bill_tx_total_grand").val(Math.round(data.tx_total_grand));
             $("#bill-list").html('');
-            $("#tx_total_discount").val(sys_to_id(Math.round(data.tx_total_discount)));
+            $("#tx_total_discount").val(sys_to_ind(Math.round(data.tx_total_discount)));
             $("#tx_down_payment").val(sys_to_ind(Math.round(data.tx_down_payment)));
             $.each(data.detail, function(i, item) {
               var html = '<li onclick=edit_item_show('+data.detail[i].billing_detail_id+')>'+
