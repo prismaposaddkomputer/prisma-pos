@@ -238,6 +238,7 @@ class Hot_reservation extends MY_Hotel {
 
   public function update_all_billing($billing_id)
   {
+    
     $room = $this->m_hot_reservation->get_billing_room($billing_id);
     $extra = $this->m_hot_reservation->get_billing_extra($billing_id);
     $service = $this->m_hot_reservation->get_billing_service($billing_id);
@@ -328,10 +329,13 @@ class Hot_reservation extends MY_Hotel {
     // $save_print = $data['save_print'];
     // unset($data['save_print']);
     //
-    $billing = $this->m_hot_reservation->get_billing($id);
-    $billing_total = $billing->billing_total - $billing->billing_down_payment;
-    //
     $data['billing_payment'] = price_to_num($data['billing_payment']);
+    $data['billing_discount'] = price_to_num($data['billing_discount']);
+    
+    $billing = $this->m_hot_reservation->get_billing($id);
+    $billing_total = $billing->billing_total - $billing->billing_down_payment - $data['billing_discount'];
+    //
+
     if ($billing->billing_down_payment_type == 1) {
       $data['billing_change'] = $data['billing_payment'] - $billing_total;
     }else {
