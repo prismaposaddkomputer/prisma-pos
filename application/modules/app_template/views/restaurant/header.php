@@ -120,7 +120,7 @@
                           'a s d f g h j k l',
                           '{s} z x c v b n m {b}',
                           '{c} , {space} . {a}'],
-              'shift' : ['! @ # $ % ^ & * ( )',
+              'shift' : ['! @ # $ % ^ & * ( ) / -',
                           'Q W E R T Y U I O P',
                           'A S D F G H J K L',
                           '{s} Z X C V B N M {b}',
