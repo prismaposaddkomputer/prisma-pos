@@ -1220,6 +1220,30 @@
         })
       }
 
+      function delete_custom_action(){
+        var tx_id = $("#bill_tx_id").val();
+        var billing_detail_id = $("#edit_billing_detail_id").val();
+        var edit_custom_name = $("#edit_custom_name").val();
+        var edit_custom_price = $("#edit_custom_price").val();
+        var edit_custom_amount = $("#edit_custom_amount").val();
+        var customer_id = $("#bill_customer_id").val();
+        var tx_date = $("#bill_tx_date").val();
+        var tx_time = $("#bill_tx_time").val();
+
+        $.ajax({
+          type : 'post',
+          url : '<?=base_url()?>res_cashier/delete_custom_action',
+          data : 'tx_id='+tx_id+'&billing_detail_id='+billing_detail_id+
+                '&item_name='+edit_custom_name+'&item_price='+edit_custom_price+
+                '&tx_amount='+edit_custom_amount+'&customer_id='+customer_id+
+                '&tx_date='+tx_date+'&tx_time='+tx_time,
+          success : function () {
+            $("#modal_edit_custom").modal('hide');
+            get_billing_now();
+          }
+        })
+      }
+
       function add_custom_show() {
         $("#add_custom_name").val('');
         $("#add_custom_price").val('0');

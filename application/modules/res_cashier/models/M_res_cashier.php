@@ -278,6 +278,12 @@ class M_res_cashier extends CI_Model {
     $this->db->where('billing_detail_id',$id)->delete('res_billing_detail');
   }
 
+  
+  public function delete_custom_action($id)
+  {
+    $this->db->where('billing_detail_id',$id)->delete('res_billing_detail');
+  }
+
   public function pending_action($tx_id)
   {
     $this->db->where('tx_id',$tx_id)->update('res_billing',array('tx_status' => -1));

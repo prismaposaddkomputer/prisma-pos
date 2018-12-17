@@ -594,6 +594,103 @@ class Res_cashier extends MY_Restaurant {
     }
   }
 
+  public function delete_custom_action()
+  {
+    $data = $_POST;
+    $tx_id = $data['tx_id'];
+    $item_id = '99';
+
+    //edit item
+    $this->m_res_cashier->delete_custom_action($data['billing_detail_id']);
+
+    //delete promo buyget
+    //$this->m_res_cashier->delete_promo_buyitem($tx_id, $item_id);
+    //delete promo buyget
+    //$this->m_res_cashier->delete_promo_buyget($tx_id, $item_id);
+
+    $tx_total_before_tax = 0;
+    $tx_total_after_tax = 0;
+    $tx_total_buy_average = 0;
+    $tx_total_tax = 0;
+    $tx_total_discount = 0;
+    $tx_total_grand = 0;
+    $tx_total_profit_before_tax = 0;
+    $tx_total_profit_after_tax = 0;
+    $tx_total_grand = 0;
+
+    //get all detail and count it
+    $detail = $this->m_res_cashier->get_billing_detail($tx_id);
+    foreach ($detail as $row) {
+      $tx_total_buy_average += $row->tx_subtotal_buy_average;
+      $tx_total_before_tax += $row->tx_subtotal_before_tax;
+      $tx_total_after_tax += $row->tx_subtotal_after_tax;
+      $tx_total_tax += $row->tx_subtotal_tax;
+      $tx_total_discount += $row->tx_subtotal_discount;
+      $tx_total_profit_before_tax += $row->tx_subtotal_profit_before_tax;
+      $tx_total_profit_after_tax += $row->tx_subtotal_profit_after_tax;
+    }
+
+    // grand total before discount
+    $tx_total_grand_before_discount = $tx_total_after_tax-$tx_total_discount;
+
+    //cek promo buy all
+    $promo_buyall = $this->m_res_cashier->get_promo_buyall($tx_total_grand_before_discount);
+    if ($promo_buyall != null) {
+      // add discount discount
+      $tx_total_discount += $tx_total_grand_before_discount*$promo_buyall->get_discount/100;
+
+      $data_buyall = array(
+        'promo_buyall_id' => $promo_buyall->promo_buyall_id,
+        'tx_id' => $tx_id,
+        'tx_type' => $promo_buyall->promo_type_code,
+        'buy_amount' => $data['tx_amount'],
+        'get_discount' => $promo_buyall->get_discount,
+        'get_discount_amount' => $tx_subtotal_discount
+      );
+
+      //cek billing buyall
+      $billing_buyall = $this->m_res_cashier->get_billing_buyall($tx_id, $promo_buyall->promo_buyall_id);
+      if ($billing_buyall == null) {
+        $this->m_res_cashier->insert_promo_buyall($data_buyall);
+      }else{
+        $this->m_res_cashier->update_promo_buyall($tx_id, $promo_buyall->promo_buyall_id, $data_buyall);
+      }
+    }else{
+      $this->m_res_cashier->delete_promo_buyall($tx_id);
+    }
+
+    //grand total after discount
+    $tx_total_grand = $tx_total_after_tax-$tx_total_discount;
+
+    //get customer detail
+    $this->load->model('res_customer/m_res_customer');
+    $customer = $this->m_res_customer->get_by_id($data['customer_id']);
+
+    //data for billing
+    $data_billing = array(
+      'tx_id' => $data['tx_id'],
+      'user_id' => $this->session->userdata('user_id'),
+      'user_realname' => $this->session->userdata('user_realname'),
+      'customer_id' => $data['customer_id'],
+      'customer_name' => $customer->customer_name,
+      'tx_type' => 'TXS',
+      'tx_date' => $data['tx_date'],
+      'tx_time' => $data['tx_time'],
+      'tx_total_buy_average' => $tx_total_buy_average,
+      'tx_total_before_tax' => $tx_total_before_tax,
+      'tx_total_after_tax' => $tx_total_after_tax,
+      'tx_total_tax' => $tx_total_tax,
+      'tx_total_discount' => $tx_total_discount,
+      'tx_total_grand' => 0,
+      'tx_total_profit_before_tax' => $tx_total_profit_before_tax,
+      'tx_total_profit_after_tax' => $tx_total_profit_after_tax,
+      'tx_total_grand' => $tx_total_grand
+    );
+
+    //update billing
+    $this->m_res_cashier->update_billing($tx_id, $data_billing);
+  }
+
   public function edit_custom_action()
   {
     $data = $_POST;
