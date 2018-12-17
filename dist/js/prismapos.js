@@ -30,7 +30,8 @@ function sys_to_ind(bilangan) {
   	separator = sisa ? '.' : '';
   	rupiah += separator + ribuan.join('.');
   }
-  rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+  // rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+  // rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
 
   // Cetak hasil
   if (negativ == true) {
