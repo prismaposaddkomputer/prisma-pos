@@ -24,7 +24,7 @@
             <div class="form-group">
               <label>Rasio <small class="required-field">*</small></label>
               <div class="input-group">
-                <input class="form-control autonumeric keyboard" type="text" name="charge_type_ratio" value="<?php if($charge_type != null){echo $charge_type->charge_type_ratio;}else{echo '0';}?>">
+                <input class="form-control num" type="text" name="charge_type_ratio" value="<?php if($charge_type != null){echo $charge_type->charge_type_ratio;}else{echo '0';}?>">
                 <div class="input-group-addon">%</div>
               </div>
             </div>
