@@ -134,7 +134,7 @@ class Hot_reservation extends MY_Hotel {
             $this->m_hot_reservation->new_billing($data['billing_receipt_no']);
           }
         }
-        $data['billing_id_name'] = 'TXS-'.$data['billing_receipt_no'];    
+        $data['billing_id_name'] = 'TRS-'.$data['billing_receipt_no'];    
 
         $this->view('hot_reservation/form', $data);
       } else {
@@ -551,7 +551,7 @@ class Hot_reservation extends MY_Hotel {
       $printer -> text($client->client_street.','.$client->client_district."\n");
       $printer -> text($client->client_city."\n");
       $printer -> text("NPWPD : ".$client->client_npwpd."\n"); 
-      $printer -> text('TXS-'.$billing->billing_receipt_no."\n");
+      $printer -> text('TRS-'.$billing->billing_receipt_no."\n");
       //Judul
       $printer -> text('--------------------------------');
       $printer -> feed();
