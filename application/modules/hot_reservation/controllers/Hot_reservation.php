@@ -745,6 +745,24 @@ class Hot_reservation extends MY_Hotel {
           $printer -> feed();
         }
       }
+      // Kustom
+      if ($billing->custom != null){
+        $printer -> text('--------------------------------');
+        $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+        $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+        $printer -> text("Kustom :");
+        $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
+        $printer -> feed();
+        foreach ($billing->custom as $row){
+          $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+          $printer -> text($row->custom_name);
+          $printer -> feed();
+          $printer -> setJustification(Escpos\Printer::JUSTIFY_RIGHT);
+          //
+          $printer -> text(round($row->custom_amount,0,PHP_ROUND_HALF_UP)." X ".num_to_price($row->custom_charge)." = ".num_to_price($row->custom_total))  ;
+          $printer -> feed();
+        }
+      }
       $printer -> text('--------------------------------');
       //
       if ($billing->billing_down_payment_type == 1){
