@@ -39,6 +39,7 @@ class M_hot_reservation extends CI_Model {
 		$data->service = $this->db->where('billing_id',$id)->get('hot_billing_service')->result();
 		$data->non_tax = $this->db->where('billing_id',$id)->get('hot_billing_non_tax')->result();
 		$data->fnb = $this->db->where('billing_id',$id)->get('hot_billing_fnb')->result();
+		$data->custom = $this->db->where('billing_id',$id)->get('hot_billing_custom')->result();
 		
 		return $data;
 	}
@@ -273,6 +274,41 @@ class M_hot_reservation extends CI_Model {
 		}else{
 			return $this->db->like('guest_name',$search_term,'both')->get('hot_billing')->num_rows();
 		}
+	}
+
+	public function add_custom($data)
+	{
+		$this->db->insert('hot_billing_custom', $data);
+	}
+
+	public function custom_list($billing_id)
+	{
+		return $this->db
+			->where('billing_id',$billing_id)
+			->get('hot_billing_custom')->result();
+	}
+
+	public function get_billing_custom($billing_id)
+	{
+		return $this->db
+			->where('billing_id',$billing_id)
+			->get('hot_billing_custom')->result();
+	}
+
+	public function delete_custom($id)
+	{
+		$this->db->where('billing_custom_id',$id)->delete('hot_billing_custom');
+	}
+
+	public function count_custom($billing_id)
+	{
+		$data = $this->db->query(
+			"SELECT COUNT(*) AS count_custom 
+			FROM hot_billing_custom 
+			WHERE billing_id = '$billing_id'"
+		)->row();
+
+		return $data->count_custom;
 	}
 
 }

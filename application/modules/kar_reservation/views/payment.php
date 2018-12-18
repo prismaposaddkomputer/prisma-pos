@@ -391,6 +391,58 @@
         </tfoot>
       </table>
     </div>
+    <div class="col-md-6">
+      <h4><b><i class="fa fa-list"></i></b> F. Kustom</h4>
+      <table class="table table-bordered table-condensed">
+        <thead>
+          <tr>
+            <th class="text-center" width="20">No.</th>
+            <th class="text-center">Nama Item</th>
+            <th class="text-center" width="120">Tarif</th>
+            <th class="text-center" width="20">Banyak</th>
+            <th class="text-center" width="120">Total</th>
+          </tr>              
+        </thead>
+        <tbody>
+          <?php $tot_custom=0; if ($billing->custom != null): ?>
+            <?php $i=1; foreach ($billing->custom as $row): ?>
+              <tr>
+                <td class="text-center"><?=$i++?></td>
+                <td><?=$row->custom_name?></td>
+                <td>
+                  <?php 
+                    if ($client->client_is_taxed == 0) {
+                      echo num_to_idr($row->custom_charge);
+                    }else{
+                      echo num_to_idr($row->custom_total/$row->custom_amount);
+                    }
+                  ?>
+                </td>
+                <td class="text-center"><?=round($row->custom_amount,0,PHP_ROUND_HALF_UP)?></td>
+                <td>
+                  <?php 
+                    echo num_to_idr($row->custom_total);
+                  ?>
+                </td>
+                <?php 
+                  $tot_custom += $row->custom_total;
+                ?>
+              </tr>
+            <?php endforeach;?>
+          <?php else: ?>
+            <tr>
+              <td class="text-center" colspan="5"><i>Tidak ada data!</i></td>
+            </tr>
+          <?php endif;?>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th class="text-center" colspan="4">Total</th>
+            <th><?=num_to_idr($tot_custom)?></th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
   </div>
   <div style="border-bottom: 1px solid #333333; margin-bottom: 10px; margin-top: 5px;"></div>
   <div class="row">

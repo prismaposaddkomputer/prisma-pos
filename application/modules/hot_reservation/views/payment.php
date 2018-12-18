@@ -83,6 +83,7 @@
         <thead>
           <tr>
             <th class="text-center" width="20">No.</th>
+            <th class="text-center" width="50">Aksi</th>
             <th class="text-center">Kamar</th>
             <th class="text-center" width="150">Tarif</th>
             <th class="text-center" width="100">Durasi</th>
@@ -96,6 +97,9 @@
             <?php $i=1;foreach ($billing->room as $row): ?>
               <tr>
                 <td class="text-center"><?=$i++?></td>
+                <td class="text-center">
+                  <a class="btn btn-xs btn-warning" href="#" onclick="update_room_show('<?=$row->billing_room_id?>')"><i class="fa fa-pencil"></i></a>
+                </td>
                 <td><?=$row->room_name?></td>
                 <td>
                   <?php 
@@ -145,13 +149,13 @@
             <?php endforeach;?>
           <?php else: ?>
             <tr>
-              <td class="text-center" colspan="7"><i>Tidak ada data!</i></td>
+              <td class="text-center" colspan="99"><i>Tidak ada data!</i></td>
             </tr>
           <?php endif;?>
         </tbody>
         <tfoot>
           <tr>
-            <th class="text-center" colspan="6">Total</th>
+            <th class="text-center" colspan="7">Total</th>
             <th><?=num_to_idr($tot_room)?></th>
           </tr>
         </tfoot>
@@ -391,6 +395,58 @@
         </tfoot>
       </table>
     </div>
+    <div class="col-md-6">
+      <h4><b><i class="fa fa-cutlery"></i></b> F. Kustom Item</h4>
+      <table class="table table-bordered table-condensed">
+        <thead>
+          <tr>
+            <th class="text-center" width="20">No.</th>
+            <th class="text-center">Nama</th>
+            <th class="text-center" width="120">Tarif</th>
+            <th class="text-center" width="20">Banyak</th>
+            <th class="text-center" width="120">Total</th>
+          </tr>              
+        </thead>
+        <tbody>
+          <?php $tot_custom=0; if ($billing->custom != null): ?>
+            <?php $i=1; foreach ($billing->custom as $row): ?>
+              <tr>
+                <td class="text-center"><?=$i++?></td>
+                <td><?=$row->custom_name?></td>
+                <td>
+                  <?php 
+                    if ($client->client_is_taxed == 0) {
+                      echo num_to_idr($row->custom_charge);
+                    }else{
+                      echo num_to_idr($row->custom_total/$row->custom_amount);
+                    }
+                  ?>
+                </td>
+                <td class="text-center"><?=round($row->custom_amount,0,PHP_ROUND_HALF_UP)?></td>
+                <td>
+                  <?php 
+                    echo num_to_idr($row->custom_total);
+                  ?>
+                </td>
+                <?php 
+                  $tot_custom += $row->custom_total;
+                ?>
+              </tr>
+            <?php endforeach;?>
+          <?php else: ?>
+            <tr>
+              <td class="text-center" colspan="5"><i>Tidak ada data!</i></td>
+            </tr>
+          <?php endif;?>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th class="text-center" colspan="4">Total</th>
+            <th><?=num_to_idr($tot_non_tax)?></th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
   </div>
   <div style="border-bottom: 1px solid #333333; margin-bottom: 10px; margin-top: 5px;"></div>
   <div class="row">
@@ -550,6 +606,61 @@
     </div>
   </div>
 </div>
+<div id="modal_room" class="modal fade"  role="dialog" aria-labelledby="modal_room">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="title_room_list">Pilih Kamar</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Kamar</label>
+          <input class="form-control autonumeric num" id="room_type_charge" type="text" value="0">
+        </div>
+        <div class="form-group">
+          <label>Harga</label>
+          <input class="form-control autonumeric num" id="room_type_charge" type="text" value="0">
+        </div>
+        <div class="form-group">
+          <label>Durasi</label>
+          <div class="input-group">
+            <input class="form-control num" id="room_type_charge" type="text" value="0">
+            <span class="input-group-addon">Hari</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Diskon</label>
+          <select class="form-control select2" id="discount_id_room">
+            <?php foreach ($discount_room as $row): ?>
+              <option value="<?=$row->discount_id?>">
+                <?=$row->discount_name?> (<?php if($row->discount_type == 1){echo $row->discount_amount." %";}else{echo num_to_price($row->discount_amount);}?>)
+              </option>
+            <?php endforeach;?>
+          </select>
+        </div>
+        <br>
+        <em>
+          <small>
+            NB: 
+            <?php if ($client->client_is_taxed == 0): ?>
+              Harga belum termasuk 
+            <?php else: ?>
+              Harga sudah termasuk 
+            <?php endif;?>
+            <?php foreach ($charge_type as $row){
+              echo $row->charge_type_name.',';
+            }?>
+          </small>
+        </em>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
+        <button type="button" class="btn btn-info" id="btn_add_room"><i class="fa fa-plus"></i> Tambah</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
   $("#print_struk").click(function () {
     var billing_id = $('#billing_id').val();
@@ -659,6 +770,10 @@
         console.log('ok');
       }
     })
+  }
+  
+  function update_room_show($id) {
+    $("#modal_room").modal('show');
   }
 
   function calc_change() {

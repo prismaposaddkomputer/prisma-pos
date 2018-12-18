@@ -83,6 +83,7 @@
         <button class="btn btn-info" id="btn_service_list" type="button"><i class="fa fa-plus-square"></i> Pelayanan <span class="badge" id="lbl_count_service">0</span></button>
         <button class="btn btn-info" id="btn_fnb_list" type="button"><i class="fa fa-cutlery"></i> F&B <span class="badge" id="lbl_count_fnb">0</span></button>
         <button style="margin-top: 4px;" class="btn btn-info" id="btn_non_tax_list" type="button"><i class="fa fa-ban"></i> Non Pajak <span class="badge" id="lbl_count_non_tax">0</span></button>
+        <button style="margin-top: 4px;" class="btn btn-info" id="btn_custom_list" type="button"><i class="fa fa-list"></i> Item Kustom <span class="badge" id="lbl_count_custom">0</span></button>
       </div>
       <div class="col-md-6">
         <div class="form-group">
@@ -628,6 +629,89 @@
     </div>
   </div>
 </div>
+<!-- Custom -->
+<div id="modal_custom" class="modal fade" role="dialog" aria-labelledby="modal_custom">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="title_custom_list">Tambah</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Nama Item</label>
+          <input class="form-control keyboard" id="custom_name" type="text" value="">
+        </div>
+        <div class="row">
+          <div class="col-md-8">
+            <div class="form-group">
+              <label>Harga</label>
+              <input class="form-control autonumeric num" id="custom_charge" type="text" value="0">
+            </div>
+          </div>
+          <div class="col-md-4">  
+            <div class="form-group">
+              <label>Banyak</label>
+              <input class="form-control autonumeric num" id="custom_amount" type="text" value="0" onchange="calc_custom()">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Total</label>
+          <input class="form-control autonumeric num" id="custom_total" type="text" value="0" readonly>
+        </div>
+        <br>
+        <em>
+          <small>
+            NB: 
+            <?php if ($client->client_is_taxed == 0): ?>
+              Harga belum termasuk 
+            <?php else: ?>
+              Harga sudah termasuk 
+            <?php endif;?>
+            Pajak Hotel
+          </small>
+        </em>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
+        <button type="button" class="btn btn-info" id="btn_add_custom"><i class="fa fa-plus"></i> Tambah</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Custom List -->
+<div id="modal_custom_list" class="modal fade"  role="dialog" aria-labelledby="modal_custom_list">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="title_custom_list">Pesanan Kustom</h4>
+      </div>
+      <div class="modal-body">
+        <button class="btn btn-info" id="btn_custom"><i class="fa fa-plus"></i> Tambah Kustom</button>
+        <br><br>
+        <table id="tbl_custom_list" class="table table-bordered table-condensed">
+          <thead>
+            <tr>
+              <th class="text-center">Nama Non Pajak</th>
+              <th class="text-center">Harga Satuan</th>
+              <th class="text-center">Banyak</th>
+              <th class="text-center" width="150">Total</th>
+              <th class="text-center" width="50">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="row_custom_list">
+
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-check"></i> Selesai</button>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- FnB -->
 <div id="modal_non_tax" class="modal fade" role="dialog" aria-labelledby="modal_non_tax">
   <div class="modal-dialog modal-sm" role="document">
@@ -867,6 +951,30 @@
 
     $('#btn_add_extra').click(function () {
       add_extra();
+    });
+
+    //Custom
+    $('#btn_custom_list').click(function () {
+      get_billing_custom();
+      $('#modal_custom_list').modal('show');
+    });
+
+    $('#btn_custom').click(function () {
+      $('#custom_id').val(0).trigger('change');
+      $('#custom_charge').val(0);
+      $('#custom_amount').val(0);
+      $('#custom_total').val(0);
+      $('#modal_custom').modal('show');
+      $('#modal_custom_list').modal('hide');
+    });
+
+    $('#custom_id').on('change', function() {
+      get_custom(this.value);
+    });
+    
+
+    $('#btn_add_custom').click(function () {
+      add_custom();
     });
 
     // Service
@@ -1182,6 +1290,107 @@
     })
   }
 
+  //Custom
+
+  function calc_custom() {
+    var custom_charge = ind_to_sys($('#custom_charge').val());
+    var custom_amount = $('#custom_amount').val();
+    $('#custom_total').val(sys_to_ind(custom_amount*custom_charge));
+  }
+  
+  function add_custom() {
+    var billing_id = $('#billing_id').val();
+    var custom_id = $('#custom_id').val();
+    var custom_name = $('#custom_name').val();
+    var custom_amount = $('#custom_amount').val();
+    var custom_charge = $('#custom_charge').val();
+
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>hot_reservation/add_custom',
+      data : 'billing_id='+billing_id+'&custom_id='+custom_id+'&custom_amount='+custom_amount+
+              '&custom_charge='+custom_charge+'&custom_name='+custom_name,
+      success : function (data) {
+        $('#modal_custom_list').modal('show');
+        $('#modal_custom').modal('hide');
+        get_billing_custom();
+      }
+    })
+  }
+
+  function get_custom(custom_id) {
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>hot_reservation/get_custom',
+      data : 'custom_id='+custom_id,
+      dataType : 'json',
+      success : function (data) {
+        $('#custom_charge').val(sys_to_ind(data.custom_charge));
+      }
+    })
+  }
+
+  function get_billing_custom() {
+    var billing_id = $('#billing_id').val();
+
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>hot_reservation/get_billing_custom',
+      data : 'billing_id='+billing_id,
+      dataType : 'json',
+      success : function (data) {
+        if (data.custom == null || data.custom == '') {
+          $("#row_custom_list").html('');
+          var row = '<tr>'+
+            '<td class="text-center" colspan="5">Data tidak ada!</td>'+
+          '</tr>';
+          $("#row_custom_list").append(row);
+        } else {
+          $("#row_custom_list").html('');
+          if (data.client_is_taxed == 0) {
+            $.each(data.custom, function(i, item) {
+              var row = '<tr>'+
+                '<td>'+item.custom_name+'</td>'+
+                '<td>'+sys_to_cur(item.custom_charge)+'</td>'+
+                '<td class="text-right">'+item.custom_amount+'</td>'+
+                '<td>'+sys_to_cur(item.custom_subtotal)+'</td>'+
+                '<td class="text-center">'+
+                  '<button class="btn btn-xs btn-danger" onclick="delete_custom('+item.billing_custom_id+')"><i class="fa fa-trash"></i></button>'+
+                '</td>'+
+              '</tr>';
+              $("#row_custom_list").append(row);
+            })
+          }else{
+            $.each(data.custom, function(i, item) {
+              var row = '<tr>'+
+                '<td>'+item.custom_name+'</td>'+
+                '<td>'+sys_to_cur(item.custom_total/item.custom_amount)+'</td>'+
+                '<td class="text-right">'+item.custom_amount+'</td>'+
+                '<td>'+sys_to_cur(item.custom_total)+'</td>'+
+                '<td class="text-center">'+
+                  '<button class="btn btn-xs btn-danger" onclick="delete_custom('+item.billing_custom_id+')"><i class="fa fa-trash"></i></button>'+
+                '</td>'+
+              '</tr>';
+              $("#row_custom_list").append(row);
+            })
+          }
+        }
+        get_count();
+      }
+    })
+  }
+
+  function delete_custom(id) {
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>hot_reservation/delete_custom',
+      data : 'billing_custom_id='+id,
+      success : function () {
+        get_billing_custom();
+      }
+    })
+  }
+
   function get_service(service_id) {
     $.ajax({
       type : 'post',
@@ -1475,6 +1684,7 @@
         $('#lbl_count_service').html(data.count_service);
         $('#lbl_count_fnb').html(data.count_fnb);
         $('#lbl_count_non_tax').html(data.count_non_tax);
+        $('#lbl_count_custom').html(data.count_custom);
       }
     })
   }
