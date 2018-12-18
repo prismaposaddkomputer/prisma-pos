@@ -1448,6 +1448,26 @@ class M_app_version extends CI_Model {
             `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
             PRIMARY KEY (`billing_custom_id`)
           ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT");
+
+        case '2.8':
+          $this->db->query("CREATE TABLE IF NOT EXISTS `kar_billing_custom` (
+            `billing_custom_id` int(11) NOT NULL AUTO_INCREMENT,
+            `billing_id` int(11) NOT NULL DEFAULT '0',
+            `custom_id` int(11) NOT NULL,
+            `custom_name` varchar(128) NOT NULL,
+            `custom_charge` float(10,2) NOT NULL,
+            `custom_amount` float(10,2) NOT NULL,
+            `custom_subtotal` float(10,2) NOT NULL,
+            `custom_tax` float(10,2) NOT NULL,
+            `custom_total` float(10,2) NOT NULL,
+            `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            `created_by` varchar(50) NOT NULL DEFAULT 'System',
+            `updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+            `updated_by` varchar(20) NOT NULL DEFAULT 'System',
+            `is_active` tinyint(1) NOT NULL DEFAULT '1',
+            `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+            PRIMARY KEY (`billing_custom_id`)
+          ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT");
     }
 
     //insert new update history
@@ -1572,6 +1592,8 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"2.6.18","version_release"=>"2018-09-20 10:52:00"));
     // custom item hotel
     array_push($version, array("version_now"=>"2.7","version_release"=>"2018-12-18 11:47:00"));
+    // custom item karaoke
+    array_push($version, array("version_now"=>"2.8","version_release"=>"2018-12-18 11:47:00"));
     
     foreach ($version as $key => $val) {
       //check version
