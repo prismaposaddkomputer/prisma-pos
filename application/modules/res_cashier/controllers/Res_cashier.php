@@ -1500,6 +1500,8 @@ class Res_cashier extends MY_Restaurant {
         $printer -> feed();
         $printer -> text('TXS-'.$billing->tx_receipt_no);
         $printer -> feed();
+        $printer -> text($billing->customer_name);
+        $printer -> feed();
         $printer -> text('--------------------------------');
         $printer -> feed();
         $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
@@ -1599,6 +1601,13 @@ class Res_cashier extends MY_Restaurant {
   
         $printer = new Escpos\Printer($connector);
         $printer -> setJustification(Escpos\Printer::JUSTIFY_CENTER);
+        //print image
+        if ($client->client_logo !='') {
+          $img = Escpos\EscposImage::load("img/".$client->client_logo);
+          $printer -> setJustification(Escpos\Printer::JUSTIFY_CENTER);
+          $printer -> bitImage($img);
+          $printer -> feed();
+        }
         $printer -> text($client->client_brand);
         $printer -> feed();
         $printer -> text($client->client_street.','.$client->client_district);
@@ -1608,6 +1617,8 @@ class Res_cashier extends MY_Restaurant {
         $printer -> text('NPWP : '.$client->client_npwp);
         $printer -> feed();
         $printer -> text('TXS-'.$billing->tx_receipt_no);
+        $printer -> feed();
+        $printer -> text($billing->customer_name);
         $printer -> feed();
         $printer -> text('--------------------------------');
         $printer -> feed();
