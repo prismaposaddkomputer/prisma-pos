@@ -36,6 +36,7 @@ class Kar_reservation extends MY_Karaoke {
     $this->load->model('kar_billing_service/m_kar_billing_service');
     $this->load->model('kar_billing_paket/m_kar_billing_paket');
     $this->load->model('kar_billing_fnb/m_kar_billing_fnb');
+    $this->load->model('kar_billing_custom/m_kar_billing_custom');
     $this->load->model('kar_discount/m_kar_discount');
     $this->load->model('kar_guest/m_kar_guest');
   }
@@ -244,6 +245,7 @@ class Kar_reservation extends MY_Karaoke {
     $paket = $this->m_kar_reservation->get_billing_paket($billing_id);
     $fnb = $this->m_kar_reservation->get_billing_fnb($billing_id);
     $non_tax = $this->m_kar_reservation->get_billing_non_tax($billing_id);
+    $custom = $this->m_kar_reservation->get_billing_custom($billing_id);
 
     $billing_subtotal = 0;
     $billing_tax = 0;
@@ -284,6 +286,11 @@ class Kar_reservation extends MY_Karaoke {
     foreach ($non_tax as $row) {
       $billing_subtotal += $row->non_tax_total;
       $billing_total += $row->non_tax_total;
+    }
+
+    foreach ($custom as $row) {
+      $billing_subtotal += $row->custom_total;
+      $billing_total += $row->custom_total;
     }
 
     $data['billing_subtotal'] = $billing_subtotal;
@@ -1372,6 +1379,70 @@ class Kar_reservation extends MY_Karaoke {
     $this->m_kar_reservation->delete_non_tax($id);
   }
 
+  public function get_custom()
+  {
+    $custom_id = $this->input->post('custom_id');
+    $client = $this->m_kar_client->get_all();
+    $tax = $this->m_kar_charge_type->get_by_id(1);
+
+    if ($client->client_is_taxed == 1) {
+      $data->custom_charge += $data->custom_charge*$tax->charge_type_ratio/100;
+    }
+
+    $data->custom_charge = round($data->custom_charge,0,PHP_ROUND_HALF_UP);
+
+    echo json_encode($data);
+  }
+
+  public function add_custom()
+  {
+    $data = $_POST;
+    $client = $this->m_kar_client->get_all();
+    $tax = $this->m_kar_charge_type->get_by_id(1);
+
+    if ($client->client_is_taxed == 0) {
+      $custom_charge = price_to_num($data['custom_charge']);
+      $custom_subtotal = $data['custom_amount']*$custom_charge;
+      $custom_tax = 0;//$custom_subtotal*$tax->charge_type_ratio/100;
+      $custom_total = $custom_subtotal+$custom_tax;
+    }else{
+      $custom_total = $data['custom_amount']*price_to_num($data['custom_charge']);
+      $tot_ratio = 100+$tax->charge_type_ratio;
+      $custom_tax = 0;//($tax->charge_type_ratio/$tot_ratio)*$custom_total;
+      $custom_subtotal = $custom_total-$custom_tax;
+      $custom_charge = $custom_subtotal/$data['custom_amount'];
+    }
+
+    $data_custom = array(
+      'billing_id' => $data['billing_id'],
+      'custom_id' => '99',
+      'custom_name' => $data['custom_name'],
+      'custom_charge' => $custom_charge,
+      'custom_amount' => $data['custom_amount'],
+      'custom_subtotal' => $custom_subtotal,
+      'custom_tax' => $custom_tax,
+      'custom_total' => $custom_total,
+      'created_by' => $this->session->userdata('user_realname')
+    );
+    $this->m_kar_reservation->add_custom($data_custom);
+  }
+
+  public function get_billing_custom()
+  {
+    $billing_id = $this->input->post('billing_id');
+    $client = $this->m_kar_client->get_all();
+    $data['custom'] = $this->m_kar_reservation->get_billing_custom($billing_id);
+    $data['client_is_taxed'] = $client->client_is_taxed;
+
+    echo json_encode($data);
+  }
+
+  public function delete_custom()
+  {
+    $id = $this->input->post('billing_custom_id');
+    $this->m_kar_reservation->delete_custom($id);
+  }
+
   public function get_count()
   {
     $billing_id = $this->input->post('billing_id');
@@ -1382,6 +1453,7 @@ class Kar_reservation extends MY_Karaoke {
     $data['count_paket'] = $this->m_kar_reservation->count_paket($billing_id);
     $data['count_fnb'] = $this->m_kar_reservation->count_fnb($billing_id);
     $data['count_non_tax'] = $this->m_kar_reservation->count_non_tax($billing_id);
+    $data['count_custom'] = $this->m_kar_reservation->count_custom($billing_id);
 
     echo json_encode($data);
   }
