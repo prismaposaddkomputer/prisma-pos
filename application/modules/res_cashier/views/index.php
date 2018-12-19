@@ -190,6 +190,7 @@
             <button class="btn btn-sm btn-info" onclick="return_show()"><i class="fa fa-reply"></i> Retur</button>
             <button class="btn btn-sm btn-info" onclick="print_receipt_show()"><i class="fa fa-print"></i> Cetak Struk</button>
             <button class="btn btn-sm btn-info" onclick="discount_show()"><i class="fa fa-cut"></i> Diskon</button>
+            <button class="btn btn-sm btn-info" onclick="print_receipt_dp()"><i class="fa fa-print"></i> Cetak Struk DP</button>
           </div>
         </div>
         <div id="bill" class="col-md-4 col-xs-12 right full-height-col">
@@ -1622,7 +1623,7 @@
           data : 'tx_id='+tx_id,
           success : function () {
 
-          }
+          } 
         })
       }
 
@@ -1766,6 +1767,18 @@
               }
             }
           })
+      }
+
+      function print_receipt_dp() {
+        var tx_id = $("#bill_tx_id").val();
+        $.ajax({
+          type : 'post',
+          url : '<?=base_url()?>res_cashier/print_receipt_dp',
+          data : 'tx_id='+tx_id,
+          success : function (data) {
+            
+          }
+        })
       }
 
       // Shortcut keyboard
