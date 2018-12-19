@@ -222,7 +222,7 @@
               <th class="text-center" width="150">Harga</th>
               <th class="text-center" width="150">Diskon</th>
               <th class="text-center" width="150">Total</th>
-              <th class="text-center" width="50">Aksi</th>
+              <th class="text-center" width="80">Aksi</th>
             </tr>
           </thead>
           <tbody id="row_room_list">
@@ -275,7 +275,7 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Harga</label>
-              <input class="form-control autonumeric num" id="room_type_charge" type="text" value="0" readonly="">
+              <input class="form-control autonumeric num" id="room_type_charge" type="text" value="0" onchange="calc_room()">
             </div>
           </div>
           <div class="col-md-6">  
@@ -320,6 +320,77 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
         <button type="button" class="btn btn-info" id="btn_add_room"><i class="fa fa-plus"></i> Tambah</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal_room_update" class="modal fade"  role="dialog" aria-labelledby="modal_room">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="title_room_list">Pilih Room</h4>
+      </div>
+      <div class="modal-body">
+        <input class="form-control" id="update_billing_room_id" type="hidden" value="" readonly>
+        <div class="form-group">
+          <label>Tipe</label>
+          <input class="form-control" id="update_room_type_name" type="text" value="" readonly>
+        </div>
+        <div class="form-group">
+          <label>Nama Kamar</label>
+          <input class="form-control" id="update_room_name" type="text" value="" readonly>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Harga</label>
+              <input class="form-control autonumeric num" id="update_room_type_charge" type="text" value="0" onchange="calc_room_update()">
+            </div>
+          </div>
+          <div class="col-md-6">  
+            <div class="form-group">
+              <label>Durasi</label>
+              <div class="input-group">
+                <input class="form-control autonumeric num" id="update_room_type_duration" type="text" value="0" onchange="calc_room_update()">
+                <div class="input-group-addon"><b>Hari</b></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Total</label>
+          <input class="form-control autonumeric num" id="update_room_type_total" type="text" value="0" readonly="">
+        </div>
+        <div class="form-group">
+          <label>Diskon</label>
+          <select class="form-control select2" id="update_discount_id_room">
+            <?php foreach ($discount_room as $row): ?>
+              <option value="<?=$row->discount_id?>">
+                <?=$row->discount_name?> (<?php if($row->discount_type == 1){echo $row->discount_amount." %";}else{echo num_to_price($row->discount_amount);}?>)
+              </option>
+            <?php endforeach;?>
+          </select>
+        </div>
+        <br>
+        <em>
+          <small>
+            NB: 
+            <?php if ($client->client_is_taxed == 0): ?>
+              Harga belum termasuk 
+            <?php else: ?>
+              Harga sudah termasuk 
+            <?php endif;?>
+            <?php foreach ($charge_type as $row){
+              echo $row->charge_type_name.',';
+            }?>
+          </small>
+        </em>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
+        <button type="button" class="btn btn-success" id="btn_update_room"><i class="fa fa-refresh"></i> Ubah</button>
       </div>
     </div>
   </div>
@@ -1093,6 +1164,34 @@
       }
     });
 
+    $('#btn_update_room').click(function () {
+      var room_type_duration = $('#update_room_type_duration').val();
+      var room_type_id = $('#update_room_type_id').val();
+      var room_id = $('#update_room_id').val();
+      //
+      if (room_type_id == 0) {
+        swal({
+          text: "Tipe Room belum dipilih",
+          icon: "warning",
+          button: "OK",
+        });
+      }else if (room_id == 0) {
+        swal({
+          text: "Room belum dipilih",
+          icon: "warning",
+          button: "OK",
+        });
+      }else if (room_type_duration == 0) {
+        swal({
+          text: "Durasi masih kosong",
+          icon: "warning",
+          button: "OK",
+        });
+      }else {
+        update_room();
+      }
+    });
+
     //Extra
     $('#btn_extra_list').click(function () {
       get_billing_extra();
@@ -1254,6 +1353,25 @@
     })
   }
 
+  function get_room_update(room_type_id) {
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>hot_reservation/get_room',
+      data : 'room_type_id='+room_type_id,
+      dataType : 'json',
+      success : function (data) {
+        $("#update_room_id option").each(function() {
+          $(this).remove();
+        });
+        $("#update_room_id").select2({
+          data: data.room
+        }).trigger('change');
+        // console.log(data.room_type.room_type_charge);
+        // $('#room_type_charge').val(sys_to_ind(Math.ceil(data.room_type.room_type_charge)));
+      }
+    })
+  }
+
 
 
   $('#jenis_tamu_langganan').on('change', function() {
@@ -1303,6 +1421,28 @@
     })
   }
 
+  function update_room() {
+    var billing_room_id = $('#update_billing_room_id').val();
+    var room_type_charge = $('#update_room_type_charge').val();
+    var room_type_duration = $('#update_room_type_duration').val();
+    var room_type_total = $('#update_room_type_total').val();
+    var discount_id_room = $('#update_discount_id_room').val();
+    var billing_id = $('#billing_id').val();
+
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>hot_reservation/update_room',
+      data : 'billing_room_id='+billing_room_id+'&billing_id='+billing_id+'&room_id='+room_id+'&room_type_charge='+room_type_charge+
+              '&room_type_duration='+room_type_duration+'&room_type_total='+room_type_total+
+              '&discount_id_room='+discount_id_room,
+      success : function (data) {
+        $('#modal_room_list').modal('show');
+        $('#modal_room_update').modal('hide');
+        get_billing_room();
+      }
+    })
+  }
+
   function get_billing_room() {
     var billing_id = $('#billing_id').val();
 
@@ -1329,6 +1469,7 @@
                 '<td>'+sys_to_cur(item.room_type_discount)+'</td>'+
                 '<td>'+sys_to_cur(item.room_type_subtotal-item.room_type_discount)+'</td>'+
                 '<td class="text-center">'+
+                  '<button class="btn btn-xs btn-warning" onclick="update_room_show('+item.billing_room_id+')"><i class="fa fa-pencil"></i></button> '+
                   '<button class="btn btn-xs btn-danger" onclick="delete_room('+item.billing_room_id+')"><i class="fa fa-trash"></i></button>'+
                 '</td>'+
               '</tr>';
@@ -1352,6 +1493,26 @@
           }
         }
         get_count();
+      }
+    })
+  }
+
+  function update_room_show(id) {
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>hot_reservation/update_room_show',
+      dataType : 'json',
+      data : 'billing_room_id='+id,
+      success : function (data) {
+        $("#update_billing_room_id").val(data.billing_room_id);
+        $("#update_room_type_name").val(data.room_type_name);
+        $("#update_room_name").val(data.room_name);
+        $("#update_room_type_charge").val(sys_to_ind(data.room_type_charge));
+        $("#update_room_type_duration").val(data.room_type_duration);
+        calc_room_update();
+        $("#update_discount_id_room").val(data.discount_id).trigger('change');
+        $("#modal_room_list").modal('hide');
+        $("#modal_room_update").modal('show');
       }
     })
   }
@@ -1389,6 +1550,12 @@
     var room_type_charge = ind_to_sys($('#room_type_charge').val());
     var room_type_duration = $('#room_type_duration').val();
     $('#room_type_total').val(sys_to_ind(room_type_charge*room_type_duration));
+  }
+
+  function calc_room_update() {
+    var update_room_type_charge = ind_to_sys($('#update_room_type_charge').val());
+    var update_room_type_duration = $('#update_room_type_duration').val();
+    $('#update_room_type_total').val(sys_to_ind(update_room_type_charge*update_room_type_duration));
   }
 
   function add_extra() {

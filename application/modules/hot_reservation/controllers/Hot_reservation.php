@@ -1016,6 +1016,53 @@ class Hot_reservation extends MY_Karaoke {
     $this->m_hot_reservation->add_room($data_room);
   }
 
+  public function update_room()
+  {
+    $data = $_POST;
+    $id = $data['billing_room_id'];
+
+    $client = $this->m_hot_client->get_all();
+    $tax = $this->m_hot_charge_type->get_by_id(1);
+    $room = $this->m_hot_reservation->room_detail($data['room_id']);
+    $discount = $this->m_hot_discount->get_by_id($data['discount_id_room']);
+    
+    if ($client->client_is_taxed == 0) {
+      // Setingan harga sebelum pajak
+      $room_type_charge = price_to_num($data['room_type_charge']);
+      // Hitung maju
+      $room_type_subtotal = price_to_num($data['room_type_total']);
+      // $room_type_tax += $room_type_subtotal * $tax->charge_type_ratio;
+      $room_type_tax += $room_type_subtotal * ($tax->charge_type_ratio/100);
+      $room_type_before_discount = $room_type_subtotal + $room_type_tax;
+    } else {
+      // Settingan harga setelah pajak
+      $room_type_before_discount = price_to_num($data['room_type_total']);
+      // hitung persen semua setelah pajak/ hitung mundur
+      $room_type_tax = ($tax->charge_type_ratio/(100 + $tax->charge_type_ratio))*$room_type_before_discount;
+      $room_type_subtotal = $room_type_before_discount - $room_type_tax;
+      $room_type_charge = $room_type_subtotal / $data['room_type_duration'];
+    }
+
+    $room_type_discount = $discount->discount_amount*$room_type_before_discount/100;
+    $room_type_total = $room_type_before_discount-$room_type_discount;
+
+    $data_room = array(
+      'billing_id' => $data['billing_id'],
+      'room_type_charge' => $room_type_charge,
+      'discount_id' => $discount->discount_id,
+      'discount_type' => $discount->discount_type,
+      'discount_amount' => $discount->discount_amount,
+      'room_type_subtotal' => $room_type_subtotal,
+      'room_type_tax' => $room_type_tax,
+      'room_type_before_discount' => $room_type_before_discount,
+      'room_type_discount' => $room_type_discount,
+      'room_type_total' => $room_type_total,
+      'room_type_duration' => $data['room_type_duration'],
+      'created_by' => $this->session->userdata('user_realname')
+    );
+    $this->m_hot_reservation->update_room($id,$data_room);
+  }
+
   public function room_list()
   {
     $billing_id = $this->input->post('billing_id');
@@ -1034,6 +1081,13 @@ class Hot_reservation extends MY_Karaoke {
     $data2['client_is_taxed'] = $client->client_is_taxed;
 
     echo json_encode($data2);
+  }
+
+  public function update_room_show()
+  {
+    $id = $this->input->post('billing_room_id');
+    $data = $this->m_hot_billing_room->get_by_id($id);
+    echo json_encode($data);
   }
 
   public function delete_room() 
