@@ -8,15 +8,15 @@ class M_hot_reservation extends CI_Model {
 		if($search_term == null){
 			return $this->db
 				->where('is_deleted','0')
-				->where('billing_status !=','0')
+				->where('billing_status!=','0')
 				->order_by('billing_id','desc')
 				->get('hot_billing',$number,$offset)
 				->result();
 		}else{
 			return $this->db
 				->like('guest_name',$search_term,'both')
-				->where('billing_status !=','0')
 				->where('is_deleted','0')
+				->where('billing_status!=','0')
 				->order_by('billing_id','desc')
 				->get('hot_billing',$number,$offset)
 				->result();
@@ -81,6 +81,11 @@ class M_hot_reservation extends CI_Model {
 	public function add_room($data)
 	{
 		$this->db->insert('hot_billing_room', $data);
+	}
+
+	public function update_room($id,$data)
+	{
+		$this->db->where('billing_room_id',$id)->update('hot_billing_room', $data);
 	}
 
 	public function room_list($billing_id)
@@ -310,5 +315,6 @@ class M_hot_reservation extends CI_Model {
 
 		return $data->count_custom;
 	}
+
 
 }

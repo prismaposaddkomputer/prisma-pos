@@ -329,7 +329,7 @@
               <td><?=num_to_idr($billing->billing_subtotal)?></td>
             </tr>
             <tr>
-              <td width="300">Pajak Hotel</td>
+              <td width="300">Pajak karaoke</td>
               <td width="20">:</td>
               <td><?=num_to_idr($billing->billing_tax)?></td>
             </tr>
