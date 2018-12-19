@@ -83,7 +83,6 @@
         <thead>
           <tr>
             <th class="text-center" width="20">No.</th>
-            <th class="text-center" width="50">Aksi</th>
             <th class="text-center">Kamar</th>
             <th class="text-center" width="150">Tarif</th>
             <th class="text-center" width="100">Durasi</th>
@@ -97,9 +96,6 @@
             <?php $i=1;foreach ($billing->room as $row): ?>
               <tr>
                 <td class="text-center"><?=$i++?></td>
-                <td class="text-center">
-                  <a class="btn btn-xs btn-warning" href="#" onclick="update_room_show('<?=$row->billing_room_id?>')"><i class="fa fa-pencil"></i></a>
-                </td>
                 <td><?=$row->room_name?></td>
                 <td>
                   <?php 
@@ -149,13 +145,13 @@
             <?php endforeach;?>
           <?php else: ?>
             <tr>
-              <td class="text-center" colspan="99"><i>Tidak ada data!</i></td>
+              <td class="text-center" colspan="7"><i>Tidak ada data!</i></td>
             </tr>
           <?php endif;?>
         </tbody>
         <tfoot>
           <tr>
-            <th class="text-center" colspan="7">Total</th>
+            <th class="text-center" colspan="6">Total</th>
             <th><?=num_to_idr($tot_room)?></th>
           </tr>
         </tfoot>
@@ -396,12 +392,12 @@
       </table>
     </div>
     <div class="col-md-6">
-      <h4><b><i class="fa fa-cutlery"></i></b> F. Kustom Item</h4>
+      <h4><b><i class="fa fa-list"></i></b> F. Kustom</h4>
       <table class="table table-bordered table-condensed">
         <thead>
           <tr>
             <th class="text-center" width="20">No.</th>
-            <th class="text-center">Nama</th>
+            <th class="text-center">Nama Item</th>
             <th class="text-center" width="120">Tarif</th>
             <th class="text-center" width="20">Banyak</th>
             <th class="text-center" width="120">Total</th>
@@ -442,7 +438,7 @@
         <tfoot>
           <tr>
             <th class="text-center" colspan="4">Total</th>
-            <th><?=num_to_idr($tot_non_tax)?></th>
+            <th><?=num_to_idr($tot_custom)?></th>
           </tr>
         </tfoot>
       </table>
@@ -477,12 +473,22 @@
               <td><?=$charge_type_money?></td>
             </tr>
             <?php endforeach; ?>
+            <!-- <tr>
+              <td width="300">Diskon</td>
+              <td width="20">:</td>
+              <td><?=num_to_idr($billing->billing_discount)?></td>
+            </tr> -->
             <tr>
               <th width="300">Total</th>
               <th width="20">:</th>
               <th><?=num_to_idr($billing->billing_total)?></th>
             </tr>
           <?php else: ?>
+            <!-- <tr>
+              <td width="300">Diskon</td>
+              <td width="20">:</td>
+              <td><?=num_to_idr($billing->billing_discount)?></td>
+            </tr> -->
             <tr>
               <th width="300">Total</th>
               <th width="20">:</th>
@@ -514,6 +520,7 @@
             <td width="20">:</td>
             <td><?=num_to_idr($billing->billing_total)?></td>
             <input id="billing_total" type="hidden" value="<?=$billing->billing_total-$billing->billing_down_payment?>">
+            <input id="billing_down_payment" type="hidden" value="<?=$billing->billing_down_payment?>">
           </tr>
           <tr>
             <td width="300">(Diskon)</td>
@@ -535,21 +542,21 @@
             <td width="300">Kekurangan</td>
             <td width="20">:</td>
             <?php if ($billing->billing_down_payment > $billing->billing_total): ?>
-              <td><?=num_to_idr(0)?></td>
+              <td id="text_kekurangan"><?=num_to_idr(0)?></td>
             <?php else: ?>
               <?php if ($billing->billing_down_payment_type == 1): ?>
-                <td id="text_total_payment"><?=num_to_idr($billing->billing_total-$billing->billing_down_payment-$billing->billing_discount)?></td>
-                <input type="hidden" name="" id="total_payment" value="<?=$billing->billing_total-$billing->billing_down_payment-$billing->billing_discount?>">
+                <td id="text_kekurangan"><?=num_to_idr($billing->billing_total-$billing->billing_down_payment)?></td>
+                <input type="hidden" name="" id="total_payment" value="<?=$billing->billing_total-$billing->billing_down_payment?>">
               <?php else: ?>
                 <?php 
                 $dp_prosen = $billing->billing_total*($billing->billing_down_payment/100);
                 ?>
                 <?php if ($dp_prosen > $billing->billing_total): ?>
-                  <td id="text_total_payment"><?=num_to_idr(0)?></td>
+                  <td id="text_kekurangan"><?=num_to_idr(0)?></td>
                 <?php else: ?>
-                  <td id="text_total_payment"><?=num_to_idr($billing->billing_total-$dp_prosen-$billing->billing_discount)?></td>
+                  <td id="text_kekurangan"><?=num_to_idr($billing->billing_total-$dp_prosen)?></td>
                 <?php endif; ?>
-                <input type="hidden" name="" id="total_payment" value="<?=$billing->billing_total-$dp_prosen-$billing->billing_discount?>">
+                <input type="hidden" name="" id="total_payment" value="<?=$billing->billing_total-$dp_prosen?>">
               <?php endif; ?>
             <?php endif; ?>
           </tr>
@@ -564,10 +571,10 @@
               }
               ?>
               <?php if ($billing->billing_down_payment > $billing->billing_total || $billing->billing_down_payment == $billing->billing_total): ?>
-                <input style="width:100%; border: none; font-size: 18px; text-align: right;" type="text" name="billing_payment" value="" readonly onchange="calc_change()">
+                <input style="width:100%; border: none; font-size: 18px; text-align: right;" type="text" name="billing_payment" value="" readonly>
               <?php else: ?>
                 <?php if (@$dp_prosen > $billing->billing_total || @$dp_prosen == $billing->billing_total): ?>
-                  <input style="width:100%; border: none; font-size: 18px; text-align: right;" type="text" name="billing_payment" value="" readonly onchange="calc_change()">
+                  <input style="width:100%; border: none; font-size: 18px; text-align: right;" type="text" name="billing_payment" value="" readonly>
                 <?php else: ?>
                   <input id="billing_payment" name="billing_payment" style="width:100%; height: 40px; border: 2px solid green; font-size: 20px; font-weight: bold; text-align: right; padding-right: 10px;" class="autonumeric num" type="text" value="<?=$echo?>" dir="rtl" onchange="calc_change()">
                 <?php endif; ?>
@@ -603,61 +610,6 @@
           </tr>
         </tbody>
       </table>
-    </div>
-  </div>
-</div>
-<div id="modal_room" class="modal fade"  role="dialog" aria-labelledby="modal_room">
-  <div class="modal-dialog modal-sm" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="title_room_list">Pilih Kamar</h4>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label>Kamar</label>
-          <input class="form-control autonumeric num" id="room_type_charge" type="text" value="0">
-        </div>
-        <div class="form-group">
-          <label>Harga</label>
-          <input class="form-control autonumeric num" id="room_type_charge" type="text" value="0">
-        </div>
-        <div class="form-group">
-          <label>Durasi</label>
-          <div class="input-group">
-            <input class="form-control num" id="room_type_charge" type="text" value="0">
-            <span class="input-group-addon">Hari</span>
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Diskon</label>
-          <select class="form-control select2" id="discount_id_room">
-            <?php foreach ($discount_room as $row): ?>
-              <option value="<?=$row->discount_id?>">
-                <?=$row->discount_name?> (<?php if($row->discount_type == 1){echo $row->discount_amount." %";}else{echo num_to_price($row->discount_amount);}?>)
-              </option>
-            <?php endforeach;?>
-          </select>
-        </div>
-        <br>
-        <em>
-          <small>
-            NB: 
-            <?php if ($client->client_is_taxed == 0): ?>
-              Harga belum termasuk 
-            <?php else: ?>
-              Harga sudah termasuk 
-            <?php endif;?>
-            <?php foreach ($charge_type as $row){
-              echo $row->charge_type_name.',';
-            }?>
-          </small>
-        </em>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
-        <button type="button" class="btn btn-info" id="btn_add_room"><i class="fa fa-plus"></i> Tambah</button>
-      </div>
     </div>
   </div>
 </div>
@@ -771,24 +723,22 @@
       }
     })
   }
-  
-  function update_room_show($id) {
-    $("#modal_room").modal('show');
-  }
 
   function calc_change() {
     var total_payment = $('#total_payment').val();
     var billing_payment = ind_to_sys($('#billing_payment').val());
     var billing_discount = ind_to_sys($('#billing_discount').val());
-    var billing_change = billing_payment-total_payment-billing_discount;
+    var billing_change = billing_payment-(total_payment - billing_discount);
     console.log(billing_change);
     $('#billing_change').val(sys_to_ind(billing_change.toFixed(2)));
   }
 
-  function calc_discount(params) {
+  function calc_discount() {
     var total_payment = $('#total_payment').val();
     var billing_discount = ind_to_sys($('#billing_discount').val());
-    $("#text_total_payment").html(sys_to_cur(total_payment-billing_discount));
+    a = total_payment - parseInt(billing_discount);
+    console.log(a);
+    $('#text_kekurangan').html(sys_to_cur(a.toFixed(2)));
     calc_change();
   }
 </script>
