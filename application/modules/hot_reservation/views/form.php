@@ -1540,6 +1540,7 @@
                 '<td>'+sys_to_cur(item.room_type_discount)+'</td>'+
                 '<td>'+sys_to_cur(item.room_type_total)+'</td>'+
                 '<td class="text-center">'+
+                  '<button class="btn btn-xs btn-warning" onclick="update_room_show('+item.billing_room_id+')"><i class="fa fa-pencil"></i></button> '+
                   '<button class="btn btn-xs btn-danger" onclick="delete_room('+item.billing_room_id+')"><i class="fa fa-trash"></i></button>'+
                 '</td>'+
               '</tr>';
@@ -1716,6 +1717,7 @@
                 '<td class="text-center">'+Math.round(item.extra_amount)+'</td>'+
                 '<td>'+sys_to_cur(item.extra_total)+'</td>'+
                 '<td class="text-center">'+
+                  '<button class="btn btn-xs btn-warning" onclick="update_extra_show('+item.billing_extra_id+')"><i class="fa fa-pencil"></i></button> '+
                   '<button class="btn btn-xs btn-danger" onclick="delete_extra('+item.billing_extra_id+')"><i class="fa fa-trash"></i></button>'+
                 '</td>'+
               '</tr>';
@@ -1900,6 +1902,7 @@
                 '<td class="text-center">'+Math.round(item.service_amount)+'</td>'+
                 '<td>'+sys_to_cur(item.service_subtotal)+'</td>'+
                 '<td class="text-center">'+
+                  '<button class="btn btn-xs btn-warning" onclick="update_service_show('+item.billing_service_id+')"><i class="fa fa-pencil"></i></button> '+
                   '<button class="btn btn-xs btn-danger" onclick="delete_service('+item.billing_service_id+')"><i class="fa fa-trash"></i></button>'+
                 '</td>'+
               '</tr>';
@@ -1913,6 +1916,7 @@
                 '<td class="text-center">'+Math.round(item.service_amount)+'</td>'+
                 '<td>'+sys_to_cur(item.service_total)+'</td>'+
                 '<td class="text-center">'+
+                  '<button class="btn btn-xs btn-warning" onclick="update_service_show('+item.billing_service_id+')"><i class="fa fa-pencil"></i></button> '+
                   '<button class="btn btn-xs btn-danger" onclick="delete_service('+item.billing_service_id+')"><i class="fa fa-trash"></i></button>'+
                 '</td>'+
               '</tr>';
