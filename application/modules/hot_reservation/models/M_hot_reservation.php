@@ -170,6 +170,11 @@ class M_hot_reservation extends CI_Model {
 		$this->db->insert('hot_billing_service', $data);
 	}
 
+	public function update_service($id,$data)
+	{
+		$this->db->where('billing_service_id',$id)->update('hot_billing_service', $data);
+	}
+
 	public function service_list($billing_id)
 	{
 		return $this->db

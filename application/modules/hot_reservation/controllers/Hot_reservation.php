@@ -1253,6 +1253,47 @@ class Hot_reservation extends MY_Hotel {
     $this->m_hot_reservation->add_service($data_service);
   }
 
+  public function update_service_show()
+  {
+    $id = $this->input->post('billing_service_id');
+    $data = $this->m_hot_billing_service->get_by_id($id);
+    echo json_encode($data);
+  }
+
+  public function update_service()
+  {
+    $data = $_POST;
+    $id = $data['billing_service_id'];
+
+    $client = $this->m_hot_client->get_all();
+    // $service = $this->m_hot_service->get_by_id($data['service_id']);
+    $tax = $this->m_hot_charge_type->get_by_id(1);
+
+    if ($client->client_is_taxed == 0) {
+      $service_charge = price_to_num($data['service_charge']);
+      $service_subtotal = $data['service_amount']*$service_charge;
+      $service_tax = $service_subtotal*$tax->charge_type_ratio/100;
+      $service_total = $service_subtotal+$service_tax;
+    }else{
+      $service_total = $data['service_amount']*price_to_num($data['service_charge']);
+      $tot_ratio = 100+$tax->charge_type_ratio;
+      $service_tax = ($tax->charge_type_ratio/$tot_ratio)*$service_total;
+      $service_subtotal = $service_total-$service_tax;
+      $service_charge = $service_subtotal/$data['service_amount'];
+    }
+
+    $data_service = array(
+      'billing_id' => $data['billing_id'],
+      'service_charge' => $service_charge,
+      'service_amount' => $data['service_amount'],
+      'service_subtotal' => $service_subtotal,
+      'service_tax' => $service_tax,
+      'service_total' => $service_total,
+      'created_by' => $this->session->userdata('user_realname')
+    );
+    $this->m_hot_reservation->update_service($id,$data_service);
+  }
+
   public function get_billing_service()
   {
     $billing_id = $this->input->post('billing_id');

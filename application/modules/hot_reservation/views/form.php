@@ -253,7 +253,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="title_room_list">Pilih Kamar</h4>
+        <h4 class="modal-title" id="title_room_list">Tambah Kamar</h4>
       </div>
       <div class="modal-body">
         <div class="form-group">
@@ -330,7 +330,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="title_room_list">Pilih Kamar</h4>
+        <h4 class="modal-title" id="title_room_list">Ubah Kamar</h4>
       </div>
       <div class="modal-body">
         <input class="form-control" id="update_billing_room_id" type="hidden" value="" readonly>
@@ -445,7 +445,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="title_extra_list">Pilih Extra</h4>
+        <h4 class="modal-title" id="title_extra_list">Tambah Extra</h4>
       </div>
       <div class="modal-body">
         <div class="form-group">
@@ -501,7 +501,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="title_extra_list">Pilih Extra</h4>
+        <h4 class="modal-title" id="title_extra_list">Ubah Extra</h4>
       </div>
       <div class="modal-body">
         <div class="form-group">
@@ -542,7 +542,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
-        <button type="button" class="btn btn-info" id="btn_update_extra"><i class="fa fa-plus"></i> Tambah</button>
+        <button type="button" class="btn btn-success" id="btn_update_extra"><i class="fa fa-refresh"></i> Ubah</button>
       </div>
     </div>
   </div>
@@ -690,7 +690,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="title_service_list">Pilih Layanan</h4>
+        <h4 class="modal-title" id="title_service_list">Tambah Layanan</h4>
       </div>
       <div class="modal-body">
         <div class="form-group">
@@ -739,7 +739,57 @@
     </div>
   </div>
 </div>
-
+<!-- Service -->
+<div id="modal_service_update" class="modal fade" role="dialog" aria-labelledby="modal_service">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="title_service_list">Ubah Layanan</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Nama Pelayanan</label>
+          <input class="form-control" id="update_billing_service_id" type="hidden" value="" readonly>
+          <input class="form-control" id="update_service_name" type="text" value="" readonly>
+        </div>
+        <div class="row">
+          <div class="col-md-8">
+            <div class="form-group">
+              <label>Harga</label>
+              <input class="form-control autonumeric num" id="update_service_charge" type="text" value="0" readonly>
+            </div>
+          </div>
+          <div class="col-md-4">  
+            <div class="form-group">
+              <label>Banyak</label>
+              <input class="form-control autonumeric num" id="update_service_amount" type="text" value="0" onchange="calc_service_update()">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Total</label>
+          <input class="form-control autonumeric num" id="update_service_total" type="text" value="0" readonly>
+        </div>
+        <em>
+          <small>
+            NB: 
+            <?php if ($client->client_is_taxed == 0): ?>
+              Harga belum termasuk 
+            <?php else: ?>
+              Harga sudah termasuk 
+            <?php endif;?>
+            Pajak karaoke
+          </small>
+        </em>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
+        <button type="button" class="btn btn-success" id="btn_update_service"><i class="fa fa-refresh"></i> Ubah</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Paket List -->
 <div id="modal_paket_list" class="modal fade"  role="dialog" aria-labelledby="modal_paket_list">
@@ -1317,6 +1367,9 @@
       add_service();
     });
 
+    $('#btn_update_service').click(function () {
+      update_service();
+    });
 
     // Paket
     $('#btn_paket_list').click(function () {
@@ -1858,6 +1911,12 @@
     $('#service_total').val(sys_to_ind(service_amount*service_charge));
   }
 
+  function calc_service_update() {
+    var service_charge = ind_to_sys($('#update_service_charge').val());
+    var service_amount = $('#update_service_amount').val();
+    $('#update_service_total').val(sys_to_ind(service_amount*service_charge));
+  }
+
   function add_service() {
     var billing_id = $('#billing_id').val();
     var service_id = $('#service_id').val();
@@ -1872,6 +1931,26 @@
       success : function (data) {
         $('#modal_service_list').modal('show');
         $('#modal_service').modal('hide');
+        get_billing_service();
+      }
+    })
+  }
+
+  function update_service() {
+    var billing_service_id = $('#update_billing_service_id').val();
+    var billing_id = $('#billing_id').val();
+    var service_amount = $('#update_service_amount').val();
+    var service_charge = $('#update_service_charge').val();
+    var service_total = $('#update_service_total').val();
+
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>hot_reservation/update_service',
+      data : 'billing_service_id='+billing_service_id+'&billing_id='+billing_id+'&service_amount='+service_amount+
+              '&service_charge='+service_charge+'&service_total='+service_total,
+      success : function (data) {
+        $('#modal_service_list').modal('show');
+        $('#modal_service_update').modal('hide');
         get_billing_service();
       }
     })
@@ -1940,10 +2019,24 @@
     })
   }
 
-
-
-
-
+  function update_service_show(id) {
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>hot_reservation/update_service_show',
+      dataType : 'json',
+      data : 'billing_service_id='+id,
+      success : function (data) {
+        $('#update_billing_service_id').val(data.billing_service_id);
+        $('#update_service_name').val(data.service_name);
+        $('#update_service_charge').val(sys_to_ind(data.service_charge));
+        $('#update_service_amount').val(sys_to_ind(data.service_amount));
+        $('#update_service_total').val(sys_to_ind(data.service_total));
+        $('#modal_service_list').modal('hide');
+        $('#modal_service_update').modal('show');
+        get_billing_service();
+      }
+    })
+  }
 
   function get_paket(paket_id) {
     $.ajax({
