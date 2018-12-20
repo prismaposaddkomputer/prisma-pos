@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 use Carbon\Carbon;
 
-class Hot_reservation extends MY_Karaoke {
+class Hot_reservation extends MY_Hotel {
 
   var $access, $billing_id;
 
@@ -1146,6 +1146,40 @@ class Hot_reservation extends MY_Karaoke {
     $this->m_hot_reservation->add_extra($data_extra);
   }
 
+  public function update_extra()
+  {
+    $data = $_POST;
+    $id = $data['billing_extra_id'];
+
+    $client = $this->m_hot_client->get_all();
+    // $extra = $this->m_hot_extra->get_by_id($data['extra_id']);
+    $tax = $this->m_hot_charge_type->get_by_id(1);
+
+    if ($client->client_is_taxed == 0) {
+      $extra_charge = price_to_num($data['extra_charge']);
+      $extra_subtotal = $data['extra_amount']*$extra_charge;
+      $extra_tax = $extra_subtotal*$tax->charge_type_ratio/100;
+      $extra_total = $extra_subtotal+$extra_tax;
+    }else{
+      $extra_total = $data['extra_amount']*price_to_num($data['extra_charge']);
+      $tot_ratio = 100+$tax->charge_type_ratio;
+      $extra_tax = ($tax->charge_type_ratio/$tot_ratio)*$extra_total;
+      $extra_subtotal = $extra_total-$extra_tax;
+      $extra_charge = $extra_subtotal/$data['extra_amount'];
+    }
+
+    $data_extra = array(
+      'billing_id' => $data['billing_id'],
+      'extra_charge' => $extra_charge,
+      'extra_amount' => $data['extra_amount'],
+      'extra_subtotal' => $extra_subtotal,
+      'extra_tax' => $extra_tax,
+      'extra_total' => $extra_total,
+      'created_by' => $this->session->userdata('user_realname')
+    );
+    $this->m_hot_reservation->update_extra($id,$data_extra);
+  }
+
   public function get_billing_extra()
   {
     $billing_id = $this->input->post('billing_id');
@@ -1153,6 +1187,13 @@ class Hot_reservation extends MY_Karaoke {
     $data['extra'] = $this->m_hot_reservation->get_billing_extra($billing_id);
     $data['client_is_taxed'] = $client->client_is_taxed;
 
+    echo json_encode($data);
+  }
+
+  public function update_extra_show()
+  {
+    $id = $this->input->post('billing_extra_id');
+    $data = $this->m_hot_billing_extra->get_by_id($id);
     echo json_encode($data);
   }
 

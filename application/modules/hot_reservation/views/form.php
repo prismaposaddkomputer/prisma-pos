@@ -16,7 +16,7 @@
             </div>
           </div>
         </div>
-        <h5 class="cl-success"><strong><i class="fa fa-arrow-down"></i> In (Masuk)</strong></h5>
+        <h5 class="cl-success"><strong><i class="fa fa-arrow-down"></i> Check In (Masuk)</strong></h5>
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
@@ -33,7 +33,7 @@
         </div>
 
         <?php if ($billing != null): ?>
-        <h5 class="cl-danger"><strong><i class="fa fa-arrow-up"></i> Out (Keluar)</strong></h5>
+        <h5 class="cl-danger"><strong><i class="fa fa-arrow-up"></i> Check Out (Keluar)</strong></h5>
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
@@ -84,8 +84,8 @@
           </div>
         </div>
 
-        <button class="btn btn-info" id="btn_room_list" type="button"><i class="fa fa-bed"></i> Room <span class="badge" id="lbl_count_room">0</span></button>
-        <button class="btn btn-info" id="btn_paket_list" type="button"><i class="fa fa-cubes"></i> Paket <span class="badge" id="lbl_count_paket">0</span></button>
+        <button class="btn btn-info" id="btn_room_list" type="button"><i class="fa fa-bed"></i> Kamar <span class="badge" id="lbl_count_room">0</span></button>
+        <!-- <button class="btn btn-info" id="btn_paket_list" type="button"><i class="fa fa-cubes"></i> Paket <span class="badge" id="lbl_count_paket">0</span></button> -->
         <button class="btn btn-info" id="btn_extra_list" type="button"><i class="fa fa-plus-square"></i> Ekstra <span class="badge" id="lbl_count_extra">0</span></button>
         <button class="btn btn-info" id="btn_service_list" type="button"><i class="fa fa-plus-square"></i> Pelayanan <span class="badge" id="lbl_count_service">0</span></button>
         <button class="btn btn-info" id="btn_fnb_list" type="button"><i class="fa fa-cutlery"></i> F&B <span class="badge" id="lbl_count_fnb">0</span></button>
@@ -202,22 +202,22 @@
 </div>
 
 <!-- Modals -->
-<!-- Room List -->
+<!-- Kamar List -->
 <div id="modal_room_list" class="modal fade"  role="dialog" aria-labelledby="modal_room_list">
   <div style="width:800px;" class="modal-dialog modal-md" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="title_room_list">Pesanan Room</h4>
+        <h4 class="modal-title" id="title_room_list">Pesanan Kamar</h4>
       </div>
       <div class="modal-body">
-        <button class="btn btn-info" id="btn_room"><i class="fa fa-plus"></i> Tambah Room</button>
+        <button class="btn btn-info" id="btn_room"><i class="fa fa-plus"></i> Tambah Kamar</button>
         <br><br>
         <table id="tbl_room_list" class="table table-bordered table-condensed">
           <thead>
             <tr>
-              <th class="text-center">Jenis Room</th>
-              <th class="text-center">Room</th>
+              <th class="text-center">Jenis Kamar</th>
+              <th class="text-center">Kamar</th>
               <th class="text-center">Durasi</th>
               <th class="text-center" width="150">Harga</th>
               <th class="text-center" width="150">Diskon</th>
@@ -247,28 +247,28 @@
     </div>
   </div>
 </div>
-<!-- Room -->
+<!-- Kamar -->
 <div id="modal_room" class="modal fade"  role="dialog" aria-labelledby="modal_room">
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="title_room_list">Pilih Room</h4>
+        <h4 class="modal-title" id="title_room_list">Pilih Kamar</h4>
       </div>
       <div class="modal-body">
         <div class="form-group">
-          <label>Tipe Room</label>
+          <label>Tipe Kamar</label>
           <select class="form-control select2" id="room_type_id">
-            <option value="0">-- Pilih Tipe Room --</option>
+            <option value="0">-- Pilih Tipe Kamar --</option>
             <?php foreach ($room_type as $row): ?>
               <option value="<?=$row->room_type_id?>"><?=$row->room_type_name?></option>
             <?php endforeach;?>
           </select>
         </div>
         <div class="form-group">
-          <label>Room</label>
+          <label>Kamar</label>
           <select class="form-control select2" id="room_id">
-            <option value="0">-- Pilih Room --</option>
+            <option value="0">-- Pilih Kamar --</option>
           </select>
         </div>
         <div class="row">
@@ -330,7 +330,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="title_room_list">Pilih Room</h4>
+        <h4 class="modal-title" id="title_room_list">Pilih Kamar</h4>
       </div>
       <div class="modal-body">
         <input class="form-control" id="update_billing_room_id" type="hidden" value="" readonly>
@@ -414,7 +414,7 @@
               <th class="text-center">Harga Satuan</th>
               <th class="text-center">Banyak</th>
               <th class="text-center" width="150">Total</th>
-              <th class="text-center" width="50">Aksi</th>
+              <th class="text-center" width="80">Aksi</th>
             </tr>
           </thead>
           <tbody id="row_extra_list">
@@ -495,7 +495,58 @@
     </div>
   </div>
 </div>
-
+<!-- Extra Update -->
+<div id="modal_extra_update" class="modal fade" role="dialog" aria-labelledby="modal_extra">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="title_extra_list">Pilih Extra</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Extra Nama</label>
+          <input class="form-control" id="update_billing_extra_id" type="hidden" value="" readonly>
+          <input class="form-control" id="update_extra_name" type="text" value="" readonly>
+        </div>
+        <div class="row">
+          <div class="col-md-8">
+            <div class="form-group">
+              <label>Harga</label>
+              <input class="form-control autonumeric num" id="update_extra_charge" type="text" value="0" readonly>
+            </div>
+          </div>
+          <div class="col-md-4">  
+            <div class="form-group">
+              <label>Banyak</label>
+              <input class="form-control autonumeric num" id="update_extra_amount" type="text" value="0" onchange="calc_extra_update()">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Total</label>
+          <input class="form-control autonumeric num" id="update_extra_total" type="text" value="0" readonly>
+        </div>
+        <br>
+        <em>
+          <small>
+            NB: 
+            <?php if ($client->client_is_taxed == 0): ?>
+              Harga belum termasuk 
+            <?php else: ?>
+              Harga sudah termasuk 
+            <?php endif;?>
+            Pajak karaoke
+          </small>
+        </em>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
+        <button type="button" class="btn btn-info" id="btn_update_extra"><i class="fa fa-plus"></i> Tambah</button>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- custom List -->
 <div id="modal_custom_list" class="modal fade"  role="dialog" aria-labelledby="modal_custom_list">
   <div class="modal-dialog modal-md" role="document">
@@ -1115,7 +1166,7 @@
     //
     get_count();
     
-    //Room
+    //Kamar
     $('#btn_room_list').click(function () {
       get_billing_room();
       $('#modal_room_list').modal('show');
@@ -1143,13 +1194,13 @@
       //
       if (room_type_id == 0) {
         swal({
-          text: "Tipe Room belum dipilih",
+          text: "Tipe Kamar belum dipilih",
           icon: "warning",
           button: "OK",
         });
       }else if (room_id == 0) {
         swal({
-          text: "Room belum dipilih",
+          text: "Kamar belum dipilih",
           icon: "warning",
           button: "OK",
         });
@@ -1171,13 +1222,13 @@
       //
       if (room_type_id == 0) {
         swal({
-          text: "Tipe Room belum dipilih",
+          text: "Tipe Kamar belum dipilih",
           icon: "warning",
           button: "OK",
         });
       }else if (room_id == 0) {
         swal({
-          text: "Room belum dipilih",
+          text: "Kamar belum dipilih",
           icon: "warning",
           button: "OK",
         });
@@ -1213,6 +1264,10 @@
 
     $('#btn_add_extra').click(function () {
       add_extra();
+    });
+
+     $('#btn_update_extra').click(function () {
+      update_extra();
     });
 
     //Custom
@@ -1485,6 +1540,7 @@
                 '<td>'+sys_to_cur(item.room_type_discount)+'</td>'+
                 '<td>'+sys_to_cur(item.room_type_total)+'</td>'+
                 '<td class="text-center">'+
+                  '<button class="btn btn-xs btn-warning" onclick="update_room_show('+item.billing_room_id+')"><i class="fa fa-pencil"></i></button> '+
                   '<button class="btn btn-xs btn-danger" onclick="delete_room('+item.billing_room_id+')"><i class="fa fa-trash"></i></button>'+
                 '</td>'+
               '</tr>';
@@ -1546,6 +1602,12 @@
     $('#extra_total').val(sys_to_ind(extra_amount*extra_charge));
   }
 
+  function calc_extra_update() {
+    var extra_charge = ind_to_sys($('#update_extra_charge').val());
+    var extra_amount = $('#update_extra_amount').val();
+    $('#update_extra_total').val(sys_to_ind(extra_amount*extra_charge));
+  }
+
   function calc_room() {
     var room_type_charge = ind_to_sys($('#room_type_charge').val());
     var room_type_duration = $('#room_type_duration').val();
@@ -1577,6 +1639,45 @@
     })
   }
 
+  function update_extra() {
+    var billing_extra_id = $('#update_billing_extra_id').val();
+    var billing_id = $('#billing_id').val();
+    var extra_amount = $('#update_extra_amount').val();
+    var extra_charge = $('#update_extra_charge').val();
+    var extra_total = $('#update_extra_total').val();
+
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>hot_reservation/update_extra',
+      data : 'billing_extra_id='+billing_extra_id+'&billing_id='+billing_id+'&extra_amount='+extra_amount+
+              '&extra_charge='+extra_charge+'&extra_total='+extra_total,
+      success : function (data) {
+        $('#modal_extra_list').modal('show');
+        $('#modal_extra_update').modal('hide');
+        get_billing_extra();
+      }
+    })
+  }
+
+  function update_extra_show(id) {
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>hot_reservation/update_extra_show',
+      dataType : 'json',
+      data : 'billing_extra_id='+id,
+      success : function (data) {
+        $('#update_billing_extra_id').val(data.billing_extra_id);
+        $('#update_extra_name').val(data.extra_name);
+        $('#update_extra_charge').val(sys_to_ind(data.extra_charge));
+        $('#update_extra_amount').val(sys_to_ind(data.extra_amount));
+        $('#update_extra_total').val(sys_to_ind(data.extra_total));
+        $('#modal_extra_list').modal('hide');
+        $('#modal_extra_update').modal('show');
+        get_billing_extra();
+      }
+    })
+  }
+
   function get_billing_extra() {
     var billing_id = $('#billing_id').val();
 
@@ -1602,6 +1703,7 @@
                 '<td class="text-center">'+Math.round(item.extra_amount)+'</td>'+
                 '<td>'+sys_to_cur(item.extra_subtotal)+'</td>'+
                 '<td class="text-center">'+
+                  '<button class="btn btn-xs btn-warning" onclick="update_extra_show('+item.billing_extra_id+')"><i class="fa fa-pencil"></i></button> '+
                   '<button class="btn btn-xs btn-danger" onclick="delete_extra('+item.billing_extra_id+')"><i class="fa fa-trash"></i></button>'+
                 '</td>'+
               '</tr>';
@@ -1615,6 +1717,7 @@
                 '<td class="text-center">'+Math.round(item.extra_amount)+'</td>'+
                 '<td>'+sys_to_cur(item.extra_total)+'</td>'+
                 '<td class="text-center">'+
+                  '<button class="btn btn-xs btn-warning" onclick="update_extra_show('+item.billing_extra_id+')"><i class="fa fa-pencil"></i></button> '+
                   '<button class="btn btn-xs btn-danger" onclick="delete_extra('+item.billing_extra_id+')"><i class="fa fa-trash"></i></button>'+
                 '</td>'+
               '</tr>';
@@ -1799,6 +1902,7 @@
                 '<td class="text-center">'+Math.round(item.service_amount)+'</td>'+
                 '<td>'+sys_to_cur(item.service_subtotal)+'</td>'+
                 '<td class="text-center">'+
+                  '<button class="btn btn-xs btn-warning" onclick="update_service_show('+item.billing_service_id+')"><i class="fa fa-pencil"></i></button> '+
                   '<button class="btn btn-xs btn-danger" onclick="delete_service('+item.billing_service_id+')"><i class="fa fa-trash"></i></button>'+
                 '</td>'+
               '</tr>';
@@ -1812,6 +1916,7 @@
                 '<td class="text-center">'+Math.round(item.service_amount)+'</td>'+
                 '<td>'+sys_to_cur(item.service_total)+'</td>'+
                 '<td class="text-center">'+
+                  '<button class="btn btn-xs btn-warning" onclick="update_service_show('+item.billing_service_id+')"><i class="fa fa-pencil"></i></button> '+
                   '<button class="btn btn-xs btn-danger" onclick="delete_service('+item.billing_service_id+')"><i class="fa fa-trash"></i></button>'+
                 '</td>'+
               '</tr>';
