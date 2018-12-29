@@ -65,6 +65,7 @@ class M_hot_reservation extends CI_Model {
 		$this->db->where('billing_id',$billing_id)->delete('hot_billing_service');
 		$this->db->where('billing_id',$billing_id)->delete('hot_billing_fnb');
 		$this->db->where('billing_id',$billing_id)->delete('hot_billing_non_tax');
+		$this->db->where('billing_id',$billing_id)->delete('hot_billing_custom');
 	}
 
 	public function room_detail($room_id)
@@ -210,6 +211,16 @@ class M_hot_reservation extends CI_Model {
 		$this->db->insert('hot_billing_fnb', $data);
 	}
 
+	public function update_fnb($id,$data)
+	{
+		$this->db->where('billing_fnb_id',$id)->update('hot_billing_fnb', $data);
+	}
+
+	public function update_non_tax($id,$data)
+	{
+		$this->db->where('billing_non_tax_id',$id)->update('hot_billing_non_tax', $data);
+	}
+
 	public function fnb_list($billing_id)
 	{
 		return $this->db
@@ -238,6 +249,11 @@ class M_hot_reservation extends CI_Model {
 		)->row();
 
 		return $data->count_fnb;
+	}
+
+	public function get_by_id($id)
+	{
+	return $this->db->where('billing_non_tax_id',$id)->get('hot_billing_non_tax')->row();
 	}
 
 	public function add_non_tax($data)
@@ -294,6 +310,11 @@ class M_hot_reservation extends CI_Model {
 	public function add_custom($data)
 	{
 		$this->db->insert('hot_billing_custom', $data);
+	}
+
+	public function update_custom($id,$data)
+	{
+		$this->db->where('billing_custom_id',$id)->update('hot_billing_custom', $data);
 	}
 
 	public function custom_list($billing_id)
