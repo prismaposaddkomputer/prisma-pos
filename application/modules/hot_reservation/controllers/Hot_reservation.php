@@ -941,6 +941,19 @@ class Hot_reservation extends MY_Hotel {
     echo json_encode($data);
   }
 
+  public function get_validate_room()
+  {
+    $room_id = $this->input->get('room_id');
+    $validate = $this->m_hot_reservation->validate_room_id($room_id);
+    //
+    $result = "true";
+    if($validate == true) $result = "false";
+    //
+    echo json_encode(array(
+      'result' => $result
+    ));
+  }
+
   public function get_tamu_langganan()
   {
     $client = $this->m_hot_client->get_all();
@@ -1118,8 +1131,6 @@ class Hot_reservation extends MY_Hotel {
 
   public function update_room_show()
   {
-    $client = $this->m_hot_client->get_all();
-    $data['client_is_taxed'] = $client->client_is_taxed;
     $data['tax'] = $this->m_hot_charge_type->get_by_id(1);
     //
     $id = $this->input->post('billing_room_id');
@@ -1229,9 +1240,6 @@ class Hot_reservation extends MY_Hotel {
 
   public function update_extra_show()
   {
-    $client = $this->m_hot_client->get_all();
-    $data['client_is_taxed'] = $client->client_is_taxed;
-    //
     $id = $this->input->post('billing_extra_id');
     $data = $this->m_hot_billing_extra->get_by_id($id);
     echo json_encode($data);
@@ -1295,9 +1303,6 @@ class Hot_reservation extends MY_Hotel {
 
   public function update_service_show()
   {
-    $client = $this->m_hot_client->get_all();
-    $data['client_is_taxed'] = $client->client_is_taxed;
-    //
     $id = $this->input->post('billing_service_id');
     $data = $this->m_hot_billing_service->get_by_id($id);
     echo json_encode($data);
@@ -1405,9 +1410,6 @@ class Hot_reservation extends MY_Hotel {
 
   public function update_fnb_show()
   {
-    $client = $this->m_hot_client->get_all();
-    $data['client_is_taxed'] = $client->client_is_taxed;
-    //
     $id = $this->input->post('billing_fnb_id');
     $data = $this->m_hot_billing_fnb->get_by_id($id);
     echo json_encode($data);

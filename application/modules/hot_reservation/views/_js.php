@@ -168,6 +168,10 @@
       get_room(this.value);
     });
 
+    $('#room_id').on('change', function() {
+      get_validate_room(this.value);
+    });
+
     $('#btn_add_room').click(function () {
       var room_type_duration = $('#room_type_duration').val();
       var room_type_id = $('#room_type_id').val();
@@ -405,6 +409,19 @@
     })
   }
 
+  function get_validate_room(room_id) {
+    $.get('<?=base_url()?>hot_reservation/get_validate_room?room_id='+room_id,null,function(data) {
+      if(data.result == 'false') {
+        swal({
+          text: "Kamar ini sudah digunakan ",
+          icon: "warning",
+          button: "OK",
+        });
+        $('#room_id').val(0).trigger('change');
+      }
+    },'json');
+  }
+
   function get_room_update(room_type_id) {
     $.ajax({
       type : 'post',
@@ -560,12 +577,11 @@
         $("#update_billing_room_id").val(data.billing_room_id);
         $("#update_room_type_name").val(data.room_type_name);
         $("#update_room_name").val(data.room_name);
-        // if (data.client_is_taxed == 0) {
-        //   $('#update_room_type_charge').val(sys_to_ind(data.room_type_charge));
-        // }else{
-        //   $('#update_room_type_charge').val(sys_to_ind(data.room_type_total/data.room_type_duration));
-        // }
-        $('#update_room_type_charge').val(sys_to_ind(data.room_type_charge));
+        if (data.client_is_taxed == 0) {
+          $('#update_room_type_charge').val(sys_to_ind(data.room_type_charge));
+        }else{
+          $('#update_room_type_charge').val(sys_to_ind(data.room_type_total/data.room_type_duration));
+        }
         $("#update_room_type_duration").val(sys_to_ind(data.room_type_duration));
         calc_room_update();
         $("#update_discount_id_room").val(data.discount_id).trigger('change');
@@ -670,12 +686,11 @@
       success : function (data) {
         $('#update_billing_extra_id').val(data.billing_extra_id);
         $('#update_extra_name').val(data.extra_name);
-        // if (data.client_is_taxed == 0) {
-        //   $('#update_extra_charge').val(sys_to_ind(data.extra_charge));
-        // }else{
-        //   $('#update_extra_charge').val(sys_to_ind(data.extra_total/data.extra_amount));
-        // }
-        $('#update_extra_charge').val(sys_to_ind(data.extra_charge));
+        if (data.client_is_taxed == 0) {
+          $('#update_extra_charge').val(sys_to_ind(data.extra_charge));
+        }else{
+          $('#update_extra_charge').val(sys_to_ind(data.extra_total/data.extra_amount));
+        }
         $('#update_extra_amount').val(sys_to_ind(data.extra_amount));
         calc_extra_update();
         $('#modal_extra_list').modal('hide');
@@ -1036,12 +1051,11 @@
       success : function (data) {
         $('#update_billing_service_id').val(data.billing_service_id);
         $('#update_service_name').val(data.service_name);
-        // if (data.client_is_taxed == 0) {
-        //   $('#update_service_charge').val(sys_to_ind(data.service_charge));
-        // }else{
-        //   $('#update_service_charge').val(sys_to_ind(data.service_total/data.service_amount));
-        // }
-        $('#update_service_charge').val(sys_to_ind(data.service_charge));
+        if (data.client_is_taxed == 0) {
+          $('#update_service_charge').val(sys_to_ind(data.service_charge));
+        }else{
+          $('#update_service_charge').val(sys_to_ind(data.service_total/data.service_amount));
+        }
         $('#update_service_amount').val(sys_to_ind(data.service_amount));
         calc_service_update();
         $('#modal_service_list').modal('hide');
@@ -1226,12 +1240,11 @@
       success : function (data) {
         $('#update_billing_fnb_id').val(data.billing_fnb_id);
         $('#update_fnb_name').val(data.fnb_name);
-        // if (data.client_is_taxed == 0) {
-        //   $('#update_fnb_charge').val(sys_to_ind(data.fnb_charge));
-        // }else{
-        //   $('#update_fnb_charge').val(sys_to_ind(data.fnb_total/data.fnb_amount));
-        // }
-        $('#update_fnb_charge').val(sys_to_ind(data.fnb_charge));
+        if (data.client_is_taxed == 0) {
+          $('#update_fnb_charge').val(sys_to_ind(data.fnb_charge));
+        }else{
+          $('#update_fnb_charge').val(sys_to_ind(data.fnb_total/data.fnb_amount));
+        }
         $('#update_fnb_amount').val(sys_to_ind(data.fnb_amount));
         calc_fnb_update();
         $('#modal_fnb_list').modal('hide');

@@ -347,5 +347,19 @@ class M_hot_reservation extends CI_Model {
 		return $data->count_custom;
 	}
 
+	public function validate_room_id($room_id=null) {
+        $sql = "SELECT 
+        			a.room_id 
+        		FROM hot_billing_room a 
+        		LEFT JOIN hot_billing b ON a.billing_id=b.billing_id
+        		WHERE a.room_id='$room_id' AND b.billing_status='1'";
+        $query = $this->db->query($sql);
+        if($query->num_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
 }
