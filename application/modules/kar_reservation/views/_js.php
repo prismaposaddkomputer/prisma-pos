@@ -147,7 +147,7 @@
     //
     get_count();
     
-    //Kamar
+    //Room
     $('#btn_room_list').click(function () {
       get_billing_room();
       $('#modal_room_list').modal('show');
@@ -179,13 +179,13 @@
       //
       if (room_type_id == 0) {
         swal({
-          text: "Tipe Kamar belum dipilih",
+          text: "Tipe Room belum dipilih",
           icon: "warning",
           button: "OK",
         });
       }else if (room_id == 0) {
         swal({
-          text: "Kamar belum dipilih",
+          text: "Room belum dipilih",
           icon: "warning",
           button: "OK",
         });
@@ -207,13 +207,13 @@
       //
       if (room_type_id == 0) {
         swal({
-          text: "Tipe Kamar belum dipilih",
+          text: "Tipe Room belum dipilih",
           icon: "warning",
           button: "OK",
         });
       }else if (room_id == 0) {
         swal({
-          text: "Kamar belum dipilih",
+          text: "Room belum dipilih",
           icon: "warning",
           button: "OK",
         });
@@ -248,31 +248,7 @@
     });
 
     $('#btn_add_extra').click(function () {
-      var extra_amount = $('#extra_amount').val();
-      //
-      if (extra_amount == 0) {
-        swal({
-          text: "Form Banyak minimal harus 1",
-          icon: "warning",
-          button: "OK",
-        });
-      }else {
-        add_extra();
-      }
-    });
-
-     $('#btn_update_extra').click(function () {
-      var extra_amount = $('#update_extra_amount').val();
-      //
-      if (extra_amount == 0) {
-        swal({
-          text: "Form Banyak minimal harus 1",
-          icon: "warning",
-          button: "OK",
-        });
-      }else {
-        update_extra();
-      }
+      add_extra();
     });
 
     //Custom
@@ -371,6 +347,7 @@
       }
     });
 
+
     // Paket
     $('#btn_paket_list').click(function () {
       get_billing_paket();
@@ -392,7 +369,31 @@
     });
 
     $('#btn_add_paket').click(function () {
-      add_paket();
+      var paket_amount = $('#paket_amount').val();
+      //
+      if (paket_amount == 0) {
+        swal({
+          text: "Form Banyak minimal harus 1",
+          icon: "warning",
+          button: "OK",
+        });
+      }else {
+        add_paket();
+      }
+    });
+
+    $('#btn_update_paket').click(function () {
+      var paket_amount = $('#update_paket_amount').val();
+      //
+      if (paket_amount == 0) {
+        swal({
+          text: "Form Banyak minimal harus 1",
+          icon: "warning",
+          button: "OK",
+        });
+      }else {
+        update_paket();
+      }
     });
 
     
@@ -493,7 +494,7 @@
   function get_room(room_type_id) {
     $.ajax({
       type : 'post',
-      url : '<?=base_url()?>hot_reservation/get_room',
+      url : '<?=base_url()?>kar_reservation/get_room',
       data : 'room_type_id='+room_type_id,
       dataType : 'json',
       success : function (data) {
@@ -510,10 +511,10 @@
   }
 
   function get_validate_room(room_id) {
-    $.get('<?=base_url()?>hot_reservation/get_validate_room?room_id='+room_id,null,function(data) {
+    $.get('<?=base_url()?>kar_reservation/get_validate_room?room_id='+room_id,null,function(data) {
       if(data.result == 'false') {
         swal({
-          text: "Kamar ini sudah digunakan ",
+          text: "Room ini sudah digunakan ",
           icon: "warning",
           button: "OK",
         });
@@ -521,26 +522,6 @@
       }
     },'json');
   }
-
-  function get_room_update(room_type_id) {
-    $.ajax({
-      type : 'post',
-      url : '<?=base_url()?>hot_reservation/get_room',
-      data : 'room_type_id='+room_type_id,
-      dataType : 'json',
-      success : function (data) {
-        $("#update_room_id option").each(function() {
-          $(this).remove();
-        });
-        $("#update_room_id").select2({
-          data: data.room
-        }).trigger('change');
-        // console.log(data.room_type.room_type_charge);
-        // $('#room_type_charge').val(sys_to_ind(Math.ceil(data.room_type.room_type_charge)));
-      }
-    })
-  }
-
 
 
   $('#jenis_tamu_langganan').on('change', function() {
@@ -550,7 +531,7 @@
   function get_member(guest_id) {
     $.ajax({
       type : 'post',
-      url : '<?=base_url()?>hot_reservation/get_tamu_langganan',
+      url : '<?=base_url()?>kar_reservation/get_tamu_langganan',
       data : 'guest_id='+guest_id,
       dataType : 'json',
       success : function (data) {
@@ -578,7 +559,7 @@
 
     $.ajax({
       type : 'post',
-      url : '<?=base_url()?>hot_reservation/add_room',
+      url : '<?=base_url()?>kar_reservation/add_room',
       data : 'billing_id='+billing_id+'&room_id='+room_id+'&room_type_charge='+room_type_charge+
               '&room_type_duration='+room_type_duration+'&room_type_total='+room_type_total+
               '&discount_id_room='+discount_id_room,
@@ -600,7 +581,7 @@
 
     $.ajax({
       type : 'post',
-      url : '<?=base_url()?>hot_reservation/update_room',
+      url : '<?=base_url()?>kar_reservation/update_room',
       data : 'billing_room_id='+billing_room_id+'&billing_id='+billing_id+'&room_id='+room_id+'&room_type_charge='+room_type_charge+
               '&room_type_duration='+room_type_duration+'&room_type_total='+room_type_total+
               '&discount_id_room='+discount_id_room,
@@ -617,7 +598,7 @@
 
     $.ajax({
       type : 'post',
-      url : '<?=base_url()?>hot_reservation/get_billing_room',
+      url : '<?=base_url()?>kar_reservation/get_billing_room',
       data : 'billing_id='+billing_id,
       dataType : 'json',
       success : function (data) {
@@ -633,7 +614,7 @@
               var row = '<tr>'+
                 '<td>'+item.room_type_name+'</td>'+
                 '<td>'+item.room_name+'</td>'+
-                '<td class="text-center">'+Math.round(item.room_type_duration)+' Hari </td>'+
+                '<td class="text-center">'+Math.round(item.room_type_duration)+' Jam </td>'+
                 '<td>'+sys_to_cur(item.room_type_charge)+'</td>'+
                 '<td>'+sys_to_cur(item.room_type_discount)+'</td>'+
                 '<td>'+sys_to_cur(item.room_type_subtotal-item.room_type_discount)+'</td>'+
@@ -649,7 +630,7 @@
               var row = '<tr>'+
                 '<td>'+item.room_type_name+'</td>'+
                 '<td>'+item.room_name+'</td>'+
-                '<td class="text-center">'+Math.round(item.room_type_duration)+' Hari </td>'+
+                '<td class="text-center">'+Math.round(item.room_type_duration)+' Jam </td>'+
                 '<td>'+sys_to_cur(item.room_type_total/item.room_type_duration)+'</td>'+
                 '<td>'+sys_to_cur(item.room_type_discount)+'</td>'+
                 '<td>'+sys_to_cur(item.room_type_total)+'</td>'+
@@ -670,7 +651,7 @@
   function update_room_show(id) {
     $.ajax({
       type : 'post',
-      url : '<?=base_url()?>hot_reservation/update_room_show',
+      url : '<?=base_url()?>kar_reservation/update_room_show',
       dataType : 'json',
       data : 'billing_room_id='+id,
       success : function (data) {
@@ -694,7 +675,7 @@
   function delete_room(id) {
     $.ajax({
       type : 'post',
-      url : '<?=base_url()?>hot_reservation/delete_room',
+      url : '<?=base_url()?>kar_reservation/delete_room',
       data : 'billing_room_id='+id,
       success : function () {
         get_billing_room();
@@ -705,7 +686,7 @@
   function get_extra(extra_id) {
     $.ajax({
       type : 'post',
-      url : '<?=base_url()?>hot_reservation/get_extra',
+      url : '<?=base_url()?>kar_reservation/get_extra',
       data : 'extra_id='+extra_id,
       dataType : 'json',
       success : function (data) {
@@ -718,12 +699,6 @@
     var extra_charge = ind_to_sys($('#extra_charge').val());
     var extra_amount = $('#extra_amount').val();
     $('#extra_total').val(sys_to_ind(extra_amount*extra_charge));
-  }
-
-  function calc_extra_update() {
-    var extra_charge = ind_to_sys($('#update_extra_charge').val());
-    var extra_amount = $('#update_extra_amount').val();
-    $('#update_extra_total').val(sys_to_ind(extra_amount*extra_charge));
   }
 
   function calc_room() {
@@ -746,7 +721,7 @@
 
     $.ajax({
       type : 'post',
-      url : '<?=base_url()?>hot_reservation/add_extra',
+      url : '<?=base_url()?>kar_reservation/add_extra',
       data : 'billing_id='+billing_id+'&extra_id='+extra_id+'&extra_amount='+extra_amount+
               '&extra_charge='+extra_charge,
       success : function (data) {
@@ -757,55 +732,12 @@
     })
   }
 
-  function update_extra() {
-    var billing_extra_id = $('#update_billing_extra_id').val();
-    var billing_id = $('#billing_id').val();
-    var extra_amount = $('#update_extra_amount').val();
-    var extra_charge = $('#update_extra_charge').val();
-    var extra_total = $('#update_extra_total').val();
-
-    $.ajax({
-      type : 'post',
-      url : '<?=base_url()?>hot_reservation/update_extra',
-      data : 'billing_extra_id='+billing_extra_id+'&billing_id='+billing_id+'&extra_amount='+extra_amount+
-              '&extra_charge='+extra_charge+'&extra_total='+extra_total,
-      success : function (data) {
-        $('#modal_extra_list').modal('show');
-        $('#modal_extra_update').modal('hide');
-        get_billing_extra();
-      }
-    })
-  }
-
-  function update_extra_show(id) {
-    $.ajax({
-      type : 'post',
-      url : '<?=base_url()?>hot_reservation/update_extra_show',
-      dataType : 'json',
-      data : 'billing_extra_id='+id,
-      success : function (data) {
-        $('#update_billing_extra_id').val(data.billing_extra_id);
-        $('#update_extra_name').val(data.extra_name);
-        if (data.client_is_taxed == 0) {
-          $('#update_extra_charge').val(sys_to_ind(data.extra_charge));
-        }else{
-          $('#update_extra_charge').val(sys_to_ind(data.extra_total/data.extra_amount));
-        }
-        $('#update_extra_amount').val(sys_to_ind(data.extra_amount));
-        calc_extra_update();
-        $('#modal_extra_list').modal('hide');
-        $('#modal_extra_update').modal('show');
-        get_billing_extra();
-      }
-    })
-  }
-
   function get_billing_extra() {
     var billing_id = $('#billing_id').val();
 
     $.ajax({
       type : 'post',
-      url : '<?=base_url()?>hot_reservation/get_billing_extra',
+      url : '<?=base_url()?>kar_reservation/get_billing_extra',
       data : 'billing_id='+billing_id,
       dataType : 'json',
       success : function (data) {
@@ -825,7 +757,6 @@
                 '<td class="text-center">'+Math.round(item.extra_amount)+'</td>'+
                 '<td>'+sys_to_cur(item.extra_subtotal)+'</td>'+
                 '<td class="text-center">'+
-                  '<button class="btn btn-sm btn-warning" onclick="update_extra_show('+item.billing_extra_id+')"><i class="fa fa-pencil fa-lg"></i></button> '+
                   '<button class="btn btn-sm btn-danger" onclick="delete_extra('+item.billing_extra_id+')"><i class="fa fa-trash fa-lg"></i></button>'+
                 '</td>'+
               '</tr>';
@@ -839,7 +770,6 @@
                 '<td class="text-center">'+Math.round(item.extra_amount)+'</td>'+
                 '<td>'+sys_to_cur(item.extra_total)+'</td>'+
                 '<td class="text-center">'+
-                  '<button class="btn btn-sm btn-warning" onclick="update_extra_show('+item.billing_extra_id+')"><i class="fa fa-pencil fa-lg"></i></button> '+
                   '<button class="btn btn-sm btn-danger" onclick="delete_extra('+item.billing_extra_id+')"><i class="fa fa-trash fa-lg"></i></button>'+
                 '</td>'+
               '</tr>';
@@ -855,7 +785,7 @@
   function delete_extra(id) {
     $.ajax({
       type : 'post',
-      url : '<?=base_url()?>hot_reservation/delete_extra',
+      url : '<?=base_url()?>kar_reservation/delete_extra',
       data : 'billing_extra_id='+id,
       success : function () {
         get_billing_extra();
@@ -866,7 +796,7 @@
   function get_custom(custom_id) {
     $.ajax({
       type : 'post',
-      url : '<?=base_url()?>hot_reservation/get_custom',
+      url : '<?=base_url()?>kar_reservation/get_custom',
       data : 'custom_id='+custom_id,
       dataType : 'json',
       success : function (data) {
@@ -896,7 +826,7 @@
 
     $.ajax({
       type : 'post',
-      url : '<?=base_url()?>hot_reservation/add_custom',
+      url : '<?=base_url()?>kar_reservation/add_custom',
       data : 'billing_id='+billing_id+'&custom_id='+custom_id+'&custom_amount='+custom_amount+
               '&custom_charge='+custom_charge+'&custom_name='+custom_name,
       success : function (data) {
@@ -907,58 +837,12 @@
     })
   }
 
-  function update_custom() {
-    var billing_custom_id = $('#update_billing_custom_id').val();
-    var custome_name = $('#update_custome_name').val();
-    var billing_id = $('#billing_id').val();
-    var custom_charge = $('#update_custom_charge').val();
-    var custom_amount = $('#update_custom_amount').val();
-    var custom_total = $('#update_custom_total').val();
-
-    $.ajax({
-      type : 'post',
-      url : '<?=base_url()?>hot_reservation/update_custom',
-      data : 'billing_custom_id='+billing_custom_id+'&custome_name='+custome_name+'&billing_id='+billing_id+'&custom_amount='+custom_amount+
-              '&custom_charge='+custom_charge+'&custom_total='+custom_total,
-      success : function (data) {
-        $('#modal_custom_list').modal('show');
-        $('#modal_custom_update').modal('hide');
-        get_billing_custom();
-      }
-    })
-  }
-
-  function update_custom_show(id) {
-    $.ajax({
-      type : 'post',
-      url : '<?=base_url()?>hot_reservation/update_custom_show',
-      dataType : 'json',
-      data : 'billing_custom_id='+id,
-      success : function (data) {
-        $('#update_billing_custom_id').val(data.billing_custom_id);
-        $('#update_custom_name').val(data.custom_name);
-        $('#update_custom_charge').val(sys_to_ind(data.custom_charge));
-        // if (data.client_is_taxed == 0) {
-        //   $('#update_custom_charge').val(sys_to_ind(data.custom_charge));
-        // }else{
-        //   $('#update_custom_charge').val(sys_to_ind(data.custom_total/data.custom_amount));
-        // }
-        $('#update_custom_amount').val(sys_to_ind(data.custom_amount));
-        // $('#update_custom_total').val(sys_to_ind(data.custom_total));
-        calc_custom_update();
-        $('#modal_custom_list').modal('hide');
-        $('#modal_custom_update').modal('show');
-        get_billing_custom();
-      }
-    })
-  }
-
   function get_billing_custom() {
     var billing_id = $('#billing_id').val();
 
     $.ajax({
       type : 'post',
-      url : '<?=base_url()?>hot_reservation/get_billing_custom',
+      url : '<?=base_url()?>kar_reservation/get_billing_custom',
       data : 'billing_id='+billing_id,
       dataType : 'json',
       success : function (data) {
@@ -1005,10 +889,56 @@
     })
   }
 
+  function update_custom_show(id) {
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>kar_reservation/update_custom_show',
+      dataType : 'json',
+      data : 'billing_custom_id='+id,
+      success : function (data) {
+        $('#update_billing_custom_id').val(data.billing_custom_id);
+        $('#update_custom_name').val(data.custom_name);
+        $('#update_custom_charge').val(sys_to_ind(data.custom_charge));
+        // if (data.client_is_taxed == 0) {
+        //   $('#update_custom_charge').val(sys_to_ind(data.custom_charge));
+        // }else{
+        //   $('#update_custom_charge').val(sys_to_ind(data.custom_total/data.custom_amount));
+        // }
+        $('#update_custom_amount').val(sys_to_ind(data.custom_amount));
+        // $('#update_custom_total').val(sys_to_ind(data.custom_total));
+        calc_custom_update();
+        $('#modal_custom_list').modal('hide');
+        $('#modal_custom_update').modal('show');
+        get_billing_custom();
+      }
+    })
+  }
+
+  function update_custom() {
+    var billing_custom_id = $('#update_billing_custom_id').val();
+    var custome_name = $('#update_custome_name').val();
+    var billing_id = $('#billing_id').val();
+    var custom_charge = $('#update_custom_charge').val();
+    var custom_amount = $('#update_custom_amount').val();
+    var custom_total = $('#update_custom_total').val();
+
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>kar_reservation/update_custom',
+      data : 'billing_custom_id='+billing_custom_id+'&custome_name='+custome_name+'&billing_id='+billing_id+'&custom_amount='+custom_amount+
+              '&custom_charge='+custom_charge+'&custom_total='+custom_total,
+      success : function (data) {
+        $('#modal_custom_list').modal('show');
+        $('#modal_custom_update').modal('hide');
+        get_billing_custom();
+      }
+    })
+  }
+
   function delete_custom(id) {
     $.ajax({
       type : 'post',
-      url : '<?=base_url()?>hot_reservation/delete_custom',
+      url : '<?=base_url()?>kar_reservation/delete_custom',
       data : 'billing_custom_id='+id,
       success : function () {
         get_billing_custom();
@@ -1019,7 +949,7 @@
   function get_service(service_id) {
     $.ajax({
       type : 'post',
-      url : '<?=base_url()?>hot_reservation/get_service',
+      url : '<?=base_url()?>kar_reservation/get_service',
       data : 'service_id='+service_id,
       dataType : 'json',
       success : function (data) {
@@ -1048,7 +978,7 @@
 
     $.ajax({
       type : 'post',
-      url : '<?=base_url()?>hot_reservation/add_service',
+      url : '<?=base_url()?>kar_reservation/add_service',
       data : 'billing_id='+billing_id+'&service_id='+service_id+'&service_amount='+service_amount+
               '&service_charge='+service_charge,
       success : function (data) {
@@ -1059,32 +989,12 @@
     })
   }
 
-  function update_service() {
-    var billing_service_id = $('#update_billing_service_id').val();
-    var billing_id = $('#billing_id').val();
-    var service_amount = $('#update_service_amount').val();
-    var service_charge = $('#update_service_charge').val();
-    var service_total = $('#update_service_total').val();
-
-    $.ajax({
-      type : 'post',
-      url : '<?=base_url()?>hot_reservation/update_service',
-      data : 'billing_service_id='+billing_service_id+'&billing_id='+billing_id+'&service_amount='+service_amount+
-              '&service_charge='+service_charge+'&service_total='+service_total,
-      success : function (data) {
-        $('#modal_service_list').modal('show');
-        $('#modal_service_update').modal('hide');
-        get_billing_service();
-      }
-    })
-  }
-
   function get_billing_service() {
     var billing_id = $('#billing_id').val();
 
     $.ajax({
       type : 'post',
-      url : '<?=base_url()?>hot_reservation/get_billing_service',
+      url : '<?=base_url()?>kar_reservation/get_billing_service',
       data : 'billing_id='+billing_id,
       dataType : 'json',
       success : function (data) {
@@ -1131,21 +1041,10 @@
     })
   }
 
-  function delete_service(id) {
-    $.ajax({
-      type : 'post',
-      url : '<?=base_url()?>hot_reservation/delete_service',
-      data : 'billing_service_id='+id,
-      success : function () {
-        get_billing_service();
-      }
-    })
-  }
-
   function update_service_show(id) {
     $.ajax({
       type : 'post',
-      url : '<?=base_url()?>hot_reservation/update_service_show',
+      url : '<?=base_url()?>kar_reservation/update_service_show',
       dataType : 'json',
       data : 'billing_service_id='+id,
       success : function (data) {
@@ -1165,10 +1064,46 @@
     })
   }
 
+  function update_service() {
+    var billing_service_id = $('#update_billing_service_id').val();
+    var billing_id = $('#billing_id').val();
+    var service_amount = $('#update_service_amount').val();
+    var service_charge = $('#update_service_charge').val();
+    var service_total = $('#update_service_total').val();
+
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>kar_reservation/update_service',
+      data : 'billing_service_id='+billing_service_id+'&billing_id='+billing_id+'&service_amount='+service_amount+
+              '&service_charge='+service_charge+'&service_total='+service_total,
+      success : function (data) {
+        $('#modal_service_list').modal('show');
+        $('#modal_service_update').modal('hide');
+        get_billing_service();
+      }
+    })
+  }
+
+  function delete_service(id) {
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>kar_reservation/delete_service',
+      data : 'billing_service_id='+id,
+      success : function () {
+        get_billing_service();
+      }
+    })
+  }
+
+
+
+
+
+
   function get_paket(paket_id) {
     $.ajax({
       type : 'post',
-      url : '<?=base_url()?>hot_reservation/get_paket',
+      url : '<?=base_url()?>kar_reservation/get_paket',
       data : 'paket_id='+paket_id,
       dataType : 'json',
       success : function (data) {
@@ -1183,6 +1118,12 @@
     $('#paket_total').val(sys_to_ind(paket_amount*paket_charge));
   }
 
+  function calc_paket_update() {
+    var paket_charge = ind_to_sys($('#update_paket_charge').val());
+    var paket_amount = $('#update_paket_amount').val();
+    $('#update_paket_total').val(sys_to_ind(paket_amount*paket_charge));
+  }
+
   function add_paket() {
     var billing_id = $('#billing_id').val();
     var paket_id = $('#paket_id').val();
@@ -1191,7 +1132,7 @@
 
     $.ajax({
       type : 'post',
-      url : '<?=base_url()?>hot_reservation/add_paket',
+      url : '<?=base_url()?>kar_reservation/add_paket',
       data : 'billing_id='+billing_id+'&paket_id='+paket_id+'&paket_amount='+paket_amount+
               '&paket_charge='+paket_charge,
       success : function (data) {
@@ -1207,7 +1148,7 @@
 
     $.ajax({
       type : 'post',
-      url : '<?=base_url()?>hot_reservation/get_billing_paket',
+      url : '<?=base_url()?>kar_reservation/get_billing_paket',
       data : 'billing_id='+billing_id,
       dataType : 'json',
       success : function (data) {
@@ -1227,6 +1168,7 @@
                 '<td class="text-center">'+Math.round(item.paket_amount)+'</td>'+
                 '<td>'+sys_to_cur(item.paket_subtotal)+'</td>'+
                 '<td class="text-center">'+
+                  '<button class="btn btn-sm btn-warning" onclick="update_paket_show('+item.billing_paket_id+')"><i class="fa fa-pencil fa-lg"></i></button> '+
                   '<button class="btn btn-sm btn-danger" onclick="delete_paket('+item.billing_paket_id+')"><i class="fa fa-trash fa-lg"></i></button>'+
                 '</td>'+
               '</tr>';
@@ -1240,6 +1182,7 @@
                 '<td class="text-center">'+Math.round(item.paket_amount)+'</td>'+
                 '<td>'+sys_to_cur(item.paket_total)+'</td>'+
                 '<td class="text-center">'+
+                  '<button class="btn btn-sm btn-warning" onclick="update_paket_show('+item.billing_paket_id+')"><i class="fa fa-pencil fa-lg"></i></button> '+
                   '<button class="btn btn-sm btn-danger" onclick="delete_paket('+item.billing_paket_id+')"><i class="fa fa-trash fa-lg"></i></button>'+
                 '</td>'+
               '</tr>';
@@ -1252,10 +1195,53 @@
     })
   }
 
+  function update_paket() {
+    var billing_paket_id = $('#update_billing_paket_id').val();
+    var billing_id = $('#billing_id').val();
+    var paket_amount = $('#update_paket_amount').val();
+    var paket_charge = $('#update_paket_charge').val();
+    var paket_total = $('#update_paket_total').val();
+
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>kar_reservation/update_paket',
+      data : 'billing_paket_id='+billing_paket_id+'&billing_id='+billing_id+'&paket_amount='+paket_amount+
+              '&paket_charge='+paket_charge+'&paket_total='+paket_total,
+      success : function (data) {
+        $('#modal_paket_list').modal('show');
+        $('#modal_paket_update').modal('hide');
+        get_billing_paket();
+      }
+    })
+  }
+
+  function update_paket_show(id) {
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>kar_reservation/update_paket_show',
+      dataType : 'json',
+      data : 'billing_paket_id='+id,
+      success : function (data) {
+        $('#update_billing_paket_id').val(data.billing_paket_id);
+        $('#update_paket_name').val(data.paket_name);
+        if (data.client_is_taxed == 0) {
+          $('#update_paket_charge').val(sys_to_ind(data.paket_charge));
+        }else{
+          $('#update_paket_charge').val(sys_to_ind(data.paket_total/data.paket_amount));
+        }
+        $('#update_paket_amount').val(sys_to_ind(data.paket_amount));
+        calc_paket_update();
+        $('#modal_paket_list').modal('hide');
+        $('#modal_paket_update').modal('show');
+        get_billing_paket();
+      }
+    })
+  }
+
   function delete_paket(id) {
     $.ajax({
       type : 'post',
-      url : '<?=base_url()?>hot_reservation/delete_paket',
+      url : '<?=base_url()?>kar_reservation/delete_paket',
       data : 'billing_paket_id='+id,
       success : function () {
         get_billing_paket();
@@ -1271,7 +1257,7 @@
   function get_fnb(fnb_id) {
     $.ajax({
       type : 'post',
-      url : '<?=base_url()?>hot_reservation/get_fnb',
+      url : '<?=base_url()?>kar_reservation/get_fnb',
       data : 'fnb_id='+fnb_id,
       dataType : 'json',
       success : function (data) {
@@ -1300,7 +1286,7 @@
 
     $.ajax({
       type : 'post',
-      url : '<?=base_url()?>hot_reservation/add_fnb',
+      url : '<?=base_url()?>kar_reservation/add_fnb',
       data : 'billing_id='+billing_id+'&fnb_id='+fnb_id+'&fnb_amount='+fnb_amount+
               '&fnb_charge='+fnb_charge,
       success : function (data) {
@@ -1311,55 +1297,12 @@
     })
   }
 
-  function update_fnb() {
-    var billing_fnb_id = $('#update_billing_fnb_id').val();
-    var billing_id = $('#billing_id').val();
-    var fnb_amount = $('#update_fnb_amount').val();
-    var fnb_charge = $('#update_fnb_charge').val();
-    var fnb_total = $('#update_fnb_total').val();
-
-    $.ajax({
-      type : 'post',
-      url : '<?=base_url()?>hot_reservation/update_fnb',
-      data : 'billing_fnb_id='+billing_fnb_id+'&billing_id='+billing_id+'&fnb_amount='+fnb_amount+
-              '&fnb_charge='+fnb_charge+'&fnb_total='+fnb_total,
-      success : function (data) {
-        $('#modal_fnb_list').modal('show');
-        $('#modal_fnb_update').modal('hide');
-        get_billing_fnb();
-      }
-    })
-  }
-
-  function update_fnb_show(id) {
-    $.ajax({
-      type : 'post',
-      url : '<?=base_url()?>hot_reservation/update_fnb_show',
-      dataType : 'json',
-      data : 'billing_fnb_id='+id,
-      success : function (data) {
-        $('#update_billing_fnb_id').val(data.billing_fnb_id);
-        $('#update_fnb_name').val(data.fnb_name);
-        if (data.client_is_taxed == 0) {
-          $('#update_fnb_charge').val(sys_to_ind(data.fnb_charge));
-        }else{
-          $('#update_fnb_charge').val(sys_to_ind(data.fnb_total/data.fnb_amount));
-        }
-        $('#update_fnb_amount').val(sys_to_ind(data.fnb_amount));
-        calc_fnb_update();
-        $('#modal_fnb_list').modal('hide');
-        $('#modal_fnb_update').modal('show');
-        get_billing_fnb();
-      }
-    })
-  }
-
   function get_billing_fnb() {
     var billing_id = $('#billing_id').val();
 
     $.ajax({
       type : 'post',
-      url : '<?=base_url()?>hot_reservation/get_billing_fnb',
+      url : '<?=base_url()?>kar_reservation/get_billing_fnb',
       data : 'billing_id='+billing_id,
       dataType : 'json',
       success : function (data) {
@@ -1406,10 +1349,53 @@
     })
   }
 
+  function update_fnb_show(id) {
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>kar_reservation/update_fnb_show',
+      dataType : 'json',
+      data : 'billing_fnb_id='+id,
+      success : function (data) {
+        $('#update_billing_fnb_id').val(data.billing_fnb_id);
+        $('#update_fnb_name').val(data.fnb_name);
+        if (data.client_is_taxed == 0) {
+          $('#update_fnb_charge').val(sys_to_ind(data.fnb_charge));
+        }else{
+          $('#update_fnb_charge').val(sys_to_ind(data.fnb_total/data.fnb_amount));
+        }
+        $('#update_fnb_amount').val(sys_to_ind(data.fnb_amount));
+        calc_fnb_update();
+        $('#modal_fnb_list').modal('hide');
+        $('#modal_fnb_update').modal('show');
+        get_billing_fnb();
+      }
+    })
+  }
+
+  function update_fnb() {
+    var billing_fnb_id = $('#update_billing_fnb_id').val();
+    var billing_id = $('#billing_id').val();
+    var fnb_amount = $('#update_fnb_amount').val();
+    var fnb_charge = $('#update_fnb_charge').val();
+    var fnb_total = $('#update_fnb_total').val();
+
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>kar_reservation/update_fnb',
+      data : 'billing_fnb_id='+billing_fnb_id+'&billing_id='+billing_id+'&fnb_amount='+fnb_amount+
+              '&fnb_charge='+fnb_charge+'&fnb_total='+fnb_total,
+      success : function (data) {
+        $('#modal_fnb_list').modal('show');
+        $('#modal_fnb_update').modal('hide');
+        get_billing_fnb();
+      }
+    })
+  }
+
   function delete_fnb(id) {
     $.ajax({
       type : 'post',
-      url : '<?=base_url()?>hot_reservation/delete_fnb',
+      url : '<?=base_url()?>kar_reservation/delete_fnb',
       data : 'billing_fnb_id='+id,
       success : function () {
         get_billing_fnb();
@@ -1420,7 +1406,7 @@
   function get_non_tax(non_tax_id) {
     $.ajax({
       type : 'post',
-      url : '<?=base_url()?>hot_reservation/get_non_tax',
+      url : '<?=base_url()?>kar_reservation/get_non_tax',
       data : 'non_tax_id='+non_tax_id,
       dataType : 'json',
       success : function (data) {
@@ -1449,7 +1435,7 @@
 
     $.ajax({
       type : 'post',
-      url : '<?=base_url()?>hot_reservation/add_non_tax',
+      url : '<?=base_url()?>kar_reservation/add_non_tax',
       data : 'billing_id='+billing_id+'&non_tax_id='+non_tax_id+'&non_tax_amount='+non_tax_amount+
               '&non_tax_charge='+non_tax_charge,
       success : function (data) {
@@ -1460,52 +1446,12 @@
     })
   }
 
-  function update_non_tax() {
-    var billing_non_tax_id = $('#update_billing_non_tax_id').val();
-    var billing_id = $('#billing_id').val();
-    var non_tax_amount = $('#update_non_tax_amount').val();
-    var non_tax_charge = $('#update_non_tax_charge').val();
-    var non_tax_total = $('#update_non_tax_total').val();
-
-    $.ajax({
-      type : 'post',
-      url : '<?=base_url()?>hot_reservation/update_non_tax',
-      data : 'billing_non_tax_id='+billing_non_tax_id+'&billing_id='+billing_id+'&non_tax_amount='+non_tax_amount+
-              '&non_tax_charge='+non_tax_charge+'&non_tax_total='+non_tax_total,
-      success : function (data) {
-        $('#modal_non_tax_list').modal('show');
-        $('#modal_non_tax_update').modal('hide');
-        get_billing_non_tax();
-      }
-    })
-  }
-
-  function update_non_tax_show(id) {
-    $.ajax({
-      type : 'post',
-      url : '<?=base_url()?>hot_reservation/update_non_tax_show',
-      dataType : 'json',
-      data : 'billing_non_tax_id='+id,
-      success : function (data) {
-        $('#update_billing_non_tax_id').val(data.billing_non_tax_id);
-        $('#update_non_tax_name').val(data.non_tax_name);
-        $('#update_non_tax_charge').val(sys_to_ind(data.non_tax_charge));
-        $('#update_non_tax_amount').val(sys_to_ind(data.non_tax_amount));
-        // $('#update_non_tax_total').val(sys_to_ind(data.non_tax_total));
-        calc_non_tax_update();
-        $('#modal_non_tax_list').modal('hide');
-        $('#modal_non_tax_update').modal('show');
-        get_billing_non_tax();
-      }
-    })
-  }
-
   function get_billing_non_tax() {
     var billing_id = $('#billing_id').val();
 
     $.ajax({
       type : 'post',
-      url : '<?=base_url()?>hot_reservation/get_billing_non_tax',
+      url : '<?=base_url()?>kar_reservation/get_billing_non_tax',
       data : 'billing_id='+billing_id,
       dataType : 'json',
       success : function (data) {
@@ -1536,10 +1482,50 @@
     })
   }
 
+  function update_non_tax_show(id) {
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>kar_reservation/update_non_tax_show',
+      dataType : 'json',
+      data : 'billing_non_tax_id='+id,
+      success : function (data) {
+        $('#update_billing_non_tax_id').val(data.billing_non_tax_id);
+        $('#update_non_tax_name').val(data.non_tax_name);
+        $('#update_non_tax_charge').val(sys_to_ind(data.non_tax_charge));
+        $('#update_non_tax_amount').val(sys_to_ind(data.non_tax_amount));
+        // $('#update_non_tax_total').val(sys_to_ind(data.non_tax_total));
+        calc_non_tax_update();
+        $('#modal_non_tax_list').modal('hide');
+        $('#modal_non_tax_update').modal('show');
+        get_billing_non_tax();
+      }
+    })
+  }
+
+  function update_non_tax() {
+    var billing_non_tax_id = $('#update_billing_non_tax_id').val();
+    var billing_id = $('#billing_id').val();
+    var non_tax_amount = $('#update_non_tax_amount').val();
+    var non_tax_charge = $('#update_non_tax_charge').val();
+    var non_tax_total = $('#update_non_tax_total').val();
+
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>kar_reservation/update_non_tax',
+      data : 'billing_non_tax_id='+billing_non_tax_id+'&billing_id='+billing_id+'&non_tax_amount='+non_tax_amount+
+              '&non_tax_charge='+non_tax_charge+'&non_tax_total='+non_tax_total,
+      success : function (data) {
+        $('#modal_non_tax_list').modal('show');
+        $('#modal_non_tax_update').modal('hide');
+        get_billing_non_tax();
+      }
+    })
+  }
+
   function delete_non_tax(id) {
     $.ajax({
       type : 'post',
-      url : '<?=base_url()?>hot_reservation/delete_non_tax',
+      url : '<?=base_url()?>kar_reservation/delete_non_tax',
       data : 'billing_non_tax_id='+id,
       success : function () {
         get_billing_non_tax();
@@ -1552,7 +1538,7 @@
 
     $.ajax({
       type : 'post',
-      url : '<?=base_url()?>hot_reservation/get_count',
+      url : '<?=base_url()?>kar_reservation/get_count',
       data : 'billing_id='+billing_id,
       dataType : 'json',
       success : function (data) {
@@ -1567,3 +1553,12 @@
     })
   }
 </script>
+
+<style type="text/css">
+    .swal-text {
+        font-weight: bold;
+    }
+    .swal-button--confirm {
+      background-color: #2e86de;
+    }
+</style>

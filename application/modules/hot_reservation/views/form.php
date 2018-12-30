@@ -48,14 +48,14 @@
           </div>
         </div>
 
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-md-6">
           <div class="form-group">
             <label>Uang Muka</label>
             <input class="form-control autonumeric keyboard " type="text" name="billing_down_payment" id="billing_down_payment" value="<?php if($billing != null){echo $billing->billing_down_payment;}else{echo 0;}?>">
           </div>
         </div>
-      </div>
+      </div> -->
         
 
         <div class="form-group">
