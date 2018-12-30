@@ -67,6 +67,7 @@ class M_kar_reservation extends CI_Model {
 		$this->db->where('billing_id',$billing_id)->delete('kar_billing_paket');
 		$this->db->where('billing_id',$billing_id)->delete('kar_billing_fnb');
 		$this->db->where('billing_id',$billing_id)->delete('kar_billing_non_tax');
+		$this->db->where('billing_id',$billing_id)->delete('kar_billing_custom');
 	}
 
 	public function room_detail($room_id)
@@ -83,6 +84,11 @@ class M_kar_reservation extends CI_Model {
 	public function add_room($data)
 	{
 		$this->db->insert('kar_billing_room', $data);
+	}
+
+	public function update_room($id,$data)
+	{
+		$this->db->where('billing_room_id',$id)->update('kar_billing_room', $data);
 	}
 
 	public function room_list($billing_id)
@@ -162,6 +168,11 @@ class M_kar_reservation extends CI_Model {
 		$this->db->insert('kar_billing_service', $data);
 	}
 
+	public function update_service($id,$data)
+	{
+		$this->db->where('billing_service_id',$id)->update('kar_billing_service', $data);
+	}
+
 	public function service_list($billing_id)
 	{
 		return $this->db
@@ -198,6 +209,11 @@ class M_kar_reservation extends CI_Model {
 	public function add_paket($data)
 	{
 		$this->db->insert('kar_billing_paket', $data);
+	}
+
+	public function update_paket($id,$data)
+	{
+		$this->db->where('billing_paket_id',$id)->update('kar_billing_paket', $data);
 	}
 
 	public function paket_list($billing_id)
@@ -238,6 +254,11 @@ class M_kar_reservation extends CI_Model {
 		$this->db->insert('kar_billing_fnb', $data);
 	}
 
+	public function update_fnb($id,$data)
+	{
+		$this->db->where('billing_fnb_id',$id)->update('kar_billing_fnb', $data);
+	}
+
 	public function fnb_list($billing_id)
 	{
 		return $this->db
@@ -268,9 +289,19 @@ class M_kar_reservation extends CI_Model {
 		return $data->count_fnb;
 	}
 
+	public function get_by_id($id)
+	{
+	return $this->db->where('billing_non_tax_id',$id)->get('kar_billing_non_tax')->row();
+	}
+
 	public function add_non_tax($data)
 	{
 		$this->db->insert('kar_billing_non_tax', $data);
+	}
+
+	public function update_non_tax($id,$data)
+	{
+		$this->db->where('billing_non_tax_id',$id)->update('kar_billing_non_tax', $data);
 	}
 
 	public function non_tax_list($billing_id)
@@ -324,6 +355,11 @@ class M_kar_reservation extends CI_Model {
 		$this->db->insert('kar_billing_custom', $data);
 	}
 
+	public function update_custom($id,$data)
+	{
+		$this->db->where('billing_custom_id',$id)->update('kar_billing_custom', $data);
+	}
+
 	public function custom_list($billing_id)
 	{
 		return $this->db
@@ -353,6 +389,20 @@ class M_kar_reservation extends CI_Model {
 
 		return $data->count_custom;
 	}
+
+	public function validate_room_id($room_id=null) {
+        $sql = "SELECT 
+        			a.room_id 
+        		FROM kar_billing_room a 
+        		LEFT JOIN kar_billing b ON a.billing_id=b.billing_id
+        		WHERE a.room_id='$room_id' AND b.billing_status='1'";
+        $query = $this->db->query($sql);
+        if($query->num_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
 }

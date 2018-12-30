@@ -72,6 +72,15 @@
                       <span class="badge bg-danger">Dibatalkan</span>
                     <?php }else if($row->billing_status == 1){ ?>
                       <span class="badge bg-warning">Belum Dibayar</span>
+
+                      <?php if ($row->billing_down_payment !='0'): ?>
+                        <?php if ($row->billing_down_payment_type == '1'): ?>
+                          <span class="badge bg-info">DP : Rp <?=num_to_price($row->billing_down_payment)?></span>
+                        <?php elseif ($row->billing_down_payment_type == '2'): ?>
+                          <span class="badge bg-info">DP : <?=$row->billing_down_payment?> %</span>
+                        <?php endif; ?>
+                      <?php endif; ?>
+
                     <?php }else if($row->billing_status == 2){ ?>
                       <span class="badge bg-success">Sudah Dibayar</span>
                     <?php }; ?>

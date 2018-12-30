@@ -18,7 +18,8 @@ class M_hot_report_receptionist extends CI_Model {
 			WHERE
 				user_id = '$user_id' AND
 				billing_date_in LIKE '$year%' AND
-				billing_status != '0'
+				billing_status != '0' AND
+				billing_status != '-1'
 			GROUP BY MONTH(billing_date_in)
 			ORDER BY billing_date_in ASC"
 		)->result();
@@ -40,7 +41,8 @@ class M_hot_report_receptionist extends CI_Model {
 			WHERE
 				user_id = '$user_id' AND
 				billing_date_in LIKE '$month%' AND
-				billing_status != '0'
+				billing_status != '0' AND
+				billing_status != '-1'
 			GROUP BY billing_date_in
 			ORDER BY billing_date_in DESC"
 		)->result();
@@ -63,7 +65,8 @@ class M_hot_report_receptionist extends CI_Model {
 				user_id = '$user_id' AND
 				billing_date_in >= '$date_start' AND
 				billing_date_in <= '$date_end' AND
-				billing_status != '0'
+				billing_status != '0' AND
+				billing_status != '-1'
 			GROUP BY billing_date_in
 			ORDER BY billing_date_in DESC"
 		)->result();
@@ -80,7 +83,8 @@ class M_hot_report_receptionist extends CI_Model {
 			WHERE
 				billing_date_in = '$date' AND
 				user_id = '$user_id' AND
-				billing_status != '0'
+				billing_status != '0' AND
+				billing_status != '-1'
 			ORDER BY billing_receipt_no ASC"
 		)->result();
 
@@ -102,7 +106,8 @@ class M_hot_report_receptionist extends CI_Model {
 				user_id = '$user_id' AND
 				billing_date_in >= '$date_start' AND
 				billing_date_in <= '$date_end' AND
-				billing_status != '0'
+				billing_status != '0' AND
+				billing_status != '-1'
 			GROUP BY billing_date_in
 			ORDER BY billing_date_in DESC"
 		)->result();

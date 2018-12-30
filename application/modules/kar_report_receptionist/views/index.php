@@ -31,7 +31,7 @@
           <input type="hidden" name="type" value="daily">
           <div class="form-group">
             <div class="input-group">
-              <input type="text" class="form-control date-picker" name="date" value="<?=date('d-m-Y')?>">
+              <input type="text" class="form-control date-picker" name="date" value="<?=date('d-m-Y')?>" required>
               <span class="input-group-btn">
                 <button class="btn btn-info" type="submit"><i class="fa fa-search"></i> Cari</button>
               </span>
@@ -55,7 +55,7 @@
           <input type="hidden" name="type" value="weekly">
           <div class="form-group">
             <div class="input-group">
-              <input type="text" class="form-control week-picker" name="week" value="">
+              <input type="text" class="form-control week-picker" name="week" value="" required>
               <span class="input-group-btn">
                 <button class="btn btn-info" type="submit"><i class="fa fa-search"></i> Cari</button>
               </span>
@@ -79,7 +79,7 @@
           <input type="hidden" name="type" value="monthly">
           <div class="form-group">
             <div class="input-group">
-              <input type="text" class="form-control month-picker" name="month" value="<?=date('m-Y')?>">
+              <input type="text" class="form-control month-picker" name="month" value="<?=date('m-Y')?>" required>
               <span class="input-group-btn">
                 <button class="btn btn-info" type="submit"><i class="fa fa-search"></i> Cari</button>
               </span>
@@ -103,7 +103,7 @@
           <input type="hidden" name="type" value="annual">
           <div class="form-group">
             <div class="input-group">
-              <input type="text" class="form-control year-picker" name="year" value="<?=date('Y')?>">
+              <input type="text" class="form-control year-picker" name="year" value="<?=date('Y')?>" required>
               <span class="input-group-btn">
                 <button class="btn btn-info" type="submit"><i class="fa fa-search"></i> Cari</button>
               </span>
@@ -127,7 +127,7 @@
           <input type="hidden" name="type" value="range">
           <div class="form-group">
             <div class="input-group">
-              <input type="text" class="form-control daterange-picker" name="range" value="<?=date('d-m-Y').' - '.date('d-m-Y')?>">
+              <input type="text" class="form-control daterange-picker" name="range" value="<?=date('d-m-Y').' - '.date('d-m-Y')?>" required>
               <span class="input-group-btn">
                 <button class="btn btn-info" type="submit"><i class="fa fa-search"></i> Cari</button>
               </span>

@@ -171,6 +171,7 @@ class Hot_reservation extends MY_Hotel {
 
     $data['billing_status'] = 1;
     $data['billing_date_in'] = ind_to_date($data['billing_date_in']);
+    $data['billing_date_out'] = ind_to_date($data['billing_date_out']);
     $data['billing_down_payment'] = price_to_num($data['billing_down_payment']);
 
     $data['user_id'] = $this->session->userdata('user_id');
@@ -245,12 +246,18 @@ class Hot_reservation extends MY_Hotel {
 
     $billing_subtotal = 0;
     $billing_tax = 0;
+    $billing_service = 0;
+    $billing_other = 0;
     $billing_total = 0;
     $billing_discount = 0;
 
     foreach ($room as $row) {
       $billing_subtotal += $row->room_type_subtotal;
+      // hitung pajak 
       $billing_tax += $row->room_type_tax;
+      $billing_service += $row->room_type_service;
+      $billing_other += $row->room_type_other;
+      //
       $billing_total += $row->room_type_total;
       $billing_discount += $row->room_type_discount;
     }
@@ -285,6 +292,8 @@ class Hot_reservation extends MY_Hotel {
 
     $data['billing_subtotal'] = $billing_subtotal;
     $data['billing_tax'] = $billing_tax;
+    $data['billing_service'] = $billing_service;
+    $data['billing_other'] = $billing_other;
     $data['billing_discount'] = $billing_discount;
     $data['billing_total'] = $billing_total;
 
@@ -467,8 +476,8 @@ class Hot_reservation extends MY_Hotel {
       'billing_id' => $data['billing_id'],
       'billing_date_in' => $data['billing_date_in'],
       'billing_time_in' => $data['billing_time_in'],
-      // 'billing_date_out' => $data['billing_date_out'],
-      // 'billing_time_out' => $data['billing_time_out'],
+      'billing_date_out' => $data['billing_date_out'],
+      'billing_time_out' => $data['billing_time_out'],
     );
     
     // $this->update_billing_room($data_update);
@@ -932,6 +941,19 @@ class Hot_reservation extends MY_Hotel {
     echo json_encode($data);
   }
 
+  public function get_validate_room()
+  {
+    $room_id = $this->input->get('room_id');
+    $validate = $this->m_hot_reservation->validate_room_id($room_id);
+    //
+    $result = "true";
+    if($validate == true) $result = "false";
+    //
+    echo json_encode(array(
+      'result' => $result
+    ));
+  }
+
   public function get_tamu_langganan()
   {
     $client = $this->m_hot_client->get_all();
@@ -971,7 +993,11 @@ class Hot_reservation extends MY_Hotel {
     $data = $_POST;
 
     $client = $this->m_hot_client->get_all();
+    // Biaya Lain-lain
     $tax = $this->m_hot_charge_type->get_by_id(1);
+    $service = $this->m_hot_charge_type->get_by_id(2);
+    $other = $this->m_hot_charge_type->get_by_id(3);
+
     $room = $this->m_hot_reservation->room_detail($data['room_id']);
     $discount = $this->m_hot_discount->get_by_id($data['discount_id_room']);
     
@@ -982,13 +1008,19 @@ class Hot_reservation extends MY_Hotel {
       $room_type_subtotal = price_to_num($data['room_type_total']);
       // $room_type_tax += $room_type_subtotal * $tax->charge_type_ratio;
       $room_type_tax += $room_type_subtotal * ($tax->charge_type_ratio/100);
-      $room_type_before_discount = $room_type_subtotal + $room_type_tax;
+      $room_type_service += $room_type_subtotal * ($service->charge_type_ratio/100);
+      $room_type_other += $room_type_subtotal * ($other->charge_type_ratio/100);
+
+      $room_type_before_discount = $room_type_subtotal + $room_type_tax + $room_type_service + $room_type_other;
     } else {
       // Settingan harga setelah pajak
       $room_type_before_discount = price_to_num($data['room_type_total']);
       // hitung persen semua setelah pajak/ hitung mundur
       $room_type_tax = ($tax->charge_type_ratio/(100 + $tax->charge_type_ratio))*$room_type_before_discount;
-      $room_type_subtotal = $room_type_before_discount - $room_type_tax;
+      $room_type_service = ($service->charge_type_ratio/(100 + $service->charge_type_ratio))*$room_type_before_discount;
+      $room_type_other = ($other->charge_type_ratio/(100 + $other->charge_type_ratio))*$room_type_before_discount;
+
+      $room_type_subtotal = $room_type_before_discount - $room_type_tax - $room_type_service - $room_type_other;
       $room_type_charge = $room_type_subtotal / $data['room_type_duration'];
     }
 
@@ -1007,6 +1039,8 @@ class Hot_reservation extends MY_Hotel {
       'discount_amount' => $discount->discount_amount,
       'room_type_subtotal' => $room_type_subtotal,
       'room_type_tax' => $room_type_tax,
+      'room_type_service' => $room_type_service,
+      'room_type_other' => $room_type_other,
       'room_type_before_discount' => $room_type_before_discount,
       'room_type_discount' => $room_type_discount,
       'room_type_total' => $room_type_total,
@@ -1022,7 +1056,11 @@ class Hot_reservation extends MY_Hotel {
     $id = $data['billing_room_id'];
 
     $client = $this->m_hot_client->get_all();
+    // Pajak
     $tax = $this->m_hot_charge_type->get_by_id(1);
+    $service = $this->m_hot_charge_type->get_by_id(2);
+    $other = $this->m_hot_charge_type->get_by_id(3);
+
     $room = $this->m_hot_reservation->room_detail($data['room_id']);
     $discount = $this->m_hot_discount->get_by_id($data['discount_id_room']);
     
@@ -1033,13 +1071,19 @@ class Hot_reservation extends MY_Hotel {
       $room_type_subtotal = price_to_num($data['room_type_total']);
       // $room_type_tax += $room_type_subtotal * $tax->charge_type_ratio;
       $room_type_tax += $room_type_subtotal * ($tax->charge_type_ratio/100);
-      $room_type_before_discount = $room_type_subtotal + $room_type_tax;
+      $room_type_service += $room_type_subtotal * ($service->charge_type_ratio/100);
+      $room_type_other += $room_type_subtotal * ($other->charge_type_ratio/100);
+
+      $room_type_before_discount = $room_type_subtotal + $room_type_tax + $room_type_service + $room_type_other;
     } else {
       // Settingan harga setelah pajak
       $room_type_before_discount = price_to_num($data['room_type_total']);
       // hitung persen semua setelah pajak/ hitung mundur
       $room_type_tax = ($tax->charge_type_ratio/(100 + $tax->charge_type_ratio))*$room_type_before_discount;
-      $room_type_subtotal = $room_type_before_discount - $room_type_tax;
+      $room_type_service = ($service->charge_type_ratio/(100 + $service->charge_type_ratio))*$room_type_before_discount;
+      $room_type_other = ($other->charge_type_ratio/(100 + $other->charge_type_ratio))*$room_type_before_discount;
+
+      $room_type_subtotal = $room_type_before_discount - $room_type_tax - $room_type_service - $room_type_other;
       $room_type_charge = $room_type_subtotal / $data['room_type_duration'];
     }
 
@@ -1054,6 +1098,8 @@ class Hot_reservation extends MY_Hotel {
       'discount_amount' => $discount->discount_amount,
       'room_type_subtotal' => $room_type_subtotal,
       'room_type_tax' => $room_type_tax,
+      'room_type_service' => $room_type_service,
+      'room_type_other' => $room_type_other,
       'room_type_before_discount' => $room_type_before_discount,
       'room_type_discount' => $room_type_discount,
       'room_type_total' => $room_type_total,
@@ -1085,6 +1131,8 @@ class Hot_reservation extends MY_Hotel {
 
   public function update_room_show()
   {
+    $data['tax'] = $this->m_hot_charge_type->get_by_id(1);
+    //
     $id = $this->input->post('billing_room_id');
     $data = $this->m_hot_billing_room->get_by_id($id);
     echo json_encode($data);
@@ -1253,6 +1301,47 @@ class Hot_reservation extends MY_Hotel {
     $this->m_hot_reservation->add_service($data_service);
   }
 
+  public function update_service_show()
+  {
+    $id = $this->input->post('billing_service_id');
+    $data = $this->m_hot_billing_service->get_by_id($id);
+    echo json_encode($data);
+  }
+
+  public function update_service()
+  {
+    $data = $_POST;
+    $id = $data['billing_service_id'];
+
+    $client = $this->m_hot_client->get_all();
+    // $service = $this->m_hot_service->get_by_id($data['service_id']);
+    $tax = $this->m_hot_charge_type->get_by_id(1);
+
+    if ($client->client_is_taxed == 0) {
+      $service_charge = price_to_num($data['service_charge']);
+      $service_subtotal = $data['service_amount']*$service_charge;
+      $service_tax = $service_subtotal*$tax->charge_type_ratio/100;
+      $service_total = $service_subtotal+$service_tax;
+    }else{
+      $service_total = $data['service_amount']*price_to_num($data['service_charge']);
+      $tot_ratio = 100+$tax->charge_type_ratio;
+      $service_tax = ($tax->charge_type_ratio/$tot_ratio)*$service_total;
+      $service_subtotal = $service_total-$service_tax;
+      $service_charge = $service_subtotal/$data['service_amount'];
+    }
+
+    $data_service = array(
+      'billing_id' => $data['billing_id'],
+      'service_charge' => $service_charge,
+      'service_amount' => $data['service_amount'],
+      'service_subtotal' => $service_subtotal,
+      'service_tax' => $service_tax,
+      'service_total' => $service_total,
+      'created_by' => $this->session->userdata('user_realname')
+    );
+    $this->m_hot_reservation->update_service($id,$data_service);
+  }
+
   public function get_billing_service()
   {
     $billing_id = $this->input->post('billing_id');
@@ -1292,12 +1381,12 @@ class Hot_reservation extends MY_Hotel {
     $fnb = $this->m_hot_fnb->get_by_id($data['fnb_id']);
     $tax = $this->m_hot_charge_type->get_by_id(1);
 
-    if ($client->client_is_taxed == 0) {
+    if ($client->client_is_taxed == 0) { //Harga Sebelum Pajak
       $fnb_charge = price_to_num($data['fnb_charge']);
       $fnb_subtotal = $data['fnb_amount']*$fnb_charge;
       $fnb_tax = $fnb_subtotal*$tax->charge_type_ratio/100;
       $fnb_total = $fnb_subtotal+$fnb_tax;
-    }else{
+    }else{ //Harga Sesudah Pajak
       $fnb_total = $data['fnb_amount']*price_to_num($data['fnb_charge']);
       $tot_ratio = 100+$tax->charge_type_ratio;
       $fnb_tax = ($tax->charge_type_ratio/$tot_ratio)*$fnb_total;
@@ -1317,6 +1406,47 @@ class Hot_reservation extends MY_Hotel {
       'created_by' => $this->session->userdata('user_realname')
     );
     $this->m_hot_reservation->add_fnb($data_fnb);
+  }
+
+  public function update_fnb_show()
+  {
+    $id = $this->input->post('billing_fnb_id');
+    $data = $this->m_hot_billing_fnb->get_by_id($id);
+    echo json_encode($data);
+  }
+
+  public function update_fnb()
+  {
+    $data = $_POST;
+    $id = $data['billing_fnb_id'];
+
+    $client = $this->m_hot_client->get_all();
+    // $fnb = $this->m_hot_fnb->get_by_id($data['fnb_id']);
+    $tax = $this->m_hot_charge_type->get_by_id(1);
+
+    if ($client->client_is_taxed == 0) {
+      $fnb_charge = price_to_num($data['fnb_charge']);
+      $fnb_subtotal = $data['fnb_amount']*$fnb_charge;
+      $fnb_tax = $fnb_subtotal*$tax->charge_type_ratio/100;
+      $fnb_total = $fnb_subtotal+$fnb_tax;
+    }else{
+      $fnb_total = $data['fnb_amount']*price_to_num($data['fnb_charge']);
+      $tot_ratio = 100+$tax->charge_type_ratio;
+      $fnb_tax = ($tax->charge_type_ratio/$tot_ratio)*$fnb_total;
+      $fnb_subtotal = $fnb_total-$fnb_tax;
+      $fnb_charge = $fnb_subtotal/$data['fnb_amount'];
+    }
+
+    $data_fnb = array(
+      'billing_id' => $data['billing_id'],
+      'fnb_charge' => $fnb_charge,
+      'fnb_amount' => $data['fnb_amount'],
+      'fnb_subtotal' => $fnb_subtotal,
+      'fnb_tax' => $fnb_tax,
+      'fnb_total' => $fnb_total,
+      'created_by' => $this->session->userdata('user_realname')
+    );
+    $this->m_hot_reservation->update_fnb($id,$data_fnb);
   }
 
   public function get_billing_fnb()
@@ -1365,6 +1495,39 @@ class Hot_reservation extends MY_Hotel {
       'created_by' => $this->session->userdata('user_realname')
     );
     $this->m_hot_reservation->add_non_tax($data_non_tax);
+  }
+
+  public function update_non_tax_show()
+  {
+    $client = $this->m_hot_client->get_all();
+    $data['client_is_taxed'] = $client->client_is_taxed;
+    //
+    $id = $this->input->post('billing_non_tax_id');
+    $data = $this->m_hot_reservation->get_by_id($id);
+    echo json_encode($data);
+  }
+
+  public function update_non_tax()
+  {
+    $data = $_POST;
+    $id = $data['billing_non_tax_id'];
+
+    $client = $this->m_hot_client->get_all();
+    // $non_tax = $this->m_hot_non_tax->get_by_id($data['non_tax_id']);
+    $tax = $this->m_hot_charge_type->get_by_id(1);
+
+    $non_tax_charge = price_to_num($data['non_tax_charge']);
+    $non_tax_total = $non_tax_charge*$data['non_tax_amount'];
+
+    $data_non_tax = array(
+      'billing_non_tax_id' => $data['billing_non_tax_id'],
+      'billing_id' => $data['billing_id'],
+      'non_tax_charge' => $non_tax_charge,
+      'non_tax_amount' => $data['non_tax_amount'],
+      'non_tax_total' => $non_tax_total,
+      'created_by' => $this->session->userdata('user_realname')
+    );
+    $this->m_hot_reservation->update_non_tax($id,$data_non_tax);
   }
 
   public function get_billing_non_tax()
@@ -1429,6 +1592,55 @@ class Hot_reservation extends MY_Hotel {
       'created_by' => $this->session->userdata('user_realname')
     );
     $this->m_hot_reservation->add_custom($data_custom);
+  }
+
+  public function update_custom_show()
+  {
+    $client = $this->m_hot_client->get_all();
+    $data['client_is_taxed'] = $client->client_is_taxed;
+    //
+    $id = $this->input->post('billing_custom_id');
+    $data = $this->m_hot_billing_custom->get_by_id($id);
+    echo json_encode($data);
+  }
+
+  public function update_custom()
+  {
+    $data = $_POST;
+    $id = $data['billing_custom_id'];
+
+    $client = $this->m_hot_client->get_all();
+    // $custom = $this->m_hot_custom->get_by_id($data['custom_id']);
+    $tax = $this->m_hot_charge_type->get_by_id(1);
+
+    // if ($client->client_is_taxed == 0) {
+    //   $custom_charge = price_to_num($data['custom_charge']);
+    //   $custom_subtotal = $data['custom_amount']*$custom_charge;
+    //   $custom_tax = $custom_subtotal*$tax->charge_type_ratio/100;
+    //   $custom_total = $custom_subtotal+$custom_tax;
+    // }else{
+    //   $custom_total = $data['custom_amount']*price_to_num($data['custom_charge']);
+    //   $tot_ratio = 100+$tax->charge_type_ratio;
+    //   $custom_tax = ($tax->charge_type_ratio/$tot_ratio)*$custom_total;
+    //   $custom_subtotal = $custom_total-$custom_tax;
+    //   $custom_charge = $custom_subtotal/$data['custom_amount'];
+    // }
+
+      $custom_charge = price_to_num($data['custom_charge']);
+      $custom_subtotal = $data['custom_amount']*$custom_charge;
+      $custom_tax = 0;
+      $custom_total = $custom_subtotal+$custom_tax;
+
+    $data_custom = array(
+      'billing_id' => $data['billing_id'],
+      'custom_charge' => $custom_charge,
+      'custom_amount' => $data['custom_amount'],
+      'custom_subtotal' => $custom_subtotal,
+      'custom_tax' => $custom_tax,
+      'custom_total' => $custom_total,
+      'created_by' => $this->session->userdata('user_realname')
+    );
+    $this->m_hot_reservation->update_custom($id,$data_custom);
   }
 
   public function get_billing_custom()

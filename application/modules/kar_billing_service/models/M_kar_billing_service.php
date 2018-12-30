@@ -29,7 +29,19 @@ class M_kar_billing_service extends CI_Model {
 
   public function get_by_id($id)
   {
-    return $this->db->where('billing_service_id',$id)->get('kar_billing_service')->row();
+    // return $this->db->where('billing_service_id',$id)->get('kar_billing_service')->row();
+    $client = $this->m_kar_client->get_all();
+    //
+    $sql = "SELECT 
+    			* 
+    		FROM kar_billing_service
+    		WHERE billing_service_id=?";
+    $query = $this->db->query($sql, $id);
+    $row = $query->row();
+    //
+    $row->client_is_taxed = $client->client_is_taxed;
+    //
+    return $row;
   }
 
   public function get_last()
