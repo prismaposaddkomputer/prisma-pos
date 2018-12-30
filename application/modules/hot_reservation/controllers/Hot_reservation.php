@@ -419,7 +419,7 @@ class Hot_reservation extends MY_Hotel {
 
     $data['billing_status'] = 1;
     $data['billing_date_in'] = ind_to_date($data['billing_date_in']);
-    // $data['billing_date_out'] = ind_to_date($data['billing_date_out']);
+    $data['billing_date_out'] = ind_to_date($data['billing_date_out']);
     $data['billing_down_payment'] = price_to_num($data['billing_down_payment']);
 
     $data['user_id'] = $this->session->userdata('user_id');
