@@ -32,6 +32,8 @@ class Hot_report_reservation extends MY_Hotel {
     if ($this->access->_read == 1) {
       $data['access'] = $this->access;
       $data['title'] = 'Laporan Reservasi';
+      //
+      $data['date_weekly'] = date('d-m-Y')." - ".date('d-m-Y', strtotime('+6 days', strtotime(date('d-m-Y'))));
 
       $this->view('hot_report_reservation/index',$data);
     } else {
