@@ -924,7 +924,7 @@
         $("#hold_list").html('');
         $.each(data, function(i, item) {
           var row = '<tr>'+
-            '<td>TXS-'+item.tx_id+'</td>'+
+            '<td>TXS-'+item.tx_receipt_no+'</td>'+
             '<td>'+item.customer_name+'</td>'+
             '<td class="text-center">'+item.tx_date+'</td>'+
             '<td class="text-center">'+item.tx_time+'</td>'+
@@ -961,7 +961,7 @@
             $("#bill_tx_id").val(data.tx_id);
             $("#bill_tx_id_name").html('TXS-'+data.tx_receipt_no);
             $("#bill_customer_name").html(data.customer_name);
-            $("#customer_id").val(data.customer_id);
+            $("#bill_customer_id").val(data.customer_id);
             $("#bill_tx_total_after_tax_nominal").html(sys_to_ind(Math.round(data.tx_total_after_tax)));
             $("#bill_tx_total_before_tax_nominal").html(sys_to_ind(Math.round(data.tx_total_before_tax)));
             $("#bill_tx_total_after_tax").val(data.tx_total_after_tax);
@@ -976,8 +976,12 @@
             $("#tx_total_discount").val(sys_to_ind(Math.round(data.tx_total_discount)));
             $("#tx_down_payment").val(sys_to_ind(Math.round(data.tx_down_payment)));
             $.each(data.detail, function(i, item) {
-              var html = '<li onclick=edit_item_show('+data.detail[i].billing_detail_id+')>'+
-                '<div class="amount">'+data.detail[i].tx_amount+'</div>'+
+              if(data.detail[i].is_custom == 0){
+                  var html = '<li onclick=edit_item_show('+data.detail[i].billing_detail_id+')>';
+                }else{
+                  var html = '<li onclick=edit_custom_show('+data.detail[i].billing_detail_id+')>';
+              };
+              html += '<div class="amount">'+data.detail[i].tx_amount+'</div>'+
                 '<div class="name">'+data.detail[i].item_name+' <span class="price">'+sys_to_ind(Math.round(data.detail[i].tx_subtotal_after_tax))+'</span></div>'+
                 '<ul>'+
                   '<li>@ '+sys_to_ind(Math.round(data.detail[i].item_price_after_tax));
@@ -1574,8 +1578,8 @@
           url : '<?=base_url()?>res_cashier/pending_action',
           data : 'tx_id='+tx_id,
           success : function () {
-            $("#modal_pending").modal('hide');
             new_billing();
+            $("#modal_pending").modal('hide');
           }
         })
       }

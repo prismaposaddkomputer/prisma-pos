@@ -14,7 +14,6 @@ class M_res_cashier extends CI_Model {
   public function initial_billing()
   {
     $today = date('Y-m-d');
-
     //cancel all pending and process transaction before today
     $this->db
       ->query("UPDATE res_billing
@@ -487,7 +486,7 @@ class M_res_cashier extends CI_Model {
       ->where('user_id',$user_id)
       ->where('tx_date',$date)
       ->where('tx_status',-1)
-      ->order_by('tx_receipt_no','DESC')
+      ->order_by('tx_id','DESC')
       ->get('res_billing')->result();
   }
 
