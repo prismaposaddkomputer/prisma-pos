@@ -210,9 +210,9 @@
               <input id="bill_tx_id" type="hidden" name="tx_id" value="">
               <input id="bill_tx_receipt_no" type="hidden" name="tx_receipt_no" value="">
             </div>
-            <div class="col-md-2 lbl-tx" onclick="change_table_no()">
-              <i class="fa fa-map-marker"></i> <span id="bill_table_no">
-              <input id="bill_table_no" type="hidden" name="table_no" value="">
+            <div class="col-md-2 lbl-tx" onclick="change_tx_table_no()">
+              <i class="fa fa-map-marker"></i> <span id="bill_tx_table_no_name">
+              <input id="bill_tx_table_no" type="hidden" name="tx_table_no" value="">
             </div>
           </div>
           <div id="bill-items">
@@ -231,19 +231,19 @@
             </div>
             <div class="lbl-bill">
               <?php if ($client->client_is_taxed == 0): ?>
-              DISKON<span id="bill_tx_total_discount_nominal" class="pull-right"></span>
-              <?php else: ?>
-              <br>
-              <?php endif; ?>
-              <input id="bill_tx_total_discount" type="hidden" name="" value="">
-            </div>
-            <div class="lbl-bill">
-              <?php if ($client->client_is_taxed == 0): ?>
               PAJAK<span id="bill_tx_total_tax_nominal" class="pull-right"></span>
               <?php else: ?>
               <br>
               <?php endif; ?>
               <input id="bill_tx_total_tax" type="hidden" name="" value="">
+            </div>
+            <div class="lbl-bill">
+              <?php if ($client->client_is_taxed == 0): ?>
+              (DISKON)<span id="bill_tx_total_discount_nominal" class="pull-right"></span>
+              <?php else: ?>
+              (DISKON)<span id="bill_tx_total_discount_nominal" class="pull-right"></span>
+              <?php endif; ?>
+              <input id="bill_tx_total_discount" type="hidden" name="" value="">
             </div>
             <div class="lbl-bill">
               <b>TOTAL <span id="bill_tx_total_grand_nominal" class="pull-right"></span></b>
@@ -263,7 +263,7 @@
 
     <!-- ############ MODALS ############ -->
     <!-- Modal add item -->
-    <div id="modal_add_item" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div id="modal_add_item" class="modal fade bs-example-modal-sm"  role="dialog" aria-labelledby="mySmallModalLabel">
       <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -322,7 +322,7 @@
     </div>
 
     <!-- Modal edit item -->
-    <div id="modal_edit_item" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div id="modal_edit_item" class="modal fade bs-example-modal-sm"  role="dialog" aria-labelledby="mySmallModalLabel">
       <div style="width:310px;" class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -838,7 +838,7 @@
       </div>
     </div>
     <!-- Modal table no -->
-    <div id="modal_table_no" class="modal fade bs-example-modal-sm" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div id="modal_tx_table_no" class="modal fade bs-example-modal-sm" role="dialog" aria-labelledby="mySmallModalLabel">
       <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -846,9 +846,9 @@
           </div>
           <div class="modal-body">
             <div class="input-group">
-              <input id="edit_tx_table_no" type="text" class="form-control autonumeric num" aria-label="Masukkan Nomor Meja">
+              <input id="edit_tx_table_no" type="text" class="form-control keyboard" aria-label="Masukkan Nomor Meja">
               <div class="input-group-btn">
-                <button class="btn btn-info" onclick="change_table_no_action()"> Ok</button>
+                <button class="btn btn-info" onclick="change_tx_table_no_action()"> Ok</button>
               </div>
             </div>
           </div>
@@ -996,6 +996,8 @@
             $("#bill_tx_id_name").html('TXS-'+data.tx_receipt_no);
             $("#bill_customer_name").html(data.customer_name);
             $("#bill_customer_id").val(data.customer_id);
+            $("#bill_tx_table_no").val(data.tx_table_no);
+            $("#bill_tx_table_no_name").html(data.tx_table_no);
             $("#bill_tx_total_after_tax_nominal").html(sys_to_ind(Math.round(data.tx_total_after_tax)));
             $("#bill_tx_total_before_tax_nominal").html(sys_to_ind(Math.round(data.tx_total_before_tax)));
             $("#bill_tx_total_after_tax").val(data.tx_total_after_tax);
@@ -1096,6 +1098,8 @@
             $("#bill_cashier_id").val(data.cashier.cashier_id);
             $("#bill_cashier_name").html(data.cashier.cashier_name);
             // Bill
+            $("#bill_tx_table_no").val(data.tx_table_no);
+            $("#bill_tx_table_no_name").html(data.tx_table_no);
             $("#bill_tx_id").val(data.tx_id);
             $("#bill_tx_receipt_no").val(data.tx_receipt_no);
             $("#bill_tx_id_name").html(data.tx_id_name);
@@ -1103,6 +1107,7 @@
             $("#bill_tx_time").val(data.tx_time);
             $("#bill_tx_total_after_tax").val(data.tx_total_after_tax);
             $("#bill_tx_total_after_tax_nominal").html(data.tx_total_after_tax);
+            $("#bill_tx_total_before_tax_nominal").html(data.tx_total_before_tax);
             $("#bill_tx_total_discount").val(data.tx_total_discount);
             $("#bill_tx_total_discount_nominal").html(data.tx_total_discount);
             $("#bill_tx_total_tax").val(data.tx_total_tax);
@@ -1287,8 +1292,8 @@
 
       function add_custom_show() {
         $("#add_custom_name").val('');
-        $("#add_custom_price").val('0');
-        $("#add_custom_amount").val('1');
+        // $("#add_custom_price").val('0');
+        // $("#add_custom_amount").val('1');
         $('#modal_add_custom').modal('show');
       }
 
@@ -1397,6 +1402,8 @@
           data : 'tx_id='+tx_id,
           dataType : 'json',
           success : function (data) {
+            $("#bill_tx_table_no").val(data.tx_table_no);
+            $("#bill_tx_table_no_name").html(data.tx_table_no);
             $("#bill_tx_total_after_tax_nominal").html(sys_to_ind(data.tx_total_after_tax));
             $("#bill_tx_total_before_tax_nominal").html(sys_to_ind(Math.round(data.tx_total_before_tax)));
             $("#bill_tx_total_after_tax").val(data.tx_total_after_tax);
@@ -1524,12 +1531,12 @@
             data : 'tx_id='+tx_id+'&tx_payment='+tx_payment,
             dataType : 'json',
             success : function (data) {
+              new_billing();
               $("#payment_section").hide();
               $("#change_section").show();
               $("#bill_tx_total_before_tax_nominal").html('');
               printBill();
               $("#change_label").html('<h5>Kembalian</h5><h3>'+sys_to_cur(Math.round(tx_change))+'</h3>');
-              new_billing();
               send_dashboard(data);
             }
           })
@@ -1559,10 +1566,10 @@
               '&bank_card_no='+bank_card_no+'&bank_reference_no='+bank_reference_no+
               '&tx_payment='+tx_payment+'&tx_change='+tx_change,
             success : function (data) {
-              $("#modal_payment").modal('hide');
               printBill();
               new_billing();
               send_dashboard(data);
+              $("#modal_payment").modal('hide');
             }
           })
         }
@@ -1647,8 +1654,8 @@
           url : '<?=base_url()?>res_cashier/cancel_action',
           data : 'tx_id='+tx_id+'&tx_cancel_notes='+tx_cancel_notes,
           success : function () {
-            $("#modal_cancel").modal('hide');
             new_billing();
+            $("#modal_cancel").modal('hide');
           }
         })
       }
@@ -1819,11 +1826,26 @@
         })
       }
 
-      //table_no
-      function change_table_no() {
+      //tx_table_no
+      function change_tx_table_no() {
         var tx_id = $("#bill_tx_id").val();
-        var tx_table_no = $("#bill_table_no").val();
-        $("#modal_table_no").modal('show');
+        var tx_tx_table_no = $("#bill_tx_table_no").val();
+        $("#modal_tx_table_no").modal('show');
+      }
+
+      function change_tx_table_no_action() {
+        var tx_id = $("#bill_tx_id").val();
+        var tx_table_no = $("#edit_tx_table_no").val();
+
+        $.ajax({
+          type: 'post',
+          url : '<?=base_url()?>res_cashier/change_tx_table_no_action',
+          data : 'tx_id='+tx_id+'&tx_table_no='+tx_table_no,
+          success : function () {
+            get_billing_now();
+            $("#modal_tx_table_no").modal('hide');
+          }
+        })
       }
 
       function search_pending_action() {

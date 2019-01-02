@@ -49,6 +49,7 @@ class M_res_cashier extends CI_Model {
   {
     return $this->db
       ->where('tx_receipt_no',$id)
+      ->order_by('tx_id','desc')
       ->get('res_billing')
       ->row();
   }
@@ -152,7 +153,7 @@ class M_res_cashier extends CI_Model {
       ->join('res_category','res_item.category_id = res_category.category_id')
 			->where('res_item.is_deleted','0')
 			->where('res_item.is_active','1')
-      ->order_by('res_item.item_barcode', 'ASC')
+      ->order_by('ABS(res_item.item_barcode)', 'ASC')
 			->get('res_item')->result();
   }
 
@@ -165,7 +166,7 @@ class M_res_cashier extends CI_Model {
       ->where('res_item.category_id',$id)
       ->where('res_item.is_deleted','0')
       ->where('res_item.is_active','1')
-      ->order_by('res_item.item_barcode', 'ASC')
+      ->order_by('ABS(res_item.item_barcode)', 'ASC')
       ->get('res_item')->result();
   }
 

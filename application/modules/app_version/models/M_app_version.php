@@ -1478,6 +1478,10 @@ class M_app_version extends CI_Model {
               module_controller='res_cashier',
               module_url='index'
             WHERE module_id='03'");
+
+        case '2.9.2':
+          $this->db->query("ALTER TABLE `res_billing` ADD COLUMN `tx_table_no` VARCHAR(50) NULL DEFAULT '-' AFTER `tx_total_profit_after_tax`");
+          break;
     }
 
     //insert new update history
@@ -1606,6 +1610,8 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"2.8","version_release"=>"2018-12-18 11:47:00"));
     // delete menu retur & void resto, update transaksi to cashier
     array_push($version, array("version_now"=>"2.9.1","version_release"=>"2019-01-02 16:47:00"));
+    // alter add table no
+    array_push($version, array("version_now"=>"2.9.2","version_release"=>"2019-01-02 16:47:00"));
 
     foreach ($version as $key => $val) {
       //check version

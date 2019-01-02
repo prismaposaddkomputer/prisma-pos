@@ -119,7 +119,7 @@ class Res_cashier extends MY_Restaurant {
       $data['tx_id_name'] = 'TXS-'.$data['tx_receipt_no'];
     }else{
       $data['tx_id'] = $last_billing->tx_id+1;
-      if ($last_billing->tx_date != date('Y-m-d')) {
+      if ($last_billing->tx_date != date('Y-m-d') && $last_billing->tx_date != '0000-00-00') {
         $data['tx_receipt_no'] = date('ymd').'000001';
       }else{
         $number = substr($last_billing->tx_receipt_no,6,12);
@@ -1471,6 +1471,12 @@ class Res_cashier extends MY_Restaurant {
     $this->m_res_cashier->update_billing($data['tx_id'],$data_billing);
   }
 
+  public function change_tx_table_no_action()
+  {
+    $data = $_POST;
+    $this->m_res_cashier->update_billing($data['tx_id'],array('tx_table_no' => $data['tx_table_no']));
+  }
+
   public function search_pending_action()
   {
     $search_pending = $this->input->post('search_pending');
@@ -1513,6 +1519,8 @@ class Res_cashier extends MY_Restaurant {
         $printer -> text('TXS-'.$billing->tx_receipt_no);
         $printer -> feed();
         $printer -> text($billing->customer_name);
+        $printer -> feed();
+        $printer -> text('Meja : '.$billing->tx_table_no);
         $printer -> feed();
         $printer -> text('--------------------------------');
         $printer -> feed();
@@ -1766,6 +1774,8 @@ class Res_cashier extends MY_Restaurant {
         $printer -> text('TXS-'.$billing->tx_receipt_no);
         $printer -> feed();
         $printer -> text($billing->customer_name);
+        $printer -> feed();
+        $printer -> text('Meja : '.$billing->tx_table_no);
         $printer -> feed();
         $printer -> text('Struk DP');
         $printer -> feed();
