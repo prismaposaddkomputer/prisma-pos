@@ -347,7 +347,28 @@ class M_hot_reservation extends CI_Model {
 		return $data->count_custom;
 	}
 
-	public function validate_room_id($room_id=null) {
+	public function get_billing_by_room_id($room_id=null)
+	{
+		return $this->db
+			->where('room_id',$room_id)
+			->get('hot_billing_room')->row();
+	}
+
+	public function get_billing_by_billing_id($billing_id=null)
+	{
+		return $this->db
+			->where('billing_id',$billing_id)
+			->get('hot_billing')->row();
+	}
+
+	public function validate_room_id($room_id=null, $billing_date_in=null) {
+		//
+		$get_billing_by_room_id = $this->get_billing_by_room_id($room_id);
+		$get_billing_by_billing_id = $this->get_billing_by_billing_id($get_billing_by_room_id->billing_id);
+		//
+		$tgl_akhir = date('d-m-Y', strtotime('+'.round($get_billing_by_room_id->room_type_duration,0,PHP_ROUND_HALF_UP).' days', strtotime($get_billing_by_billing_id->billing_date_in)));
+		$tgl_hari_ini = date('d-m-Y');
+		//
         $sql = "SELECT 
         			a.room_id 
         		FROM hot_billing_room a 
@@ -355,9 +376,13 @@ class M_hot_reservation extends CI_Model {
         		WHERE a.room_id='$room_id' AND b.billing_status='1'";
         $query = $this->db->query($sql);
         if($query->num_rows() > 0) {
-            return true;
+        	return true;
         } else {
-            return false;
+            if ($tgl_hari_ini == $tgl_akhir) {
+        		return false;
+        	}else{
+        		return true;
+        	}
         }
     }
 

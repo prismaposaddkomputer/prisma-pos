@@ -944,7 +944,8 @@ class Hot_reservation extends MY_Hotel {
   public function get_validate_room()
   {
     $room_id = $this->input->get('room_id');
-    $validate = $this->m_hot_reservation->validate_room_id($room_id);
+    $billing_date_in = $this->input->get('billing_date_in');
+    $validate = $this->m_hot_reservation->validate_room_id($room_id, $billing_date_in);
     //
     $result = "true";
     if($validate == true) $result = "false";
