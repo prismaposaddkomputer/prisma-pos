@@ -899,6 +899,10 @@ class Res_cashier extends MY_Restaurant {
   {
     $id = $this->input->post('billing_detail_id');
     $item = $this->m_res_cashier->edit_item_show($id);
+    $client = $this->m_res_client->get_all();
+    if ($client->client_is_taxed == 0) {
+      $item->item_price_after_tax = $item->item_price_before_tax;
+    }
     echo json_encode($item);
   }
 
