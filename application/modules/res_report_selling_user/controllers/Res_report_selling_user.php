@@ -707,6 +707,175 @@ class Res_report_selling_user extends MY_Restaurant {
     redirect(base_url().'res_report_selling_user/daily/'.$date.'/'.$user_id);
   }
 
+  public function daily_print_only_nominal($date, $user_id)
+  {
+    $user = $this->m_res_user->get_by_id($user_id);
+    $title = "Laporan Penjualan Hanya Nominal\n'".$user->user_realname."'\nTanggal ".date_to_ind($date);
+    $client = $this->m_res_client->get_all();
+    //
+    $daily = $this->m_res_report_selling_user->daily($date, $user_id);
+    //
+
+    //print
+    $this->load->library("EscPos.php");
+
+    try {
+      $connector = new Escpos\PrintConnectors\WindowsPrintConnector("POS-58");
+         
+      $printer = new Escpos\Printer($connector);
+
+      //print image
+      if ($client->client_logo !='') {
+        $img = Escpos\EscposImage::load("img/".$client->client_logo);
+        $printer -> setJustification(Escpos\Printer::JUSTIFY_CENTER);
+        $printer -> bitImage($img);
+        $printer -> feed();
+      }
+      //Keterangan Wajib Pajak
+      $printer -> setJustification(Escpos\Printer::JUSTIFY_CENTER);
+
+      if ($client->client_logo == '') {
+        $printer -> setUnderline(Escpos\Printer::UNDERLINE_DOUBLE);
+        $printer -> text($client->client_name."\n");
+        $printer -> setUnderline(Escpos\Printer::UNDERLINE_NONE);
+      }
+
+      $printer -> text($client->client_street.','.$client->client_district."\n");
+      $printer -> text($client->client_city."\n");
+      $printer -> text("NPWPD : ".$client->client_npwpd."\n"); 
+      $printer -> text('--------------------------------');
+      //Judul
+      $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+      $printer -> text($title."\n");
+      $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
+      $printer -> text('--------------------------------');
+
+      $total_before_tax = 0;
+      $total_discount = 0;
+      $total_tax = 0;
+      $total_grand = 0;
+      $i=1;
+      foreach ($daily as $row){
+        $tx_total_before_tax += $row->tx_total_before_tax;
+        $tx_total_tax += $row->tx_total_tax;
+        $tx_total_discount += $row->tx_total_discount;
+        $tx_total_grand += $row->tx_total_grand;
+      }
+
+      $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+      $total_left = "Subtotal ";
+      $total_right = num_to_price($tx_total_before_tax);
+      $printer -> text(print_justify($total_left, $total_right, 16, 13, 3));
+      $total_left = "Pajak ";
+      $total_right = num_to_price($tx_total_tax);
+      $printer -> text(print_justify($total_left, $total_right, 16, 13, 3));
+      $total_left = "Diskon ";
+      $total_right = num_to_price($tx_total_discount);
+      $printer -> text(print_justify($total_left, $total_right, 16, 13, 3));
+      $printer -> text('--------------------------------');
+      $total_left = "Total ";
+      $total_right = num_to_price($tx_total_grand);
+      $printer -> text(print_justify($total_left, $total_right, 16, 13, 3));
+      $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
+      $printer -> text('--------------------------------');
+      $printer -> feed();
+      //
+      $date = date("Y-m-d");
+      $time = date("H:i:s");
+      $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+      $printer -> text("Dicetak : ".date_to_ind($date)." ".$time);
+      //
+      $printer -> feed();
+      $printer -> feed();
+      $printer -> feed();
+      $printer -> feed();
+
+      /* Close printer */
+      $printer -> close();
+    } catch (Exception $e) {
+      echo "Couldn't print to this printer: " . $e -> getMessage() . "\n";
+    }
+    //
+    redirect(base_url().'res_report_selling_user/daily/'.$date.'/'.$user_id);
+  }
+
+  public function daily_print_per_item($date, $user_id)
+  {
+    $user = $this->m_res_user->get_by_id($user_id);
+    $title = "Laporan Penjualan Per Item\n'".$user->user_realname."'\nTanggal ".date_to_ind($date);
+    $client = $this->m_res_client->get_all();
+    //
+    $most_sell = $this->m_res_report_selling_user->most_sell($date, $user_id);
+    //
+
+    //print
+    $this->load->library("EscPos.php");
+
+    try {
+      $connector = new Escpos\PrintConnectors\WindowsPrintConnector("POS-58");
+         
+      $printer = new Escpos\Printer($connector);
+
+      //print image
+      if ($client->client_logo !='') {
+        $img = Escpos\EscposImage::load("img/".$client->client_logo);
+        $printer -> setJustification(Escpos\Printer::JUSTIFY_CENTER);
+        $printer -> bitImage($img);
+        $printer -> feed();
+      }
+      //Keterangan Wajib Pajak
+      $printer -> setJustification(Escpos\Printer::JUSTIFY_CENTER);
+
+      if ($client->client_logo == '') {
+        $printer -> setUnderline(Escpos\Printer::UNDERLINE_DOUBLE);
+        $printer -> text($client->client_name."\n");
+        $printer -> setUnderline(Escpos\Printer::UNDERLINE_NONE);
+      }
+
+      $printer -> text($client->client_street.','.$client->client_district."\n");
+      $printer -> text($client->client_city."\n");
+      $printer -> text("NPWPD : ".$client->client_npwpd."\n"); 
+      $printer -> text('--------------------------------');
+      //Judul
+      $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+      $printer -> text($title."\n");
+      $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
+      $printer -> text('--------------------------------');
+
+      $i=1;
+      foreach ($most_sell as $row){
+
+        $status_left = $row->item_name;
+        $status_right = $row->tx_amount;
+        $printer -> text(print_justify($status_left, $status_right, 16, 13, 3));
+
+      }
+
+      $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+
+      $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
+      $printer -> text('--------------------------------');
+      $printer -> feed();
+      //
+      $date = date("Y-m-d");
+      $time = date("H:i:s");
+      $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+      $printer -> text("Dicetak : ".date_to_ind($date)." ".$time);
+      //
+      $printer -> feed();
+      $printer -> feed();
+      $printer -> feed();
+      $printer -> feed();
+
+      /* Close printer */
+      $printer -> close();
+    } catch (Exception $e) {
+      echo "Couldn't print to this printer: " . $e -> getMessage() . "\n";
+    }
+    //
+    redirect(base_url().'res_report_selling_user/daily/'.$date.'/'.$user_id);
+  }
+
   public function range($date_start, $date_end, $user_id)
   {
     $data['access'] = $this->access;

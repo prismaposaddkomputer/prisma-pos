@@ -151,4 +151,24 @@ class M_res_report_selling_user extends CI_Model {
 		return $billing;
 	}
 
+	public function most_sell($date, $user_id)
+  {
+
+    $query = $this->db->query(
+			"SELECT
+        SUM(tx_amount) AS tx_amount,
+        item_name
+      FROM res_billing_detail a
+      JOIN res_billing b ON a.tx_id = b.tx_id
+      WHERE
+        tx_date LIKE '$date%' AND
+        user_id = $user_id AND
+        tx_status = 1
+      GROUP BY item_id
+      ORDER BY tx_amount DESC"
+		);
+
+		return $query->result();
+  }
+
 }
