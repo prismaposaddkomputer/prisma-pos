@@ -15,11 +15,11 @@ class M_res_cashier extends CI_Model {
   {
     $today = date('Y-m-d');
     //cancel all pending and process transaction before today
-    $this->db
-      ->query("UPDATE res_billing
-          SET tx_status = -2
-          WHERE (tx_status = -1 OR tx_status = 0)
-            AND tx_date < '$today'");
+    // $this->db
+    //   ->query("UPDATE res_billing
+    //       SET tx_status = -2
+    //       WHERE (tx_status = -1 OR tx_status = 0)
+    //         AND tx_date < '$today'");
 
     //pending all process transaction today
     $this->db
@@ -484,8 +484,17 @@ class M_res_cashier extends CI_Model {
 
     return $this->db
       ->where('user_id',$user_id)
-      ->where('tx_date',$date)
       ->where('tx_status',-1)
+      ->order_by('tx_id','DESC')
+      ->get('res_billing')->result();
+  }
+
+  public function search_pending_action($search_pending)
+  {
+    return $this->db
+      ->where('tx_status',-1)
+      ->like('tx_receipt_no',$search_pending)
+      ->or_like('customer_name',$search_pending)
       ->order_by('tx_id','DESC')
       ->get('res_billing')->result();
   }

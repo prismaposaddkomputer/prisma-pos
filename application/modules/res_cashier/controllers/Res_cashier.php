@@ -1471,6 +1471,14 @@ class Res_cashier extends MY_Restaurant {
     $this->m_res_cashier->update_billing($data['tx_id'],$data_billing);
   }
 
+  public function search_pending_action()
+  {
+    $search_pending = $this->input->post('search_pending');
+    $data = $this->m_res_cashier->search_pending_action($search_pending);
+
+    echo json_encode($data);
+  }
+
   public function print_bill()
   {
     $tx_id = $this->input->post('tx_id');

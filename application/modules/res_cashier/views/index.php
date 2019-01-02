@@ -197,7 +197,7 @@
           <div id="bill-info">
             <input id="bill_tx_date" type="hidden" name="tx_date" value="">
             <input id="bill_tx_time" type="hidden" name="tx_time" value="">
-            <div class="col-md-3 lbl-tx" style="cursor:pointer;" onclick="change_customer_show()">
+            <div class="col-md-2 lbl-tx" style="cursor:pointer;" onclick="change_customer_show()">
               <i class="fa fa-user-o"></i> <span id="bill_customer_name"></span>
               <input id="bill_customer_id" type="hidden" name="customer_id" value="">
             </div>
@@ -205,10 +205,14 @@
               <i class="fa fa-laptop"></i> <span id="bill_cashier_name">
               <input id="bill_cashier_id" type="hidden" name="cashier_id" value="">
             </div>
-            <div class="col-md-5 lbl-tx">
+            <div class="col-md-4 lbl-tx">
               <i class="fa fa-user-o"></i> <span id="bill_tx_id_name"></span>
               <input id="bill_tx_id" type="hidden" name="tx_id" value="">
               <input id="bill_tx_receipt_no" type="hidden" name="tx_receipt_no" value="">
+            </div>
+            <div class="col-md-2 lbl-tx" onclick="change_table_no()">
+              <i class="fa fa-map-marker"></i> <span id="bill_table_no">
+              <input id="bill_table_no" type="hidden" name="table_no" value="">
             </div>
           </div>
           <div id="bill-items">
@@ -658,25 +662,34 @@
       </div>
     </div>
     <!-- Modal hold -->
-    <div id="modal_hold" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div id="modal_hold" class="modal fade bs-example-modal-sm" role="dialog" aria-labelledby="mySmallModalLabel">
       <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
           <div class="modal-header text-center">Billing Tertahan</div>
           <div class="modal-body">
-            <table class="table table-condensed table-bordered table-striped">
-              <thead>
-                <tr>
-                  <th class="text-center">ID</th>
-                  <th class="text-center">Pelanggan</th>
-                  <th class="text-center">Tanggal</th>
-                  <th class="text-center">Jam</th>
-                  <th class="text-center">Aksi</th>
-                </tr>
-              </thead>
-              <tbody id="hold_list">
+            <div class="input-group">
+              <input type="text" nama="search_pending" id="search_pending" class="form-control keyboard" placeholder="Cari berdasar no struk atau nama..." onchange="search_pending_action()">
+              <span class="input-group-btn">
+                <button id="btn_search_pending" class="btn btn-info" type="button" onclick="search_pending_action()"><i class="fa fa-search"></i> Cari</button>
+              </span>
+            </div>
+            <br>
+            <div style="height:400px !important; overflow-y: scroll;overflow-x: hidden;">
+              <table class="table table-condensed table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th class="text-center">No. Struk</th>
+                    <th class="text-center">Nama</th>
+                    <th class="text-center">Tanggal</th>
+                    <th class="text-center">Jam</th>
+                    <th class="text-center">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="hold_list">
 
-              </tbody>
-            </table>
+                </tbody>
+              </table>
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
@@ -820,6 +833,27 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
             <button type="button" class="btn btn-info" onclick="edit_discount()"><i class="fa fa-plus"></i> Tambah</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal table no -->
+    <div id="modal_table_no" class="modal fade bs-example-modal-sm" role="dialog" aria-labelledby="mySmallModalLabel">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Nomor Meja</h4>
+          </div>
+          <div class="modal-body">
+            <div class="input-group">
+              <input id="edit_tx_table_no" type="text" class="form-control autonumeric num" aria-label="Masukkan Nomor Meja">
+              <div class="input-group-btn">
+                <button class="btn btn-info" onclick="change_table_no_action()"> Ok</button>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
           </div>
         </div>
       </div>
@@ -1781,6 +1815,27 @@
           data : 'tx_id='+tx_id,
           success : function (data) {
             
+          }
+        })
+      }
+
+      //table_no
+      function change_table_no() {
+        var tx_id = $("#bill_tx_id").val();
+        var tx_table_no = $("#bill_table_no").val();
+        $("#modal_table_no").modal('show');
+      }
+
+      function search_pending_action() {
+        var search_pending = $("#search_pending").val();
+
+        $.ajax({
+          type : 'post',
+          url : '<?=base_url()?>res_cashier/search_pending_action',
+          data : 'search_pending='+search_pending,
+          dataType : 'json',
+          success : function (data) {
+            appendHoldBilling(data)
           }
         })
       }
