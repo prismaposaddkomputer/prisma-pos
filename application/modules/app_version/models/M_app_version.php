@@ -1468,6 +1468,16 @@ class M_app_version extends CI_Model {
             `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
             PRIMARY KEY (`billing_custom_id`)
           ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT");
+
+        case '2.9.1':
+          $this->db->query("DELETE FROM res_module WHERE module_id='03.01'");
+          $this->db->query("DELETE FROM res_module WHERE module_id='03.02'");
+          $this->db->query("DELETE FROM res_module WHERE module_id='03.03'");
+          $this->db->query("UPDATE res_module 
+            SET module_folder='res_cashier',
+              module_controller='res_cashier',
+              module_url='index'
+            WHERE module_id='03'");
     }
 
     //insert new update history
@@ -1594,7 +1604,9 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"2.7","version_release"=>"2018-12-18 11:47:00"));
     // custom item karaoke
     array_push($version, array("version_now"=>"2.8","version_release"=>"2018-12-18 11:47:00"));
-    
+    // delete menu retur & void resto, update transaksi to cashier
+    array_push($version, array("version_now"=>"2.9.1","version_release"=>"2019-01-02 16:47:00"));
+
     foreach ($version as $key => $val) {
       //check version
       $check = null;
