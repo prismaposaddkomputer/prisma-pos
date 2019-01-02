@@ -1568,4 +1568,21 @@
       }
     })
   }
+
+  <?php if ($id !=''): ?>
+  var value_dp_php = <?=($billing->billing_down_payment !=0) ? num_to_price($billing->billing_down_payment) : '0' ?>;
+  if (value_dp_php !='') {
+    $("#cetak_struk_dp").removeClass("hidden");
+  }
+  <?php endif ?>
+
+  $('#billing_down_payment').on('change', function() {
+    var value_dp = this.value;
+    //
+    if (value_dp !=0) {
+      $("#cetak_struk_dp").removeClass("hidden");
+    }else{
+      $("#cetak_struk_dp").addClass("hidden");
+    }
+  });
 </script>

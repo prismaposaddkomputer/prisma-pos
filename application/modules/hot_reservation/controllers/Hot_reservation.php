@@ -87,6 +87,7 @@ class Hot_reservation extends MY_Hotel {
   public function form($id = null)
   {
     $data['access'] = $this->access;
+    $data['id'] = $id;
     $data['member'] = $this->m_hot_member->get_all();
     $data['room_type'] = $this->m_hot_room_type->get_all();
     $data['extra'] = $this->m_hot_extra->get_all();
@@ -230,6 +231,8 @@ class Hot_reservation extends MY_Hotel {
     $this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil ditambahkan!</div>');
     if ($action == 'save_payment') {
       redirect(base_url().'hot_reservation/payment/'.$data['billing_id']);
+    } elseif ($action == 'cetak_struk_dp') {
+      redirect(base_url().'hot_reservation/cetak_struk_dp/'.$data['billing_id']);
     } else {
       redirect(base_url().'hot_reservation/index');
     }
@@ -487,6 +490,8 @@ class Hot_reservation extends MY_Hotel {
     // redirect(base_url().'hot_reservation/index');
     if ($action == 'save_payment') {
       redirect(base_url().'hot_reservation/payment/'.$data['billing_id']);
+    } elseif ($action == 'cetak_struk_dp') {
+      redirect(base_url().'hot_reservation/cetak_struk_dp/'.$data['billing_id']);
     } else {
       redirect(base_url().'hot_reservation/index');
     }
@@ -567,9 +572,9 @@ class Hot_reservation extends MY_Hotel {
       $check_in_left = "IN/Masuk";
       $check_in_right = date_to_ind($billing->billing_date_in).' '.$billing->billing_time_in;
       $printer -> text(print_justify($check_in_left, $check_in_right, 10, 19, 3));
-      // $check_out_left = "OUT/Keluar";
-      // $check_out_right = date_to_ind($billing->billing_date_out).' '.$billing->billing_time_out;
-      // $printer -> text(print_justify($check_out_left, $check_out_right, 10, 19, 3));
+      $check_out_left = "OUT/Keluar";
+      $check_out_right = date_to_ind($billing->billing_date_out).' '.$billing->billing_time_out;
+      $printer -> text(print_justify($check_out_left, $check_out_right, 10, 19, 3));
       $printer -> text('--------------------------------');
       //Keterangan Tamu
       $printer -> setJustification(Escpos\Printer::JUSTIFY_CENTER);
@@ -630,7 +635,37 @@ class Hot_reservation extends MY_Hotel {
             $room_type_total = num_to_price($row->room_type_total);
           }
           //
-          $printer -> text(round($row->room_type_duration,0,PHP_ROUND_HALF_UP)." Jam X ".$room_type_subtotal." = ".$room_type_total);
+          $printer -> text(round($row->room_type_duration,0,PHP_ROUND_HALF_UP)." Hari X ".$room_type_subtotal." = ".$room_type_total);
+          $printer -> feed();
+        }
+      }
+      // Extra
+      if ($billing->extra != null){
+        $printer -> text('--------------------------------');
+        $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+        $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+        $printer -> text("Extra :");
+        $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
+        $printer -> feed();
+        foreach ($billing->extra as $row){
+          $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+          $printer -> text($row->extra_name);
+          $printer -> feed();
+          $printer -> setJustification(Escpos\Printer::JUSTIFY_RIGHT);
+          //
+          if ($client->client_is_taxed == 0) {
+            $extra_charge_sub_total = num_to_price($row->extra_charge);
+          }else{
+            $extra_charge_sub_total = num_to_price($row->extra_total/$row->extra_amount);
+          }
+          //
+          if ($client->client_is_taxed == 0) {
+            $extra_charge_total = num_to_price($row->extra_subtotal);
+          }else{
+            $extra_charge_total = num_to_price($row->extra_total);
+          }
+          //
+          $printer -> text(round($row->extra_amount,0,PHP_ROUND_HALF_UP)." X ".$extra_charge_sub_total." = ".$extra_charge_total);
           $printer -> feed();
         }
       }
@@ -1672,6 +1707,365 @@ class Hot_reservation extends MY_Hotel {
     $data['count_custom'] = $this->m_hot_reservation->count_custom($billing_id);
 
     echo json_encode($data);
+  }
+
+  public function cetak_struk_dp($billing_id)
+  {
+    $title = "Cetak Struk DP";
+    $client = $this->m_hot_client->get_all();
+    //
+    $billing = $this->m_hot_reservation->get_billing($billing_id);
+    $charge_type = $this->m_hot_charge_type->get_all();
+    $date_now = date("Y-m-d");
+    $time_now = date("H:i:s");
+    //
+
+    //print
+    $this->load->library("EscPos.php");
+
+    try {
+      $connector = new Escpos\PrintConnectors\WindowsPrintConnector("POS-58");
+         
+      $printer = new Escpos\Printer($connector);
+
+      //print image
+      if ($client->client_logo !='') {
+        $img = Escpos\EscposImage::load("img/".$client->client_logo);
+        $printer -> setJustification(Escpos\Printer::JUSTIFY_CENTER);
+        $printer -> bitImage($img);
+        $printer -> feed();
+      }
+      //Keterangan Wajib Pajak
+      $printer -> setJustification(Escpos\Printer::JUSTIFY_CENTER);
+
+      if ($client->client_logo == '') {
+        $printer -> setUnderline(Escpos\Printer::UNDERLINE_DOUBLE);
+        $printer -> text($client->client_name."\n");
+        $printer -> setUnderline(Escpos\Printer::UNDERLINE_NONE);
+      }
+
+      $printer -> text($client->client_street.','.$client->client_district."\n");
+      $printer -> text($client->client_city."\n");
+      $printer -> text("NPWPD : ".$client->client_npwpd."\n"); 
+      $printer -> text('TRS-'.$billing->billing_receipt_no."\n");
+      //Judul
+      $printer -> text('--------------------------------');
+      $printer -> feed();
+      $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+      // $printer -> text(substr($billing->user_realname,0,12).' '.convert_date($billing->created));
+      $printer -> text(substr($billing->user_realname,0,12).' '.date_to_ind(date("Y-m-d")).' '.date("H:i:s"));
+      $printer -> feed();
+      $printer -> text('--------------------------------');
+      //
+      $check_in_left = "IN/Masuk";
+      $check_in_right = date_to_ind($billing->billing_date_in).' '.$billing->billing_time_in;
+      $printer -> text(print_justify($check_in_left, $check_in_right, 10, 19, 3));
+      $check_out_left = "OUT/Keluar";
+      $check_out_right = date_to_ind($billing->billing_date_out).' '.$billing->billing_time_out;
+      $printer -> text(print_justify($check_out_left, $check_out_right, 10, 19, 3));
+      $printer -> text('--------------------------------');
+      //Keterangan Tamu
+      $printer -> setJustification(Escpos\Printer::JUSTIFY_CENTER);
+      $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+      $printer -> text("Detail Tamu :");
+      $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
+      $printer -> feed();
+      $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+      $printer -> text("Nama    : ".substr($billing->guest_name,0,22));
+      $printer -> feed();
+      if ($billing->guest_phone !='') {
+        $phone = $billing->guest_phone;
+      }else {
+        $phone = "-";
+      }
+      $printer -> text("No Telp : ".$phone);
+
+      if ($billing->guest_id_type == '1') {
+        $kategori_id = "-";
+      }elseif ($billing->guest_id_type == '2') {
+        $kategori_id = "KTP";
+        $id_no = "(".$billing->guest_id_no.")";
+      }elseif ($billing->guest_id_type == '3') {
+        $kategori_id = "SIM";
+        $id_no = "(".$billing->guest_id_no.")";
+      }elseif ($billing->guest_id_type == '4') {
+        $kategori_id = "Lainnya";
+        $id_no = "(".$billing->guest_id_no.")";
+      }
+
+      $printer -> feed();
+      $printer -> text("No ID   : ".$kategori_id.$id_no);
+      $printer -> feed();
+      $printer -> text('--------------------------------');
+      //Keterangan Pemesanan
+      // Kamar
+      if ($billing->room != null){
+        $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+        $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+        $printer -> text("Room :");
+        $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
+        $printer -> feed();
+        foreach ($billing->room as $row){
+          $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+          $printer -> text($row->room_name);
+          $printer -> feed();
+          $printer -> setJustification(Escpos\Printer::JUSTIFY_RIGHT);
+          //
+          if ($client->client_is_taxed == 0) {
+            $room_type_subtotal = num_to_price($row->room_type_charge);
+          }else{
+            $room_type_subtotal = num_to_price($row->room_type_total/$row->room_type_duration);
+          }
+          //
+          if ($client->client_is_taxed == 0) {
+            $room_type_total = num_to_price($row->room_type_subtotal);
+          }else{
+            $room_type_total = num_to_price($row->room_type_total);
+          }
+          //
+          $printer -> text(round($row->room_type_duration,0,PHP_ROUND_HALF_UP)." Jam X ".$room_type_subtotal." = ".$room_type_total);
+          $printer -> feed();
+        }
+      }
+      // Pelayanan
+      if ($billing->service != null){
+        $printer -> text('--------------------------------');
+        $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+        $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+        $printer -> text("Pelayanan :");
+        $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
+        $printer -> feed();
+        foreach ($billing->service as $row){
+          $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+          $printer -> text($row->service_name);
+          $printer -> feed();
+          $printer -> setJustification(Escpos\Printer::JUSTIFY_RIGHT);
+          //
+          if ($client->client_is_taxed == 0) {
+            $service_charge_sub_total = num_to_price($row->service_charge);
+          }else{
+            $service_charge_sub_total = num_to_price($row->service_total/$row->service_amount);
+          }
+          //
+          if ($client->client_is_taxed == 0) {
+            $service_charge_total = num_to_price($row->service_subtotal);
+          }else{
+            $service_charge_total = num_to_price($row->service_total);
+          }
+          //
+          $printer -> text(round($row->service_amount,0,PHP_ROUND_HALF_UP)." X ".$service_charge_sub_total." = ".$service_charge_total);
+          $printer -> feed();
+        }
+      }
+      // F&B
+      if ($billing->fnb != null){
+        $printer -> text('--------------------------------');
+        $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+        $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+        $printer -> text("F&B :");
+        $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
+        $printer -> feed();
+        foreach ($billing->fnb as $row){
+          $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+          $printer -> text($row->fnb_name);
+          $printer -> feed();
+          $printer -> setJustification(Escpos\Printer::JUSTIFY_RIGHT);
+          //
+          if ($client->client_is_taxed == 0) {
+            $fnb_charge_sub_total = num_to_price($row->fnb_charge);
+          }else{
+            $fnb_charge_sub_total = num_to_price($row->fnb_total/$row->fnb_amount);
+          }
+          //
+          if ($client->client_is_taxed == 0) {
+            $fnb_charge_total = num_to_price($row->fnb_subtotal);
+          }else{
+            $fnb_charge_total = num_to_price($row->fnb_total);
+          }
+          //
+          $printer -> text(round($row->fnb_amount,0,PHP_ROUND_HALF_UP)." X ".$fnb_charge_sub_total." = ".$fnb_charge_total);
+          $printer -> feed();
+        }
+      }
+      // Non Pajak
+      if ($billing->non_tax != null){
+        $printer -> text('--------------------------------');
+        $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+        $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+        $printer -> text("Non Pajak :");
+        $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
+        $printer -> feed();
+        foreach ($billing->non_tax as $row){
+          $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+          $printer -> text($row->non_tax_name);
+          $printer -> feed();
+          $printer -> setJustification(Escpos\Printer::JUSTIFY_RIGHT);
+          //
+          $printer -> text(round($row->non_tax_amount,0,PHP_ROUND_HALF_UP)." X ".num_to_price($row->non_tax_charge)." = ".num_to_price($row->non_tax_total));
+          $printer -> feed();
+        }
+      }
+      // Custom
+      if ($billing->custom != null){
+        $printer -> text('--------------------------------');
+        $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+        $printer -> selectPrintMode(Escpos\Printer::MODE_EMPHASIZED);
+        $printer -> text("Kustom :");
+        $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
+        $printer -> feed();
+        foreach ($billing->custom as $row){
+          $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
+          $printer -> text($row->custom_name);
+          $printer -> feed();
+          $printer -> setJustification(Escpos\Printer::JUSTIFY_RIGHT);
+          //
+          $printer -> text(round($row->custom_amount,0,PHP_ROUND_HALF_UP)." X ".num_to_price($row->custom_charge)." = ".num_to_price($row->custom_total));
+          $printer -> feed();
+        }
+      }
+      $printer -> text('--------------------------------');
+      //
+      if ($billing->billing_down_payment_type == 1){
+        $uang_muka = num_to_price($billing->billing_down_payment);
+      }
+      else{
+        $uang_muka = round($billing->billing_down_payment,0,PHP_ROUND_HALF_UP)." %";
+      }
+
+      if ($billing->billing_down_payment > $billing->billing_total){
+        $sisa_bayar = num_to_price(0);
+      }
+      else{
+        if ($billing->billing_down_payment_type == 1){
+          $sisa_bayar = num_to_price($billing->billing_total-$billing->billing_down_payment);
+        }
+        else{
+          $dp_prosen = $billing->billing_total*($billing->billing_down_payment/100);
+
+          if ($dp_prosen > $billing->billing_total){
+            $sisa_bayar = num_to_price(0);
+          }
+          else{
+            $sisa_bayar = num_to_price($billing->billing_total-$dp_prosen);
+          }
+        }
+      }
+      //
+      $space_array = array(
+        strlen(num_to_price($billing->billing_total)),
+        strlen($uang_muka),
+        strlen($sisa_bayar),
+        strlen(num_to_price($billing->billing_payment)),
+        strlen(num_to_price($billing->billing_change)),
+        strlen(num_to_price($billing->billing_discount)),
+      );
+      $l_max = max($space_array);
+      $l_1 = $l_max - strlen(num_to_price($billing->billing_total));
+      $s_1 = '';
+      for ($i=0; $i < $l_1; $i++) {
+        $s_1 .= ' ';
+      };
+      $l_2 = $l_max - strlen(num_to_price($billing->billing_down_payment));
+      $s_2 = '';
+      for ($i=0; $i < $l_2; $i++) {
+        $s_2 .= ' ';
+      };
+      $l_3 = $l_max - strlen($sisa_bayar);
+      $s_3 = '';
+      for ($i=0; $i < $l_3; $i++) {
+        $s_3 .= ' ';
+      };
+      $l_4 = $l_max - strlen(num_to_price($billing->billing_payment));
+      $s_4 = '';
+      for ($i=0; $i < $l_4; $i++) {
+        $s_4 .= ' ';
+      };
+      $l_5 = $l_max - strlen(num_to_price($billing->billing_change));
+      $s_5 = '';
+      for ($i=0; $i < $l_5; $i++) {
+        $s_5 .= ' ';
+      };
+      $l_6 = $l_max - strlen(num_to_price($billing->billing_subtotal));
+      $s_6 = '';
+      for ($i=0; $i < $l_6; $i++) {
+        $s_6 .= ' ';
+      };
+      $l_7 = $l_max - strlen(num_to_price($billing->billing_discount));
+      $s_7 = '';
+      for ($i=0; $i < $l_7; $i++) {
+        $s_7 .= ' ';
+      };
+
+      foreach ($charge_type as $row){
+
+        if ($row->charge_type_id == '1') {
+          $numb = "7";
+          $charge_type_money = num_to_price($billing->billing_tax);
+        }else if ($row->charge_type_id == '2') {
+          $numb = "8";
+          $charge_type_money = num_to_price($billing->billing_service);
+        }else if ($row->charge_type_id == '3') {
+          $numb = "9";
+          $charge_type_money = num_to_price($billing->billing_other);
+        }
+
+        $l_[$numb] = $l_max - strlen($charge_type_money);
+        $s_[$numb] = '';
+        for ($i=0; $i < $l_[$numb]; $i++) {
+          $s_[$numb] .= ' ';
+        };
+      }
+
+      if ($client->client_is_taxed == 0){
+        // Sebelum pajak
+        $printer -> text("Subtotal = ".$s_6.num_to_price($billing->billing_subtotal));
+        $printer -> feed();
+
+        foreach ($charge_type as $row){
+          //
+          if ($row->charge_type_id == '1') {
+            $numb = "7";
+            $charge_type_money = num_to_price($billing->billing_tax);
+          }else if ($row->charge_type_id == '2') {
+            $numb = "8";
+            $charge_type_money = num_to_price($billing->billing_service);
+          }else if ($row->charge_type_id == '3') {
+            $numb = "9";
+            $charge_type_money = num_to_price($billing->billing_other);
+          }
+          //
+          $printer -> text($row->charge_type_name." = ".$s_[$numb].$charge_type_money);
+          $printer -> feed();
+        }
+      }
+
+      //
+      $printer -> feed();
+      if ($client->client_is_taxed == 0){
+        $name_total = "Total";
+      }else {
+        $name_total = "Total Bersih";
+      }
+
+      $printer -> text('Uang Muka (DP) = '.$s_2.$uang_muka);
+      $printer -> feed();
+      //
+      $printer -> feed();
+      $printer -> feed();
+      $printer -> feed();
+      $printer -> feed();
+
+      /* Close printer */
+      $printer -> close();
+    } catch (Exception $e) {
+      echo "Couldn't print to this printer: " . $e -> getMessage() . "\n";
+    }
+    //
+    if ($url !='') {
+      redirect(base_url().$url.'/detail/'.$billing_id);
+    }else {
+      redirect(base_url().'hot_reservation/form/'.$billing_id);
+    }
   }
 
 
