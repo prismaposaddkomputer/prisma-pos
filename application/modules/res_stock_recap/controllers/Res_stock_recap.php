@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Res_stock_recap extends MY_Retail {
+class Res_stock_recap extends MY_Restaurant {
 
   var $access, $stock_recap_id;
 
