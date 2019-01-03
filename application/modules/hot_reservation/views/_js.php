@@ -160,6 +160,7 @@
       $('#room_type_charge').val(0);
       $('#room_type_duration').val(0);
       $('#room_type_total').val(0);
+      $('#discount_id_room').val(1).trigger('change');
       $('#modal_room').modal('show');
       $('#modal_room_list').modal('hide');
     });
@@ -510,7 +511,9 @@
   }
 
   function get_validate_room(room_id) {
-    $.get('<?=base_url()?>hot_reservation/get_validate_room?room_id='+room_id,null,function(data) {
+    var billing_date_in = $('#billing_date_in').val();
+    //
+    $.get('<?=base_url()?>hot_reservation/get_validate_room?room_id='+room_id+'&billing_date_in='+billing_date_in,null,function(data) {
       if(data.result == 'false') {
         swal({
           text: "Kamar ini sudah digunakan ",
@@ -630,13 +633,24 @@
         } else {
           if (data.client_is_taxed == 0) {  
             $.each(data.room, function(i, item) {
+
+              if (item.discount_type == '1') {
+                if (item.discount_id == '1') {
+                  var discount_amount = sys_to_cur(item.discount_amount);
+                }else{
+                  var discount_amount = sys_to_prosen(item.discount_amount);
+                }
+              }else{
+                var discount_amount = sys_to_cur(item.discount_amount);
+              }
+
               var row = '<tr>'+
                 '<td>'+item.room_type_name+'</td>'+
                 '<td>'+item.room_name+'</td>'+
                 '<td class="text-center">'+Math.round(item.room_type_duration)+' Hari </td>'+
                 '<td>'+sys_to_cur(item.room_type_charge)+'</td>'+
-                '<td>'+sys_to_cur(item.room_type_discount)+'</td>'+
-                '<td>'+sys_to_cur(item.room_type_subtotal-item.room_type_discount)+'</td>'+
+                '<td>'+discount_amount+'</td>'+
+                '<td>'+sys_to_cur(item.room_type_subtotal)+'</td>'+
                 '<td class="text-center">'+
                   '<button class="btn btn-sm btn-warning" onclick="update_room_show('+item.billing_room_id+')"><i class="fa fa-pencil fa-lg"></i></button> '+
                   '<button class="btn btn-sm btn-danger" onclick="delete_room('+item.billing_room_id+')"><i class="fa fa-trash fa-lg"></i></button>'+
@@ -646,12 +660,24 @@
             })
           }else{
              $.each(data.room, function(i, item) {
+
+              if (item.discount_type == '1') {
+                if (item.discount_id == '1') {
+                  var discount_amount = sys_to_cur(item.discount_amount);
+                }else{
+                  var discount_amount = sys_to_prosen(item.discount_amount);
+                }
+              }else{
+                var discount_amount = sys_to_cur(item.discount_amount);
+              }
+
               var row = '<tr>'+
                 '<td>'+item.room_type_name+'</td>'+
                 '<td>'+item.room_name+'</td>'+
                 '<td class="text-center">'+Math.round(item.room_type_duration)+' Hari </td>'+
-                '<td>'+sys_to_cur(item.room_type_total/item.room_type_duration)+'</td>'+
-                '<td>'+sys_to_cur(item.room_type_discount)+'</td>'+
+                // '<td>'+sys_to_cur(item.room_type_total/item.room_type_duration)+'</td>'+
+                '<td>'+sys_to_cur(item.room_type_before_discount)+'</td>'+
+                '<td>'+discount_amount+'</td>'+
                 '<td>'+sys_to_cur(item.room_type_total)+'</td>'+
                 '<td class="text-center">'+
                   '<button class="btn btn-sm btn-warning" onclick="update_room_show('+item.billing_room_id+')"><i class="fa fa-pencil fa-lg"></i></button> '+
@@ -680,7 +706,8 @@
         if (data.client_is_taxed == 0) {
           $('#update_room_type_charge').val(sys_to_ind(data.room_type_charge));
         }else{
-          $('#update_room_type_charge').val(sys_to_ind(data.room_type_total/data.room_type_duration));
+          // $('#update_room_type_charge').val(sys_to_ind(data.room_type_total/data.room_type_duration));
+          $('#update_room_type_charge').val(sys_to_ind(data.room_type_before_discount/data.room_type_duration));
         }
         $("#update_room_type_duration").val(sys_to_ind(data.room_type_duration));
         calc_room_update();
@@ -1566,4 +1593,21 @@
       }
     })
   }
+
+  <?php if ($id !=''): ?>
+  var value_dp_php = <?=($billing->billing_down_payment !=0) ? num_to_price($billing->billing_down_payment) : '0' ?>;
+  if (value_dp_php !='') {
+    $("#cetak_struk_dp").removeClass("hidden");
+  }
+  <?php endif ?>
+
+  $('#billing_down_payment').on('change', function() {
+    var value_dp = this.value;
+    //
+    if (value_dp !=0) {
+      $("#cetak_struk_dp").removeClass("hidden");
+    }else{
+      $("#cetak_struk_dp").addClass("hidden");
+    }
+  });
 </script>

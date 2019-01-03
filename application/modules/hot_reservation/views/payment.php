@@ -545,7 +545,7 @@
               <td id="text_kekurangan"><?=num_to_idr(0)?></td>
             <?php else: ?>
               <?php if ($billing->billing_down_payment_type == 1): ?>
-                <td id="text_kekurangan"><?=num_to_idr($billing->billing_total-$billing->billing_down_payment)?></td>
+                <td id="text_kekurangan"><?=num_to_idr($billing->billing_total-$billing->billing_down_payment-$billing->billing_discount)?></td>
                 <input type="hidden" name="" id="total_payment" value="<?=$billing->billing_total-$billing->billing_down_payment?>">
               <?php else: ?>
                 <?php 
@@ -619,11 +619,13 @@
     var billing_payment = ind_to_sys($('#billing_payment').val());
     var billing_discount = ind_to_sys($('#billing_discount').val());
     <?php if ($billing->billing_down_payment_type == 1): ?>
-      var total_payment = <?=$billing->billing_total-$billing->billing_down_payment?>;
+      var total_payment = <?=$billing->billing_total-$billing->billing_down_payment?>-parseInt(billing_discount);
     <?php else: ?>
       <?php $dp_prosen = $billing->billing_total*($billing->billing_down_payment/100); ?>
-      var total_payment = <?=$billing->billing_total-$dp_prosen?>;
+      var total_payment = <?=$billing->billing_total-$dp_prosen?>-parseInt(billing_discount);
     <?php endif; ?>
+
+    console.log('sadnkjasdhjkashdk'+parseInt(total_payment));
 
     if (billing_payment == "") {
         swal({
