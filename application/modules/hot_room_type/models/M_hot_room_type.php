@@ -186,7 +186,7 @@ class M_hot_room_type extends CI_Model {
 		$room_id = $id.str_pad($room_no, 2, '0', STR_PAD_LEFT);
 		//unset data
 		$this->db->like('room_name', $hot_room['room_type_name']);
-		unset($hot_room['room_type_name'], $hot_room['room_type_charge'], $hot_room['room_type_desc'], $hot_room['room_no']);
+		unset($hot_room['room_type_name'], $hot_room['room_type_charge'], $hot_room['room_type_charge_hour'], $hot_room['room_type_desc'], $hot_room['room_no']);
 		//
 		$this->db->where('room_id', $room_id);
 		$this->db->update('hot_room', $hot_room);
@@ -197,7 +197,7 @@ class M_hot_room_type extends CI_Model {
     //
     $hot_room['room_name'] = $hot_room['room_type_name'].' - '.str_pad($room_no, 2, '0', STR_PAD_LEFT);
     //unset data
-    unset($hot_room['room_type_name'], $hot_room['room_type_charge'], $hot_room['room_type_desc'], $hot_room['room_no']);
+    unset($hot_room['room_type_name'], $hot_room['room_type_charge'], $hot_room['room_type_charge_hour'], $hot_room['room_type_desc'], $hot_room['room_no']);
     //
     $this->db->where('room_type_id',$id)->update('hot_room', $hot_room);
   }
