@@ -187,10 +187,10 @@
           <div id="item-footer">
             <button class="btn btn-sm btn-info" onclick="add_custom_show()"><i class="fa fa-list"></i> Item Kustom</button>
             <button class="btn btn-sm btn-info" onclick="down_payment_show()"><i class="fa fa-money"></i> Uang Muka</button>
-            <button class="btn btn-sm btn-info" onclick="return_show()"><i class="fa fa-reply"></i> Retur</button>
-            <button class="btn btn-sm btn-info" onclick="print_receipt_show()"><i class="fa fa-print"></i> Cetak Struk</button>
+            <button class="btn btn-sm btn-info" onclick="print_dapur()"><i class="fa fa-cutlery"></i> Struk Dapur</button>
             <button class="btn btn-sm btn-info" onclick="discount_show()"><i class="fa fa-cut"></i> Diskon</button>
-            <button class="btn btn-sm btn-info" onclick="print_receipt_dp()"><i class="fa fa-print"></i> Cetak Struk DP</button>
+            <button class="btn btn-sm btn-warning" onclick="return_show()"><i class="fa fa-reply"></i> Retur</button>
+            <button class="btn btn-sm btn-warning" onclick="print_receipt_show()"><i class="fa fa-print"></i> Cetak Struk</button>
           </div>
         </div>
         <div id="bill" class="col-md-4 col-xs-12 right full-height-col">
@@ -249,12 +249,17 @@
               <b>TOTAL <span id="bill_tx_total_grand_nominal" class="pull-right"></span></b>
               <input id="bill_tx_total_grand" type="hidden" name="" value="">
             </div>
-            <button id="bill_btn_payment" class="btn btn-lg btn-success btn-block btn-flat" type="button" name="button" onclick="payment_show()">BAYAR [F2]</button>
-            <div class="col-md-6" style="padding:0px;">
-              <button id="bill_btn_pending" class="btn btn-lg btn-warning btn-block btn-flat" type="button" name="button" onclick="pending_show()">TAHAN [F3]</button>
+            <div id="btn_payment_group">
+              <button id="bill_btn_payment" class="btn btn-lg btn-success btn-block btn-flat" type="button" name="button" onclick="payment_show()">BAYAR [F2]</button>
+              <div class="col-md-6" style="padding:0px;">
+                <button id="bill_btn_pending" class="btn btn-lg btn-warning btn-block btn-flat" type="button" name="button" onclick="pending_show()">TAHAN [F3]</button>
+              </div>
+              <div class="col-md-6" style="padding:0px;">
+                <button id="bill_btn_cancel" class="btn btn-lg btn-danger btn-block btn-flat" type="button" name="button" onclick="cancel_show()">BATAL [F4]</button>
+              </div>
             </div>
-            <div class="col-md-6" style="padding:0px;">
-              <button id="bill_btn_cancel" class="btn btn-lg btn-danger btn-block btn-flat" type="button" name="button" onclick="cancel_show()">BATAL [F4]</button>
+            <div id="btn_return_group">
+              <button id="bill_btn_return_ok" class="btn btn-lg btn-info btn-block btn-flat" type="button" name="button" onclick="printReturn()">SELESAI</button>
             </div>
           </div>
         </div>
@@ -784,11 +789,12 @@
             <div class="input-group">
               <input id="tx_down_payment" type="text" class="form-control autonumeric num" aria-label="Masukkan ID Struk">
               <div class="input-group-btn">
-                <button class="btn btn-info" onclick="down_payment_action()"> Ok</button>
+                <button class="btn btn-info" onclick="down_payment_action()"><i class="fa fa-save"></i> Simpan</button>
               </div>
             </div>
           </div>
           <div class="modal-footer">
+            <button class="btn btn-info pull-left" onclick="print_receipt_dp()"><i class="fa fa-print"></i> Cetak Struk DP</button>
             <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
           </div>
         </div>
@@ -887,6 +893,18 @@
           $("#bill_customer_id").val($("#customer_list option:selected").val());
           $("#bill_customer_name").html($("#customer_list option:selected").html());
           $("#modal_customer").modal('hide');
+          var tx_id = $("#bill_tx_id").val();
+          var customer_id = $("#customer_list option:selected").val();
+          var customer_name = $("#customer_list option:selected").html();
+          $.ajax({
+            type : 'post',
+            url : '<?=base_url()?>res_cashier/change_customer',
+            data : 'tx_id='+tx_id+'&customer_id='+customer_id+'&customer_name='+customer_name,
+            dataType : 'json',
+            success : function (data) {
+              
+            }
+          })
         })
 
         $("#form_add_customer").validate({
@@ -1052,6 +1070,36 @@
         })
       }
 
+      function edit_item_return_show(id) {
+        $.ajax({
+          type : 'post',
+          url : '<?=base_url()?>res_cashier/edit_item_show',
+          data : 'billing_detail_id='+id,
+          dataType : 'json',
+          success : function (data) {
+            $("#edit_return_billing_detail_id").val(data.billing_detail_id);
+            $("#edit_return_item_name").html(data.item_name);
+            $("#edit_return_item_barcode").html(data.item_barcode);
+            $("#edit_return_item_price_after_tax").html(sys_to_ind(data.item_price_after_tax));
+            $("#edit_return_category_name").html(data.category_name);
+            $("#edit_return_unit_code").html(data.unit_code);
+            $("#edit_return_tx_amount").html(data.tx_amount);
+            $("#edit_return_tx_return").val(data.edit_return_tx_return);
+            $("#modal_return_edit_item").modal('show');
+          }
+        })
+      }
+
+      function edit_item_return_action() {
+        var tx_amount = $("#edit_return_tx_amount").html();
+        var tx_return = $("#edit_return_tx_return").val();
+        if (tx_return > tx_amount) {
+          alert('Retur tidak boleh melebihi pembelian!');
+        }else{
+
+        }
+      }
+
       //customer add
       function add_customer() {
         $("#modal_customer").modal('hide');
@@ -1099,6 +1147,7 @@
             $("#bill_cashier_name").html(data.cashier.cashier_name);
             // Bill
             $("#bill_tx_table_no").val(data.tx_table_no);
+            $("#edit_tx_table_no").val(data.tx_table_no);
             $("#bill_tx_table_no_name").html(data.tx_table_no);
             $("#bill_tx_id").val(data.tx_id);
             $("#bill_tx_receipt_no").val(data.tx_receipt_no);
@@ -1120,6 +1169,9 @@
             $("#bill_btn_cancel").prop('disabled', true);
             // clear billing
             $("#bill-list").html('');
+            //show button
+            $("#btn_payment_group").show();
+            $("#btn_return_group").hide();
           }
         })
       }
@@ -1620,6 +1672,8 @@
           data : 'tx_id='+tx_id,
           success : function () {
             new_billing();
+            $("#btn_payment_group").show();
+            $("#btn_return_group").hide();
             $("#modal_pending").modal('hide');
           }
         })
@@ -1672,11 +1726,28 @@
         })
       }
 
+      function printReturn() {
+        printBill();
+        new_billing();
+      }
+
       function printLast() {
         var tx_id = $("#bill_tx_id").val()-1;
         $.ajax({
           type: 'post',
           url : '<?=base_url()?>res_cashier/print_bill',
+          data : 'tx_id='+tx_id,
+          success : function () {
+
+          }
+        })
+      }
+
+      function print_dapur() {
+        var tx_id = $("#bill_tx_id").val();
+        $.ajax({
+          type: 'post',
+          url : '<?=base_url()?>res_cashier/print_dapur',
           data : 'tx_id='+tx_id,
           success : function () {
 
@@ -1762,7 +1833,8 @@
           data : 'tx_id='+tx_id+'&tx_down_payment='+tx_down_payment,
           success : function () {
             get_billing_now();
-            $("#modal_down_payment").modal('hide');
+            alert('Sukses');
+            //$("#modal_down_payment").modal('hide');
           }
         })
       }
@@ -1807,6 +1879,8 @@
                 var tx_id = data.tx_id;
                 get_billing_id(tx_id);
                 $("#modal_return").modal('hide');
+                $("#btn_payment_group").hide();
+                $("#btn_return_group").show();
               }else{
                 alert('No. Struk Salah!');
               }
@@ -1815,6 +1889,8 @@
       }
 
       function print_receipt_dp() {
+        down_payment_action();
+
         var tx_id = $("#bill_tx_id").val();
         $.ajax({
           type : 'post',
