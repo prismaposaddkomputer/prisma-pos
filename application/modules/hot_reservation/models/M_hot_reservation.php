@@ -365,9 +365,18 @@ class M_hot_reservation extends CI_Model {
 		//
 		$get_billing_by_room_id = $this->get_billing_by_room_id($room_id);
 		$get_billing_by_billing_id = $this->get_billing_by_billing_id($get_billing_by_room_id->billing_id);
+		$tgl_hari_ini = date('Y-m-d');
 		//
-		$tgl_akhir = date('d-m-Y', strtotime('+'.round($get_billing_by_room_id->room_type_duration,0,PHP_ROUND_HALF_UP).' days', strtotime($get_billing_by_billing_id->billing_date_in)));
-		$tgl_hari_ini = date('d-m-Y');
+		if ($get_billing_by_room_id->room_type_tarif_kamar == '1') {
+			$date_akhir = date('d-m-Y', strtotime('+'.round($get_billing_by_room_id->room_type_duration,0,PHP_ROUND_HALF_UP).' days', strtotime($get_billing_by_billing_id->billing_date_in)));
+			$date_hari_ini = date('d-m-Y');
+		}else{
+			$date_akhir = date('H:i:s', strtotime('+'.round($get_billing_by_room_id->room_type_duration,0,PHP_ROUND_HALF_UP).' hours', strtotime($get_billing_by_billing_id->billing_time_in)));
+			$date_hari_ini = date('H:i:s');
+		}
+
+		// print($get_billing_by_billing_id->billing_date_in.' - '.$tgl_hari_ini);
+		// exit();
 		//
         $sql = "SELECT 
         			a.room_id 
@@ -378,7 +387,7 @@ class M_hot_reservation extends CI_Model {
         if($query->num_rows() > 0) {
         	return true;
         } else {
-            if ($tgl_hari_ini == $tgl_akhir) {
+        	if ($date_hari_ini >= $date_akhir) {
         		return false;
         	}else{
         		return true;

@@ -79,7 +79,7 @@
         </div>
         <div class="form-group">
           <label>Keterangan</label> <em><small>(tidak wajib diisi)</small></em>
-          <textarea class="form-control keyboard" id="billing_keterangan" style="height: 70px;"></textarea>
+          <textarea class="form-control keyboard" id="room_keterangan" style="height: 70px;"></textarea>
         </div>
         <em>
           <small>

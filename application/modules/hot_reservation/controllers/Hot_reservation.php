@@ -634,8 +634,14 @@ class Hot_reservation extends MY_Hotel {
           }else{
             $room_type_total = num_to_price($row->room_type_total);
           }
+
+          if ($row->room_type_tarif_kamar == '1') {
+            $duration = 'Hari';
+          }else{
+            $duration = 'Jam';
+          }
           //
-          $printer -> text(round($row->room_type_duration,0,PHP_ROUND_HALF_UP)." Hari X ".$room_type_subtotal." = ".$room_type_total);
+          $printer -> text(round($row->room_type_duration,0,PHP_ROUND_HALF_UP)." ".$duration." X ".$room_type_subtotal." = ".$room_type_total);
           $printer -> feed();
         }
       }
@@ -1099,6 +1105,7 @@ class Hot_reservation extends MY_Hotel {
       'room_type_before_discount' => $room_type_before_discount,
       'room_type_discount' => $room_type_discount,
       'room_type_total' => $room_type_total,
+      'room_keterangan' => $data['room_keterangan'],
       'room_type_duration' => $data['room_type_duration'],
       'created_by' => $this->session->userdata('user_realname')
     );

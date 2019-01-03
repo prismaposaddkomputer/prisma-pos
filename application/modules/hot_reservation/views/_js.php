@@ -553,25 +553,6 @@
     },'json');
   }
 
-  function get_room_update(room_type_id) {
-    $.ajax({
-      type : 'post',
-      url : '<?=base_url()?>hot_reservation/get_room',
-      data : 'room_type_id='+room_type_id,
-      dataType : 'json',
-      success : function (data) {
-        $("#update_room_id option").each(function() {
-          $(this).remove();
-        });
-        $("#update_room_id").select2({
-          data: data.room
-        }).trigger('change');
-        // console.log(data.room_type.room_type_charge);
-        // $('#room_type_charge').val(sys_to_ind(Math.ceil(data.room_type.room_type_charge)));
-      }
-    })
-  }
-
 
 
   $('#jenis_tamu_langganan').on('change', function() {
@@ -604,11 +585,12 @@
     var discount_id_room = $('#discount_id_room').val();
     var billing_id = $('#billing_id').val();
     var room_type_tarif_kamar = $('input[name=room_type_tarif_kamar]:checked').val()
+    var room_keterangan = $('#room_keterangan').val();
 
     $.ajax({
       type : 'post',
       url : '<?=base_url()?>hot_reservation/add_room',
-      data : 'billing_id='+billing_id+'&room_id='+room_id+'&room_type_tarif_kamar='+room_type_tarif_kamar+'&room_type_charge='+room_type_charge+'&room_type_duration='+room_type_duration+'&room_type_total='+room_type_total+'&discount_id_room='+discount_id_room,
+      data : 'billing_id='+billing_id+'&room_id='+room_id+'&room_type_tarif_kamar='+room_type_tarif_kamar+'&room_type_charge='+room_type_charge+'&room_type_duration='+room_type_duration+'&room_type_total='+room_type_total+'&discount_id_room='+discount_id_room+'&room_keterangan='+room_keterangan,
       success : function (data) {
         $('#modal_room_list').modal('show');
         $('#modal_room').modal('hide');
@@ -668,10 +650,16 @@
                 var discount_amount = sys_to_cur(item.discount_amount);
               }
 
+              if (item.room_type_tarif_kamar == '1') {
+                var room_type_tarif_kamar = 'Hari';
+              }else{
+                var room_type_tarif_kamar = 'Jam';
+              }
+
               var row = '<tr>'+
                 '<td>'+item.room_type_name+'</td>'+
                 '<td>'+item.room_name+'</td>'+
-                '<td class="text-center">'+Math.round(item.room_type_duration)+' Hari </td>'+
+                '<td class="text-center">'+Math.round(item.room_type_duration)+' '+room_type_tarif_kamar+' </td>'+
                 '<td>'+sys_to_cur(item.room_type_charge)+'</td>'+
                 '<td>'+discount_amount+'</td>'+
                 '<td>'+sys_to_cur(item.room_type_subtotal)+'</td>'+
@@ -695,10 +683,16 @@
                 var discount_amount = sys_to_cur(item.discount_amount);
               }
 
+              if (item.room_type_tarif_kamar == '1') {
+                var room_type_tarif_kamar = 'Hari';
+              }else{
+                var room_type_tarif_kamar = 'Jam';
+              }
+
               var row = '<tr>'+
                 '<td>'+item.room_type_name+'</td>'+
                 '<td>'+item.room_name+'</td>'+
-                '<td class="text-center">'+Math.round(item.room_type_duration)+' Hari </td>'+
+                '<td class="text-center">'+Math.round(item.room_type_duration)+' '+room_type_tarif_kamar+' </td>'+
                 // '<td>'+sys_to_cur(item.room_type_total/item.room_type_duration)+'</td>'+
                 '<td>'+sys_to_cur(item.room_type_before_discount)+'</td>'+
                 '<td>'+discount_amount+'</td>'+
@@ -717,7 +711,56 @@
     })
   }
 
-  function update_room_show(id) {
+  function get_room_update(room_type_id, room_type_tarif_kamar='') {
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>hot_reservation/get_room',
+      data : 'room_type_id='+room_type_id,
+      dataType : 'json',
+      success : function (data) {
+        $("#update_room_id option").each(function() {
+          $(this).remove();
+        });
+        $("#update_room_id").select2({
+          data: data.room
+        }).trigger('change');
+        // console.log(data.room_type.room_type_charge);
+        // $('#room_type_charge').val(sys_to_ind(Math.ceil(data.room_type.room_type_charge)));
+
+        if (room_type_tarif_kamar == '1') {
+          $('#update_room_type_charge').val(sys_to_ind(Math.ceil(data.room_type.room_type_charge)));
+          //
+          calc_room_update();
+        }else if (room_type_tarif_kamar == '2'){
+          $('#update_room_type_charge').val(sys_to_ind(Math.ceil(data.room_type.room_type_charge_hour)));
+          //
+          calc_room_update();
+        }else if (room_type_tarif_kamar =='') {
+          $('#update_room_type_charge').val(sys_to_ind(Math.ceil(data.room_type.room_type_charge)));
+        }
+
+      }
+    })
+  }
+
+  $('.update_room_type_tarif_kamar').on('change', function() {
+      var value_tarif_kamar = this.value;
+      var update_room_type_id = $('#update_room_type_id').val();
+      //
+      if (value_tarif_kamar == '1') {
+        $('#update_label_room_type_charge').text('Harga Per Hari');
+        $('#update_label_room_type_duration').text('Harga Per Hari');
+        $('#update_group_addon_room_type_duration').html('<b>Hari</b>');
+        get_room_update(update_room_type_id, value_tarif_kamar);
+      }else{
+        $('#update_label_room_type_charge').text('Harga Per Jam');
+        $('#update_label_room_type_duration').text('Harga Per Jam');
+        $('#update_group_addon_room_type_duration').html('<b>Jam</b>');
+        get_room_update(update_room_type_id, value_tarif_kamar);
+      }
+    });
+
+  function update_room_show(id, update_room_type_tarif_kamar='') {
     $.ajax({
       type : 'post',
       url : '<?=base_url()?>hot_reservation/update_room_show',
@@ -725,19 +768,54 @@
       data : 'billing_room_id='+id,
       success : function (data) {
         $("#update_billing_room_id").val(data.billing_room_id);
+        $("#update_room_type_id").val(data.room_type_id);
         $("#update_room_type_name").val(data.room_type_name);
         $("#update_room_name").val(data.room_name);
+
+        // if (data.room_type_tarif_kamar == '1') {
+        //   $("#update_room_type_tarif_kamar_1").prop("checked", true);
+        // }else{
+        //   $("#update_room_type_tarif_kamar_2").prop("checked", true);
+        // }
+
         if (data.client_is_taxed == 0) {
-          $('#update_room_type_charge').val(sys_to_ind(data.room_type_charge));
+          // $('#update_room_type_charge').val(sys_to_ind(data.room_type_charge));
+
+          if (update_room_type_tarif_kamar == '1') {
+            $('#update_room_type_charge').val(sys_to_ind(data.room_type_charge));
+            //
+            calc_room_update();
+          }else if (update_room_type_tarif_kamar == '2'){
+            $('#update_room_type_charge').val(sys_to_ind(data.room_type_charge_hour));
+            //
+            calc_room_update();
+          }else if (update_room_type_tarif_kamar =='') {
+            $('#update_room_type_charge').val(sys_to_ind(data.room_type_charge));
+          }
+
         }else{
           // $('#update_room_type_charge').val(sys_to_ind(data.room_type_total/data.room_type_duration));
-          $('#update_room_type_charge').val(sys_to_ind(data.room_type_before_discount/data.room_type_duration));
+          // $('#update_room_type_charge').val(sys_to_ind(data.room_type_before_discount/data.room_type_duration));
+
+          if (update_room_type_tarif_kamar == '1') {
+            $('#update_room_type_charge').val(sys_to_ind(data.room_type_before_discount/data.room_type_duration));
+            //
+            calc_room_update();
+          }else if (update_room_type_tarif_kamar == '2'){
+            $('#update_room_type_charge').val(sys_to_ind(data.room_type_before_discount/data.room_type_duration));
+            //
+            calc_room_update();
+          }else if (update_room_type_tarif_kamar =='') {
+            $('#update_room_type_charge').val(sys_to_ind(data.room_type_before_discount/data.room_type_duration));
+          }
         }
         $("#update_room_type_duration").val(sys_to_ind(data.room_type_duration));
         calc_room_update();
         $("#update_discount_id_room").val(data.discount_id).trigger('change');
+        $("#update_room_keterangan").val(data.room_keterangan);
         $("#modal_room_list").modal('hide');
         $("#modal_room_update").modal('show');
+
       }
     })
   }

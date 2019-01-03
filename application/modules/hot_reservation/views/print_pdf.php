@@ -215,7 +215,7 @@
             ?>
             <tr>
               <td>Room : <?=$row->room_name?></td>
-              <td align="center"><?=round($row->room_type_duration,0,PHP_ROUND_HALF_UP)?> Hari</td>
+              <td align="center"><?=round($row->room_type_duration,0,PHP_ROUND_HALF_UP)?> <?=($row->room_type_tarif_kamar == '1') ? 'Hari' : 'Jam' ?></td>
               <td align="right"><?=$room_type_subtotal?></td>
               <td align="right"><?=$room_type_total?></td>
             </tr>
