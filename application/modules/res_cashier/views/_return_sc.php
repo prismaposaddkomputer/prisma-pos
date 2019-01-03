@@ -31,7 +31,7 @@
               var html = '<li onclick=edit_return_show('+data.detail[i].billing_detail_id+')>';
               var status = '';
             }else{
-              var html = '<li>';
+              var html = '<li style="background-color:gray !important; color:white !important;" onclick=delete_return_show('+data.detail[i].billing_detail_id+')>';
               var status = '(Retur) ';
           };
           html += '<div class="amount">'+data.detail[i].tx_amount+'</div>'+
@@ -110,6 +110,7 @@
         $("#edit_return_item_price_after_tax").html(sys_to_ind(data.item_price_after_tax));
         $("#edit_return_unit_code").html(data.unit_code);
         $("#edit_return_buy_amount").html(data.tx_amount);
+        $("#edit_return_tx_amount").val(1);
         $("#modal_edit_return").modal('show');
       }
     });
@@ -120,9 +121,7 @@
     var tx_amount = $("#edit_return_tx_amount").val();
     var id = $("#edit_return_billing_detail_id").val();
 
-    if (tx_amount == 0) {
-      alert('Jumlah retur tidak boleh 0!');
-    }else if(tx_amount > tx_buy){
+    if(parseFloat(tx_amount) > parseFloat(tx_buy)){
       alert('Jumlah retur tidak boleh lebih dari jumlah beli!');
     }else{
       $.ajax({
@@ -136,6 +135,26 @@
         }
       });
     }
+  }
+
+  function delete_return_show(id) {
+    $("#delete_return_billing_detail_id").val(id);
+    $("#modal_delete_return").modal('show');
+  }
+
+  function delete_return_item_action() {
+    var id = $("#delete_return_billing_detail_id").val();
+
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>res_cashier/delete_return_item_action',
+      data : 'billing_detail_id='+id,
+      dataType : 'json',
+      success : function (data) {
+        get_return_id(data.tx_id);
+        $("#modal_delete_return").modal('hide');
+      }
+    });
   }
 
   //increment amount

@@ -83,3 +83,23 @@
     </div>
   </div>
 </div>
+
+
+<!-- Modal edit return -->
+<div id="modal_delete_return" class="modal fade bs-example-modal-sm"  role="dialog" aria-labelledby="mySmallModalLabel">
+  <div style="width:310px;" class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Hapus Retur Item</h4>
+      </div>
+      <div class="modal-body">
+        <input id="delete_return_billing_detail_id" type="hidden" name="billing_detail_id" value="">
+        <p>Apakah anda yakin menghapus item ini?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
+        <button id="edit_return_btn_action" type="button" class="btn btn-danger" onclick="delete_return_item_action()"><i class="fa fa-trash"></i> Hapus</button>
+      </div>
+    </div>
+  </div>
+</div>

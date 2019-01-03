@@ -1740,11 +1740,13 @@ class Res_cashier extends MY_Restaurant {
       $this->m_res_cashier->insert_detail($data_detail);
     }
 
+    $billing = $this->m_res_cashier->get_billing_by_id($item->tx_id);
+
     $tx_total_before_tax = 0;
     $tx_total_after_tax = 0;
     $tx_total_buy_average = 0;
     $tx_total_tax = 0;
-    $tx_total_discount = 0;
+    $tx_total_discount = $billing->tx_total_discount;
     $tx_total_grand = 0;
     $tx_total_profit_before_tax = 0;
     $tx_total_profit_after_tax = 0;
@@ -1757,7 +1759,7 @@ class Res_cashier extends MY_Restaurant {
       $tx_total_before_tax += $row->tx_subtotal_before_tax;
       $tx_total_after_tax += $row->tx_subtotal_after_tax;
       $tx_total_tax += $row->tx_subtotal_tax;
-      $tx_total_discount += $row->tx_subtotal_discount;
+      // $tx_total_discount += $row->tx_subtotal_discount;
       $tx_total_profit_before_tax += $row->tx_subtotal_profit_before_tax;
       $tx_total_profit_after_tax += $row->tx_subtotal_profit_after_tax;
     }
@@ -1787,6 +1789,66 @@ class Res_cashier extends MY_Restaurant {
     $this->m_res_cashier->update_billing($item->tx_id, $data_billing);
 
     echo json_encode($data_detail);
+
+  }
+
+  public function delete_return_item_action()
+  {
+    $data = $_POST;
+    $item = $this->m_res_cashier->get_billing_detail_by_id($data['billing_detail_id']);
+    $tx_id = $item->tx_id;
+
+    $this->m_res_cashier->delete_item_action($data['billing_detail_id']);
+
+    $billing = $this->m_res_cashier->get_billing_by_id($tx_id);
+
+    $tx_total_before_tax = 0;
+    $tx_total_after_tax = 0;
+    $tx_total_buy_average = 0;
+    $tx_total_tax = 0;
+    $tx_total_discount = $billing->tx_total_discount;
+    $tx_total_grand = 0;
+    $tx_total_profit_before_tax = 0;
+    $tx_total_profit_after_tax = 0;
+    $tx_total_grand = 0;
+
+    //get all detail and count it
+    $detail = $this->m_res_cashier->get_billing_detail($item->tx_id);
+    foreach ($detail as $row) {
+      $tx_total_buy_average += $row->tx_subtotal_buy_average;
+      $tx_total_before_tax += $row->tx_subtotal_before_tax;
+      $tx_total_after_tax += $row->tx_subtotal_after_tax;
+      $tx_total_tax += $row->tx_subtotal_tax;
+      // $tx_total_discount += $row->tx_subtotal_discount;
+      $tx_total_profit_before_tax += $row->tx_subtotal_profit_before_tax;
+      $tx_total_profit_after_tax += $row->tx_subtotal_profit_after_tax;
+    }
+
+    // grand total before discount
+    $tx_total_grand_before_discount = $tx_total_after_tax-$tx_total_discount;
+
+    //grand total after discount
+    $tx_total_grand = $tx_total_after_tax-$tx_total_discount;
+
+    //data for billing
+    $data_billing = array(
+      'tx_id' => $tx_id,
+      'user_id' => $this->session->userdata('user_id'),
+      'user_realname' => $this->session->userdata('user_realname'),
+      'tx_total_buy_average' => $tx_total_buy_average,
+      'tx_total_before_tax' => $tx_total_before_tax,
+      'tx_total_after_tax' => $tx_total_after_tax,
+      'tx_total_discount' => $tx_total_discount,
+      'tx_total_tax' => $tx_total_tax,
+      'tx_total_profit_before_tax' => $tx_total_profit_before_tax,
+      'tx_total_profit_after_tax' => $tx_total_profit_after_tax,
+      'tx_total_grand' => $tx_total_grand
+    );
+
+    //update billing
+    $this->m_res_cashier->update_billing($tx_id, $data_billing);
+
+    echo json_encode($data_billing);
 
   }
 
