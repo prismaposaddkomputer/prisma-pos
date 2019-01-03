@@ -1491,6 +1491,38 @@ class M_app_version extends CI_Model {
           $this->db->query("ALTER TABLE `hot_billing_room` ADD COLUMN `room_type_tarif_kamar` tinyint(1) NOT NULL DEFAULT '1' AFTER `room_type_name`");
           $this->db->query("ALTER TABLE `hot_billing_room` ADD COLUMN `room_keterangan` VARCHAR(100) NULL AFTER `room_type_total`");
           break;
+
+        case '2.9.4':
+          $this->db->query("ALTER TABLE `hot_billing_room` ADD COLUMN `room_type_denda` float(10,2) NOT NULL AFTER `room_type_other`");
+          break;
+
+        case '2.9.5':
+        //Drop db if exsit
+        $this->db->query("DROP TABLE IF EXISTS `hot_denda`");
+        //make table
+        $this->db->query(
+          "CREATE TABLE IF NOT EXISTS `hot_denda` (
+            `denda_id` int(11) NOT NULL AUTO_INCREMENT,
+            `denda_duration` float(10, 2) NOT NULL,
+            `denda_charge` float(10, 2) NOT NULL,
+            `created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            `created_by` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
+            `updated` timestamp(0) NOT NULL,
+            `updated_by` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
+            `is_active` tinyint(1) NOT NULL DEFAULT 1,
+            `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
+            PRIMARY KEY (`denda_id`)
+          ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact"
+        );
+        //empty table
+        $this->db->query("DELETE FROM `par_tax`");
+        //insert tax hotel
+        $this->db->query(
+          "INSERT INTO `hot_denda` (`denda_id`, `denda_duration`, `denda_charge`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
+          (1, 2.00, 10000.00, '2019-01-03 17:51:27', 'Super Hotel', '0000-00-00 00:00:00', 'Super Hotel', 1, 0)"
+        );
+
+        break;
     }
 
     //insert new update history
@@ -1623,6 +1655,10 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"2.9.2","version_release"=>"2019-01-02 16:47:00"));
     // tambah room_type_charge_hour di hot_room_type
     array_push($version, array("version_now"=>"2.9.3","version_release"=>"2019-01-02 16:47:00"));
+    // tambah room_type_denda di hot_billing_room
+    array_push($version, array("version_now"=>"2.9.4","version_release"=>"2019-01-02 16:47:00"));
+    // create tabel hot_denda
+    array_push($version, array("version_now"=>"2.9.5","version_release"=>"2019-01-02 16:47:00"));
 
     foreach ($version as $key => $val) {
       //check version
