@@ -160,6 +160,7 @@
       $('#room_type_charge').val(0);
       $('#room_type_duration').val(0);
       $('#room_type_total').val(0);
+      $('#discount_id_room').val(1).trigger('change');
       $('#modal_room').modal('show');
       $('#modal_room_list').modal('hide');
     });
@@ -632,13 +633,24 @@
         } else {
           if (data.client_is_taxed == 0) {  
             $.each(data.room, function(i, item) {
+
+              if (item.discount_type == '1') {
+                if (item.discount_id == '1') {
+                  var discount_amount = sys_to_cur(item.discount_amount);
+                }else{
+                  var discount_amount = sys_to_prosen(item.discount_amount);
+                }
+              }else{
+                var discount_amount = sys_to_cur(item.discount_amount);
+              }
+
               var row = '<tr>'+
                 '<td>'+item.room_type_name+'</td>'+
                 '<td>'+item.room_name+'</td>'+
                 '<td class="text-center">'+Math.round(item.room_type_duration)+' Hari </td>'+
                 '<td>'+sys_to_cur(item.room_type_charge)+'</td>'+
-                '<td>'+sys_to_cur(item.room_type_discount)+'</td>'+
-                '<td>'+sys_to_cur(item.room_type_subtotal-item.room_type_discount)+'</td>'+
+                '<td>'+discount_amount+'</td>'+
+                '<td>'+sys_to_cur(item.room_type_subtotal)+'</td>'+
                 '<td class="text-center">'+
                   '<button class="btn btn-sm btn-warning" onclick="update_room_show('+item.billing_room_id+')"><i class="fa fa-pencil fa-lg"></i></button> '+
                   '<button class="btn btn-sm btn-danger" onclick="delete_room('+item.billing_room_id+')"><i class="fa fa-trash fa-lg"></i></button>'+
@@ -648,12 +660,24 @@
             })
           }else{
              $.each(data.room, function(i, item) {
+
+              if (item.discount_type == '1') {
+                if (item.discount_id == '1') {
+                  var discount_amount = sys_to_cur(item.discount_amount);
+                }else{
+                  var discount_amount = sys_to_prosen(item.discount_amount);
+                }
+              }else{
+                var discount_amount = sys_to_cur(item.discount_amount);
+              }
+
               var row = '<tr>'+
                 '<td>'+item.room_type_name+'</td>'+
                 '<td>'+item.room_name+'</td>'+
                 '<td class="text-center">'+Math.round(item.room_type_duration)+' Hari </td>'+
-                '<td>'+sys_to_cur(item.room_type_total/item.room_type_duration)+'</td>'+
-                '<td>'+sys_to_cur(item.room_type_discount)+'</td>'+
+                // '<td>'+sys_to_cur(item.room_type_total/item.room_type_duration)+'</td>'+
+                '<td>'+sys_to_cur(item.room_type_before_discount)+'</td>'+
+                '<td>'+discount_amount+'</td>'+
                 '<td>'+sys_to_cur(item.room_type_total)+'</td>'+
                 '<td class="text-center">'+
                   '<button class="btn btn-sm btn-warning" onclick="update_room_show('+item.billing_room_id+')"><i class="fa fa-pencil fa-lg"></i></button> '+
@@ -682,7 +706,8 @@
         if (data.client_is_taxed == 0) {
           $('#update_room_type_charge').val(sys_to_ind(data.room_type_charge));
         }else{
-          $('#update_room_type_charge').val(sys_to_ind(data.room_type_total/data.room_type_duration));
+          // $('#update_room_type_charge').val(sys_to_ind(data.room_type_total/data.room_type_duration));
+          $('#update_room_type_charge').val(sys_to_ind(data.room_type_before_discount/data.room_type_duration));
         }
         $("#update_room_type_duration").val(sys_to_ind(data.room_type_duration));
         calc_room_update();

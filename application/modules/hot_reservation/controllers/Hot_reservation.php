@@ -1060,8 +1060,19 @@ class Hot_reservation extends MY_Hotel {
       $room_type_charge = $room_type_subtotal / $data['room_type_duration'];
     }
 
-    $room_type_discount = $discount->discount_amount*$room_type_before_discount/100;
-    $room_type_total = $room_type_before_discount-$room_type_discount;
+    // $room_type_discount = $discount->discount_amount*$room_type_before_discount/100;
+    if ($discount->discount_type == '1') {
+      if ($discount->discount_id == '1') {
+        $room_type_discount = $discount->discount_amount;
+        $room_type_total = $room_type_before_discount-$room_type_discount;
+      }else{
+        $room_type_discount = ($discount->discount_amount/100);
+        $room_type_total = $room_type_before_discount * $room_type_discount;
+      }
+    }else{
+      $room_type_discount = $discount->discount_amount;
+      $room_type_total = $room_type_before_discount-$room_type_discount;
+    }
 
     $data_room = array(
       'billing_id' => $data['billing_id'],
@@ -1123,8 +1134,19 @@ class Hot_reservation extends MY_Hotel {
       $room_type_charge = $room_type_subtotal / $data['room_type_duration'];
     }
 
-    $room_type_discount = $discount->discount_amount*$room_type_before_discount/100;
-    $room_type_total = $room_type_before_discount-$room_type_discount;
+    // $room_type_discount = $discount->discount_amount*$room_type_before_discount/100;
+    if ($discount->discount_type == '1') {
+      if ($discount->discount_id == '1') {
+        $room_type_discount = $discount->discount_amount;
+        $room_type_total = $room_type_before_discount-$room_type_discount;
+      }else{
+        $room_type_discount = ($discount->discount_amount/100);
+        $room_type_total = $room_type_before_discount * $room_type_discount;
+      }
+    }else{
+      $room_type_discount = $discount->discount_amount;
+      $room_type_total = $room_type_before_discount-$room_type_discount;
+    }
 
     $data_room = array(
       'billing_id' => $data['billing_id'],

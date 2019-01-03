@@ -546,7 +546,7 @@
             <?php else: ?>
               <?php if ($billing->billing_down_payment_type == 1): ?>
                 <td id="text_kekurangan"><?=num_to_idr($billing->billing_total-$billing->billing_down_payment-$billing->billing_discount)?></td>
-                <input type="hidden" name="" id="total_payment" value="<?=$billing->billing_total-$billing->billing_down_payment-$billing->billing_discount?>">
+                <input type="hidden" name="" id="total_payment" value="<?=$billing->billing_total-$billing->billing_down_payment?>">
               <?php else: ?>
                 <?php 
                 $dp_prosen = $billing->billing_total*($billing->billing_down_payment/100);

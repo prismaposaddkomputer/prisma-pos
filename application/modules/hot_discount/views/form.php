@@ -21,12 +21,12 @@
         <div class="form-group">
           <label>Pilih Jenis Diskon <small class="required-field">*</small></label>
           <br>
-            <label class="radio-inline">
-               <input type="radio" name="discount_type" value="1" <?php if($discount != null){if($discount->discount_type == '1'){echo 'checked';}}else{echo 'checked';}?>/> Persentase (%)
+            <!-- <label class="radio-inline">
+               <input type="radio" name="discount_type" value="1" <?php if($discount != null){if($discount->discount_type == '1'){echo 'checked';}}?>/> Persentase (%)
             </label>
-            &nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp; -->
             <label class="radio-inline">
-               <input type="radio" name="discount_type" value="2" <?php if($discount != null){if($discount->discount_type == '2'){echo 'checked';}}?>/> Nominal (Rp)
+               <input type="radio" name="discount_type" value="2" <?php if($discount != null){if($discount->discount_type == '2'){echo 'checked';}}else{echo 'checked';}?>/> Nominal (Rp)
             </label>
         </div>
         <div class="row" id="discountAmmount">
@@ -56,9 +56,9 @@
 <script type="text/javascript">
   $(document).ready(function () {
 
-    $('#name_field').html('Persentase');
-    $('#prosen_icon').html('%');
-    $('#rp_icon').hide();
+    $('#name_field').html('Nominal');
+    $('#rp_icon').html('Rp');
+    $('#prosen_icon').hide();
     //
     <?php
       if($discount != null){if($discount->discount_type == '1'){
