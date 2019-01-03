@@ -1371,7 +1371,7 @@ class Res_cashier extends MY_Restaurant {
         $this->m_res_cashier->update_promo_buyall($tx_id, $promo_buyall->promo_buyall_id, $data_buyall);
       }
     }else{
-      $this->m_res_cashier->delete_promo_buyall($tx_id);
+      $this->m_res_cashier->delete_promo_buyall($tx_id,$item_id);
     }
 
     //grand total after discount
@@ -1686,8 +1686,108 @@ class Res_cashier extends MY_Restaurant {
   {
     $search_pending = $this->input->post('search_pending');
     $data = $this->m_res_cashier->search_pending_action($search_pending);
-
+    
     echo json_encode($data);
+  }
+
+  public function edit_return_item_action()
+  {
+    $data = $_POST;
+    $item = $this->m_res_cashier->get_billing_detail_by_id($data['billing_detail_id']);
+    $data['tx_amount'] = -1*$data['tx_amount'];
+
+    $this->load->model('res_tax/m_res_tax');
+    $tax = $this->m_res_tax->get_by_id(1);
+
+    $item_price_before_tax = $item->item_price_before_tax;
+    $item_tax = $item_price_before_tax*$tax->tax_ratio/100;
+    $item_price_after_tax = $item_price_before_tax+$item_tax;
+    //subtotal
+    $tx_subtotal_tax = $data['tx_amount']*$item_tax;
+    $tx_subtotal_discount = 0;
+    $tx_subtotal_buy_average = $data['tx_amount']*$item->item_price_buy_average;
+    $tx_subtotal_before_tax = $data['tx_amount']*$item_price_before_tax;
+    $tx_subtotal_after_tax = $data['tx_amount']*$item_price_after_tax;
+    //profit
+    $tx_subtotal_profit_before_tax = $tx_subtotal_before_tax-$tx_subtotal_buy_average;
+    $tx_subtotal_profit_after_tax = $tx_subtotal_profit_before_tax-$tx_subtotal_tax;
+
+    $data_detail = array(
+      'tx_id' => $item->tx_id,
+      'tx_type' => 'TXS',
+      'item_id' => $item->item_id,
+      'item_name' => $item->item_name,
+      'item_price_before_tax' => $item_price_before_tax,
+      'item_price_after_tax' => $item_price_after_tax,
+      'item_price_buy_average' => $item->item_price_buy_average,
+      'tx_amount' => $data['tx_amount'],
+      'tx_subtotal_tax' => $tx_subtotal_tax,
+      'tx_subtotal_discount' => $tx_subtotal_discount,
+      'tx_subtotal_buy_average' => $tx_subtotal_buy_average,
+      'tx_subtotal_before_tax' => $tx_subtotal_before_tax,
+      'tx_subtotal_after_tax' => $tx_subtotal_after_tax,
+      'tx_subtotal_profit_before_tax' => $tx_subtotal_profit_before_tax-$tx_subtotal_discount,
+      'tx_subtotal_profit_after_tax' => $tx_subtotal_profit_after_tax-$tx_subtotal_discount,
+      'is_return' => 1
+    );
+    
+    $cek = $this->m_res_cashier->cek_return($data_detail['tx_id'],$data_detail['item_id']);
+    if ($cek != null) {
+      // if item exist add item amount
+      $this->m_res_cashier->update_detail($cek->billing_detail_id, $data_detail);
+    }else{
+      // else add new item
+      $this->m_res_cashier->insert_detail($data_detail);
+    }
+
+    $tx_total_before_tax = 0;
+    $tx_total_after_tax = 0;
+    $tx_total_buy_average = 0;
+    $tx_total_tax = 0;
+    $tx_total_discount = 0;
+    $tx_total_grand = 0;
+    $tx_total_profit_before_tax = 0;
+    $tx_total_profit_after_tax = 0;
+    $tx_total_grand = 0;
+
+    //get all detail and count it
+    $detail = $this->m_res_cashier->get_billing_detail($item->tx_id);
+    foreach ($detail as $row) {
+      $tx_total_buy_average += $row->tx_subtotal_buy_average;
+      $tx_total_before_tax += $row->tx_subtotal_before_tax;
+      $tx_total_after_tax += $row->tx_subtotal_after_tax;
+      $tx_total_tax += $row->tx_subtotal_tax;
+      $tx_total_discount += $row->tx_subtotal_discount;
+      $tx_total_profit_before_tax += $row->tx_subtotal_profit_before_tax;
+      $tx_total_profit_after_tax += $row->tx_subtotal_profit_after_tax;
+    }
+
+    // grand total before discount
+    $tx_total_grand_before_discount = $tx_total_after_tax-$tx_total_discount;
+
+    //grand total after discount
+    $tx_total_grand = $tx_total_after_tax-$tx_total_discount;
+
+    //data for billing
+    $data_billing = array(
+      'tx_id' => $item->tx_id,
+      'user_id' => $this->session->userdata('user_id'),
+      'user_realname' => $this->session->userdata('user_realname'),
+      'tx_total_buy_average' => $tx_total_buy_average,
+      'tx_total_before_tax' => $tx_total_before_tax,
+      'tx_total_after_tax' => $tx_total_after_tax,
+      'tx_total_discount' => $tx_total_discount,
+      'tx_total_tax' => $tx_total_tax,
+      'tx_total_profit_before_tax' => $tx_total_profit_before_tax,
+      'tx_total_profit_after_tax' => $tx_total_profit_after_tax,
+      'tx_total_grand' => $tx_total_grand
+    );
+
+    //update billing
+    $this->m_res_cashier->update_billing($item->tx_id, $data_billing);
+
+    echo json_encode($data_detail);
+
   }
 
   public function print_bill()
@@ -1734,8 +1834,9 @@ class Res_cashier extends MY_Restaurant {
         $printer -> feed();
         $printer -> text('--------------------------------');
         foreach ($billing->detail as $row) {
+          $status = ($row->is_return == 1) ? '(Retur) ' : '' ;
           $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
-          $printer -> text($row->item_name);
+          $printer -> text($status.$row->item_name);
           $printer -> feed();
           $printer -> setJustification(Escpos\Printer::JUSTIFY_RIGHT);
           $printer -> text($row->tx_amount.' X '.num_to_price(round($row->item_price_after_tax,0,PHP_ROUND_HALF_UP)).' = '.num_to_price(round($row->tx_subtotal_after_tax,0,PHP_ROUND_HALF_UP)));
@@ -1854,8 +1955,9 @@ class Res_cashier extends MY_Restaurant {
         $printer -> feed();
         $printer -> text('--------------------------------');
         foreach ($billing->detail as $row) {
+          $status = ($row->is_return == 1) ? '(Retur) ' : '' ;
           $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
-          $printer -> text($row->item_name);
+          $printer -> text($status.$row->item_name);
           $printer -> feed();
           $printer -> setJustification(Escpos\Printer::JUSTIFY_RIGHT);
           $printer -> text($row->tx_amount.' X '.num_to_price(round($row->item_price_before_tax,0,PHP_ROUND_HALF_UP)).' = '.num_to_price(round($row->tx_subtotal_before_tax,0,PHP_ROUND_HALF_UP)));
@@ -1945,6 +2047,17 @@ class Res_cashier extends MY_Restaurant {
         echo "Couldn't print to this printer: " . $e -> getMessage() . "\n";
       }
     }
+  }
+
+  public function print_return()
+  {
+    $tx_id = $this->input->post('tx_id');
+    $bill = $this->m_res_cashier->get_billing_by_id($tx_id);
+    $data = array(
+      'tx_change' => $bill->tx_payment-$bill->tx_total_grand
+    );
+    $this->m_res_cashier->update_billing($tx_id,$data);
+    $this->print_bill();
   }
 
   public function print_dapur()
@@ -2088,9 +2201,9 @@ class Res_cashier extends MY_Restaurant {
         $printer -> feed();
         $printer -> text('Sisa Bayar = '.$s_6.num_to_price($billing->tx_total_grand-$billing->tx_down_payment));
         $printer -> feed(2);
-        $printer -> text('Dibayar = '.$s_2.num_to_price(round($billing->tx_payment,0,PHP_ROUND_HALF_UP)));
-        $printer -> feed();
-        $printer -> text('Kembalian = '.$s_3.num_to_price(round($billing->tx_change,0,PHP_ROUND_HALF_UP)));
+        // $printer -> text('Dibayar = '.$s_2.num_to_price(round($billing->tx_payment,0,PHP_ROUND_HALF_UP)));
+        // $printer -> feed();
+        // $printer -> text('Kembalian = '.$s_3.num_to_price(round($billing->tx_change,0,PHP_ROUND_HALF_UP)));
         $printer -> feed(2);
         if ($billing->buyget != null) {
           $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);

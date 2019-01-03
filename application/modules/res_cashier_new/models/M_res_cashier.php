@@ -145,24 +145,6 @@ class M_res_cashier extends CI_Model {
       ->result();
   }
 
-  public function get_billing_detail_by_id($id)
-  {
-    return $this->db
-      ->where('billing_detail_id', $id)
-      ->get('res_billing_detail')
-      ->row();
-  }
-
-  public function cek_return($tx_id,$item_id)
-  {
-    return $this->db
-      ->where('item_id', $item_id)
-      ->where('tx_id', $tx_id)
-      ->where('is_return', 1)
-      ->get('res_billing_detail')
-      ->row();
-  }
-
   public function get_all_item()
   {
     return $this->db
