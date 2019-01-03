@@ -12,16 +12,62 @@
           <input class="form-control keyboard" type="text" name="room_type_name" value="<?php if($room_type != null){echo $room_type->room_type_name;}?>">
         </div>
         <div class="row">
-          <div class="col-md-5">
+          <div class="col-md-6">
             <div class="form-group">
-              <label>Tarif Kamar <small class="required-field">**</small></label>
+              <label>Tarif Kamar Hari <small class="required-field">**</small></label>
               <div class="input-group">
                   <div class="input-group-addon"><b>Rp</b></div>
                   <input class="form-control autonumeric num" type="text" name="room_type_charge" value="<?php if($room_type != null){echo $room_type->room_type_charge;}else{echo '0';}?>">
+                  <div class="input-group-addon"><b>Per Hari</b></div>
               </div>
             </div>
           </div>
-          <div class="col-md-2">&nbsp;</div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Tarif Kamar Per Jam <small class="required-field">**</small></label>
+              <div class="input-group">
+                  <div class="input-group-addon"><b>Rp</b></div>
+                  <input class="form-control autonumeric num" type="text" name="room_type_charge_hour" value="<?php if($room_type != null){echo $room_type->room_type_charge_hour;}else{echo '0';}?>">
+                  <div class="input-group-addon"><b>Per Jam</b></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <small class="required-field">**</small>
+            <small>
+              <?php if ($client->client_is_taxed == 1) {
+                echo 'Sudah Termasuk';
+              }else{
+                echo 'Belum Termasuk';
+              } ?>
+            </small>
+            <small>
+              <?php foreach ($charge_type as $row) {
+                echo $row->charge_type_name.', ';
+              } ?>
+            </small>
+          </div>
+          <div class="col-md-6">
+            <small class="required-field">**</small>
+            <small>
+              <?php if ($client->client_is_taxed == 1) {
+                echo 'Sudah Termasuk';
+              }else{
+                echo 'Belum Termasuk';
+              } ?>
+            </small>
+            <small>
+              <?php foreach ($charge_type as $row) {
+                echo $row->charge_type_name.', ';
+              } ?>
+            </small>
+          </div>
+        </div>
+
+        <br>
+        <div class="row">
           <div class="col-md-5">
             <div class="form-group">
               <label>Jumlah Kamar <small class="required-field">*</small></label>
@@ -32,20 +78,6 @@
             </div>
           </div>
         </div>
-        <small class="required-field">**</small>
-        <small>
-          <?php if ($client->client_is_taxed == 1) {
-            echo 'Sudah Termasuk';
-          }else{
-            echo 'Belum Termasuk';
-          } ?>
-        </small>
-        <small>
-          <?php foreach ($charge_type as $row) {
-            echo $row->charge_type_name.', ';
-          } ?>
-        </small>
-        <br><br>
         <div class="form-group">
           <label>Dekripsi</label>
           <textarea class="form-control keyboard" name="room_type_desc"><?php if($room_type != null){echo $room_type->room_type_desc;}?></textarea>

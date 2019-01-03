@@ -157,6 +157,7 @@
       $('#room_type_id').val('0').trigger('change');
       get_room(0);
       $('#room_id').val(0).trigger('change');
+      $("#room_type_tarif_kamar_1").prop("checked", true);
       $('#room_type_charge').val(0);
       $('#room_type_duration').val(0);
       $('#room_type_total').val(0);
@@ -491,7 +492,24 @@
 
   });
 
-  function get_room(room_type_id) {
+  $('.room_type_tarif_kamar').on('change', function() {
+      var value_tarif_kamar = this.value;
+      var room_type_id = $('#room_type_id').val();
+      //
+      if (value_tarif_kamar == '1') {
+        $('#label_room_type_charge').text('Harga Per Hari');
+        $('#label_room_type_duration').text('Harga Per Hari');
+        $('#group_addon_room_type_duration').html('<b>Hari</b>');
+        get_room(room_type_id, value_tarif_kamar);
+      }else{
+        $('#label_room_type_charge').text('Harga Per Jam');
+        $('#label_room_type_duration').text('Harga Per Jam');
+        $('#group_addon_room_type_duration').html('<b>Jam</b>');
+        get_room(room_type_id, value_tarif_kamar);
+      }
+    });
+
+  function get_room(room_type_id, room_type_tarif_kamar='') {
     $.ajax({
       type : 'post',
       url : '<?=base_url()?>hot_reservation/get_room',
@@ -505,7 +523,17 @@
           data: data.room
         }).trigger('change');
         // console.log(data.room_type.room_type_charge);
-        $('#room_type_charge').val(sys_to_ind(Math.ceil(data.room_type.room_type_charge)));
+        if (room_type_tarif_kamar == '1') {
+          $('#room_type_charge').val(sys_to_ind(Math.ceil(data.room_type.room_type_charge)));
+          //
+          calc_room();
+        }else if (room_type_tarif_kamar == '2'){
+          $('#room_type_charge').val(sys_to_ind(Math.ceil(data.room_type.room_type_charge_hour)));
+          //
+          calc_room();
+        }else if (room_type_tarif_kamar =='') {
+          $('#room_type_charge').val(sys_to_ind(Math.ceil(data.room_type.room_type_charge)));
+        }
       }
     })
   }
@@ -568,9 +596,6 @@
     })
   }
 
-
-
-
   function add_room() {
     var room_id = $('#room_id').val();
     var room_type_charge = $('#room_type_charge').val();
@@ -578,13 +603,12 @@
     var room_type_total = $('#room_type_total').val();
     var discount_id_room = $('#discount_id_room').val();
     var billing_id = $('#billing_id').val();
+    var room_type_tarif_kamar = $('input[name=room_type_tarif_kamar]:checked').val()
 
     $.ajax({
       type : 'post',
       url : '<?=base_url()?>hot_reservation/add_room',
-      data : 'billing_id='+billing_id+'&room_id='+room_id+'&room_type_charge='+room_type_charge+
-              '&room_type_duration='+room_type_duration+'&room_type_total='+room_type_total+
-              '&discount_id_room='+discount_id_room,
+      data : 'billing_id='+billing_id+'&room_id='+room_id+'&room_type_tarif_kamar='+room_type_tarif_kamar+'&room_type_charge='+room_type_charge+'&room_type_duration='+room_type_duration+'&room_type_total='+room_type_total+'&discount_id_room='+discount_id_room,
       success : function (data) {
         $('#modal_room_list').modal('show');
         $('#modal_room').modal('hide');

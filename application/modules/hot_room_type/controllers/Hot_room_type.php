@@ -95,6 +95,7 @@ class Hot_room_type extends MY_Hotel {
             $tot_ratio += $row->charge_type_ratio;
           }
           $data['room_type']->room_type_charge = ($tot_ratio/100)*$data['room_type']->room_type_charge;
+          $data['room_type']->room_type_charge_hour = ($tot_ratio/100)*$data['room_type']->room_type_charge_hour;
         }
         $this->view('hot_room_type/form', $data);
       } else {
@@ -108,6 +109,7 @@ class Hot_room_type extends MY_Hotel {
     $data = $_POST;
     
     $data['room_type_charge'] = price_to_num($data['room_type_charge']);
+    $data['room_type_charge_hour'] = price_to_num($data['room_type_charge_hour']);
 
     $charge_type = $this->m_hot_charge_type->get_all();
     $client = $this->m_hot_client->get_all();
@@ -117,6 +119,7 @@ class Hot_room_type extends MY_Hotel {
         $tot_ratio += $row->charge_type_ratio;
       }
       $data['room_type_charge'] = round((100/$tot_ratio)*$data['room_type_charge'],2);
+      $data['room_type_charge_hour'] = round((100/$tot_ratio)*$data['room_type_charge_hour'],2);
     }
 
     $this->m_hot_room_type->insert($data);
@@ -134,6 +137,7 @@ class Hot_room_type extends MY_Hotel {
   {
     $data = $_POST;
     $data['room_type_charge'] = price_to_num($data['room_type_charge']);
+    $data['room_type_charge_hour'] = price_to_num($data['room_type_charge_hour']);
 
     $charge_type = $this->m_hot_charge_type->get_all();
     $client = $this->m_hot_client->get_all();
@@ -143,6 +147,7 @@ class Hot_room_type extends MY_Hotel {
         $tot_ratio += $row->charge_type_ratio;
       }
       $data['room_type_charge'] = round((100/$tot_ratio)*$data['room_type_charge'],2);
+      $data['room_type_charge_hour'] = round((100/$tot_ratio)*$data['room_type_charge_hour'],2);
     }
 
     $this->m_hot_room_type->update($data);

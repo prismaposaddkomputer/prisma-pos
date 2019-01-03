@@ -1448,6 +1448,7 @@ class M_app_version extends CI_Model {
             `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
             PRIMARY KEY (`billing_custom_id`)
           ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT");
+          break;
 
         case '2.8':
           $this->db->query("CREATE TABLE IF NOT EXISTS `kar_billing_custom` (
@@ -1468,6 +1469,7 @@ class M_app_version extends CI_Model {
             `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
             PRIMARY KEY (`billing_custom_id`)
           ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT");
+          break;
 
         case '2.9.1':
           $this->db->query("DELETE FROM res_module WHERE module_id='03.01'");
@@ -1478,9 +1480,16 @@ class M_app_version extends CI_Model {
               module_controller='res_cashier',
               module_url='index'
             WHERE module_id='03'");
+          break;
 
         case '2.9.2':
           $this->db->query("ALTER TABLE `res_billing` ADD COLUMN `tx_table_no` VARCHAR(50) NULL DEFAULT '-' AFTER `tx_total_profit_after_tax`");
+          break;
+
+        case '2.9.3':
+          $this->db->query("ALTER TABLE `hot_room_type` ADD COLUMN `room_type_charge_hour` float(10,2) NOT NULL AFTER `room_type_charge`");
+          $this->db->query("ALTER TABLE `hot_billing_room` ADD COLUMN `room_type_tarif_kamar` tinyint(1) NOT NULL DEFAULT '1' AFTER `room_type_name`");
+          $this->db->query("ALTER TABLE `hot_billing_room` ADD COLUMN `room_keterangan` VARCHAR(100) NULL AFTER `room_type_total`");
           break;
     }
 
@@ -1612,6 +1621,8 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"2.9.1","version_release"=>"2019-01-02 16:47:00"));
     // alter add table no
     array_push($version, array("version_now"=>"2.9.2","version_release"=>"2019-01-02 16:47:00"));
+    // tambah room_type_charge_hour di hot_room_type
+    array_push($version, array("version_now"=>"2.9.3","version_release"=>"2019-01-02 16:47:00"));
 
     foreach ($version as $key => $val) {
       //check version

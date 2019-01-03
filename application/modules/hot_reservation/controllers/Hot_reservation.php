@@ -949,15 +949,22 @@ class Hot_reservation extends MY_Hotel {
     $room_type = $this->m_hot_room_type->get_by_id($room_type_id);
     
     $add = 0;
+    $add_hour = 0;
     if ($client->client_is_taxed == 1) {
       $charge_type = $this->m_hot_charge_type->get_all();
       foreach ($charge_type as $row) {
         $add += $room_type->room_type_charge*$row->charge_type_ratio/100;
+        $add_hour += $room_type->room_type_charge_hour*$row->charge_type_ratio/100;
       }
     }
 
+    // Per Hari
     $room_type->room_type_charge += $add;
     $room_type->room_type_charge = round($room_type->room_type_charge,0,PHP_ROUND_HALF_UP);
+
+    // Per Jam
+    $room_type->room_type_charge_hour += $add_hour;
+    $room_type->room_type_charge_hour = round($room_type->room_type_charge_hour,0,PHP_ROUND_HALF_UP);
 
     $data = array(
       'room' => array(),
@@ -1080,6 +1087,7 @@ class Hot_reservation extends MY_Hotel {
       'room_name' => $room->room_name,
       'room_type_id' => $room->room_type_id,
       'room_type_name' => $room->room_type_name,
+      'room_type_tarif_kamar' => $data['room_type_tarif_kamar'],
       'room_type_charge' => $room_type_charge,
       'discount_id' => $discount->discount_id,
       'discount_type' => $discount->discount_type,

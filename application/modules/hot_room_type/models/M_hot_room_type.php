@@ -78,7 +78,7 @@ class M_hot_room_type extends CI_Model {
     	$hot_room['room_name'] = $hot_room_type['room_type_name'].' - '.str_pad($i+1, 2, '0', STR_PAD_LEFT);
     	$hot_room['room_no'] = str_pad($i+1, 1, '0', STR_PAD_LEFT);
     	//unset data
-    	unset($hot_room['room_type_name'], $hot_room['room_type_charge'], $hot_room['room_type_desc']);
+    	unset($hot_room['room_type_name'], $hot_room['room_type_charge'], $hot_room['room_type_charge_hour'], $hot_room['room_type_desc']);
     	//insert ke database
     	$this->db->insert('hot_room',$hot_room);
     }
@@ -165,7 +165,7 @@ class M_hot_room_type extends CI_Model {
   	$hot_room['room_name'] = $hot_room['room_type_name'].' - '.str_pad($room_no, 2, '0', STR_PAD_LEFT);
   	$hot_room['room_no'] = str_pad($room_no, 1, '0', STR_PAD_LEFT);
   	//unset data
-  	unset($hot_room['room_type_name'], $hot_room['room_type_charge'], $hot_room['room_type_desc']);
+  	unset($hot_room['room_type_name'], $hot_room['room_type_charge'], $hot_room['room_type_charge_hour'], $hot_room['room_type_desc']);
   	//insert ke database
   	$this->db->insert('hot_room',$hot_room);
     
