@@ -1539,6 +1539,11 @@ class M_app_version extends CI_Model {
         case '2.9.9':
           $this->db->query("ALTER TABLE `res_item` ADD COLUMN `item_logo` VARCHAR(100) NOT NULL DEFAULT 'no-image.png' AFTER `is_package`");
           break;
+
+        case '2.9.10':
+          $this->db->query("INSERT INTO `hot_module` VALUES ('02.11', '02', 'Denda', 'hot_denda', 'hot_denda', 'index', '', '2019-01-04 17:26:40', 'System', '2018-08-18 05:51:24', 'System', 0, 0)");
+          $this->db->query("INSERT INTO `hot_permission` VALUES (106, 0, '02.11', 1, 1, 1, 1, '2019-01-04 17:28:31', 'Super Hotel')");
+          break;
       }
       
     //insert new update history
@@ -1683,6 +1688,8 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"2.9.8","version_release"=>"2019-01-04 08:29:00"));
     // add item_logo
     array_push($version, array("version_now"=>"2.9.9","version_release"=>"2019-01-04 08:29:00"));
+    // add module and role hotel
+    array_push($version, array("version_now"=>"2.9.10","version_release"=>"2019-01-04 08:29:00"));
 
     foreach ($version as $key => $val) {
       //check version
