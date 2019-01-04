@@ -58,6 +58,11 @@ class M_hot_reservation extends CI_Model {
 		$this->db->where('billing_id',$billing_id)->update('hot_billing',$data);
 	}
 
+	public function update_hot_billing_room($billing_id,$data)
+	{
+		$this->db->where('billing_id',$billing_id)->update('hot_billing_room',$data);
+	}
+
 	public function empty_detail($billing_id)
 	{
 		$this->db->where('billing_id',$billing_id)->delete('hot_billing_room');
@@ -103,10 +108,18 @@ class M_hot_reservation extends CI_Model {
 			->get('hot_billing_room')->result();
 	}
 
-	public function update_billing_room($id,$data)
+	public function get_billing_room_by_id($billing_id)
+	{
+		return $this->db
+			->where('billing_id',$billing_id)
+			->get('hot_billing_room')->result();
+	}
+
+	public function update_billing_room($billing_id, $room_id, $data)
 	{
 		$this->db
-			->where('billing_room_id',$id)
+			->where('billing_id',$billing_id)
+			->where('room_id',$room_id)
 			->update('hot_billing_room',$data);
 	}
 
@@ -386,8 +399,10 @@ class M_hot_reservation extends CI_Model {
         if($query->num_rows() > 0) {
         	return true;
         } else {
-        	if (@$get_billing_by_billing_id->billing_status == '-1') {
+        	if ($get_billing_by_billing_id->billing_status == '-1') {
         		return false;
+        	}elseif ($get_billing_by_billing_id->billing_status == '0') {
+        		return true;
         	}else{
         		if ($date_hari_ini >= $date_akhir) {
 	        		return false;

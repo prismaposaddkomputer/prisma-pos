@@ -61,7 +61,7 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Total</label>
-              <input class="form-control autonumeric num" id="room_type_total" type="text" value="0" readonly="">
+              <input class="form-control autonumeric" id="room_type_total" type="text" value="0" readonly="">
             </div>
           </div>
           <div class="col-md-6">  
@@ -77,9 +77,22 @@
             </div>
           </div>
         </div>
-        <div class="form-group">
-          <label>Keterangan</label> <em><small>(tidak wajib diisi)</small></em>
-          <textarea class="form-control keyboard" id="room_keterangan" style="height: 70px;"></textarea>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Keterangan Denda</label> <em><small>(tidak wajib diisi)</small></em>
+              <textarea class="form-control keyboard" id="room_keterangan" style="height: 100px;"></textarea>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Denda</label>
+              <div class="input-group">
+                <div class="input-group-addon"><b>Rp</b></div>
+                <input class="form-control autonumeric num" id="room_type_denda" type="text" value="0">
+              </div>
+            </div>
+          </div>
         </div>
         <em>
           <small>

@@ -1527,6 +1527,10 @@ class M_app_version extends CI_Model {
           $this->db->query("ALTER TABLE `res_billing_detail`
 	          ADD COLUMN `is_return` TINYINT(1) NOT NULL DEFAULT 0 AFTER `tx_subtotal_profit_after_tax`");
           break;
+
+        case '2.9.7':
+          $this->db->query("ALTER TABLE `hot_billing_room` ADD COLUMN `room_st_denda` INT(1) NOT NULL DEFAULT 1 AFTER `room_type_denda`");
+          break;
       }
       
     //insert new update history
@@ -1665,6 +1669,8 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"2.9.5","version_release"=>"2019-01-02 16:47:00"));
     // status return 
     array_push($version, array("version_now"=>"2.9.6","version_release"=>"2019-01-03 20:12:00"));
+    // add room_st_denda => hot_billing_room
+    array_push($version, array("version_now"=>"2.9.7","version_release"=>"2019-01-03 20:12:00"));
 
     foreach ($version as $key => $val) {
       //check version
