@@ -605,6 +605,8 @@
     var room_type_duration = $('#update_room_type_duration').val();
     var room_type_total = $('#update_room_type_total').val();
     var discount_id_room = $('#update_discount_id_room').val();
+    var room_keterangan = $('#update_room_keterangan').val();
+    var room_type_denda = $('#update_room_type_denda').val();
     var billing_id = $('#billing_id').val();
 
     $.ajax({
@@ -612,7 +614,7 @@
       url : '<?=base_url()?>hot_reservation/update_room',
       data : 'billing_room_id='+billing_room_id+'&billing_id='+billing_id+'&room_id='+room_id+'&room_type_charge='+room_type_charge+
               '&room_type_duration='+room_type_duration+'&room_type_total='+room_type_total+
-              '&discount_id_room='+discount_id_room,
+              '&discount_id_room='+discount_id_room+'&room_keterangan='+room_keterangan+'&room_type_denda='+room_type_denda,
       success : function (data) {
         $('#modal_room_list').modal('show');
         $('#modal_room_update').modal('hide');
@@ -656,13 +658,16 @@
                 var room_type_tarif_kamar = 'Jam';
               }
 
+              var room_type_subtotal = parseFloat(item.room_type_subtotal)+parseFloat(item.room_type_denda);
+
               var row = '<tr>'+
                 '<td>'+item.room_type_name+'</td>'+
                 '<td>'+item.room_name+'</td>'+
                 '<td class="text-center">'+Math.round(item.room_type_duration)+' '+room_type_tarif_kamar+' </td>'+
                 '<td>'+sys_to_cur(item.room_type_charge)+'</td>'+
                 '<td>'+discount_amount+'</td>'+
-                '<td>'+sys_to_cur(item.room_type_subtotal)+'</td>'+
+                '<td>'+sys_to_cur(item.room_type_denda)+'</td>'+
+                '<td>'+sys_to_cur(room_type_subtotal)+'</td>'+
                 '<td class="text-center">'+
                   '<button class="btn btn-sm btn-warning" onclick="update_room_show('+item.billing_room_id+')"><i class="fa fa-pencil fa-lg"></i></button> '+
                   '<button class="btn btn-sm btn-danger" onclick="delete_room('+item.billing_room_id+')"><i class="fa fa-trash fa-lg"></i></button>'+
@@ -689,6 +694,8 @@
                 var room_type_tarif_kamar = 'Jam';
               }
 
+              var room_type_total = parseFloat(item.room_type_total)+parseFloat(item.room_type_denda);
+
               var row = '<tr>'+
                 '<td>'+item.room_type_name+'</td>'+
                 '<td>'+item.room_name+'</td>'+
@@ -696,7 +703,8 @@
                 // '<td>'+sys_to_cur(item.room_type_total/item.room_type_duration)+'</td>'+
                 '<td>'+sys_to_cur(item.room_type_before_discount)+'</td>'+
                 '<td>'+discount_amount+'</td>'+
-                '<td>'+sys_to_cur(item.room_type_total)+'</td>'+
+                '<td>'+sys_to_cur(item.room_type_denda)+'</td>'+
+                '<td>'+sys_to_cur(room_type_total)+'</td>'+
                 '<td class="text-center">'+
                   '<button class="btn btn-sm btn-warning" onclick="update_room_show('+item.billing_room_id+')"><i class="fa fa-pencil fa-lg"></i></button> '+
                   '<button class="btn btn-sm btn-danger" onclick="delete_room('+item.billing_room_id+')"><i class="fa fa-trash fa-lg"></i></button>'+
@@ -772,11 +780,11 @@
         $("#update_room_type_name").val(data.room_type_name);
         $("#update_room_name").val(data.room_name);
 
-        // if (data.room_type_tarif_kamar == '1') {
-        //   $("#update_room_type_tarif_kamar_1").prop("checked", true);
-        // }else{
-        //   $("#update_room_type_tarif_kamar_2").prop("checked", true);
-        // }
+        if (data.room_type_tarif_kamar == '1') {
+          $("#update_room_type_tarif_kamar_1").prop("checked", true);
+        }else{
+          $("#update_room_type_tarif_kamar_2").prop("checked", true);
+        }
 
         if (data.client_is_taxed == 0) {
           // $('#update_room_type_charge').val(sys_to_ind(data.room_type_charge));
@@ -813,6 +821,7 @@
         calc_room_update();
         $("#update_discount_id_room").val(data.discount_id).trigger('change');
         $("#update_room_keterangan").val(data.room_keterangan);
+        $("#update_room_type_denda").val(sys_to_ind(data.room_type_denda));
         $("#modal_room_list").modal('hide');
         $("#modal_room_update").modal('show');
 

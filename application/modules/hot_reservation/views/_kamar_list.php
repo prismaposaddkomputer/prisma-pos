@@ -14,9 +14,10 @@
               <th class="text-center">Jenis Kamar</th>
               <th class="text-center">Kamar</th>
               <th class="text-center">Durasi</th>
-              <th class="text-center" width="150">Harga</th>
-              <th class="text-center" width="110">Diskon</th>
-              <th class="text-center" width="110">Total</th>
+              <th class="text-center" width="110">Harga</th>
+              <th class="text-center" width="100">Diskon</th>
+              <th class="text-center" width="100">Denda</th>
+              <th class="text-center" width="100">Total</th>
               <th class="text-center" width="100">Aksi</th>
             </tr>
           </thead>
