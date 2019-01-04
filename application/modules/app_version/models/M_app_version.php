@@ -1531,6 +1531,10 @@ class M_app_version extends CI_Model {
         case '2.9.7':
           $this->db->query("ALTER TABLE `hot_billing_room` ADD COLUMN `room_st_denda` INT(1) NOT NULL DEFAULT 1 AFTER `room_type_denda`");
           break;
+
+        case '2.9.8':
+          $this->db->query("ALTER TABLE `res_client` ADD COLUMN `client_skin` TINYINT(1) NOT NULL DEFAULT '1' AFTER `client_logo`");
+          break;
       }
       
     //insert new update history
@@ -1671,6 +1675,8 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"2.9.6","version_release"=>"2019-01-03 20:12:00"));
     // add room_st_denda => hot_billing_room
     array_push($version, array("version_now"=>"2.9.7","version_release"=>"2019-01-03 20:12:00"));
+    // add skin restaurant
+    array_push($version, array("version_now"=>"2.9.8","version_release"=>"2019-01-04 08:29:00"));
 
     foreach ($version as $key => $val) {
       //check version

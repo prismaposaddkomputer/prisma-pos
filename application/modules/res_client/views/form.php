@@ -131,6 +131,19 @@
           <input type="hidden" name="client_logo_input" value="<?=$client->client_logo?>">
           <small>Gambar akan dikompress dengan Tinggi : 150px & Lebar : 300px dan distruk akan menjadi hitam putih</small>
         </div>
+        <div class="form-group">
+          <label>Tema Kasir</label><br>
+          <div class="row">
+            <div class="col-md-6 text-center">
+              <img class="img-responsive" src="<?=base_url()?>img/res-skin-1.jpg"><br>
+              <input class="" type="radio" name="client_skin" value="1" <?php if($client != null){if($client->client_skin == 1){echo 'checked';}}else{echo 'checked';}?>> Tema 1
+            </div>
+            <div class="col-md-6 text-center">
+              <img class="img-responsive" src="<?=base_url()?>img/res-skin-1.jpg"><br>
+              <input class="" type="radio" name="client_skin" value="2" <?php if($client != null){if($client->client_skin == 2){echo 'checked';}}else{echo 'checked';}?>> Tema 2
+            </div>
+          </div>
+        </div>
         <div class="form-group pull-right">
           <a class="btn btn-default" href="<?=base_url()?>res_client/index"><i class="fa fa-close"></i> Batal</a>
           <button class="btn btn-info" type="submit"><i class="fa fa-save"></i> Simpan</button>
