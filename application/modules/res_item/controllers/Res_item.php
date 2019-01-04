@@ -119,47 +119,7 @@ class Res_item extends MY_Restaurant {
 
   public function update()
   {
-    $data = $_POST;
-    $item_id = $data['item_id'];
-    $client = $this->m_res_client->get_all();
-    $tax = $this->m_res_tax->get_by_id($data['tax_id']);
-
-    $data['updated_by'] = $this->session->userdata('user_realname');
-    if(!isset($data['is_active'])){
-      $data['is_active'] = 0;
-    }
-    
-    $item_price = price_to_num($data['item_price']);
-    if ($client->client_is_taxed == 0) {
-      $data['item_price_before_tax'] = $item_price;
-      $data['item_tax'] = ($tax->tax_ratio/100)*$item_price;
-      $data['item_price_after_tax'] = $data['item_price_before_tax']+$data['item_price_after_tax'];
-    }else{
-      $data['item_price_after_tax'] = $item_price;
-      $data['item_tax'] = ($tax->tax_ratio/(100+$tax->tax_ratio))*$data['item_price_after_tax'];
-      $data['item_price_before_tax'] = $data['item_price_after_tax']-$data['item_tax'];
-    }
-    // $data['tax_name'] = $tax->tax_name;
-    // $data['tax_ratio'] = $tax->tax_ratio;
-    unset($data['item_price']);
-    // clear package
-    $this->m_res_item->clear_package($item_id);
-    // insert package
-    if(isset($data['item_detail_id'])){
-      foreach ($data['item_detail_id'] as $key => $val) {
-        $data_package = null;
-        $data_package = array(
-          "item_id" => $item_id,
-          "item_detail_id" => $val,
-          "item_detail_price" => $data['item_detail_price'][$key]
-        );
-        $this->m_res_item->insert_package($data_package);
-      }
-    }
-
-    unset($data['item_detail_id'],$data['item_detail_price']);
-
-    $this->m_res_item->update($item_id,$data);
+    $this->m_res_item->update();
     $this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil diubah!</div>');
     redirect(base_url().'res_item');
   }

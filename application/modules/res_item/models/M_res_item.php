@@ -54,11 +54,6 @@ class M_res_item extends CI_Model {
     return $this->db->order_by('item_id','desc')->get('res_item')->row();
   }
 
-  public function update($id,$data)
-  {
-    $this->db->where('item_id',$id)->update('res_item',$data);
-  }
-
   public function delete($id)
   {
     $this->db->where('item_id',$id)->update('res_item',array('is_deleted' => '1'));
@@ -90,7 +85,70 @@ class M_res_item extends CI_Model {
 	// 	$this->db->insert('res_item',$data);
 	// }
 
-	public function insert($data)
+	// public function update($id,$data)
+	// {
+	// 	$this->db->where('item_id',$id)->update('res_item',$data);
+	// }
+
+	public function update()
+	{
+		$data = $_POST;
+	    $item_id = $data['item_id'];
+	    $client = $this->m_res_client->get_all();
+	    $tax = $this->m_res_tax->get_by_id($data['tax_id']);
+
+	    $data['updated_by'] = $this->session->userdata('user_realname');
+	    if(!isset($data['is_active'])){
+	      $data['is_active'] = 0;
+	    }
+	    
+	    $item_price = price_to_num($data['item_price']);
+	    if ($client->client_is_taxed == 0) {
+	      $data['item_price_before_tax'] = $item_price;
+	      $data['item_tax'] = ($tax->tax_ratio/100)*$item_price;
+	      $data['item_price_after_tax'] = $data['item_price_before_tax']+$data['item_price_after_tax'];
+	    }else{
+	      $data['item_price_after_tax'] = $item_price;
+	      $data['item_tax'] = ($tax->tax_ratio/(100+$tax->tax_ratio))*$data['item_price_after_tax'];
+	      $data['item_price_before_tax'] = $data['item_price_after_tax']-$data['item_tax'];
+	    }
+	    // $data['tax_name'] = $tax->tax_name;
+	    // $data['tax_ratio'] = $tax->tax_ratio;
+
+	    $item_logo = $this->compress_image('item_logo');
+
+	    if ($data['item_logo_input'] !='') {
+	      if ($item_logo !='') {
+	        $data['item_logo'] = $item_logo;
+	      }else{
+	        $data['item_logo'] = $data['item_logo_input'];
+	      }
+	    }elseif ($item_logo !='') {
+	      $data['item_logo'] = $item_logo;
+	    }
+
+	    unset($data['item_price'], $data['item_logo_input']);
+	    // clear package
+	    $this->m_res_item->clear_package($item_id);
+	    // insert package
+	    if(isset($data['item_detail_id'])){
+	      foreach ($data['item_detail_id'] as $key => $val) {
+	        $data_package = null;
+	        $data_package = array(
+	          "item_id" => $item_id,
+	          "item_detail_id" => $val,
+	          "item_detail_price" => $data['item_detail_price'][$key]
+	        );
+	        $this->m_res_item->insert_package($data_package);
+	      }
+	    }
+
+	    unset($data['item_detail_id'],$data['item_detail_price']);
+
+		$this->db->where('item_id',$item_id)->update('res_item',$data);
+	}
+
+	public function insert()
 	{
 		$data = $_POST;
 	    $client = $this->m_res_client->get_all();
