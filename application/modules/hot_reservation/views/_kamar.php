@@ -37,7 +37,7 @@
                 </label>
                 &nbsp;&nbsp;&nbsp;
                 <label class="radio-inline">
-                   <input type="radio" name="room_type_tarif_kamar" class="room_type_tarif_kamar" id="room_type_tarif_kamar_2" value="2"/> Per Jam
+                   <input type="radio" name="room_type_tarif_kamar" class="room_type_tarif_kamar" id="room_type_tarif_kamar_2" value="2"/> Per Jam (Short Time)
                 </label>
             </div>
           </div>
@@ -86,10 +86,21 @@
           </div>
           <div class="col-md-6">
             <div class="form-group">
+              <label>Pilih Tipe Pengisian Denda</label>
+              <br>
+                <label class="radio-inline">
+                   <input type="radio" name="room_st_denda" class="room_st_denda" id="room_st_denda_1" value="1" checked=""/> Isi Otomatis
+                </label>
+                &nbsp;&nbsp;&nbsp;
+                <label class="radio-inline">
+                   <input type="radio" name="room_st_denda" class="room_st_denda" id="room_st_denda_2" value="2"/> Isi Manual
+                </label>
+            </div>
+            <div class="form-group">
               <label>Denda</label>
               <div class="input-group">
                 <div class="input-group-addon"><b>Rp</b></div>
-                <input class="form-control autonumeric num" id="room_type_denda" type="text" value="0">
+                <input class="form-control autonumeric num" id="room_type_denda" type="text" value="0" readonly="">
               </div>
             </div>
           </div>

@@ -8,6 +8,8 @@
       <div class="modal-body">
         <input class="form-control" id="update_billing_room_id" type="hidden" value="" readonly>
         <input class="form-control" id="update_room_type_id" type="hidden" value="" readonly>
+        <input class="form-control" id="update_billing_id" type="hidden" value="" readonly>
+        <input class="form-control" id="update_room_id" type="hidden" value="" readonly>
 
         <div class="row">
           <div class="col-md-6">
@@ -82,10 +84,21 @@
           </div>
           <div class="col-md-6">
             <div class="form-group">
+              <label>Pilih Tipe Pengisian Denda</label>
+              <br>
+                <label class="radio-inline">
+                   <input type="radio" name="update_room_st_denda" class="update_room_st_denda" id="update_room_st_denda_1" value="1" checked=""/> Isi Otomatis
+                </label>
+                &nbsp;&nbsp;&nbsp;
+                <label class="radio-inline">
+                   <input type="radio" name="update_room_st_denda" class="update_room_st_denda" id="update_room_st_denda_2" value="2"/> Isi Manual
+                </label>
+            </div>
+            <div class="form-group">
               <label>Denda</label>
               <div class="input-group">
                 <div class="input-group-addon"><b>Rp</b></div>
-                <input class="form-control autonumeric num" id="update_room_type_denda" type="text" value="0">
+                <input class="form-control autonumeric num" id="update_room_type_denda" type="text" value="0" readonly="">
               </div>
             </div>
           </div>

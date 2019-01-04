@@ -170,9 +170,10 @@ class Hot_reservation extends MY_Hotel {
             $selisih_jam = $diff->h;
             // End Hitung Selisih Waktu
 
-            $data_update_billing_room['room_type_denda'] = round($denda->denda_charge,0,PHP_ROUND_HALF_UP) * $selisih_jam;
-
-            $this->m_hot_reservation->update_billing_room($row->billing_id,$row->room_id,$data_update_billing_room);
+            if ($row->room_st_denda == '1') {
+              $data_update_billing_room['room_type_denda'] = round($denda->denda_charge,0,PHP_ROUND_HALF_UP) * $selisih_jam;
+              $this->m_hot_reservation->update_billing_room($row->billing_id,$row->room_id,$data_update_billing_room);
+            }
           }
         }
         // End Proses Denda
@@ -1018,6 +1019,44 @@ class Hot_reservation extends MY_Hotel {
     echo json_encode($data);
   }
 
+  public function get_room_type_denda()
+  {
+    $client = $this->m_hot_client->get_all();
+    $billing_id = $this->input->post('billing_id');
+    $room_id = $this->input->post('room_id');
+    //
+    $hot_billing = $this->m_hot_reservation->get_billing_by_billing_id($billing_id);
+    $hot_billing_room = $this->m_hot_reservation->get_billing_room_by_billing_id_and_room_id($billing_id, $room_id);
+    $denda = $this->m_hot_denda->get_by_id('1');
+    //
+    $jam_sekarang = date('Y-m-d H:i:s');
+
+    $billing_time_in = date('Y-m-d H:i:s', strtotime('+'.round($hot_billing_room->room_type_duration,0,PHP_ROUND_HALF_UP).' hours', strtotime($hot_billing->billing_date_in.' '.$hot_billing->billing_time_in)));
+    $jam_akhir = date('Y-m-d H:i:s', strtotime('+'.round($denda->denda_duration,0,PHP_ROUND_HALF_UP).' hours', strtotime($billing_time_in)));
+
+    // print("Jam Sekarang : ".$jam_sekarang." - Billing Time IN : ".$billing_time_in." - Jam Akhir : ".$jam_akhir."\n");
+
+    if ($jam_sekarang >= $jam_akhir) {
+
+      // Hitung Selisih Waktu
+      $awal  = new DateTime($jam_akhir);
+      $akhir = new DateTime(); // Waktu sekarang
+      $diff  = $awal->diff($akhir);
+      $selisih_jam = $diff->h;
+      // End Hitung Selisih Waktu
+
+      if ($hot_billing_room->room_st_denda == '2') {
+        $room_type_denda = round($denda->denda_charge,0,PHP_ROUND_HALF_UP) * $selisih_jam;
+      }
+
+      $data = array(
+        'room_type_denda' => $room_type_denda
+      );
+    }
+    
+    echo json_encode($data);
+  }
+
   public function get_validate_room()
   {
     $room_id = $this->input->get('room_id');
@@ -1134,6 +1173,8 @@ class Hot_reservation extends MY_Hotel {
       'room_type_before_discount' => $room_type_before_discount,
       'room_type_discount' => $room_type_discount,
       'room_type_total' => $room_type_total,
+      'room_type_denda' => price_to_num($data['room_type_denda']),
+      'room_st_denda' => $data['room_st_denda'],
       'room_keterangan' => $data['room_keterangan'],
       'room_type_duration' => $data['room_type_duration'],
       'created_by' => $this->session->userdata('user_realname')
@@ -1208,6 +1249,8 @@ class Hot_reservation extends MY_Hotel {
       'room_type_duration' => $data['room_type_duration'],
       'room_keterangan' => $data['room_keterangan'],
       'room_type_denda' => price_to_num($data['room_type_denda']),
+      'room_type_tarif_kamar' => $data['room_type_tarif_kamar'],
+      'room_st_denda' => $data['room_st_denda'],
       'created_by' => $this->session->userdata('user_realname')
     );
     $this->m_hot_reservation->update_room($id,$data_room);

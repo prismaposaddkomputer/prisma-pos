@@ -14,7 +14,7 @@
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
-              <label>Tarif Kamar Hari <small class="required-field">**</small></label>
+              <label>Tarif Kamar Hari (Long Time) <small class="required-field">**</small></label>
               <div class="input-group">
                   <div class="input-group-addon"><b>Rp</b></div>
                   <input class="form-control autonumeric num" type="text" name="room_type_charge" value="<?php if($room_type != null){echo $room_type->room_type_charge;}else{echo '0';}?>">
@@ -24,7 +24,7 @@
           </div>
           <div class="col-md-6">
             <div class="form-group">
-              <label>Tarif Kamar Per Jam <small class="required-field">**</small></label>
+              <label>Tarif Kamar Per Jam (Short Time) <small class="required-field">**</small></label>
               <div class="input-group">
                   <div class="input-group-addon"><b>Rp</b></div>
                   <input class="form-control autonumeric num" type="text" name="room_type_charge_hour" value="<?php if($room_type != null){echo $room_type->room_type_charge_hour;}else{echo '0';}?>">
