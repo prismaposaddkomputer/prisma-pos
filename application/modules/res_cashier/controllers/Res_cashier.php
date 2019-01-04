@@ -1690,6 +1690,27 @@ class Res_cashier extends MY_Restaurant {
     echo json_encode($data);
   }
 
+  public function update_stock_return($tx_id)
+  {
+    $bill = $this->m_res_cashier->get_billing_tr($tx_id);
+    // echo '<pre>' . var_export($bill, true) . '</pre>';exit();
+    if ($bill) {
+      foreach ($bill->detail as $row) {
+        $d = array();
+        $d['tx_id'] = $bill->tx_id;
+        $d['tx_type'] = $bill->tx_type;
+        $d['tx_date'] = $bill->tx_date;
+        $d['item_id'] = $row->item_id;
+        if ($row->is_return == 0) {
+          $d['stock_out'] = -1*$row->tx_amount;
+        }else {
+          $d['stock_in'] = -1*$row->tx_amount;
+        }
+        $this->m_res_cashier->update_stock_return($tx_id,$d['item_id'],$d);
+      }
+    }
+  }
+
   public function edit_return_item_action()
   {
     $data = $_POST;
@@ -1739,6 +1760,8 @@ class Res_cashier extends MY_Restaurant {
       // else add new item
       $this->m_res_cashier->insert_detail($data_detail);
     }
+
+    $this->update_stock_return($item->tx_id);
 
     $billing = $this->m_res_cashier->get_billing_by_id($item->tx_id);
 
@@ -1847,6 +1870,8 @@ class Res_cashier extends MY_Restaurant {
 
     //update billing
     $this->m_res_cashier->update_billing($tx_id, $data_billing);
+    //update stock
+    $this->update_stock_return($tx_id);
 
     echo json_encode($data_billing);
 

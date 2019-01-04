@@ -137,6 +137,38 @@ class M_res_cashier extends CI_Model {
     $this->db->where('billing_detail_id',$id)->update('res_billing_detail',$data);
   }
 
+  public function get_billing_tr($tx_id)
+  {
+    $data = $this->db
+      ->where('tx_id', $tx_id)
+      ->get('res_billing')
+      ->row();
+
+    $data->detail = $this->db
+      ->where('tx_id', $tx_id)
+      ->get('res_billing_detail')
+      ->result();
+
+    return $data;
+  }
+
+  public function cek_stok($tx_id,$item_id)
+  {
+    return $this->db
+      ->where('tx_id',$tx_id)
+      ->where('item_id',$item_id)
+      ->get('res_stock')
+      ->row();
+  }
+
+  public function update_stock_return($tx_id,$item_id,$data)
+  {
+    $this->db
+      ->where('tx_id',$tx_id)
+      ->where('item_id',$item_id)
+      ->update('res_stock',$data);
+  }
+
   public function get_billing_detail($id)
   {
     return $this->db
