@@ -672,8 +672,6 @@
                 var room_type_tarif_kamar = 'Jam';
               }
 
-              var room_type_subtotal = parseFloat(item.room_type_subtotal)+parseFloat(item.room_type_denda);
-
               var row = '<tr>'+
                 '<td>'+item.room_type_name+'</td>'+
                 '<td>'+item.room_name+'</td>'+
@@ -681,7 +679,7 @@
                 '<td>'+sys_to_cur(item.room_type_charge)+'</td>'+
                 '<td>'+discount_amount+'</td>'+
                 '<td>'+sys_to_cur(item.room_type_denda)+'</td>'+
-                '<td>'+sys_to_cur(room_type_subtotal)+'</td>'+
+                '<td>'+sys_to_cur(item.room_type_subtotal)+'</td>'+
                 '<td class="text-center">'+
                   '<button class="btn btn-sm btn-warning" onclick="update_room_show('+item.billing_room_id+')"><i class="fa fa-pencil fa-lg"></i></button> '+
                   '<button class="btn btn-sm btn-danger" onclick="delete_room('+item.billing_room_id+')"><i class="fa fa-trash fa-lg"></i></button>'+
@@ -708,8 +706,6 @@
                 var room_type_tarif_kamar = 'Jam';
               }
 
-              var room_type_total = parseFloat(item.room_type_total)+parseFloat(item.room_type_denda);
-
               var row = '<tr>'+
                 '<td>'+item.room_type_name+'</td>'+
                 '<td>'+item.room_name+'</td>'+
@@ -718,7 +714,7 @@
                 '<td>'+sys_to_cur(item.room_type_before_discount)+'</td>'+
                 '<td>'+discount_amount+'</td>'+
                 '<td>'+sys_to_cur(item.room_type_denda)+'</td>'+
-                '<td>'+sys_to_cur(room_type_total)+'</td>'+
+                '<td>'+sys_to_cur(item.room_type_total)+'</td>'+
                 '<td class="text-center">'+
                   '<button class="btn btn-sm btn-warning" onclick="update_room_show('+item.billing_room_id+')"><i class="fa fa-pencil fa-lg"></i></button> '+
                   '<button class="btn btn-sm btn-danger" onclick="delete_room('+item.billing_room_id+')"><i class="fa fa-trash fa-lg"></i></button>'+

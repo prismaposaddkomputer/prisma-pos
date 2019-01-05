@@ -283,6 +283,7 @@ class Hot_reservation extends MY_Hotel {
     $billing_other = 0;
     $billing_total = 0;
     $billing_discount = 0;
+    $billing_denda = 0;
 
     foreach ($room as $row) {
       $billing_subtotal += $row->room_type_subtotal;
@@ -293,6 +294,7 @@ class Hot_reservation extends MY_Hotel {
       //
       $billing_total += $row->room_type_total;
       $billing_discount += $row->room_type_discount;
+      $billing_denda += $row->room_type_denda;
     }
 
     foreach ($extra as $row) {
@@ -328,6 +330,7 @@ class Hot_reservation extends MY_Hotel {
     $data['billing_service'] = $billing_service;
     $data['billing_other'] = $billing_other;
     $data['billing_discount'] = $billing_discount;
+    $data['billing_denda'] = $billing_denda;
     $data['billing_total'] = $billing_total;
 
     $this->m_hot_reservation->update($billing_id,$data);
@@ -368,9 +371,9 @@ class Hot_reservation extends MY_Hotel {
     // $save_print = $data['save_print'];
     // unset($data['save_print']);
     //
-    $data['billing_discount'] = price_to_num($data['billing_discount']);
+    $data['billing_discount_custom'] = price_to_num($data['billing_discount_custom']);
     $billing = $this->m_hot_reservation->get_billing($id);
-    $billing_total = $billing->billing_total - $billing->billing_down_payment - $data['billing_discount'];
+    $billing_total = $billing->billing_total - $billing->billing_down_payment - $data['billing_discount_custom'];
     //
     $data['billing_payment'] = price_to_num($data['billing_payment']);
     if ($billing->billing_down_payment_type == 1) {
@@ -648,6 +651,7 @@ class Hot_reservation extends MY_Hotel {
         $printer -> selectPrintMode(Escpos\Printer::MODE_FONT_A);
         $printer -> feed();
         foreach ($billing->room as $row){
+          // Nama Room
           $printer -> setJustification(Escpos\Printer::JUSTIFY_LEFT);
           $printer -> text($row->room_name);
           $printer -> feed();
@@ -656,13 +660,13 @@ class Hot_reservation extends MY_Hotel {
           if ($client->client_is_taxed == 0) {
             $room_type_subtotal = num_to_price($row->room_type_charge);
           }else{
-            $room_type_subtotal = num_to_price($row->room_type_total/$row->room_type_duration);
+            $room_type_subtotal = num_to_price($row->room_type_before_discount/$row->room_type_duration);
           }
           //
           if ($client->client_is_taxed == 0) {
             $room_type_total = num_to_price($row->room_type_subtotal);
           }else{
-            $room_type_total = num_to_price($row->room_type_total);
+            $room_type_total = num_to_price($row->room_type_before_discount);
           }
 
           if ($row->room_type_tarif_kamar == '1') {
@@ -673,6 +677,12 @@ class Hot_reservation extends MY_Hotel {
           //
           $printer -> text(round($row->room_type_duration,0,PHP_ROUND_HALF_UP)." ".$duration." X ".$room_type_subtotal." = ".$room_type_total);
           $printer -> feed();
+
+          // Denda
+          if ($row->room_type_denda !='') {
+            $printer -> text("Denda = ".num_to_price($row->room_type_denda));
+            $printer -> feed();
+          }
         }
       }
       // Extra
@@ -1223,14 +1233,14 @@ class Hot_reservation extends MY_Hotel {
     if ($discount->discount_type == '1') {
       if ($discount->discount_id == '1') {
         $room_type_discount = $discount->discount_amount;
-        $room_type_total = $room_type_before_discount-$room_type_discount;
+        $room_type_total = $room_type_before_discount - $room_type_discount + price_to_num($data['room_type_denda']);
       }else{
         $room_type_discount = ($discount->discount_amount/100);
-        $room_type_total = $room_type_before_discount * $room_type_discount;
+        $room_type_total = $room_type_before_discount * $room_type_discount + price_to_num($data['room_type_denda']);
       }
     }else{
       $room_type_discount = $discount->discount_amount;
-      $room_type_total = $room_type_before_discount-$room_type_discount;
+      $room_type_total = $room_type_before_discount - $room_type_discount + price_to_num($data['room_type_denda']);
     }
 
     $data_room = array(
@@ -1925,13 +1935,13 @@ class Hot_reservation extends MY_Hotel {
           if ($client->client_is_taxed == 0) {
             $room_type_subtotal = num_to_price($row->room_type_charge);
           }else{
-            $room_type_subtotal = num_to_price($row->room_type_total/$row->room_type_duration);
+            $room_type_subtotal = num_to_price($row->room_type_before_discount/$row->room_type_duration);
           }
           //
           if ($client->client_is_taxed == 0) {
             $room_type_total = num_to_price($row->room_type_subtotal);
           }else{
-            $room_type_total = num_to_price($row->room_type_total);
+            $room_type_total = num_to_price($row->room_type_before_discount);
           }
           //
           $printer -> text(round($row->room_type_duration,0,PHP_ROUND_HALF_UP)." Jam X ".$room_type_subtotal." = ".$room_type_total);

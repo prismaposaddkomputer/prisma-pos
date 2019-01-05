@@ -203,13 +203,13 @@
             if ($client->client_is_taxed == 0) {
               $room_type_subtotal = num_to_price($row->room_type_charge);
             }else{
-              $room_type_subtotal = num_to_price($row->room_type_total/$row->room_type_duration);
+              $room_type_subtotal = num_to_price($row->room_type_before_discount/$row->room_type_duration);
             }
             //
             if ($client->client_is_taxed == 0) {
               $room_type_total = num_to_price($row->room_type_subtotal);
             }else{
-              $room_type_total = num_to_price($row->room_type_total);
+              $room_type_total = num_to_price($row->room_type_before_discount);
             }
             //
             ?>
@@ -219,6 +219,14 @@
               <td align="right"><?=$room_type_subtotal?></td>
               <td align="right"><?=$room_type_total?></td>
             </tr>
+
+            <?php if ($row->room_type_denda !=''): ?>
+            <tr>
+              <td colspan="3"></td>
+              <td align="right"><b>Denda</b> : <?=num_to_price($row->room_type_denda)?></td>
+            </tr>
+            <?php endif; ?>
+
             <?php endforeach; ?>
           <?php endif; ?>
 

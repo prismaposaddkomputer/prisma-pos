@@ -1548,6 +1548,10 @@ class M_app_version extends CI_Model {
         case '2.9.11':
           $this->db->query("ALTER TABLE `hot_billing` ADD COLUMN `billing_denda` float(10,2) NOT NULL AFTER `billing_discount`");
           break;
+
+        case '2.9.12':
+          $this->db->query("ALTER TABLE `hot_billing` ADD COLUMN `billing_discount_custom` float(10,2) NOT NULL AFTER `billing_status`");
+          break;
       }
       
     //insert new update history
@@ -1696,6 +1700,8 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"2.9.10","version_release"=>"2019-01-04 08:29:00"));
     // add billing_denda => hot_billing
     array_push($version, array("version_now"=>"2.9.11","version_release"=>"2019-01-05 08:29:00"));
+    // add billing_discount_custom => hot_billing
+    array_push($version, array("version_now"=>"2.9.12","version_release"=>"2019-01-05 08:29:00"));
 
     foreach ($version as $key => $val) {
       //check version
