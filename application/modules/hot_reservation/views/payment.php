@@ -88,6 +88,7 @@
             <th class="text-center" width="100">Durasi</th>
             <th class="text-center" width="150">Subtotal</th>
             <th class="text-center" width="150">Diskon</th>
+            <th class="text-center" width="150">Denda</th>
             <th class="text-center" width="150">Total</th>
           </tr>              
         </thead>
@@ -125,33 +126,34 @@
                     }
                   ?>
                 </td>
+                <td><?=num_to_idr($row->room_type_denda)?></td>
                 <td>
                   <?php 
                     if ($client->client_is_taxed == 0) {
-                      echo num_to_idr($row->room_type_subtotal);
+                      echo num_to_idr($row->room_type_subtotal + $row->room_type_denda);
                     }else{
-                      echo num_to_idr($row->room_type_total);
+                      echo num_to_idr($row->room_type_total + $row->room_type_denda);
                     }
                   ?>
                 </td>
                 <?php 
                   if ($client->client_is_taxed == 0) {
-                    $tot_room += $row->room_type_subtotal;
+                    $tot_room += $row->room_type_subtotal + $row->room_type_denda;
                   }else{
-                    $tot_room += $row->room_type_total;
+                    $tot_room += $row->room_type_total + $row->room_type_denda;
                   }
                 ?>
               </tr>
             <?php endforeach;?>
           <?php else: ?>
             <tr>
-              <td class="text-center" colspan="7"><i>Tidak ada data!</i></td>
+              <td class="text-center" colspan="8"><i>Tidak ada data!</i></td>
             </tr>
           <?php endif;?>
         </tbody>
         <tfoot>
           <tr>
-            <th class="text-center" colspan="6">Total</th>
+            <th class="text-center" colspan="7">Total</th>
             <th><?=num_to_idr($tot_room)?></th>
           </tr>
         </tfoot>

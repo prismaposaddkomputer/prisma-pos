@@ -1544,6 +1544,10 @@ class M_app_version extends CI_Model {
           $this->db->query("INSERT INTO `hot_module` VALUES ('02.11', '02', 'Denda', 'hot_denda', 'hot_denda', 'index', '', '2019-01-04 17:26:40', 'System', '2018-08-18 05:51:24', 'System', 0, 0)");
           $this->db->query("INSERT INTO `hot_permission` VALUES (106, 0, '02.11', 1, 1, 1, 1, '2019-01-04 17:28:31', 'Super Hotel')");
           break;
+
+        case '2.9.11':
+          $this->db->query("ALTER TABLE `hot_billing` ADD COLUMN `billing_denda` float(10,2) NOT NULL AFTER `billing_discount`");
+          break;
       }
       
     //insert new update history
@@ -1690,6 +1694,8 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"2.9.9","version_release"=>"2019-01-04 08:29:00"));
     // add module and role hotel
     array_push($version, array("version_now"=>"2.9.10","version_release"=>"2019-01-04 08:29:00"));
+    // add billing_denda => hot_billing
+    array_push($version, array("version_now"=>"2.9.11","version_release"=>"2019-01-05 08:29:00"));
 
     foreach ($version as $key => $val) {
       //check version
