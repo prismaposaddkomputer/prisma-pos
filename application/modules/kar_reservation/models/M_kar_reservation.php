@@ -410,8 +410,8 @@ class M_kar_reservation extends CI_Model {
 		$get_billing_by_billing_id = $this->get_billing_by_billing_id(@$get_billing_by_room_id->billing_id);
 		$tgl_hari_ini = date('Y-m-d');
 		//
-		$date_akhir = date('H:i:s', strtotime('+'.round(@$get_billing_by_room_id->room_type_duration,0,PHP_ROUND_HALF_UP).' hours', strtotime(@$get_billing_by_billing_id->billing_time_in)));
-		$date_hari_ini = date('H:i:s');
+		$date_akhir = date('Y-m-d H:i:s', strtotime('+'.round(@$get_billing_by_room_id->room_type_duration,0,PHP_ROUND_HALF_UP).' hours', strtotime(@$get_billing_by_billing_id->billing_date_in.' '.@$get_billing_by_billing_id->billing_time_in)));
+		$date_hari_ini = date('Y-m-d H:i:s');
 
 		//
         $sql = "SELECT 
