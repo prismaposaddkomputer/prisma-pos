@@ -131,6 +131,13 @@ class M_hot_reservation extends CI_Model {
 			->update('hot_billing_room',$data);
 	}
 
+	public function update_billing($billing_id, $data)
+	{
+		$this->db
+			->where('billing_id',$billing_id)
+			->update('hot_billing',$data);
+	}
+
 	public function delete_room($id)
 	{
 		$this->db->where('billing_room_id',$id)->delete('hot_billing_room');
@@ -411,6 +418,8 @@ class M_hot_reservation extends CI_Model {
         		return false;
         	}elseif ($get_billing_by_billing_id->billing_status == '0') {
         		return true;
+        	}elseif ($get_billing_by_billing_id->billing_status == '3') {
+        		return false;
         	}else{
         		if ($date_hari_ini >= $date_akhir) {
 	        		return false;

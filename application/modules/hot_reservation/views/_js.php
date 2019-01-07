@@ -649,7 +649,7 @@
         $("#row_room_list").html('');
         if (data.room == null || data.room == '') {
           var row = '<tr>'+
-            '<td class="text-center" colspan="7">Data tidak ada!</td>'+
+            '<td class="text-center" colspan="8">Data tidak ada!</td>'+
           '</tr>';
           $("#row_room_list").append(row);
         } else {
@@ -673,13 +673,14 @@
               }
 
               var row = '<tr>'+
-                '<td>'+item.room_type_name+'</td>'+
+                // '<td>'+item.room_type_name+'</td>'+
                 '<td>'+item.room_name+'</td>'+
-                '<td class="text-center">'+Math.round(item.room_type_duration)+' '+room_type_tarif_kamar+' </td>'+
                 '<td>'+sys_to_cur(item.room_type_charge)+'</td>'+
+                '<td class="text-center">'+Math.round(item.room_type_duration)+' '+room_type_tarif_kamar+' </td>'+
+                '<td>'+sys_to_cur(item.room_type_subtotal)+'</td>'+
                 '<td>'+discount_amount+'</td>'+
                 '<td>'+sys_to_cur(item.room_type_denda)+'</td>'+
-                '<td>'+sys_to_cur(item.room_type_subtotal)+'</td>'+
+                '<td>'+sys_to_cur(item.room_type_total)+'</td>'+
                 '<td class="text-center">'+
                   '<button class="btn btn-sm btn-warning" onclick="update_room_show('+item.billing_room_id+')"><i class="fa fa-pencil fa-lg"></i></button> '+
                   '<button class="btn btn-sm btn-danger" onclick="delete_room('+item.billing_room_id+')"><i class="fa fa-trash fa-lg"></i></button>'+
@@ -707,11 +708,12 @@
               }
 
               var row = '<tr>'+
-                '<td>'+item.room_type_name+'</td>'+
+                // '<td>'+item.room_type_name+'</td>'+
                 '<td>'+item.room_name+'</td>'+
+                '<td>'+sys_to_cur(item.room_type_charge)+'</td>'+
                 '<td class="text-center">'+Math.round(item.room_type_duration)+' '+room_type_tarif_kamar+' </td>'+
                 // '<td>'+sys_to_cur(item.room_type_total/item.room_type_duration)+'</td>'+
-                '<td>'+sys_to_cur(item.room_type_before_discount)+'</td>'+
+                '<td>'+sys_to_cur(item.room_type_subtotal)+'</td>'+
                 '<td>'+discount_amount+'</td>'+
                 '<td>'+sys_to_cur(item.room_type_denda)+'</td>'+
                 '<td>'+sys_to_cur(item.room_type_total)+'</td>'+
@@ -736,12 +738,12 @@
       data : 'room_type_id='+room_type_id,
       dataType : 'json',
       success : function (data) {
-        $("#update_room_id option").each(function() {
-          $(this).remove();
-        });
-        $("#update_room_id").select2({
-          data: data.room
-        }).trigger('change');
+        // $("#update_room_id option").each(function() {
+        //   $(this).remove();
+        // });
+        // $("#update_room_id").select2({
+        //   data: data.room
+        // }).trigger('change');
         // console.log(data.room_type.room_type_charge);
         // $('#room_type_charge').val(sys_to_ind(Math.ceil(data.room_type.room_type_charge)));
 
@@ -823,8 +825,14 @@
 
         if (data.room_type_tarif_kamar == '1') {
           $("#update_room_type_tarif_kamar_1").prop("checked", true);
+          $('#update_label_room_type_charge').text('Harga Per Hari');
+          $('#update_label_room_type_duration').text('Harga Per Hari');
+          $('#update_group_addon_room_type_duration').html('<b>Hari</b>');
         }else{
           $("#update_room_type_tarif_kamar_2").prop("checked", true);
+          $('#update_label_room_type_charge').text('Harga Per Jam');
+          $('#update_label_room_type_duration').text('Harga Per Jam');
+          $('#update_group_addon_room_type_duration').html('<b>Jam</b>');
         }
 
         if (data.room_st_denda == '1') {

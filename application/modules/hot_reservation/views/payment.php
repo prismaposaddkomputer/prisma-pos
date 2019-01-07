@@ -130,7 +130,8 @@
                 <td>
                   <?php 
                     if ($client->client_is_taxed == 0) {
-                      echo num_to_idr($row->room_type_subtotal);
+                      // echo num_to_idr($row->room_type_subtotal);
+                      echo num_to_idr($row->room_type_total);
                     }else{
                       echo num_to_idr($row->room_type_total);
                     }
@@ -138,7 +139,8 @@
                 </td>
                 <?php 
                   if ($client->client_is_taxed == 0) {
-                    $tot_room += $row->room_type_subtotal;
+                    // $tot_room += $row->room_type_subtotal;
+                    $tot_room += $row->room_type_total;
                   }else{
                     $tot_room += $row->room_type_total;
                   }
@@ -658,7 +660,7 @@
   $("#print_pdf").click(function () {
     var billing_id = $('#billing_id').val();
     var billing_payment = ind_to_sys($('#billing_payment').val());
-    var billing_discount = ind_to_sys($('#billing_discount').val());
+    var billing_discount_custom = ind_to_sys($('#billing_discount_custom').val());
     <?php if ($billing->billing_down_payment_type == 1): ?>
       var total_payment = <?=$billing->billing_total-$billing->billing_down_payment?>;
     <?php else: ?>
@@ -684,7 +686,7 @@
       $.ajax({
         type : 'POST',
         url : '<?=base_url()?>hot_reservation/payment_action',
-        data : 'billing_id='+billing_id+'&billing_payment='+billing_payment+'&billing_discount='+billing_discount,
+        data : 'billing_id='+billing_id+'&billing_payment='+billing_payment+'&billing_discount_custom='+billing_discount_custom,
         dataType : 'json',
         success : function (data) {
           send_dashboard(data);

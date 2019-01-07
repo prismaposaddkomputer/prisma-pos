@@ -220,7 +220,14 @@
               <td align="right"><?=$room_type_total?></td>
             </tr>
 
-            <?php if ($row->room_type_denda !=''): ?>
+            <?php if ($row->room_type_denda !='0'): ?>
+            <tr>
+              <td colspan="3"></td>
+              <td align="right"><b>Denda</b> : <?=num_to_price($row->room_type_denda)?></td>
+            </tr>
+            <?php endif; ?>
+            
+            <?php if ($row->room_type_denda !='0'): ?>
             <tr>
               <td colspan="3"></td>
               <td align="right"><b>Denda</b> : <?=num_to_price($row->room_type_denda)?></td>
