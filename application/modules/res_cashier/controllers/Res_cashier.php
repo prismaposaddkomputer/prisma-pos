@@ -99,7 +99,11 @@ class Res_cashier extends MY_Restaurant {
           $data['keyboard'] = $client->client_keyboard_status;
           $data['client'] = $client;
 
-          $this->load->view('res_cashier/index',$data);
+          if ($client->client_skin == 1) {
+            $this->load->view('res_cashier/index1',$data);
+          }else{
+            $this->load->view('res_cashier/index2',$data);
+          }
         }
       }
 

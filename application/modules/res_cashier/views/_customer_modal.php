@@ -15,19 +15,19 @@
             <div class="form-group">
               <div class="form-group">
                 <label>Nama <small class="required-field">*</small></label>
-                <input id="lbl_customer_name" class="form-control input-sm" type="text" name="customer_name" value="" readonly>
+                <input id="lbl_customer_name" class="form-control" type="text" name="customer_name" value="" readonly>
               </div>
               <div class="form-group">
                 <label>Telepon <small class="required-field">*</small></label>
-                <input id="lbl_customer_phone" class="form-control input-sm" type="text" name="customer_phone" value="" readonly>
+                <input id="lbl_customer_phone" class="form-control" type="text" name="customer_phone" value="" readonly>
               </div>
               <div class="form-group">
                 <label>Email</label>
-                <input id="lbl_customer_email" class="form-control input-sm" type="text" name="customer_email" value="" readonly>
+                <input id="lbl_customer_email" class="form-control" type="text" name="customer_email" value="" readonly>
               </div>
               <div class="form-group">
                 <label>Alamat</label>
-                <input id="lbl_customer_address" class="form-control input-sm" type="text" name="customer_address" value="" readonly>
+                <input id="lbl_customer_address" class="form-control" type="text" name="customer_address" value="" readonly>
               </div>
             </div>
           </div>
