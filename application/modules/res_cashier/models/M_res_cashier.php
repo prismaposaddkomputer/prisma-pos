@@ -313,6 +313,14 @@ class M_res_cashier extends CI_Model {
       ->row();
   }
 
+  public function edit_return_show($id)
+  {
+    return $this->db
+      ->where('billing_detail_id',$id)
+      ->get('res_billing_detail')
+      ->row();
+  }
+
   public function edit_custom_show($id)
   {
     return $this->db->query("SELECT * FROM res_billing_detail WHERE billing_detail_id = '$id'")->row();

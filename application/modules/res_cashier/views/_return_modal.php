@@ -34,26 +34,26 @@
         <h4 class="cl-info text-center" id="edit_return_item_name"></h4>
         <br>
         <table class="table table-condensed table-sstriped">
-          <tr>
+          <!-- <tr>
             <td>Barcode</td>
             <td>:</td>
             <td id="edit_return_item_barcode"></td>
-          </tr>
-          <tr>
+          </tr> -->
+          <!-- <tr>
             <td>Kategori</td>
             <td>:</td>
             <td id="edit_return_category_name"></td>
-          </tr>
+          </tr> -->
           <tr>
             <td>Harga</td>
             <td>:</td>
             <td id="edit_return_item_price_after_tax"></td>
           </tr>
-          <tr>
+          <!-- <tr>
             <td>Satuan</td>
             <td>:</td>
             <td id="edit_return_unit_code"></td>
-          </tr>
+          </tr> -->
           <tr>
             <td>Jumlah yang di beli</td>
             <td>:</td>

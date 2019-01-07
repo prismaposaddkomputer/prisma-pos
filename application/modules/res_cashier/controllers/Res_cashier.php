@@ -1109,6 +1109,14 @@ class Res_cashier extends MY_Restaurant {
     echo json_encode($item);
   }
 
+  public function edit_return_show()
+  {
+    $id = $this->input->post('billing_detail_id');
+    $item = $this->m_res_cashier->edit_return_show($id);
+    
+    echo json_encode($item);
+  }
+
   public function edit_item_action()
   {
     $data = $_POST;

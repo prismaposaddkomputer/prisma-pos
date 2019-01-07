@@ -96,9 +96,10 @@
   }
 
   function edit_return_show(id) {
+    alert(id);
     $.ajax({
       type : 'post',
-      url : '<?=base_url()?>res_cashier/edit_item_show',
+      url : '<?=base_url()?>res_cashier/edit_return_show',
       data : 'billing_detail_id='+id,
       dataType : 'json',
       success : function (data) {
