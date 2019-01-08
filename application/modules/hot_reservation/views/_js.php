@@ -498,12 +498,12 @@
       //
       if (value_tarif_kamar == '1') {
         $('#label_room_type_charge').text('Harga Per Hari');
-        $('#label_room_type_duration').text('Harga Per Hari');
+        $('#label_room_type_duration').text('Durasi Per Hari');
         $('#group_addon_room_type_duration').html('<b>Hari</b>');
         get_room(room_type_id, value_tarif_kamar);
       }else{
         $('#label_room_type_charge').text('Harga Per Jam');
-        $('#label_room_type_duration').text('Harga Per Jam');
+        $('#label_room_type_duration').text('Durasi Per Jam');
         $('#group_addon_room_type_duration').html('<b>Jam</b>');
         get_room(room_type_id, value_tarif_kamar);
       }
@@ -769,12 +769,12 @@
       //
       if (value_tarif_kamar == '1') {
         $('#update_label_room_type_charge').text('Harga Per Hari');
-        $('#update_label_room_type_duration').text('Harga Per Hari');
+        $('#update_label_room_type_duration').text('Durasi Per Hari');
         $('#update_group_addon_room_type_duration').html('<b>Hari</b>');
         get_room_update(update_room_type_id, value_tarif_kamar);
       }else{
         $('#update_label_room_type_charge').text('Harga Per Jam');
-        $('#update_label_room_type_duration').text('Harga Per Jam');
+        $('#update_label_room_type_duration').text('Durasi Per Jam');
         $('#update_group_addon_room_type_duration').html('<b>Jam</b>');
         get_room_update(update_room_type_id, value_tarif_kamar);
       }
@@ -826,12 +826,12 @@
         if (data.room_type_tarif_kamar == '1') {
           $("#update_room_type_tarif_kamar_1").prop("checked", true);
           $('#update_label_room_type_charge').text('Harga Per Hari');
-          $('#update_label_room_type_duration').text('Harga Per Hari');
+          $('#update_label_room_type_duration').text('Durasi Per Hari');
           $('#update_group_addon_room_type_duration').html('<b>Hari</b>');
         }else{
           $("#update_room_type_tarif_kamar_2").prop("checked", true);
           $('#update_label_room_type_charge').text('Harga Per Jam');
-          $('#update_label_room_type_duration').text('Harga Per Jam');
+          $('#update_label_room_type_duration').text('Durasi Per Jam');
           $('#update_group_addon_room_type_duration').html('<b>Jam</b>');
         }
 

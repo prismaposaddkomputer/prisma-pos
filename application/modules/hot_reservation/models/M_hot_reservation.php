@@ -284,6 +284,11 @@ class M_hot_reservation extends CI_Model {
 	return $this->db->where('billing_non_tax_id',$id)->get('hot_billing_non_tax')->row();
 	}
 
+	public function get_hot_room_type($room_type_id)
+	{
+	return $this->db->where('room_type_id',$room_type_id)->get('hot_room_type')->row();
+	}
+
 	public function add_non_tax($data)
 	{
 		$this->db->insert('hot_billing_non_tax', $data);
@@ -399,8 +404,10 @@ class M_hot_reservation extends CI_Model {
 			$date_akhir = date('d-m-Y', strtotime('+'.round(@$get_billing_by_room_id->room_type_duration,0,PHP_ROUND_HALF_UP).' days', strtotime(@$get_billing_by_billing_id->billing_date_in)));
 			$date_hari_ini = date('d-m-Y');
 		}else{
-			$date_akhir = date('H:i:s', strtotime('+'.round(@$get_billing_by_room_id->room_type_duration,0,PHP_ROUND_HALF_UP).' hours', strtotime(@$get_billing_by_billing_id->billing_time_in)));
-			$date_hari_ini = date('H:i:s');
+			// $date_akhir = date('H:i:s', strtotime('+'.round(@$get_billing_by_room_id->room_type_duration,0,PHP_ROUND_HALF_UP).' hours', strtotime(@$get_billing_by_billing_id->billing_time_in)));
+			// $date_hari_ini = date('H:i:s');
+			$date_akhir = date('Y-m-d H:i:s', strtotime('+'.round(@$get_billing_by_room_id->room_type_duration,0,PHP_ROUND_HALF_UP).' hours', strtotime(@$get_billing_by_billing_id->billing_date_in.' '.@$get_billing_by_billing_id->billing_time_in)));
+			$date_hari_ini = date('Y-m-d H:i:s');
 		}
 
 		//
