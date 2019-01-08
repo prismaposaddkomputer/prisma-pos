@@ -56,6 +56,18 @@ class Hot_reservation extends MY_Hotel {
 
       $from = $this->uri->segment(3);
 
+      // Proses Denda
+      $data['billing_get_all'] = $this->m_hot_reservation->get_all();
+      if ($data['billing_get_all'] != null) {
+        foreach ($data['billing_get_all'] as $row) {
+          if ($row->billing_status !='3') {
+            $this->process_denda($row->billing_id);
+            $this->update_all_billing($row->billing_id);
+          }
+        }
+      }
+      // End Proses Denda
+
       if($this->session->userdata('search_term') == null){
         $num_rows = $this->m_hot_reservation->num_rows();
 
@@ -152,200 +164,229 @@ class Hot_reservation extends MY_Hotel {
         $data['billing_room'] = $this->m_hot_reservation->get_billing_room($id);
         $data['get_billing_room'] = $this->m_hot_reservation->get_billing_room_by_id($id);
 
-        if ($data['billing']->billing_status !='3') {
-          
-          // Proses Denda
-          $denda = $this->m_hot_denda->get_by_id('1');
-          $jam_sekarang = date('Y-m-d H:i:s');
-          
-          foreach ($data['get_billing_room'] as $row) {
-
-            if ($row->room_type_tarif_kamar == '1') {
-              $billing_time_in = date('Y-m-d H:i:s', strtotime('+'.round($row->room_type_duration,0,PHP_ROUND_HALF_UP).' days', strtotime($data['billing']->billing_date_in.' '.$data['billing']->billing_time_in)));
-              $jam_akhir = date('Y-m-d H:i:s', strtotime('+'.round($denda->denda_duration,0,PHP_ROUND_HALF_UP).' hours', strtotime($billing_time_in)));
-            }else{
-              $billing_time_in = date('Y-m-d H:i:s', strtotime('+'.round($row->room_type_duration,0,PHP_ROUND_HALF_UP).' hours', strtotime($data['billing']->billing_date_in.' '.$data['billing']->billing_time_in)));
-              $jam_akhir = date('Y-m-d H:i:s', strtotime('+'.round($denda->denda_duration,0,PHP_ROUND_HALF_UP).' hours', strtotime($billing_time_in)));
-            }
-
-            $jam_akhir_hari_berikutnya = date('Y-m-d H:i:s', strtotime('+24 hours', strtotime($data['billing']->billing_date_in.' '.$data['billing']->billing_time_in)));
-
-            // $billing_out = date('Y-m-d H:i:s', strtotime('+24 hours', strtotime($jam_akhir_hari_berikutnya)));
-            // print("Jam Sekarang : ".$jam_sekarang." <br> Billing Time IN : ".$billing_time_in." <br> Jam Akhir : ".$jam_akhir." <br> Jam Akhir Hari Berikutnya ".$jam_akhir_hari_berikutnya." <br> Billing Out ".$billing_out);
-            // exit();
-
-            if ($jam_sekarang >= $jam_akhir) {
-
-              // Hitung Selisih Waktu
-              $awal  = new DateTime($jam_akhir);
-              $akhir = new DateTime(); // Waktu sekarang
-              $diff  = $awal->diff($akhir);
-              $selisih_jam = $diff->h;
-              // End Hitung Selisih Waktu
-
-              if ($jam_sekarang >= $jam_akhir_hari_berikutnya) {
-
-                if ($row->room_type_tarif_kamar == '2') {
-
-                  $get_hot_room_type = $this->m_hot_reservation->get_hot_room_type($row->room_type_id);
-                  
-                  // ----------------------------------- Update ke hot_billing_room ----------------------------------- //
-
-                  $client = $this->m_hot_client->get_all();
-                  $tax = $this->m_hot_charge_type->get_by_id_active(1);
-                  $service = $this->m_hot_charge_type->get_by_id_active(2);
-                  $other = $this->m_hot_charge_type->get_by_id_active(3);
-
-                  // Denda berubah jadi 0
-                  $data_update_billing_room['room_type_denda'] = 0;
-                  // room_type_tarif_kamar berubah jadi 1 = hari
-                  $data_update_billing_room['room_type_tarif_kamar'] = 1;
-                  // room_type_charga berubah jadi harga per hari
-                  $data_update_billing_room['room_type_charge'] = $get_hot_room_type->room_type_charge;
-                  // Durasi jadi tambah 1
-                  $data_update_billing_room['room_type_duration'] = round($row->room_type_duration,0,PHP_ROUND_HALF_UP);
-                  $data_update_billing_room['room_type_subtotal'] = round($get_hot_room_type->room_type_charge,0,PHP_ROUND_HALF_UP)*$data_update_billing_room['room_type_duration'];
-                  $data_update_billing_room['room_type_total'] = round($get_hot_room_type->room_type_charge,0,PHP_ROUND_HALF_UP)*$data_update_billing_room['room_type_duration'];
-
-                  if ($client->client_is_taxed == 0) {
-                    // Hitung Pajak Sebelum Pajak
-                    $room_type_tax = 0;
-                    if ($tax != null) {
-                      $room_type_tax += $data_update_billing_room['room_type_subtotal'] * ($tax->charge_type_ratio/100);
-                    }
-                    $room_type_service = 0;
-                    if ($service != null) {
-                      $room_type_service += $data_update_billing_room['room_type_subtotal'] * ($service->charge_type_ratio/100);
-                    }
-                    $room_type_other = 0;
-                    if ($other) {
-                      $room_type_other += $data_update_billing_room['room_type_subtotal'] * ($other->charge_type_ratio/100);
-                    }
-
-                    $data_update_billing_room['room_type_before_discount'] = $data_update_billing_room['room_type_subtotal'] + $room_type_tax + $room_type_service + $room_type_other;
-
-                  }else{
-                    // Hitung Pajak Setelah Pajak
-
-                    $data_update_billing_room['room_type_before_discount'] = $data_update_billing_room['room_type_total'];
-
-                    $room_type_tax = 0;
-                    if ($tax != null) {
-                      $room_type_tax = ($tax->charge_type_ratio/(100 + $tax->charge_type_ratio))*$data_update_billing_room['room_type_before_discount'];
-                    }
-                    $room_type_service = 0;
-                    if ($service != null) {
-                      $room_type_service = ($service->charge_type_ratio/(100 + $service->charge_type_ratio))*$data_update_billing_room['room_type_before_discount'];
-                    }
-                    $room_type_other = 0;
-                    if ($other != null) {
-                      $room_type_other = ($other->charge_type_ratio/(100 + $other->charge_type_ratio))*$data_update_billing_room['room_type_before_discount'];
-                    }
-
-                  }
-
-                  $data_update_billing_room['room_type_tax'] = $room_type_tax;
-                  $data_update_billing_room['room_type_service'] = $room_type_service;
-                  $data_update_billing_room['room_type_other'] = $room_type_other;
-                  $this->m_hot_reservation->update_billing_room($row->billing_id,$row->room_id,$data_update_billing_room);
-
-                  // ----------------------------------- Update ke hot_billing ----------------------------------- //
-
-                  $billing_out = date('Y-m-d H:i:s', strtotime('+24 hours', strtotime($jam_akhir_hari_berikutnya)));
-                  //
-                  $data_update_billing['billing_date_in'] = substr($jam_akhir_hari_berikutnya,0,-9);
-                  $data_update_billing['billing_time_in'] = substr($jam_akhir_hari_berikutnya,11);
-                  $data_update_billing['billing_date_out'] = substr($billing_out,0,-9);
-                  $data_update_billing['billing_time_out'] = substr($billing_out,11);
-                  $this->m_hot_reservation->update_billing($row->billing_id,$data_update_billing);
-
-                }else{
-                  // ----------------------------------- Update ke hot_billing_room ----------------------------------- //
-
-                  $client = $this->m_hot_client->get_all();
-                  $tax = $this->m_hot_charge_type->get_by_id_active(1);
-                  $service = $this->m_hot_charge_type->get_by_id_active(2);
-                  $other = $this->m_hot_charge_type->get_by_id_active(3);
-
-                  // Denda berubah jadi 0
-                  $data_update_billing_room['room_type_denda'] = 0;
-                  // Durasi jadi tambah 1
-                  $data_update_billing_room['room_type_duration'] = round($row->room_type_duration,0,PHP_ROUND_HALF_UP)+1;
-                  $data_update_billing_room['room_type_subtotal'] = round($row->room_type_charge,0,PHP_ROUND_HALF_UP)*$data_update_billing_room['room_type_duration'];
-                  $data_update_billing_room['room_type_total'] = round($row->room_type_charge,0,PHP_ROUND_HALF_UP)*$data_update_billing_room['room_type_duration'];
-
-                  if ($client->client_is_taxed == 0) {
-                    // Hitung Pajak Sebelum Pajak
-                    $room_type_tax = 0;
-                    if ($tax != null) {
-                      $room_type_tax += $data_update_billing_room['room_type_subtotal'] * ($tax->charge_type_ratio/100);
-                    }
-                    $room_type_service = 0;
-                    if ($service != null) {
-                      $room_type_service += $data_update_billing_room['room_type_subtotal'] * ($service->charge_type_ratio/100);
-                    }
-                    $room_type_other = 0;
-                    if ($other) {
-                      $room_type_other += $data_update_billing_room['room_type_subtotal'] * ($other->charge_type_ratio/100);
-                    }
-
-                    $data_update_billing_room['room_type_before_discount'] = $data_update_billing_room['room_type_subtotal'] + $room_type_tax + $room_type_service + $room_type_other;
-
-                  }else{
-                    // Hitung Pajak Setelah Pajak
-
-                    $data_update_billing_room['room_type_before_discount'] = $data_update_billing_room['room_type_total'];
-
-                    $room_type_tax = 0;
-                    if ($tax != null) {
-                      $room_type_tax = ($tax->charge_type_ratio/(100 + $tax->charge_type_ratio))*$data_update_billing_room['room_type_before_discount'];
-                    }
-                    $room_type_service = 0;
-                    if ($service != null) {
-                      $room_type_service = ($service->charge_type_ratio/(100 + $service->charge_type_ratio))*$data_update_billing_room['room_type_before_discount'];
-                    }
-                    $room_type_other = 0;
-                    if ($other != null) {
-                      $room_type_other = ($other->charge_type_ratio/(100 + $other->charge_type_ratio))*$data_update_billing_room['room_type_before_discount'];
-                    }
-
-                  }
-
-                  $data_update_billing_room['room_type_tax'] = $room_type_tax;
-                  $data_update_billing_room['room_type_service'] = $room_type_service;
-                  $data_update_billing_room['room_type_other'] = $room_type_other;
-                  $this->m_hot_reservation->update_billing_room($row->billing_id,$row->room_id,$data_update_billing_room);
-
-                  // ----------------------------------- Update ke hot_billing ----------------------------------- //
-
-                  $billing_out = date('Y-m-d H:i:s', strtotime('+24 hours', strtotime($jam_akhir_hari_berikutnya)));
-                  //
-                  $data_update_billing['billing_date_in'] = substr($jam_akhir_hari_berikutnya,0,-9);
-                  $data_update_billing['billing_time_in'] = substr($jam_akhir_hari_berikutnya,11);
-                  $data_update_billing['billing_date_out'] = substr($billing_out,0,-9);
-                  $data_update_billing['billing_time_out'] = substr($billing_out,11);
-                  $this->m_hot_reservation->update_billing($row->billing_id,$data_update_billing);
-                }
-
-              }else{
-                if ($row->room_st_denda == '1') {
-                  $data_update_billing_room['room_type_denda'] = round($denda->denda_charge,0,PHP_ROUND_HALF_UP) * $selisih_jam;
-                  $data_update_billing_room['room_type_total'] = round($row->room_type_subtotal,0,PHP_ROUND_HALF_UP) + $data_update_billing_room['room_type_denda'];
-                  $this->m_hot_reservation->update_billing_room($row->billing_id,$row->room_id,$data_update_billing_room);
-                }
-              }
-
-            }
-          }
-          // End Proses Denda
-
-        }
-
         $this->view('hot_reservation/form', $data);
       } else {
         redirect(base_url().'app_error/error/403');
       }
     }
+  }
+
+  public function process_denda($id) {
+
+    $data['billing'] = $this->m_hot_billing->get_by_id($id);
+    $data['billing_room'] = $this->m_hot_reservation->get_billing_room($id);
+    $data['get_billing_room'] = $this->m_hot_reservation->get_billing_room_by_id($id);
+
+    if ($data['billing']->billing_status !='3') {
+          
+      // Proses Denda
+      $denda = $this->m_hot_denda->get_by_id('1');
+      $jam_sekarang = date('Y-m-d H:i:s');
+      
+      foreach ($data['get_billing_room'] as $row) {
+
+        if ($row->room_st_denda !='2') {
+          
+          if ($row->room_type_tarif_kamar == '1') {
+            $billing_time_in = date('Y-m-d H:i:s', strtotime('+'.round($row->room_type_duration,0,PHP_ROUND_HALF_UP).' days', strtotime($data['billing']->billing_date_in.' '.$data['billing']->billing_time_in)));
+            $jam_akhir = date('Y-m-d H:i:s', strtotime('+'.round($denda->denda_duration,0,PHP_ROUND_HALF_UP).' hours', strtotime($billing_time_in)));
+          }else{
+            $billing_time_in = date('Y-m-d H:i:s', strtotime('+'.round($row->room_type_duration,0,PHP_ROUND_HALF_UP).' hours', strtotime($data['billing']->billing_date_in.' '.$data['billing']->billing_time_in)));
+            $jam_akhir = date('Y-m-d H:i:s', strtotime('+'.round($denda->denda_duration,0,PHP_ROUND_HALF_UP).' hours', strtotime($billing_time_in)));
+          }
+
+          $jam_akhir_hari_berikutnya = date('Y-m-d H:i:s', strtotime('+24 hours', strtotime($data['billing']->billing_date_in.' '.$data['billing']->billing_time_in)));
+
+          // $billing_out = date('Y-m-d H:i:s', strtotime('+24 hours', strtotime($jam_akhir_hari_berikutnya)));
+          // print("Jam Sekarang : ".$jam_sekarang." <br> Billing Time IN : ".$billing_time_in." <br> Jam Akhir : ".$jam_akhir." <br> Jam Akhir Hari Berikutnya ".$jam_akhir_hari_berikutnya." <br> Billing Out ".$billing_out);
+          // exit();
+
+          if ($jam_sekarang >= $jam_akhir) {
+
+            // Hitung Selisih Waktu
+            $awal  = new DateTime($jam_akhir);
+            $akhir = new DateTime(); // Waktu sekarang
+            $diff  = $awal->diff($akhir);
+            $selisih_jam = $diff->h;
+            // End Hitung Selisih Waktu
+
+            if ($jam_sekarang >= $jam_akhir_hari_berikutnya) {
+
+              if ($row->room_type_tarif_kamar == '2') {
+
+                $get_hot_room_type = $this->m_hot_reservation->get_hot_room_type($row->room_type_id);
+                
+                // ----------------------------------- Update ke hot_billing_room ----------------------------------- //
+
+                $client = $this->m_hot_client->get_all();
+                $tax = $this->m_hot_charge_type->get_by_id_active(1);
+                $service = $this->m_hot_charge_type->get_by_id_active(2);
+                $other = $this->m_hot_charge_type->get_by_id_active(3);
+
+                // Denda berubah jadi 0
+                $data_update_billing_room['room_type_denda'] = 0;
+                // room_type_tarif_kamar berubah jadi 1 = hari
+                $data_update_billing_room['room_type_tarif_kamar'] = 1;
+                // room_type_charga berubah jadi harga per hari
+                $data_update_billing_room['room_type_charge'] = $get_hot_room_type->room_type_charge;
+                // Durasi jadi tambah 1
+                $data_update_billing_room['room_type_duration'] = 1;
+                $data_update_billing_room['room_type_subtotal'] = round($get_hot_room_type->room_type_charge,0,PHP_ROUND_HALF_UP)*$data_update_billing_room['room_type_duration'];
+                $data_update_billing_room['room_type_total'] = round($get_hot_room_type->room_type_charge,0,PHP_ROUND_HALF_UP)*$data_update_billing_room['room_type_duration']-$row->room_type_discount;
+
+                if ($client->client_is_taxed == 0) {
+                  // Hitung Pajak Sebelum Pajak
+                  $room_type_tax = 0;
+                  if ($tax != null) {
+                    $room_type_tax += $data_update_billing_room['room_type_subtotal'] * ($tax->charge_type_ratio/100);
+                  }
+                  $room_type_service = 0;
+                  if ($service != null) {
+                    $room_type_service += $data_update_billing_room['room_type_subtotal'] * ($service->charge_type_ratio/100);
+                  }
+                  $room_type_other = 0;
+                  if ($other) {
+                    $room_type_other += $data_update_billing_room['room_type_subtotal'] * ($other->charge_type_ratio/100);
+                  }
+
+                  $data_update_billing_room['room_type_before_discount'] = $data_update_billing_room['room_type_subtotal'] + $room_type_tax + $room_type_service + $room_type_other;
+
+                }else{
+                  // Hitung Pajak Setelah Pajak
+
+                  $data_update_billing_room['room_type_before_discount'] = $data_update_billing_room['room_type_total'];
+
+                  $room_type_tax = 0;
+                  if ($tax != null) {
+                    $room_type_tax = ($tax->charge_type_ratio/(100 + $tax->charge_type_ratio))*$data_update_billing_room['room_type_before_discount'];
+                  }
+                  $room_type_service = 0;
+                  if ($service != null) {
+                    $room_type_service = ($service->charge_type_ratio/(100 + $service->charge_type_ratio))*$data_update_billing_room['room_type_before_discount'];
+                  }
+                  $room_type_other = 0;
+                  if ($other != null) {
+                    $room_type_other = ($other->charge_type_ratio/(100 + $other->charge_type_ratio))*$data_update_billing_room['room_type_before_discount'];
+                  }
+
+                }
+
+                $data_update_billing_room['room_type_tax'] = $room_type_tax;
+                $data_update_billing_room['room_type_service'] = $room_type_service;
+                $data_update_billing_room['room_type_other'] = $room_type_other;
+                $this->m_hot_reservation->update_billing_room($row->billing_id,$row->room_id,$data_update_billing_room);
+
+                // ----------------------------------- Update ke hot_billing ----------------------------------- //
+
+                $billing_out = date('Y-m-d H:i:s', strtotime('+24 hours', strtotime($jam_akhir_hari_berikutnya)));
+                //
+
+                if ($data['billing']->billing_down_payment =='0') {
+                  $data_update_billing['billing_payment'] = 0;
+                  $data_update_billing['billing_change'] = 0;
+                  $data_update_billing['billing_down_payment'] = $data['billing']->billing_payment - $data['billing']->billing_change;
+                }
+
+                // $this->update_all_billing($id);
+
+                $data_update_billing['billing_date_in'] = substr($jam_akhir_hari_berikutnya,0,-9);
+                $data_update_billing['billing_time_in'] = substr($jam_akhir_hari_berikutnya,11);
+                $data_update_billing['billing_date_out'] = substr($billing_out,0,-9);
+                $data_update_billing['billing_time_out'] = substr($billing_out,11);
+                $this->m_hot_reservation->update_billing($row->billing_id,$data_update_billing);
+
+              }else{
+                // ----------------------------------- Update ke hot_billing_room ----------------------------------- //
+
+                $client = $this->m_hot_client->get_all();
+                $tax = $this->m_hot_charge_type->get_by_id_active(1);
+                $service = $this->m_hot_charge_type->get_by_id_active(2);
+                $other = $this->m_hot_charge_type->get_by_id_active(3);
+
+                // Denda berubah jadi 0
+                $data_update_billing_room['room_type_denda'] = 0;
+                // Durasi jadi tambah 1
+                $data_update_billing_room['room_type_duration'] = round($row->room_type_duration,0,PHP_ROUND_HALF_UP)+1;
+                $data_update_billing_room['room_type_subtotal'] = round($row->room_type_charge,0,PHP_ROUND_HALF_UP)*$data_update_billing_room['room_type_duration'];
+                $data_update_billing_room['room_type_total'] = round($row->room_type_charge,0,PHP_ROUND_HALF_UP)*$data_update_billing_room['room_type_duration']-$row->room_type_discount;
+
+                if ($client->client_is_taxed == 0) {
+                  // Hitung Pajak Sebelum Pajak
+                  $room_type_tax = 0;
+                  if ($tax != null) {
+                    $room_type_tax += $data_update_billing_room['room_type_subtotal'] * ($tax->charge_type_ratio/100);
+                  }
+                  $room_type_service = 0;
+                  if ($service != null) {
+                    $room_type_service += $data_update_billing_room['room_type_subtotal'] * ($service->charge_type_ratio/100);
+                  }
+                  $room_type_other = 0;
+                  if ($other) {
+                    $room_type_other += $data_update_billing_room['room_type_subtotal'] * ($other->charge_type_ratio/100);
+                  }
+
+                  $data_update_billing_room['room_type_before_discount'] = $data_update_billing_room['room_type_subtotal'] + $room_type_tax + $room_type_service + $room_type_other;
+
+                }else{
+                  // Hitung Pajak Setelah Pajak
+
+                  $data_update_billing_room['room_type_before_discount'] = $data_update_billing_room['room_type_total'];
+
+                  $room_type_tax = 0;
+                  if ($tax != null) {
+                    $room_type_tax = ($tax->charge_type_ratio/(100 + $tax->charge_type_ratio))*$data_update_billing_room['room_type_before_discount'];
+                  }
+                  $room_type_service = 0;
+                  if ($service != null) {
+                    $room_type_service = ($service->charge_type_ratio/(100 + $service->charge_type_ratio))*$data_update_billing_room['room_type_before_discount'];
+                  }
+                  $room_type_other = 0;
+                  if ($other != null) {
+                    $room_type_other = ($other->charge_type_ratio/(100 + $other->charge_type_ratio))*$data_update_billing_room['room_type_before_discount'];
+                  }
+
+                }
+
+                $data_update_billing_room['room_type_tax'] = $room_type_tax;
+                $data_update_billing_room['room_type_service'] = $room_type_service;
+                $data_update_billing_room['room_type_other'] = $room_type_other;
+                $this->m_hot_reservation->update_billing_room($row->billing_id,$row->room_id,$data_update_billing_room);
+
+                // ----------------------------------- Update ke hot_billing ----------------------------------- //
+
+                $billing_out = date('Y-m-d H:i:s', strtotime('+24 hours', strtotime($jam_akhir_hari_berikutnya)));
+                //
+
+                if ($data['billing']->billing_down_payment =='0') {
+                  $data_update_billing['billing_payment'] = 0;
+                  $data_update_billing['billing_change'] = 0;
+                  $data_update_billing['billing_down_payment'] = $data['billing']->billing_payment - $data['billing']->billing_change;
+                }
+
+                $data_update_billing['billing_date_in'] = substr($jam_akhir_hari_berikutnya,0,-9);
+                $data_update_billing['billing_time_in'] = substr($jam_akhir_hari_berikutnya,11);
+                $data_update_billing['billing_date_out'] = substr($billing_out,0,-9);
+                $data_update_billing['billing_time_out'] = substr($billing_out,11);
+                $this->m_hot_reservation->update_billing($row->billing_id,$data_update_billing);
+              }
+
+            }else{
+              if ($row->room_st_denda == '1') {
+                $data_update_billing_room['room_type_denda'] = round($denda->denda_charge,0,PHP_ROUND_HALF_UP) * $selisih_jam;
+                $data_update_billing_room['room_type_total'] = round($row->room_type_subtotal,0,PHP_ROUND_HALF_UP) + $data_update_billing_room['room_type_denda']-$row->room_type_discount;
+                $this->m_hot_reservation->update_billing_room($row->billing_id,$row->room_id,$data_update_billing_room);
+              }
+            }
+
+          }
+
+        }
+        
+      }
+      // End Proses Denda
+
+    }
+
   }
 
   function get_arr_checked_value($data) {
@@ -1006,7 +1047,7 @@ class Hot_reservation extends MY_Hotel {
       }
       else{
         if ($billing->billing_down_payment_type == 1){
-          $sisa_bayar = num_to_price($billing->billing_total-$billing->billing_down_payment);
+          $sisa_bayar = num_to_price($billing->billing_total-$billing->billing_down_payment-$billing->billing_discount_custom);
         }
         else{
           $dp_prosen = $billing->billing_total*($billing->billing_down_payment/100);
