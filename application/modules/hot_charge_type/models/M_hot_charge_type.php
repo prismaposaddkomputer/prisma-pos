@@ -54,6 +54,13 @@ class M_hot_charge_type extends CI_Model {
     return $this->db->where('charge_type_id',$id)->get('hot_charge_type')->row();
   }
 
+  public function get_by_id_active($id)
+  {
+    return $this->db->where('charge_type_id',$id)->where('is_active','1')->get('hot_charge_type')->row();
+    // return $this->db->where('charge_type_id',$id)->get('hot_charge_type')->row();
+  }
+
+
   public function get_last()
   {
     return $this->db->order_by('charge_type_id','desc')->get('hot_charge_type')->row();

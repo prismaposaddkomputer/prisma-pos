@@ -14,13 +14,12 @@ class M_res_cashier extends CI_Model {
   public function initial_billing()
   {
     $today = date('Y-m-d');
-
     //cancel all pending and process transaction before today
-    $this->db
-      ->query("UPDATE res_billing
-          SET tx_status = -2
-          WHERE (tx_status = -1 OR tx_status = 0)
-            AND tx_date < '$today'");
+    // $this->db
+    //   ->query("UPDATE res_billing
+    //       SET tx_status = -2
+    //       WHERE (tx_status = -1 OR tx_status = 0)
+    //         AND tx_date < '$today'");
 
     //pending all process transaction today
     $this->db
@@ -50,6 +49,7 @@ class M_res_cashier extends CI_Model {
   {
     return $this->db
       ->where('tx_receipt_no',$id)
+      ->order_by('tx_id','desc')
       ->get('res_billing')
       ->row();
   }
@@ -137,12 +137,62 @@ class M_res_cashier extends CI_Model {
     $this->db->where('billing_detail_id',$id)->update('res_billing_detail',$data);
   }
 
+  public function get_billing_tr($tx_id)
+  {
+    $data = $this->db
+      ->where('tx_id', $tx_id)
+      ->get('res_billing')
+      ->row();
+
+    $data->detail = $this->db
+      ->where('tx_id', $tx_id)
+      ->get('res_billing_detail')
+      ->result();
+
+    return $data;
+  }
+
+  public function cek_stok($tx_id,$item_id)
+  {
+    return $this->db
+      ->where('tx_id',$tx_id)
+      ->where('item_id',$item_id)
+      ->get('res_stock')
+      ->row();
+  }
+
+  public function update_stock_return($tx_id,$item_id,$data)
+  {
+    $this->db
+      ->where('tx_id',$tx_id)
+      ->where('item_id',$item_id)
+      ->update('res_stock',$data);
+  }
+
   public function get_billing_detail($id)
   {
     return $this->db
       ->where('tx_id', $id)
       ->get('res_billing_detail')
       ->result();
+  }
+
+  public function get_billing_detail_by_id($id)
+  {
+    return $this->db
+      ->where('billing_detail_id', $id)
+      ->get('res_billing_detail')
+      ->row();
+  }
+
+  public function cek_return($tx_id,$item_id)
+  {
+    return $this->db
+      ->where('item_id', $item_id)
+      ->where('tx_id', $tx_id)
+      ->where('is_return', 1)
+      ->get('res_billing_detail')
+      ->row();
   }
 
   public function get_all_item()
@@ -153,7 +203,7 @@ class M_res_cashier extends CI_Model {
       ->join('res_category','res_item.category_id = res_category.category_id')
 			->where('res_item.is_deleted','0')
 			->where('res_item.is_active','1')
-      ->order_by('res_item.item_barcode', 'ASC')
+      ->order_by('ABS(res_item.item_barcode)', 'ASC')
 			->get('res_item')->result();
   }
 
@@ -166,7 +216,7 @@ class M_res_cashier extends CI_Model {
       ->where('res_item.category_id',$id)
       ->where('res_item.is_deleted','0')
       ->where('res_item.is_active','1')
-      ->order_by('res_item.item_barcode', 'ASC')
+      ->order_by('ABS(res_item.item_barcode)', 'ASC')
       ->get('res_item')->result();
   }
 
@@ -485,9 +535,18 @@ class M_res_cashier extends CI_Model {
 
     return $this->db
       ->where('user_id',$user_id)
-      ->where('tx_date',$date)
       ->where('tx_status',-1)
-      ->order_by('tx_receipt_no','DESC')
+      ->order_by('tx_id','DESC')
+      ->get('res_billing')->result();
+  }
+
+  public function search_pending_action($search_pending)
+  {
+    return $this->db
+      ->where('tx_status',-1)
+      ->like('tx_receipt_no',$search_pending)
+      ->or_like('customer_name',$search_pending)
+      ->order_by('tx_id','DESC')
       ->get('res_billing')->result();
   }
 

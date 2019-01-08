@@ -88,6 +88,7 @@
             <th class="text-center" width="100">Durasi</th>
             <th class="text-center" width="150">Subtotal</th>
             <th class="text-center" width="150">Diskon</th>
+            <th class="text-center" width="150">Denda</th>
             <th class="text-center" width="150">Total</th>
           </tr>              
         </thead>
@@ -106,7 +107,7 @@
                     }
                   ?>
                 </td>
-                <td class="text-center"><?=round($row->room_type_duration,0,PHP_ROUND_HALF_UP)?> Hari</td>
+                <td class="text-center"><?=round($row->room_type_duration,0,PHP_ROUND_HALF_UP)?> <?=($row->room_type_tarif_kamar == '1') ? 'Hari' : 'Jam' ?></td>
                 <td>
                   <?php 
                     if ($client->client_is_taxed == 0) {
@@ -125,10 +126,12 @@
                     }
                   ?>
                 </td>
+                <td><?=num_to_idr($row->room_type_denda)?></td>
                 <td>
                   <?php 
                     if ($client->client_is_taxed == 0) {
-                      echo num_to_idr($row->room_type_subtotal);
+                      // echo num_to_idr($row->room_type_subtotal);
+                      echo num_to_idr($row->room_type_total);
                     }else{
                       echo num_to_idr($row->room_type_total);
                     }
@@ -136,7 +139,8 @@
                 </td>
                 <?php 
                   if ($client->client_is_taxed == 0) {
-                    $tot_room += $row->room_type_subtotal;
+                    // $tot_room += $row->room_type_subtotal;
+                    $tot_room += $row->room_type_total;
                   }else{
                     $tot_room += $row->room_type_total;
                   }
@@ -145,13 +149,13 @@
             <?php endforeach;?>
           <?php else: ?>
             <tr>
-              <td class="text-center" colspan="7"><i>Tidak ada data!</i></td>
+              <td class="text-center" colspan="8"><i>Tidak ada data!</i></td>
             </tr>
           <?php endif;?>
         </tbody>
         <tfoot>
           <tr>
-            <th class="text-center" colspan="6">Total</th>
+            <th class="text-center" colspan="7">Total</th>
             <th><?=num_to_idr($tot_room)?></th>
           </tr>
         </tfoot>
@@ -523,10 +527,10 @@
             <input id="billing_down_payment" type="hidden" value="<?=$billing->billing_down_payment?>">
           </tr>
           <tr>
-            <td width="300">(Diskon)</td>
+            <td width="300">(Diskon Kustom)</td>
             <td width="20">:</td>
             <td>
-              <input id="billing_discount" name="billing_discount" style="width:100%; height: 40px; border: 2px solid green; font-size: 20px; font-weight: bold; text-align: right; padding-right: 10px;" class="autonumeric num" type="text" value="<?=$billing->billing_discount?>" dir="rtl" onchange="calc_discount()">
+              <input id="billing_discount_custom" name="billing_discount_custom" style="width:100%; height: 40px; border: 2px solid green; font-size: 20px; font-weight: bold; text-align: right; padding-right: 10px;" class="autonumeric num" type="text" value="<?=$billing->billing_discount_custom?>" dir="rtl" onchange="calc_discount_custom()">
             </td>
           </tr>
           <tr>
@@ -545,7 +549,7 @@
               <td id="text_kekurangan"><?=num_to_idr(0)?></td>
             <?php else: ?>
               <?php if ($billing->billing_down_payment_type == 1): ?>
-                <td id="text_kekurangan"><?=num_to_idr($billing->billing_total-$billing->billing_down_payment)?></td>
+                <td id="text_kekurangan"><?=num_to_idr($billing->billing_total-$billing->billing_down_payment-$billing->billing_discount_custom)?></td>
                 <input type="hidden" name="" id="total_payment" value="<?=$billing->billing_total-$billing->billing_down_payment?>">
               <?php else: ?>
                 <?php 
@@ -617,12 +621,12 @@
   $("#print_struk").click(function () {
     var billing_id = $('#billing_id').val();
     var billing_payment = ind_to_sys($('#billing_payment').val());
-    var billing_discount = ind_to_sys($('#billing_discount').val());
+    var billing_discount_custom = ind_to_sys($('#billing_discount_custom').val());
     <?php if ($billing->billing_down_payment_type == 1): ?>
-      var total_payment = <?=$billing->billing_total-$billing->billing_down_payment?>;
+      var total_payment = <?=$billing->billing_total-$billing->billing_down_payment?>-parseInt(billing_discount_custom);
     <?php else: ?>
       <?php $dp_prosen = $billing->billing_total*($billing->billing_down_payment/100); ?>
-      var total_payment = <?=$billing->billing_total-$dp_prosen?>;
+      var total_payment = <?=$billing->billing_total-$dp_prosen?>-parseInt(billing_discount_custom);
     <?php endif; ?>
 
     if (billing_payment == "") {
@@ -643,7 +647,7 @@
       $.ajax({
         type : 'POST',
         url : '<?=base_url()?>hot_reservation/payment_action',
-        data : 'billing_id='+billing_id+'&billing_payment='+billing_payment+'&billing_discount='+billing_discount,
+        data : 'billing_id='+billing_id+'&billing_payment='+billing_payment+'&billing_discount_custom='+billing_discount_custom,
         dataType : 'json',
         success : function (data) {
           send_dashboard(data);
@@ -656,7 +660,7 @@
   $("#print_pdf").click(function () {
     var billing_id = $('#billing_id').val();
     var billing_payment = ind_to_sys($('#billing_payment').val());
-    var billing_discount = ind_to_sys($('#billing_discount').val());
+    var billing_discount_custom = ind_to_sys($('#billing_discount_custom').val());
     <?php if ($billing->billing_down_payment_type == 1): ?>
       var total_payment = <?=$billing->billing_total-$billing->billing_down_payment?>;
     <?php else: ?>
@@ -682,7 +686,7 @@
       $.ajax({
         type : 'POST',
         url : '<?=base_url()?>hot_reservation/payment_action',
-        data : 'billing_id='+billing_id+'&billing_payment='+billing_payment+'&billing_discount='+billing_discount,
+        data : 'billing_id='+billing_id+'&billing_payment='+billing_payment+'&billing_discount_custom='+billing_discount_custom,
         dataType : 'json',
         success : function (data) {
           send_dashboard(data);
@@ -727,16 +731,16 @@
   function calc_change() {
     var total_payment = $('#total_payment').val();
     var billing_payment = ind_to_sys($('#billing_payment').val());
-    var billing_discount = ind_to_sys($('#billing_discount').val());
-    var billing_change = billing_payment-(total_payment - billing_discount);
+    var billing_discount_custom = ind_to_sys($('#billing_discount_custom').val());
+    var billing_change = billing_payment-(total_payment - billing_discount_custom);
     console.log(billing_change);
     $('#billing_change').val(sys_to_ind(billing_change.toFixed(2)));
   }
 
-  function calc_discount() {
+  function calc_discount_custom() {
     var total_payment = $('#total_payment').val();
-    var billing_discount = ind_to_sys($('#billing_discount').val());
-    a = total_payment - parseInt(billing_discount);
+    var billing_discount_custom = ind_to_sys($('#billing_discount_custom').val());
+    a = total_payment - parseInt(billing_discount_custom);
     console.log(a);
     $('#text_kekurangan').html(sys_to_cur(a.toFixed(2)));
     calc_change();

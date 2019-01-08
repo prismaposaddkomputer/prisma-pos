@@ -12,6 +12,10 @@ function sys_to_cur(x){
   return 'Rp <span class="pull-right">'+sys_to_ind(x)+'</span>';
 }
 
+function sys_to_prosen(x){
+  return '<center><span>'+sys_to_ind(x)+' %</span></center>';
+}
+
 function sys_to_ind(bilangan) {
   var negativ = false;
 

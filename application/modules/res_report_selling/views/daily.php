@@ -7,7 +7,9 @@
       <form method="post" action="<?=base_url()?>res_report_selling/frame_pdf">
         <input type="hidden" name="url" value="<?=base_url()?>res_report_selling/daily_pdf/<?=$date?>">
         <button class="btn btn-primary" type="submit"><i class="fa fa-file-pdf-o"></i> Download PDF</button>
-        <a href="<?=base_url()?>res_report_selling/daily_print/<?=$date?>" class="btn btn-warning"><i class="fa fa-print"></i> Print Laporan</a>
+        <a href="<?=base_url()?>res_report_selling/daily_print/<?=$date?>" class="btn btn-warning"><i class="fa fa-print"></i> Print Komplit</a>
+        <a href="<?=base_url()?>res_report_selling/daily_print_only_nominal/<?=$date?>" class="btn btn-warning"><i class="fa fa-print"></i> Print Hanya Nominal</a>
+        <a href="<?=base_url()?>res_report_selling/daily_print_per_item/<?=$date?>" class="btn btn-warning"><i class="fa fa-print"></i> Print Per Item</a>
       </form>
       <br>
       <table class="table table-condensed table-bordered table-striped">

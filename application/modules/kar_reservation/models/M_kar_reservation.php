@@ -390,17 +390,51 @@ class M_kar_reservation extends CI_Model {
 		return $data->count_custom;
 	}
 
-	public function validate_room_id($room_id=null) {
+	public function get_billing_by_room_id($room_id=null)
+	{
+		return $this->db
+			->where('room_id',$room_id)
+			->get('kar_billing_room')->row();
+	}
+
+	public function get_billing_by_billing_id($billing_id=null)
+	{
+		return $this->db
+			->where('billing_id',$billing_id)
+			->get('kar_billing')->row();
+	}
+
+    public function validate_room_id($room_id=null, $billing_date_in=null) {
+		//
+		$get_billing_by_room_id = $this->get_billing_by_room_id($room_id);
+		$get_billing_by_billing_id = $this->get_billing_by_billing_id(@$get_billing_by_room_id->billing_id);
+		$tgl_hari_ini = date('Y-m-d');
+		//
+		$date_akhir = date('Y-m-d H:i:s', strtotime('+'.round(@$get_billing_by_room_id->room_type_duration,0,PHP_ROUND_HALF_UP).' hours', strtotime(@$get_billing_by_billing_id->billing_date_in.' '.@$get_billing_by_billing_id->billing_time_in)));
+		$date_hari_ini = date('Y-m-d H:i:s');
+
+		//
         $sql = "SELECT 
         			a.room_id 
         		FROM kar_billing_room a 
         		LEFT JOIN kar_billing b ON a.billing_id=b.billing_id
         		WHERE a.room_id='$room_id' AND b.billing_status='1'";
         $query = $this->db->query($sql);
+        
         if($query->num_rows() > 0) {
-            return true;
+        	return true;
         } else {
-            return false;
+        	if ($get_billing_by_billing_id->billing_status == '-1') {
+        		return false;
+        	}elseif ($get_billing_by_billing_id->billing_status == '0') {
+        		return true;
+        	}else{
+        		if ($date_hari_ini >= $date_akhir) {
+	        		return false;
+	        	}else{
+	        		return true;
+	        	}
+        	}
         }
     }
 

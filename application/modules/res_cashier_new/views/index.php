@@ -187,17 +187,17 @@
           <div id="item-footer">
             <button class="btn btn-sm btn-info" onclick="add_custom_show()"><i class="fa fa-list"></i> Item Kustom</button>
             <button class="btn btn-sm btn-info" onclick="down_payment_show()"><i class="fa fa-money"></i> Uang Muka</button>
-            <button class="btn btn-sm btn-info" onclick="return_show()"><i class="fa fa-reply"></i> Retur</button>
-            <button class="btn btn-sm btn-info" onclick="print_receipt_show()"><i class="fa fa-print"></i> Cetak Struk</button>
+            <button class="btn btn-sm btn-info" onclick="print_dapur()"><i class="fa fa-cutlery"></i> Struk Dapur</button>
             <button class="btn btn-sm btn-info" onclick="discount_show()"><i class="fa fa-cut"></i> Diskon</button>
-            <button class="btn btn-sm btn-info" onclick="print_receipt_dp()"><i class="fa fa-print"></i> Cetak Struk DP</button>
+            <button class="btn btn-sm btn-warning" onclick="return_show()"><i class="fa fa-reply"></i> Retur</button>
+            <button class="btn btn-sm btn-warning" onclick="print_receipt_show()"><i class="fa fa-print"></i> Cetak Struk</button>
           </div>
         </div>
         <div id="bill" class="col-md-4 col-xs-12 right full-height-col">
           <div id="bill-info">
             <input id="bill_tx_date" type="hidden" name="tx_date" value="">
             <input id="bill_tx_time" type="hidden" name="tx_time" value="">
-            <div class="col-md-3 lbl-tx" style="cursor:pointer;" onclick="change_customer_show()">
+            <div class="col-md-2 lbl-tx" style="cursor:pointer;" onclick="change_customer_show()">
               <i class="fa fa-user-o"></i> <span id="bill_customer_name"></span>
               <input id="bill_customer_id" type="hidden" name="customer_id" value="">
             </div>
@@ -205,10 +205,14 @@
               <i class="fa fa-laptop"></i> <span id="bill_cashier_name">
               <input id="bill_cashier_id" type="hidden" name="cashier_id" value="">
             </div>
-            <div class="col-md-5 lbl-tx">
+            <div class="col-md-4 lbl-tx">
               <i class="fa fa-user-o"></i> <span id="bill_tx_id_name"></span>
               <input id="bill_tx_id" type="hidden" name="tx_id" value="">
               <input id="bill_tx_receipt_no" type="hidden" name="tx_receipt_no" value="">
+            </div>
+            <div class="col-md-2 lbl-tx" onclick="change_tx_table_no()">
+              <i class="fa fa-map-marker"></i> <span id="bill_tx_table_no_name">
+              <input id="bill_tx_table_no" type="hidden" name="tx_table_no" value="">
             </div>
           </div>
           <div id="bill-items">
@@ -227,14 +231,6 @@
             </div>
             <div class="lbl-bill">
               <?php if ($client->client_is_taxed == 0): ?>
-              DISKON<span id="bill_tx_total_discount_nominal" class="pull-right"></span>
-              <?php else: ?>
-              <br>
-              <?php endif; ?>
-              <input id="bill_tx_total_discount" type="hidden" name="" value="">
-            </div>
-            <div class="lbl-bill">
-              <?php if ($client->client_is_taxed == 0): ?>
               PAJAK<span id="bill_tx_total_tax_nominal" class="pull-right"></span>
               <?php else: ?>
               <br>
@@ -242,15 +238,28 @@
               <input id="bill_tx_total_tax" type="hidden" name="" value="">
             </div>
             <div class="lbl-bill">
+              <?php if ($client->client_is_taxed == 0): ?>
+              (DISKON)<span id="bill_tx_total_discount_nominal" class="pull-right"></span>
+              <?php else: ?>
+              (DISKON)<span id="bill_tx_total_discount_nominal" class="pull-right"></span>
+              <?php endif; ?>
+              <input id="bill_tx_total_discount" type="hidden" name="" value="">
+            </div>
+            <div class="lbl-bill">
               <b>TOTAL <span id="bill_tx_total_grand_nominal" class="pull-right"></span></b>
               <input id="bill_tx_total_grand" type="hidden" name="" value="">
             </div>
-            <button id="bill_btn_payment" class="btn btn-lg btn-success btn-block btn-flat" type="button" name="button" onclick="payment_show()">BAYAR [F2]</button>
-            <div class="col-md-6" style="padding:0px;">
-              <button id="bill_btn_pending" class="btn btn-lg btn-warning btn-block btn-flat" type="button" name="button" onclick="pending_show()">TAHAN [F3]</button>
+            <div id="btn_payment_group">
+              <button id="bill_btn_payment" class="btn btn-lg btn-success btn-block btn-flat" type="button" name="button" onclick="payment_show()">BAYAR [F2]</button>
+              <div class="col-md-6" style="padding:0px;">
+                <button id="bill_btn_pending" class="btn btn-lg btn-warning btn-block btn-flat" type="button" name="button" onclick="pending_show()">TAHAN [F3]</button>
+              </div>
+              <div class="col-md-6" style="padding:0px;">
+                <button id="bill_btn_cancel" class="btn btn-lg btn-danger btn-block btn-flat" type="button" name="button" onclick="cancel_show()">BATAL [F4]</button>
+              </div>
             </div>
-            <div class="col-md-6" style="padding:0px;">
-              <button id="bill_btn_cancel" class="btn btn-lg btn-danger btn-block btn-flat" type="button" name="button" onclick="cancel_show()">BATAL [F4]</button>
+            <div id="btn_return_group">
+              <button id="bill_btn_return_ok" class="btn btn-lg btn-info btn-block btn-flat" type="button" name="button" onclick="printReturn()">SELESAI</button>
             </div>
           </div>
         </div>
@@ -259,7 +268,7 @@
 
     <!-- ############ MODALS ############ -->
     <!-- Modal add item -->
-    <div id="modal_add_item" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div id="modal_add_item" class="modal fade bs-example-modal-sm"  role="dialog" aria-labelledby="mySmallModalLabel">
       <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -318,7 +327,7 @@
     </div>
 
     <!-- Modal edit item -->
-    <div id="modal_edit_item" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div id="modal_edit_item" class="modal fade bs-example-modal-sm"  role="dialog" aria-labelledby="mySmallModalLabel">
       <div style="width:310px;" class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -658,25 +667,34 @@
       </div>
     </div>
     <!-- Modal hold -->
-    <div id="modal_hold" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div id="modal_hold" class="modal fade bs-example-modal-sm" role="dialog" aria-labelledby="mySmallModalLabel">
       <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
           <div class="modal-header text-center">Billing Tertahan</div>
           <div class="modal-body">
-            <table class="table table-condensed table-bordered table-striped">
-              <thead>
-                <tr>
-                  <th class="text-center">ID</th>
-                  <th class="text-center">Pelanggan</th>
-                  <th class="text-center">Tanggal</th>
-                  <th class="text-center">Jam</th>
-                  <th class="text-center">Aksi</th>
-                </tr>
-              </thead>
-              <tbody id="hold_list">
+            <div class="input-group">
+              <input type="text" nama="search_pending" id="search_pending" class="form-control keyboard" placeholder="Cari berdasar no struk atau nama..." onchange="search_pending_action()">
+              <span class="input-group-btn">
+                <button id="btn_search_pending" class="btn btn-info" type="button" onclick="search_pending_action()"><i class="fa fa-search"></i> Cari</button>
+              </span>
+            </div>
+            <br>
+            <div style="height:400px !important; overflow-y: scroll;overflow-x: hidden;">
+              <table class="table table-condensed table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th class="text-center">No. Struk</th>
+                    <th class="text-center">Nama</th>
+                    <th class="text-center">Tanggal</th>
+                    <th class="text-center">Jam</th>
+                    <th class="text-center">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="hold_list">
 
-              </tbody>
-            </table>
+                </tbody>
+              </table>
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
@@ -771,11 +789,12 @@
             <div class="input-group">
               <input id="tx_down_payment" type="text" class="form-control autonumeric num" aria-label="Masukkan ID Struk">
               <div class="input-group-btn">
-                <button class="btn btn-info" onclick="down_payment_action()"> Ok</button>
+                <button class="btn btn-info" onclick="down_payment_action()"><i class="fa fa-save"></i> Simpan</button>
               </div>
             </div>
           </div>
           <div class="modal-footer">
+            <button class="btn btn-info pull-left" onclick="print_receipt_dp()"><i class="fa fa-print"></i> Cetak Struk DP</button>
             <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
           </div>
         </div>
@@ -824,6 +843,27 @@
         </div>
       </div>
     </div>
+    <!-- Modal table no -->
+    <div id="modal_tx_table_no" class="modal fade bs-example-modal-sm" role="dialog" aria-labelledby="mySmallModalLabel">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Nomor Meja</h4>
+          </div>
+          <div class="modal-body">
+            <div class="input-group">
+              <input id="edit_tx_table_no" type="text" class="form-control keyboard" aria-label="Masukkan Nomor Meja">
+              <div class="input-group-btn">
+                <button class="btn btn-info" onclick="change_tx_table_no_action()"> Ok</button>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <script type="text/javascript">
       $(document).ready(function () {
@@ -853,6 +893,18 @@
           $("#bill_customer_id").val($("#customer_list option:selected").val());
           $("#bill_customer_name").html($("#customer_list option:selected").html());
           $("#modal_customer").modal('hide');
+          var tx_id = $("#bill_tx_id").val();
+          var customer_id = $("#customer_list option:selected").val();
+          var customer_name = $("#customer_list option:selected").html();
+          $.ajax({
+            type : 'post',
+            url : '<?=base_url()?>res_cashier/change_customer',
+            data : 'tx_id='+tx_id+'&customer_id='+customer_id+'&customer_name='+customer_name,
+            dataType : 'json',
+            success : function (data) {
+              
+            }
+          })
         })
 
         $("#form_add_customer").validate({
@@ -924,7 +976,7 @@
         $("#hold_list").html('');
         $.each(data, function(i, item) {
           var row = '<tr>'+
-            '<td>TXS-'+item.tx_id+'</td>'+
+            '<td>TXS-'+item.tx_receipt_no+'</td>'+
             '<td>'+item.customer_name+'</td>'+
             '<td class="text-center">'+item.tx_date+'</td>'+
             '<td class="text-center">'+item.tx_time+'</td>'+
@@ -961,7 +1013,9 @@
             $("#bill_tx_id").val(data.tx_id);
             $("#bill_tx_id_name").html('TXS-'+data.tx_receipt_no);
             $("#bill_customer_name").html(data.customer_name);
-            $("#customer_id").val(data.customer_id);
+            $("#bill_customer_id").val(data.customer_id);
+            $("#bill_tx_table_no").val(data.tx_table_no);
+            $("#bill_tx_table_no_name").html(data.tx_table_no);
             $("#bill_tx_total_after_tax_nominal").html(sys_to_ind(Math.round(data.tx_total_after_tax)));
             $("#bill_tx_total_before_tax_nominal").html(sys_to_ind(Math.round(data.tx_total_before_tax)));
             $("#bill_tx_total_after_tax").val(data.tx_total_after_tax);
@@ -976,8 +1030,12 @@
             $("#tx_total_discount").val(sys_to_ind(Math.round(data.tx_total_discount)));
             $("#tx_down_payment").val(sys_to_ind(Math.round(data.tx_down_payment)));
             $.each(data.detail, function(i, item) {
-              var html = '<li onclick=edit_item_show('+data.detail[i].billing_detail_id+')>'+
-                '<div class="amount">'+data.detail[i].tx_amount+'</div>'+
+              if(data.detail[i].is_custom == 0){
+                  var html = '<li onclick=edit_item_show('+data.detail[i].billing_detail_id+')>';
+                }else{
+                  var html = '<li onclick=edit_custom_show('+data.detail[i].billing_detail_id+')>';
+              };
+              html += '<div class="amount">'+data.detail[i].tx_amount+'</div>'+
                 '<div class="name">'+data.detail[i].item_name+' <span class="price">'+sys_to_ind(Math.round(data.detail[i].tx_subtotal_after_tax))+'</span></div>'+
                 '<ul>'+
                   '<li>@ '+sys_to_ind(Math.round(data.detail[i].item_price_after_tax));
@@ -1010,6 +1068,36 @@
             $("#bill_btn_cancel").prop('disabled', false);
           }
         })
+      }
+
+      function edit_item_return_show(id) {
+        $.ajax({
+          type : 'post',
+          url : '<?=base_url()?>res_cashier/edit_item_show',
+          data : 'billing_detail_id='+id,
+          dataType : 'json',
+          success : function (data) {
+            $("#edit_return_billing_detail_id").val(data.billing_detail_id);
+            $("#edit_return_item_name").html(data.item_name);
+            $("#edit_return_item_barcode").html(data.item_barcode);
+            $("#edit_return_item_price_after_tax").html(sys_to_ind(data.item_price_after_tax));
+            $("#edit_return_category_name").html(data.category_name);
+            $("#edit_return_unit_code").html(data.unit_code);
+            $("#edit_return_tx_amount").html(data.tx_amount);
+            $("#edit_return_tx_return").val(data.edit_return_tx_return);
+            $("#modal_return_edit_item").modal('show');
+          }
+        })
+      }
+
+      function edit_item_return_action() {
+        var tx_amount = $("#edit_return_tx_amount").html();
+        var tx_return = $("#edit_return_tx_return").val();
+        if (tx_return > tx_amount) {
+          alert('Retur tidak boleh melebihi pembelian!');
+        }else{
+
+        }
       }
 
       //customer add
@@ -1058,6 +1146,9 @@
             $("#bill_cashier_id").val(data.cashier.cashier_id);
             $("#bill_cashier_name").html(data.cashier.cashier_name);
             // Bill
+            $("#bill_tx_table_no").val(data.tx_table_no);
+            $("#edit_tx_table_no").val(data.tx_table_no);
+            $("#bill_tx_table_no_name").html(data.tx_table_no);
             $("#bill_tx_id").val(data.tx_id);
             $("#bill_tx_receipt_no").val(data.tx_receipt_no);
             $("#bill_tx_id_name").html(data.tx_id_name);
@@ -1065,6 +1156,7 @@
             $("#bill_tx_time").val(data.tx_time);
             $("#bill_tx_total_after_tax").val(data.tx_total_after_tax);
             $("#bill_tx_total_after_tax_nominal").html(data.tx_total_after_tax);
+            $("#bill_tx_total_before_tax_nominal").html(data.tx_total_before_tax);
             $("#bill_tx_total_discount").val(data.tx_total_discount);
             $("#bill_tx_total_discount_nominal").html(data.tx_total_discount);
             $("#bill_tx_total_tax").val(data.tx_total_tax);
@@ -1077,6 +1169,9 @@
             $("#bill_btn_cancel").prop('disabled', true);
             // clear billing
             $("#bill-list").html('');
+            //show button
+            $("#btn_payment_group").show();
+            $("#btn_return_group").hide();
           }
         })
       }
@@ -1211,11 +1306,15 @@
         var tx_id = $("#bill_tx_id").val();
         var billing_detail_id = $("#edit_billing_detail_id").val();
         var item_id = $("#edit_item_id").val();
+        var customer_id = $("#bill_customer_id").val();
+        var tx_date = $("#bill_tx_date").val();
+        var tx_time = $("#bill_tx_time").val();
 
         $.ajax({
           type : 'post',
           url : '<?=base_url()?>res_cashier/delete_item_action',
-          data : 'tx_id='+tx_id+'&billing_detail_id='+billing_detail_id+"&item_id="+item_id,
+          data : 'tx_id='+tx_id+'&billing_detail_id='+billing_detail_id+"&item_id="+item_id+
+                  '&customer_id='+customer_id+'&tx_date='+tx_date+'&tx_time='+tx_time,
           success : function () {
             $("#modal_edit_item").modal('hide');
             get_billing_now();
@@ -1249,8 +1348,8 @@
 
       function add_custom_show() {
         $("#add_custom_name").val('');
-        $("#add_custom_price").val('0');
-        $("#add_custom_amount").val('1');
+        // $("#add_custom_price").val('0');
+        // $("#add_custom_amount").val('1');
         $('#modal_add_custom').modal('show');
       }
 
@@ -1359,6 +1458,8 @@
           data : 'tx_id='+tx_id,
           dataType : 'json',
           success : function (data) {
+            $("#bill_tx_table_no").val(data.tx_table_no);
+            $("#bill_tx_table_no_name").html(data.tx_table_no);
             $("#bill_tx_total_after_tax_nominal").html(sys_to_ind(data.tx_total_after_tax));
             $("#bill_tx_total_before_tax_nominal").html(sys_to_ind(Math.round(data.tx_total_before_tax)));
             $("#bill_tx_total_after_tax").val(data.tx_total_after_tax);
@@ -1486,12 +1587,12 @@
             data : 'tx_id='+tx_id+'&tx_payment='+tx_payment,
             dataType : 'json',
             success : function (data) {
+              new_billing();
               $("#payment_section").hide();
               $("#change_section").show();
               $("#bill_tx_total_before_tax_nominal").html('');
               printBill();
               $("#change_label").html('<h5>Kembalian</h5><h3>'+sys_to_cur(Math.round(tx_change))+'</h3>');
-              new_billing();
               send_dashboard(data);
             }
           })
@@ -1521,10 +1622,10 @@
               '&bank_card_no='+bank_card_no+'&bank_reference_no='+bank_reference_no+
               '&tx_payment='+tx_payment+'&tx_change='+tx_change,
             success : function (data) {
-              $("#modal_payment").modal('hide');
               printBill();
               new_billing();
               send_dashboard(data);
+              $("#modal_payment").modal('hide');
             }
           })
         }
@@ -1574,8 +1675,10 @@
           url : '<?=base_url()?>res_cashier/pending_action',
           data : 'tx_id='+tx_id,
           success : function () {
-            $("#modal_pending").modal('hide');
             new_billing();
+            $("#btn_payment_group").show();
+            $("#btn_return_group").hide();
+            $("#modal_pending").modal('hide');
           }
         })
       }
@@ -1609,8 +1712,8 @@
           url : '<?=base_url()?>res_cashier/cancel_action',
           data : 'tx_id='+tx_id+'&tx_cancel_notes='+tx_cancel_notes,
           success : function () {
-            $("#modal_cancel").modal('hide');
             new_billing();
+            $("#modal_cancel").modal('hide');
           }
         })
       }
@@ -1627,11 +1730,35 @@
         })
       }
 
+      function printReturn() {
+        var tx_id = $("#bill_tx_id").val();
+        $.ajax({
+          type: 'post',
+          url : '<?=base_url()?>res_cashier/print_return',
+          data : 'tx_id='+tx_id,
+          success : function () {
+            new_billing();
+          } 
+        })
+      }
+
       function printLast() {
         var tx_id = $("#bill_tx_id").val()-1;
         $.ajax({
           type: 'post',
           url : '<?=base_url()?>res_cashier/print_bill',
+          data : 'tx_id='+tx_id,
+          success : function () {
+
+          }
+        })
+      }
+
+      function print_dapur() {
+        var tx_id = $("#bill_tx_id").val();
+        $.ajax({
+          type: 'post',
+          url : '<?=base_url()?>res_cashier/print_dapur',
           data : 'tx_id='+tx_id,
           success : function () {
 
@@ -1717,7 +1844,8 @@
           data : 'tx_id='+tx_id+'&tx_down_payment='+tx_down_payment,
           success : function () {
             get_billing_now();
-            $("#modal_down_payment").modal('hide');
+            alert('Sukses');
+            //$("#modal_down_payment").modal('hide');
           }
         })
       }
@@ -1762,6 +1890,8 @@
                 var tx_id = data.tx_id;
                 get_billing_id(tx_id);
                 $("#modal_return").modal('hide');
+                $("#btn_payment_group").hide();
+                $("#btn_return_group").show();
               }else{
                 alert('No. Struk Salah!');
               }
@@ -1770,6 +1900,8 @@
       }
 
       function print_receipt_dp() {
+        down_payment_action();
+
         var tx_id = $("#bill_tx_id").val();
         $.ajax({
           type : 'post',
@@ -1777,6 +1909,42 @@
           data : 'tx_id='+tx_id,
           success : function (data) {
             
+          }
+        })
+      }
+
+      //tx_table_no
+      function change_tx_table_no() {
+        var tx_id = $("#bill_tx_id").val();
+        var tx_tx_table_no = $("#bill_tx_table_no").val();
+        $("#modal_tx_table_no").modal('show');
+      }
+
+      function change_tx_table_no_action() {
+        var tx_id = $("#bill_tx_id").val();
+        var tx_table_no = $("#edit_tx_table_no").val();
+
+        $.ajax({
+          type: 'post',
+          url : '<?=base_url()?>res_cashier/change_tx_table_no_action',
+          data : 'tx_id='+tx_id+'&tx_table_no='+tx_table_no,
+          success : function () {
+            get_billing_now();
+            $("#modal_tx_table_no").modal('hide');
+          }
+        })
+      }
+
+      function search_pending_action() {
+        var search_pending = $("#search_pending").val();
+
+        $.ajax({
+          type : 'post',
+          url : '<?=base_url()?>res_cashier/search_pending_action',
+          data : 'search_pending='+search_pending,
+          dataType : 'json',
+          success : function (data) {
+            appendHoldBilling(data)
           }
         })
       }

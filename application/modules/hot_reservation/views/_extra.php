@@ -42,9 +42,7 @@
             <?php else: ?>
               Harga sudah termasuk 
             <?php endif;?>
-            <?php foreach ($charge_type as $row){
-              echo $row->charge_type_name.',';
-            }?>
+            Pajak Hotel
           </small>
         </em>
       </div>

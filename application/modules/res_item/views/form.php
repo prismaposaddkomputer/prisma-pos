@@ -4,7 +4,7 @@
 </div>
 <div class="content-body">
   <div class="row">
-    <form id="form" class="" action="<?=base_url()?>res_item/<?=$action?>" method="post">
+    <form id="form" class="" action="<?=base_url()?>res_item/<?=$action?>" enctype="multipart/form-data" method="post">
       <div class="col-md-6">
         <input class="form-control keyboard" type="hidden" name="item_id" value="<?php if($item != null){echo $item->item_id;}?>">
         <div class="row">
@@ -63,9 +63,26 @@
             </small>
           </div>
         </div>
-        <div class="form-group">
-          <label>Deskripsi</label>
-          <textarea class="form-control keyboard" name="item_desc"><?php if($item != null){echo $item->item_desc;}?></textarea>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Upload Gambar Item</label>
+              <input type="file" name="item_logo" value="">
+              <input type="hidden" name="item_logo_input" value="<?=@$item->item_logo?>">
+              <br>
+              <?php if (@$item->item_logo == null || @$item->item_logo == '' || @$item->item_logo == 'no-image.png'): ?>
+                <img src="<?=base_url()?>img/no-image.png" alt="" width="200" height="200">
+              <?php else: ?>
+                <img src="<?=base_url()?>img/res_item/<?=$item->item_logo?>" alt="" width="200" height="200">
+              <?php endif; ?>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Deskripsi</label>
+              <textarea class="form-control keyboard" name="item_desc"><?php if($item != null){echo $item->item_desc;}?></textarea>
+            </div>
+          </div>
         </div>
         <div class="row">
           <div class="col-md-4">

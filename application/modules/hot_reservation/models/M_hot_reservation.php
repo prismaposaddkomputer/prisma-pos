@@ -58,6 +58,11 @@ class M_hot_reservation extends CI_Model {
 		$this->db->where('billing_id',$billing_id)->update('hot_billing',$data);
 	}
 
+	public function update_hot_billing_room($billing_id,$data)
+	{
+		$this->db->where('billing_id',$billing_id)->update('hot_billing_room',$data);
+	}
+
 	public function empty_detail($billing_id)
 	{
 		$this->db->where('billing_id',$billing_id)->delete('hot_billing_room');
@@ -103,11 +108,34 @@ class M_hot_reservation extends CI_Model {
 			->get('hot_billing_room')->result();
 	}
 
-	public function update_billing_room($id,$data)
+	public function get_billing_room_by_id($billing_id)
+	{
+		return $this->db
+			->where('billing_id',$billing_id)
+			->get('hot_billing_room')->result();
+	}
+
+	public function get_billing_room_by_billing_id_and_room_id($billing_id, $room_id)
+	{
+		return $this->db
+			->where('billing_id',$billing_id)
+			->where('room_id',$room_id)
+			->get('hot_billing_room')->row();
+	}
+
+	public function update_billing_room($billing_id, $room_id, $data)
 	{
 		$this->db
-			->where('billing_room_id',$id)
+			->where('billing_id',$billing_id)
+			->where('room_id',$room_id)
 			->update('hot_billing_room',$data);
+	}
+
+	public function update_billing($billing_id, $data)
+	{
+		$this->db
+			->where('billing_id',$billing_id)
+			->update('hot_billing',$data);
 	}
 
 	public function delete_room($id)
@@ -256,6 +284,11 @@ class M_hot_reservation extends CI_Model {
 	return $this->db->where('billing_non_tax_id',$id)->get('hot_billing_non_tax')->row();
 	}
 
+	public function get_hot_room_type($room_type_id)
+	{
+	return $this->db->where('room_type_id',$room_type_id)->get('hot_room_type')->row();
+	}
+
 	public function add_non_tax($data)
 	{
 		$this->db->insert('hot_billing_non_tax', $data);
@@ -347,17 +380,60 @@ class M_hot_reservation extends CI_Model {
 		return $data->count_custom;
 	}
 
-	public function validate_room_id($room_id=null) {
+	public function get_billing_by_room_id($room_id=null)
+	{
+		return $this->db
+			->where('room_id',$room_id)
+			->get('hot_billing_room')->row();
+	}
+
+	public function get_billing_by_billing_id($billing_id=null)
+	{
+		return $this->db
+			->where('billing_id',$billing_id)
+			->get('hot_billing')->row();
+	}
+
+	public function validate_room_id($room_id=null, $billing_date_in=null) {
+		//
+		$get_billing_by_room_id = $this->get_billing_by_room_id($room_id);
+		$get_billing_by_billing_id = $this->get_billing_by_billing_id(@$get_billing_by_room_id->billing_id);
+		$tgl_hari_ini = date('Y-m-d');
+		//
+		if (@$get_billing_by_room_id->room_type_tarif_kamar == '1') {
+			$date_akhir = date('d-m-Y', strtotime('+'.round(@$get_billing_by_room_id->room_type_duration,0,PHP_ROUND_HALF_UP).' days', strtotime(@$get_billing_by_billing_id->billing_date_in)));
+			$date_hari_ini = date('d-m-Y');
+		}else{
+			// $date_akhir = date('H:i:s', strtotime('+'.round(@$get_billing_by_room_id->room_type_duration,0,PHP_ROUND_HALF_UP).' hours', strtotime(@$get_billing_by_billing_id->billing_time_in)));
+			// $date_hari_ini = date('H:i:s');
+			$date_akhir = date('Y-m-d H:i:s', strtotime('+'.round(@$get_billing_by_room_id->room_type_duration,0,PHP_ROUND_HALF_UP).' hours', strtotime(@$get_billing_by_billing_id->billing_date_in.' '.@$get_billing_by_billing_id->billing_time_in)));
+			$date_hari_ini = date('Y-m-d H:i:s');
+		}
+
+		//
         $sql = "SELECT 
         			a.room_id 
         		FROM hot_billing_room a 
         		LEFT JOIN hot_billing b ON a.billing_id=b.billing_id
         		WHERE a.room_id='$room_id' AND b.billing_status='1'";
         $query = $this->db->query($sql);
+        
         if($query->num_rows() > 0) {
-            return true;
+        	return true;
         } else {
-            return false;
+        	if ($get_billing_by_billing_id->billing_status == '-1') {
+        		return false;
+        	}elseif ($get_billing_by_billing_id->billing_status == '0') {
+        		return true;
+        	}elseif ($get_billing_by_billing_id->billing_status == '3') {
+        		return false;
+        	}else{
+        		if ($date_hari_ini >= $date_akhir) {
+	        		return false;
+	        	}else{
+	        		return true;
+	        	}
+        	}
         }
     }
 

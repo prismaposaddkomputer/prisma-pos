@@ -1,5 +1,5 @@
 <div id="modal_room_list" class="modal fade"  role="dialog" aria-labelledby="modal_room_list">
-  <div style="width:800px;" class="modal-dialog modal-md" role="document">
+  <div style="width:800px;" class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -11,12 +11,14 @@
         <table id="tbl_room_list" class="table table-bordered table-condensed">
           <thead>
             <tr>
-              <th class="text-center">Jenis Kamar</th>
+              <!-- <th class="text-center">Jenis Kamar</th> -->
               <th class="text-center">Kamar</th>
+              <th class="text-center">Tarif</th>
               <th class="text-center">Durasi</th>
-              <th class="text-center" width="150">Harga</th>
-              <th class="text-center" width="110">Diskon</th>
-              <th class="text-center" width="110">Total</th>
+              <th class="text-center" width="110">Harga</th>
+              <th class="text-center" width="100">Diskon</th>
+              <th class="text-center" width="100">Denda</th>
+              <th class="text-center" width="100">Total</th>
               <th class="text-center" width="100">Aksi</th>
             </tr>
           </thead>

@@ -170,11 +170,11 @@
             <td>&nbsp;:&nbsp;</td>
             <td><?=date_to_ind($billing->billing_date_in)?> <?=$billing->billing_time_in?></td>
           </tr>
-          <!-- <tr>
+          <tr>
             <th>Out (Keluar)</th>
             <td>&nbsp;:&nbsp;</td>
             <td><?=date_to_ind($billing->billing_date_out)?> <?=$billing->billing_time_out?></td>
-          </tr> -->
+          </tr>
           <tr>
             <th>Kasir</th>
             <td>&nbsp;:&nbsp;</td>
@@ -203,22 +203,37 @@
             if ($client->client_is_taxed == 0) {
               $room_type_subtotal = num_to_price($row->room_type_charge);
             }else{
-              $room_type_subtotal = num_to_price($row->room_type_total/$row->room_type_duration);
+              $room_type_subtotal = num_to_price($row->room_type_before_discount/$row->room_type_duration);
             }
             //
             if ($client->client_is_taxed == 0) {
               $room_type_total = num_to_price($row->room_type_subtotal);
             }else{
-              $room_type_total = num_to_price($row->room_type_total);
+              $room_type_total = num_to_price($row->room_type_before_discount);
             }
             //
             ?>
             <tr>
               <td>Room : <?=$row->room_name?></td>
-              <td align="center"><?=round($row->room_type_duration,0,PHP_ROUND_HALF_UP)?> Jam</td>
+              <td align="center"><?=round($row->room_type_duration,0,PHP_ROUND_HALF_UP)?> <?=($row->room_type_tarif_kamar == '1') ? 'Hari' : 'Jam' ?></td>
               <td align="right"><?=$room_type_subtotal?></td>
               <td align="right"><?=$room_type_total?></td>
             </tr>
+
+            <?php if ($row->room_type_denda !='0'): ?>
+            <tr>
+              <td colspan="3"></td>
+              <td align="right"><b>Denda</b> : <?=num_to_price($row->room_type_denda)?></td>
+            </tr>
+            <?php endif; ?>
+            
+            <?php if ($row->room_type_denda !='0'): ?>
+            <tr>
+              <td colspan="3"></td>
+              <td align="right"><b>Denda</b> : <?=num_to_price($row->room_type_denda)?></td>
+            </tr>
+            <?php endif; ?>
+
             <?php endforeach; ?>
           <?php endif; ?>
 
@@ -242,36 +257,9 @@
             ?>
             <tr>
               <td>Extra : <?=$row->extra_name?></td>
-              <td align="center"><?=$row->extra_amount?></td>
+              <td align="center"><?=round($row->extra_amount,0,PHP_ROUND_HALF_UP)?></td>
               <td align="right"><?=$extra_charge_sub_total?></td>
               <td align="right"><?=$extra_charge_total?></td>
-            </tr>
-            <?php endforeach; ?>
-          <?php endif; ?>
-
-          <!-- Paket -->
-          <?php if ($billing->paket != null): ?>
-            <?php 
-            foreach ($billing->paket as $row): 
-            //
-            if ($client->client_is_taxed == 0) {
-              $paket_charge_sub_total = num_to_price($row->paket_charge);
-            }else{
-              $paket_charge_sub_total = num_to_price($row->paket_total/$row->paket_amount);
-            }
-            //
-            if ($client->client_is_taxed == 0) {
-              $paket_charge_total = num_to_price($row->paket_subtotal);
-            }else{
-              $paket_charge_total = num_to_price($row->paket_total);
-            }
-            //
-            ?>
-            <tr>
-              <td>Paket : <?=$row->paket_name?></td>
-              <td align="center"><?=round($row->paket_amount,0,PHP_ROUND_HALF_UP)?></td>
-              <td align="right"><?=$paket_charge_sub_total?></td>
-              <td align="right"><?=$paket_charge_total?></td>
             </tr>
             <?php endforeach; ?>
           <?php endif; ?>
@@ -340,6 +328,33 @@
               <td align="center"><?=round($row->non_tax_amount,0,PHP_ROUND_HALF_UP)?></td>
               <td align="right"><?=num_to_price($row->non_tax_charge)?></td>
               <td align="right"><?=num_to_price($row->non_tax_total)?></td>
+            </tr>
+            <?php endforeach; ?>
+          <?php endif; ?>
+
+          <!-- custom -->
+          <?php if ($billing->custom != null): ?>
+            <?php 
+            foreach ($billing->custom as $row): 
+            //
+            if ($client->client_is_taxed == 0) {
+              $custom_charge_sub_total = num_to_price($row->custom_charge);
+            }else{
+              $custom_charge_sub_total = num_to_price($row->custom_total/$row->custom_amount);
+            }
+            //
+            if ($client->client_is_taxed == 0) {
+              $custom_charge_total = num_to_price($row->custom_subtotal);
+            }else{
+              $custom_charge_total = num_to_price($row->custom_total);
+            }
+            //
+            ?>
+            <tr>
+              <td>Kustom : <?=$row->custom_name?></td>
+              <td align="center"><?=round($row->custom_amount,0,PHP_ROUND_HALF_UP)?></td>
+              <td align="right"><?=$custom_charge_sub_total?></td>
+              <td align="right"><?=$custom_charge_total?></td>
             </tr>
             <?php endforeach; ?>
           <?php endif; ?>

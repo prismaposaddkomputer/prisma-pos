@@ -37,10 +37,10 @@
           <thead>
             <tr>
               <th class="text-center" width="50">No</th>
-              <th class="text-center" width="100">Aksi</th>
+              <th class="text-center" width="120">Aksi</th>
               <th class="text-center">No. Nota</th>
               <th class="text-center cl-success"><i class="fa fa-arrow-down"></i> In (Masuk)</th>
-              <!-- <th class="text-center cl-danger"><i class="fa fa-arrow-up"></i> Out (Keluar)</th> -->
+              <th class="text-center cl-danger"><i class="fa fa-arrow-up"></i> Out (Keluar)</th>
               <th class="text-center">Tamu</th>
               <th class="text-center" width="150">Total</th>
               <th class="text-center" width="80">Status</th>
@@ -52,19 +52,26 @@
                 <tr>
                   <td class="text-center"><?=$this->uri->segment('3')+$i++?></td>
                   <td class="text-center">
-                    <?php if ($row->billing_status != -1): ?>
-                      <a class="btn btn-xs btn-warning" href="<?=base_url()?>hot_reservation/form/<?=$row->billing_id?>"><i class="fa fa-pencil"></i></a>
-                      <a class="btn btn-xs btn-success" href="<?=base_url()?>hot_reservation/payment/<?=$row->billing_id?>"><i class="fa fa-money"></i></a>
-                      <button class="btn btn-xs btn-danger" onclick="del('<?=$row->billing_id?>')"><i class="fa fa-trash"></i></a>
-                    <?php endif;?>
+                    <?php if ($row->billing_status == '3'): ?>
+                      <a class="btn btn-xs btn-primary" href="<?=base_url()?>hot_reservation/reservation_print_struk/<?=$row->billing_id?>"><i class="fa fa-print"></i></a>
+                    <?php else: ?>
+                      <?php if ($row->billing_status != -1): ?>
+                        <a class="btn btn-xs btn-warning" href="<?=base_url()?>hot_reservation/form/<?=$row->billing_id?>"><i class="fa fa-pencil"></i></a>
+                        <a class="btn btn-xs btn-success" href="<?=base_url()?>hot_reservation/payment/<?=$row->billing_id?>"><i class="fa fa-money"></i></a>
+                        <button class="btn btn-xs btn-danger" onclick="del('<?=$row->billing_id?>')"><i class="fa fa-trash"></i></button>
+                      <?php endif;?>
+                      <?php if ($row->billing_status == '2'): ?>
+                        <button class="btn btn-xs btn-primary" onclick="complete('<?=$row->billing_id?>')"><i class="fa fa-check"></i></button>
+                      <?php endif; ?>
+                    <?php endif; ?>
                   </td>
                   <td class="text-center">TRS-<?=$row->billing_receipt_no?></td> 
                   <td class="text-center"><?=date_to_ind($row->billing_date_in).' '.$row->billing_time_in?></td>
-                  <!-- <?php if ($row->billing_date_out == 0 && $row->billing_time_out == 0): ?>
+                  <?php if ($row->billing_date_out == 0 && $row->billing_time_out == 0): ?>
                     <td class="text-center">-</td>
                   <?php else: ?>
                     <td class="text-center"><?=date_to_ind($row->billing_date_out).' '.$row->billing_time_out?></td>
-                  <?php endif; ?> -->
+                  <?php endif; ?>
                   <td><?=$row->guest_name?></td>
                   <td><?=num_to_idr($row->billing_total)?></td>
                   <td class="text-center">
@@ -83,6 +90,8 @@
 
                     <?php }else if($row->billing_status == 2){ ?>
                       <span class="badge bg-success">Sudah Dibayar</span>
+                    <?php }else if($row->billing_status == 3){ ?>
+                      <span class="badge bg-info">Transaksi Selesai</span>
                     <?php }; ?>
                   </td>
                 </tr>
@@ -123,12 +132,41 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<!-- Modal Transaksi Selesai -->
+<div id="modal_complete" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Transaksi Selesai</h4>
+      </div>
+      <div class="modal-body">
+        <p>Apakah transaksi ini sudah selesai ?</p>
+        <b class="cl-danger">Peringatan!</b>
+        <p>Jika transaksi sudah selesai maka Anda hanya bisa print struk saja.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Tutup</button>
+        <button id="btn_complete_action" type="button" class="btn btn-success"><i class="fa fa-check"></i> Transaksi Selesai</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <script type="text/javascript">
   function del(id) {
     $("#modal_delete").modal('show');
 
     $("#btn_delete_action").click(function () {
       window.location = "<?=base_url()?>hot_reservation/cancel/"+id;
+    })
+  }
+
+  function complete(id) {
+    $("#modal_complete").modal('show');
+
+    $("#btn_complete_action").click(function () {
+      window.location = "<?=base_url()?>hot_reservation/complete/"+id;
     })
   }
 </script>

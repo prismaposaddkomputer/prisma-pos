@@ -1448,6 +1448,7 @@ class M_app_version extends CI_Model {
             `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
             PRIMARY KEY (`billing_custom_id`)
           ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT");
+          break;
 
         case '2.8':
           $this->db->query("CREATE TABLE IF NOT EXISTS `kar_billing_custom` (
@@ -1468,8 +1469,91 @@ class M_app_version extends CI_Model {
             `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
             PRIMARY KEY (`billing_custom_id`)
           ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT");
-    }
+          break;
 
+        case '2.9.1':
+          $this->db->query("DELETE FROM res_module WHERE module_id='03.01'");
+          $this->db->query("DELETE FROM res_module WHERE module_id='03.02'");
+          $this->db->query("DELETE FROM res_module WHERE module_id='03.03'");
+          $this->db->query("UPDATE res_module 
+            SET module_folder='res_cashier',
+              module_controller='res_cashier',
+              module_url='index'
+            WHERE module_id='03'");
+          break;
+
+        case '2.9.2':
+          $this->db->query("ALTER TABLE `res_billing` ADD COLUMN `tx_table_no` VARCHAR(50) NULL DEFAULT '-' AFTER `tx_total_profit_after_tax`");
+          break;
+
+        case '2.9.3':
+          $this->db->query("ALTER TABLE `hot_room_type` ADD COLUMN `room_type_charge_hour` float(10,2) NOT NULL AFTER `room_type_charge`");
+          $this->db->query("ALTER TABLE `hot_billing_room` ADD COLUMN `room_type_tarif_kamar` tinyint(1) NOT NULL DEFAULT '1' AFTER `room_type_name`");
+          $this->db->query("ALTER TABLE `hot_billing_room` ADD COLUMN `room_keterangan` VARCHAR(100) NULL AFTER `room_type_total`");
+          break;
+
+        case '2.9.4':
+          $this->db->query("ALTER TABLE `hot_billing_room` ADD COLUMN `room_type_denda` float(10,2) NOT NULL AFTER `room_type_other`");
+          break;
+          
+          case '2.9.5':
+          //Drop db if exsit
+          $this->db->query("DROP TABLE IF EXISTS `hot_denda`");
+          //make table
+          $this->db->query(
+            "CREATE TABLE IF NOT EXISTS `hot_denda` (
+            `denda_id` int(11) NOT NULL AUTO_INCREMENT,
+            `denda_duration` float(10, 2) NOT NULL,
+            `denda_charge` float(10, 2) NOT NULL,
+            `created` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            `created_by` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
+            `updated` timestamp(0) NOT NULL,
+            `updated_by` varchar(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'System',
+            `is_active` tinyint(1) NOT NULL DEFAULT 1,
+            `is_deleted` tinyint(1) NOT NULL DEFAULT 0,
+            PRIMARY KEY (`denda_id`)
+          ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Compact"
+        );
+        //empty table
+        $this->db->query("DELETE FROM `par_tax`");
+        //insert tax hotel
+        $this->db->query(
+          "INSERT INTO `hot_denda` (`denda_id`, `denda_duration`, `denda_charge`, `created`, `created_by`, `updated`, `updated_by`, `is_active`, `is_deleted`) VALUES
+          (1, 2.00, 10000.00, '2019-01-03 17:51:27', 'Super Hotel', '0000-00-00 00:00:00', 'Super Hotel', 1, 0)"
+        );
+        break;
+
+        case '2.9.6':
+          $this->db->query("ALTER TABLE `res_billing_detail`
+	          ADD COLUMN `is_return` TINYINT(1) NOT NULL DEFAULT 0 AFTER `tx_subtotal_profit_after_tax`");
+          break;
+
+        case '2.9.7':
+          $this->db->query("ALTER TABLE `hot_billing_room` ADD COLUMN `room_st_denda` INT(1) NOT NULL DEFAULT 1 AFTER `room_type_denda`");
+          break;
+
+        case '2.9.8':
+          $this->db->query("ALTER TABLE `res_client` ADD COLUMN `client_skin` TINYINT(1) NOT NULL DEFAULT '1' AFTER `client_logo`");
+          break;
+
+        case '2.9.9':
+          $this->db->query("ALTER TABLE `res_item` ADD COLUMN `item_logo` VARCHAR(100) NOT NULL DEFAULT 'no-image.png' AFTER `is_package`");
+          break;
+
+        case '2.9.10':
+          $this->db->query("INSERT INTO `hot_module` VALUES ('02.11', '02', 'Denda', 'hot_denda', 'hot_denda', 'index', '', '2019-01-04 17:26:40', 'System', '2018-08-18 05:51:24', 'System', 0, 0)");
+          $this->db->query("INSERT INTO `hot_permission` VALUES (106, 0, '02.11', 1, 1, 1, 1, '2019-01-04 17:28:31', 'Super Hotel')");
+          break;
+
+        case '2.9.11':
+          $this->db->query("ALTER TABLE `hot_billing` ADD COLUMN `billing_denda` float(10,2) NOT NULL AFTER `billing_discount`");
+          break;
+
+        case '2.9.12':
+          $this->db->query("ALTER TABLE `hot_billing` ADD COLUMN `billing_discount_custom` float(10,2) NOT NULL AFTER `billing_status`");
+          break;
+      }
+      
     //insert new update history
     $this->db->insert('app_version',$ver);
   }
@@ -1594,7 +1678,31 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"2.7","version_release"=>"2018-12-18 11:47:00"));
     // custom item karaoke
     array_push($version, array("version_now"=>"2.8","version_release"=>"2018-12-18 11:47:00"));
-    
+    // delete menu retur & void resto, update transaksi to cashier
+    array_push($version, array("version_now"=>"2.9.1","version_release"=>"2019-01-02 16:47:00"));
+    // alter add table no
+    array_push($version, array("version_now"=>"2.9.2","version_release"=>"2019-01-02 16:47:00"));
+    // tambah room_type_charge_hour di hot_room_type
+    array_push($version, array("version_now"=>"2.9.3","version_release"=>"2019-01-02 16:47:00"));
+    // tambah room_type_denda di hot_billing_room
+    array_push($version, array("version_now"=>"2.9.4","version_release"=>"2019-01-02 16:47:00"));
+    // create tabel hot_denda
+    array_push($version, array("version_now"=>"2.9.5","version_release"=>"2019-01-02 16:47:00"));
+    // status return 
+    array_push($version, array("version_now"=>"2.9.6","version_release"=>"2019-01-03 20:12:00"));
+    // add room_st_denda => hot_billing_room
+    array_push($version, array("version_now"=>"2.9.7","version_release"=>"2019-01-03 20:12:00"));
+    // add skin restaurant
+    array_push($version, array("version_now"=>"2.9.8","version_release"=>"2019-01-04 08:29:00"));
+    // add item_logo
+    array_push($version, array("version_now"=>"2.9.9","version_release"=>"2019-01-04 08:29:00"));
+    // add module and role hotel
+    array_push($version, array("version_now"=>"2.9.10","version_release"=>"2019-01-04 08:29:00"));
+    // add billing_denda => hot_billing
+    array_push($version, array("version_now"=>"2.9.11","version_release"=>"2019-01-05 08:29:00"));
+    // add billing_discount_custom => hot_billing
+    array_push($version, array("version_now"=>"2.9.12","version_release"=>"2019-01-05 08:29:00"));
+
     foreach ($version as $key => $val) {
       //check version
       $check = null;

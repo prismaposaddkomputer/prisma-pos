@@ -123,8 +123,10 @@ html, body {
     height: 45px;
     border-bottom: 1px solid #e1e5ea; }
     #bill #bill-info .lbl-tx {
+      font-size: 13px;
       height: 45px;
-      padding: 12px 5px;
+      padding: 14px 5px;
+      cursor:pointer;
       border-right: 1px solid #e1e5ea;
       overflow: hidden !important;
       white-space: nowrap !important;
@@ -218,5 +220,3 @@ html, body {
 
 .full-height-col {
   height: 100%; }
-
-/*# sourceMappingURL=ret-cashier.css.map */
