@@ -390,19 +390,28 @@ class M_kar_reservation extends CI_Model {
 		return $data->count_custom;
 	}
 
+	public function get_billing_by_room_id($room_id=null)
+	{
+		return $this->db
+			->where('room_id',$room_id)
+			->get('kar_billing_room')->row();
+	}
+
+	public function get_billing_by_billing_id($billing_id=null)
+	{
+		return $this->db
+			->where('billing_id',$billing_id)
+			->get('kar_billing')->row();
+	}
+
     public function validate_room_id($room_id=null, $billing_date_in=null) {
 		//
 		$get_billing_by_room_id = $this->get_billing_by_room_id($room_id);
 		$get_billing_by_billing_id = $this->get_billing_by_billing_id(@$get_billing_by_room_id->billing_id);
 		$tgl_hari_ini = date('Y-m-d');
 		//
-		if (@$get_billing_by_room_id->room_type_tarif_kamar == '1') {
-			$date_akhir = date('d-m-Y', strtotime('+'.round(@$get_billing_by_room_id->room_type_duration,0,PHP_ROUND_HALF_UP).' days', strtotime(@$get_billing_by_billing_id->billing_date_in)));
-			$date_hari_ini = date('d-m-Y');
-		}else{
-			$date_akhir = date('H:i:s', strtotime('+'.round(@$get_billing_by_room_id->room_type_duration,0,PHP_ROUND_HALF_UP).' hours', strtotime(@$get_billing_by_billing_id->billing_time_in)));
-			$date_hari_ini = date('H:i:s');
-		}
+		$date_akhir = date('H:i:s', strtotime('+'.round(@$get_billing_by_room_id->room_type_duration,0,PHP_ROUND_HALF_UP).' hours', strtotime(@$get_billing_by_billing_id->billing_time_in)));
+		$date_hari_ini = date('H:i:s');
 
 		//
         $sql = "SELECT 
