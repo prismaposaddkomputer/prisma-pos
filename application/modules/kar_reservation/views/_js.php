@@ -511,7 +511,9 @@
   }
 
   function get_validate_room(room_id) {
-    $.get('<?=base_url()?>kar_reservation/get_validate_room?room_id='+room_id,null,function(data) {
+    var billing_date_in = $('#billing_date_in').val();
+    //
+    $.get('<?=base_url()?>kar_reservation/get_validate_room?room_id='+room_id+'&billing_date_in='+billing_date_in,null,function(data) {
       if(data.result == 'false') {
         swal({
           text: "Room ini sudah digunakan ",

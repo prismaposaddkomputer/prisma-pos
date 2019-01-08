@@ -248,20 +248,6 @@ class Hot_reservation extends MY_Hotel {
                     $room_type_other = ($other->charge_type_ratio/(100 + $other->charge_type_ratio))*$data_update_billing_room['room_type_before_discount'];
                   }
 
-                  // Diskon
-                  // if ($discount->discount_type == '1') {
-                  //   if ($discount->discount_id == '1') {
-                  //     $room_type_discount = $discount->discount_amount;
-                  //     $room_type_total = $data_update_billing_room['room_type_before_discount'] - $room_type_discount;
-                  //   }else{
-                  //     $room_type_discount = ($discount->discount_amount/100);
-                  //     $room_type_total = $data_update_billing_room['room_type_before_discount'] * $room_type_discount;
-                  //   }
-                  // }else{
-                  //   $room_type_discount = $discount->discount_amount;
-                  //   $room_type_total = $data_update_billing_room['room_type_before_discount'] - $room_type_discount;
-                  // }
-
                 }
 
                 $data_update_billing_room['room_type_tax'] = $room_type_tax;
