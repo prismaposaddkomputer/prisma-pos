@@ -96,7 +96,6 @@
   }
 
   function edit_return_show(id) {
-    alert(id);
     $.ajax({
       type : 'post',
       url : '<?=base_url()?>res_cashier/edit_return_show',
