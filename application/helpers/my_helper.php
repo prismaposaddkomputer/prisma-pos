@@ -144,6 +144,23 @@
     return $res;
   }
 
+  function duration_float($data)
+  {
+    $str = strlen($data);
+    $explode = explode(".", $data);
+    //
+    if ($str == 4) {
+      if ($explode[1] == 00) {
+        $replace_point = str_replace(".", "", $data);
+        return str_replace("0", "", $replace_point);
+      }else{
+        return str_replace("0", "", $data);
+      }
+    }else{
+      return $data;
+    }
+  }
+
   function num_to_idr($v)
   {
     $res = num_to_price($v);
