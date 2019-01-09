@@ -131,7 +131,7 @@
                   <?php 
                     if ($client->client_is_taxed == 0) {
                       // echo num_to_idr($row->room_type_subtotal);
-                      echo num_to_idr($row->room_type_total);
+                      echo num_to_idr(($row->room_type_total)-($row->room_type_tax+$row->room_type_service+$row->room_type_other));
                     }else{
                       echo num_to_idr($row->room_type_total);
                     }
@@ -140,7 +140,7 @@
                 <?php 
                   if ($client->client_is_taxed == 0) {
                     // $tot_room += $row->room_type_subtotal;
-                    $tot_room += $row->room_type_total;
+                    $tot_room += ($row->room_type_total)-($row->room_type_tax+$row->room_type_service+$row->room_type_other);
                   }else{
                     $tot_room += $row->room_type_total;
                   }
