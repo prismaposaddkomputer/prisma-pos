@@ -46,7 +46,7 @@
               <th class="text-center" width="200">Tarif Kamar Hari (Long Time)</th>
               <th class="text-center" width="200">Tarif Kamar Jam (Short Time)</th>
               <th class="text-center" width="80">Aktif</th>
-            </tr>
+            </tr> 
           </thead>
           <tbody>
             <?php if ($room_type != null): ?>
