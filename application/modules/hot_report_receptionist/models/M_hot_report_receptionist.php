@@ -10,6 +10,8 @@ class M_hot_report_receptionist extends CI_Model {
 				MONTH(billing_date_in) AS tx_month,
 				YEAR(billing_date_in) AS tx_year,
 				SUM(billing_subtotal) AS billing_subtotal,
+				SUM(billing_discount) AS billing_discount,
+				SUM(billing_denda) AS billing_denda,
 				SUM(billing_tax) AS billing_tax,
 				SUM(billing_service) AS billing_service,
 				SUM(billing_other) AS billing_other,
@@ -33,6 +35,8 @@ class M_hot_report_receptionist extends CI_Model {
 			"SELECT
 				billing_date_in,
 				SUM(billing_subtotal) AS billing_subtotal,
+				SUM(billing_discount) AS billing_discount,
+				SUM(billing_denda) AS billing_denda,
 				SUM(billing_tax) AS billing_tax,
 				SUM(billing_service) AS billing_service,
 				SUM(billing_other) AS billing_other,
@@ -56,6 +60,8 @@ class M_hot_report_receptionist extends CI_Model {
 			"SELECT
 				billing_date_in,
 				SUM(billing_subtotal) AS billing_subtotal,
+				SUM(billing_discount) AS billing_discount,
+				SUM(billing_denda) AS billing_denda,
 				SUM(billing_tax) AS billing_tax,
 				SUM(billing_service) AS billing_service,
 				SUM(billing_other) AS billing_other,
@@ -97,6 +103,8 @@ class M_hot_report_receptionist extends CI_Model {
 			"SELECT
 				billing_date_in,
 				SUM(billing_subtotal) AS billing_subtotal,
+				SUM(billing_discount) AS billing_discount,
+				SUM(billing_denda) AS billing_denda,
 				SUM(billing_tax) AS billing_tax,
 				SUM(billing_service) AS billing_service,
 				SUM(billing_other) AS billing_other,
