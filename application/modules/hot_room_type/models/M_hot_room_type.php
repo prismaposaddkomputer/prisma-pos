@@ -124,7 +124,7 @@ class M_hot_room_type extends CI_Model {
   			$diff = array_diff($baru,$awal);
   			for ($i=0; $i < $n_baru; $i++) { 
   				if (in_array($baru[$i], $awal)) {
-  					$this->update_hot_room($id, $baru[$i]);
+  					// $this->update_hot_room($id, $baru[$i]);
   				}else{
   					$this->insert_hot_room($id, $baru[$i]);
   				}
@@ -134,7 +134,7 @@ class M_hot_room_type extends CI_Model {
   			$diff = array_diff($awal,$baru);
   			for ($i=0; $i < $n_awal; $i++) { 
   				if (in_array($awal[$i], $baru)) {
-  					$this->update_hot_room($id, $awal[$i]);
+  					// $this->update_hot_room($id, $awal[$i]);
   				}else{
             $this->delete_hot_room($id, $awal[$i]);
           }
