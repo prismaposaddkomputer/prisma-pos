@@ -671,7 +671,7 @@
               }else{
                 var room_type_tarif_kamar = 'Jam';
               }
-
+               var room_type_total = parseFloat(item.room_type_total)-(parseFloat(item.room_type_tax)+parseFloat(item.room_type_service)+parseFloat(item.room_type_other));
               var row = '<tr>'+
                 // '<td>'+item.room_type_name+'</td>'+
                 '<td>'+item.room_name+'</td>'+
@@ -680,7 +680,7 @@
                 '<td>'+sys_to_cur(item.room_type_subtotal)+'</td>'+
                 '<td>'+discount_amount+'</td>'+
                 '<td>'+sys_to_cur(item.room_type_denda)+'</td>'+
-                '<td>'+sys_to_cur(item.room_type_total)+'</td>'+
+                '<td>'+sys_to_cur(room_type_total)+'</td>'+
                 '<td class="text-center">'+
                   '<button class="btn btn-sm btn-warning" onclick="update_room_show('+item.billing_room_id+')"><i class="fa fa-pencil fa-lg"></i></button> '+
                   '<button class="btn btn-sm btn-danger" onclick="delete_room('+item.billing_room_id+')"><i class="fa fa-trash fa-lg"></i></button>'+
@@ -706,14 +706,14 @@
               }else{
                 var room_type_tarif_kamar = 'Jam';
               }
-
+              var room_type_charge = parseFloat(item.room_type_charge)+((parseFloat(item.room_type_tax)+parseFloat(item.room_type_service)+parseFloat(item.room_type_other))/parseFloat(item.room_type_duration));
               var row = '<tr>'+
                 // '<td>'+item.room_type_name+'</td>'+
                 '<td>'+item.room_name+'</td>'+
-                '<td>'+sys_to_cur(item.room_type_charge)+'</td>'+
+                '<td>'+sys_to_cur(room_type_charge)+'</td>'+
                 '<td class="text-center">'+Math.round(item.room_type_duration)+' '+room_type_tarif_kamar+' </td>'+
                 // '<td>'+sys_to_cur(item.room_type_total/item.room_type_duration)+'</td>'+
-                '<td>'+sys_to_cur(item.room_type_subtotal)+'</td>'+
+                '<td>'+sys_to_cur(parseFloat(item.room_type_subtotal)+(parseFloat(item.room_type_tax)+parseFloat(item.room_type_service)+parseFloat(item.room_type_other)))+'</td>'+
                 '<td>'+discount_amount+'</td>'+
                 '<td>'+sys_to_cur(item.room_type_denda)+'</td>'+
                 '<td>'+sys_to_cur(item.room_type_total)+'</td>'+
