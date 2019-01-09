@@ -172,7 +172,7 @@ class Hot_report_reservation extends MY_Hotel {
         }
 
         $sub_total_left = "Sub Total";
-        $sub_total_right = num_to_price($row->billing_subtotal);
+        $sub_total_right = num_to_price($after_billing_subtotal);
         $printer -> text(print_justify($sub_total_left, $sub_total_right, 16, 13, 3));
         //
         $diskon_left = "Diskon";
@@ -344,7 +344,7 @@ class Hot_report_reservation extends MY_Hotel {
         }
 
         $sub_total_left = "Sub Total";
-        $sub_total_right = num_to_price($row->billing_subtotal);
+        $sub_total_right = num_to_price($after_billing_subtotal);
         $printer -> text(print_justify($sub_total_left, $sub_total_right, 16, 13, 3));
         //
         $diskon_left = "Diskon";
@@ -506,7 +506,7 @@ class Hot_report_reservation extends MY_Hotel {
         }
 
         $sub_total_left = "Sub Total";
-        $sub_total_right = num_to_price($row->billing_subtotal);
+        $sub_total_right = num_to_price($after_billing_subtotal);
         $printer -> text(print_justify($sub_total_left, $sub_total_right, 16, 13, 3));
         //
         $diskon_left = "Diskon";
@@ -691,7 +691,7 @@ class Hot_report_reservation extends MY_Hotel {
         }
 
         $sub_total_left = "Sub Total";
-        $sub_total_right = num_to_price($row->billing_subtotal);
+        $sub_total_right = num_to_price($after_billing_subtotal);
         $printer -> text(print_justify($sub_total_left, $sub_total_right, 16, 13, 3));
         //
         $diskon_left = "Diskon";
@@ -853,7 +853,7 @@ class Hot_report_reservation extends MY_Hotel {
         }
 
         $sub_total_left = "Sub Total";
-        $sub_total_right = num_to_price($row->billing_subtotal);
+        $sub_total_right = num_to_price($after_billing_subtotal);
         $printer -> text(print_justify($sub_total_left, $sub_total_right, 16, 13, 3));
         //
         $diskon_left = "Diskon";
