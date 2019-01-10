@@ -60,10 +60,16 @@ class Hot_reservation extends MY_Hotel {
       $data['billing_get_all'] = $this->m_hot_reservation->get_all();
       if ($data['billing_get_all'] != null) {
         foreach ($data['billing_get_all'] as $row) {
-          if ($row->billing_status !='3') {
-            $this->process_denda($row->billing_id);
-            $this->update_all_billing($row->billing_id);
+
+          if ($row->billing_date_in >= "2019-01-10") {
+            
+            if ($row->billing_status !='3') {
+              $this->process_denda($row->billing_id);
+              $this->update_all_billing($row->billing_id);
+            }
+            
           }
+
         }
       }
       // End Proses Denda
