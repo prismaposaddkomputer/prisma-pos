@@ -29,7 +29,11 @@ class M_kar_paket extends CI_Model {
 
   public function get_by_id($id)
   {
-    return $this->db->where('paket_id',$id)->get('kar_paket')->row();
+		$data = $this->db->where('paket_id',$id)->get('kar_paket')->row();
+		$data->fnb = $this->db
+			->join('kar_fnb b', 'a.fnb_id = b.fnb_id')
+			->where('a.paket_id',$id)->get('kar_paket_fnb a')->result();
+		return $data;
   }
 
   public function get_last()
@@ -58,6 +62,18 @@ class M_kar_paket extends CI_Model {
 		}else{
 			return $this->db->like('paket_name',$search_term,'both')->get('kar_paket')->num_rows();
 		}
+	}
+
+	public function add_fnb($data)
+	{
+		$this->db->insert('kar_paket_fnb',$data);
+	}
+
+	public function del_fnb($id)
+	{
+		$this->db
+			->where('paket_fnb_id',$id)
+			->delete('kar_paket_fnb');
 	}
 
 }
