@@ -80,6 +80,19 @@ class Kar_reservation extends MY_Karaoke {
 
   }
 
+  public function thumbnail()
+  {
+    if ($this->access->_read == 1) {
+      $data['access'] = $this->access;
+      $data['title'] = 'Manajemen Pemesanan';
+      $data['room'] = $this->m_kar_room->get_all();
+
+      $this->view('kar_reservation/thumbnail',$data);
+    } else {
+      redirect(base_url().'app_error/error/403');
+    }
+  }
+
   public function reset_search()
   {
     $this->session->unset_userdata('search_term');
@@ -964,7 +977,8 @@ class Kar_reservation extends MY_Karaoke {
     } else {
       array_push($data['room'], array('id' => '0', 'text' => '-- Pilih Room --'));
       foreach ($raw as $row) {
-        array_push($data['room'], array('id' => $row->room_id, 'text' => $row->room_name));
+        $ket = ($row->billing_room_id == null) ? '' : '(Sudah Digunakan)';
+        array_push($data['room'], array('id' => $row->room_id, 'text' => $row->room_name.' '.$ket));
       }
     }
     
@@ -1755,5 +1769,82 @@ class Kar_reservation extends MY_Karaoke {
     echo json_encode($data);
   }
 
+  public function room_all()
+  {
+    $data = $this->m_kar_reservation->room_all();
+    echo json_encode($data);
+  }
+
+  public function form2($room_id,$id = null)
+  {
+    $data['access'] = $this->access;
+    $data['member'] = $this->m_kar_member->get_all();
+    $data['room_type'] = $this->m_kar_room_type->get_all();
+    $data['extra'] = $this->m_kar_extra->get_all();
+    $data['service'] = $this->m_kar_service->get_all();
+    $data['paket'] = $this->m_kar_paket->get_all();
+    $data['fnb'] = $this->m_kar_fnb->get_all();
+    $data['non_tax'] = $this->m_kar_non_tax->get_all();
+    $data['charge_type'] = $this->m_kar_charge_type->get_all();
+    $data['discount_room'] = $this->m_kar_reservation->discount_room();
+    $data['list_member'] = $this->m_kar_guest->get_all();
+    if ($id == null) {
+      $post = $_POST;
+      if ($this->access->_create == 1) {
+        $data['title'] = 'Tambah Data Pemesanan';
+        $data['action'] = 'insert';
+        $data['billing'] = null;
+        //make receipt no
+        // get last billing
+        $last_billing = $this->m_kar_billing->get_last();
+        //declare billing variable
+        if ($last_billing == null) {
+          $data['billing_id'] = 1;
+          $data['billing_receipt_no'] = date('ymd').'000001';
+          $this->m_kar_reservation->new_billing($data['billing_receipt_no']);
+        }else{
+          // status billing
+          // -1 cancel
+          // 0 empty
+          // 1 proses
+          // 2 complete          
+          if ($last_billing->billing_status == 0) {
+            $data['billing_id'] = $last_billing->billing_id;
+            $data['billing_receipt_no'] = $last_billing->billing_receipt_no;
+            // empty detail billing
+            $this->m_kar_reservation->empty_detail($data['billing_id']);
+          } else {
+            // get new last billing
+            $data['billing_id'] = $last_billing->billing_id+1;
+            if (date('Y-m-d', strtotime($last_billing->created)) != date('Y-m-d')) {
+              $data['billing_receipt_no'] = date('ymd').'000001';
+            }else{
+              $number = substr($last_billing->billing_receipt_no,6,12);
+              $number = intval($number)+1;
+              $data['billing_receipt_no'] = date('ymd').str_pad($number, 6, '0', STR_PAD_LEFT);
+            }
+            
+            // insert new billing
+            $this->m_kar_reservation->new_billing($data['billing_receipt_no']);
+          }
+        }
+        $data['billing_id_name'] = 'TRS-'.$data['billing_receipt_no'];    
+        
+        $this->view('kar_reservation/form2', $data);
+      } else {
+        redirect(base_url().'app_error/error/403');
+      }
+    }else{
+      if ($this->access->_update == 1) {
+        $data['title'] = 'Ubah Data Extra';
+        $data['billing'] = $this->m_kar_billing->get_by_id($id);
+        $data['action'] = 'update';
+        $data['billing_room'] = $this->m_kar_reservation->get_billing_room($id);
+        $this->view('kar_reservation/form2', $data);
+      } else {
+        redirect(base_url().'app_error/error/403');
+      }
+    }
+  }
 
 }

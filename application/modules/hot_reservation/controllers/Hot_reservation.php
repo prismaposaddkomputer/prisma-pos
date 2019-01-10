@@ -273,6 +273,8 @@ class Hot_reservation extends MY_Hotel {
                   $data_update_billing['billing_payment'] = 0;
                   $data_update_billing['billing_change'] = 0;
                   $data_update_billing['billing_down_payment'] = $data['billing']->billing_payment - $data['billing']->billing_change;
+                  //
+                  $this->m_hot_reservation->update_billing($row->billing_id,$data_update_billing);
                 }
 
                 // $this->update_all_billing($id);
@@ -281,7 +283,7 @@ class Hot_reservation extends MY_Hotel {
                 // $data_update_billing['billing_time_in'] = substr($jam_akhir_hari_berikutnya,11);
                 // $data_update_billing['billing_date_out'] = substr($billing_out,0,-9);
                 // $data_update_billing['billing_time_out'] = substr($billing_out,11);
-                $this->m_hot_reservation->update_billing($row->billing_id,$data_update_billing);
+                // $this->m_hot_reservation->update_billing($row->billing_id,$data_update_billing);
 
               }else{
                 // // ----------------------------------- Update ke hot_billing_room ----------------------------------- //
@@ -403,6 +405,8 @@ class Hot_reservation extends MY_Hotel {
                       $data_update_billing['billing_payment'] = 0;
                       $data_update_billing['billing_change'] = 0;
                       $data_update_billing['billing_down_payment'] = $data['billing']->billing_payment - $data['billing']->billing_change;
+                      //
+                      $this->m_hot_reservation->update_billing($row->billing_id,$data_update_billing);
                     }
 
                     // $this->update_all_billing($id);
@@ -411,7 +415,7 @@ class Hot_reservation extends MY_Hotel {
                     // $data_update_billing['billing_time_in'] = substr($jam_akhir_hari_berikutnya,11);
                     // $data_update_billing['billing_date_out'] = substr($billing_out,0,-9);
                     // $data_update_billing['billing_time_out'] = substr($billing_out,11);
-                    $this->m_hot_reservation->update_billing($row->billing_id,$data_update_billing);
+                    // $this->m_hot_reservation->update_billing($row->billing_id,$data_update_billing);
 
                   }
 

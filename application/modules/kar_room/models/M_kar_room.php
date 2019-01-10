@@ -49,9 +49,18 @@ class M_kar_room extends CI_Model {
 	
 	public function get_by_room_type_id($id)
   {
-		return $this->db
-			->where('room_type_id',$id)
-			->get('kar_room')->result();
+		return $this->db->query("SELECT 
+				a.room_id,a.room_type_id,a.room_name,x.billing_room_id 
+			FROM kar_room a 
+			LEFT JOIN (
+				SELECT b.* FROM kar_billing_room b
+				JOIN kar_billing c ON b.billing_id = c.billing_id
+				WHERE c.billing_status = 1 AND DATE_ADD(b.created, INTERVAL 60*b.room_type_duration MINUTE) > now()
+			) x ON a.room_id = x.room_id WHERE a.room_type_id = '$id'
+		")->result();
+		// return $this->db
+		// 	->where('room_type_id',$id)
+		// 	->get('kar_room')->result();
   }
 
   public function get_last()
