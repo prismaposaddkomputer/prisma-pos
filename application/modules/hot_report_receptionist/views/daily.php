@@ -20,6 +20,7 @@
             <th class="text-center">Status</th>
             <th class="text-center">Sub Total</th>
             <th class="text-center">Diskon</th>
+            <th class="text-center">Denda</th>
 
             <?php 
             foreach ($charge_type as $data): 
@@ -40,6 +41,8 @@
             $billing_tax = 0;
             $billing_service = 0;
             $billing_other = 0;
+            $billing_discount = 0;
+            $billing_denda = 0;
             $total_tax = 0;
             $total_service = 0;
             $total_other = 0;
@@ -68,12 +71,28 @@
                       break;
                   } ?>
                 </td>
-                <td><?=num_to_idr($row->billing_subtotal)?></td>
+
+                <?php if ($client->client_is_taxed == 0): ?>
+
+                  <td><?=num_to_idr($row->billing_subtotal)?></td>
                   <?php $billing_subtotal += $row->billing_subtotal;?>
 
-                <!-- Diskon -->
-                <td>0</td>
-                <!-- End Diskon -->
+                <?php else: ?>
+
+                  <?php
+                  $after_billing_subtotal = ($row->billing_subtotal) + ($row->billing_tax + $row->billing_service + $row->billing_other) + ($row->billing_discount);
+                  ?>
+
+                  <td><?=num_to_idr($after_billing_subtotal)?></td>
+                  <?php $billing_subtotal += $after_billing_subtotal;?>
+
+                <?php endif; ?>
+
+                <td><?=num_to_idr($row->billing_discount)?></td>
+                  <?php $billing_discount += $row->billing_discount;?>
+
+                <td><?=num_to_idr($row->billing_denda)?></td>
+                  <?php $billing_denda += $row->billing_denda;?>
                 
                 <!-- Charge Type -->
                 <?php 
@@ -111,7 +130,8 @@
           <tr>
             <th class="text-center" colspan="4">Total</th>
             <th><?=num_to_idr($billing_subtotal)?></th>
-            <th>0</th>
+            <th><?=num_to_idr($billing_discount)?></th>
+            <th><?=num_to_idr($billing_denda)?></th>
             <?php 
             foreach ($charge_type as $data): 
             if ($data['charge_type_id'] == '1') {

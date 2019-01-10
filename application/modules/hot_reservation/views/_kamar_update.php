@@ -49,7 +49,7 @@
             <div class="form-group">
               <label id="update_label_room_type_duration">Durasi Per Hari</label>
               <div class="input-group">
-                <input class="form-control autonumeric num" id="update_room_type_duration" type="text" value="0" onchange="calc_room_update()">
+                <input class="form-control num" id="update_room_type_duration" type="text" value="0" onchange="calc_room_update()">
                 <div class="input-group-addon" id="update_group_addon_room_type_duration"><b>Hari</b></div>
               </div>
             </div>

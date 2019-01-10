@@ -87,6 +87,7 @@ class Hot_report_receptionist extends MY_Hotel {
     $data['user_id'] = $user_id;
 
     $data['charge_type'] = $this->m_hot_charge_type->list_data_except_tax_hotel();
+    $data['client'] = $this->m_hot_client->get_all();
     //
 
     $this->view('annual', $data);
@@ -155,6 +156,8 @@ class Hot_report_receptionist extends MY_Hotel {
       $billing_tax = 0;
       $billing_service = 0;
       $billing_other = 0;
+      $billing_discount = 0;
+      $billing_denda = 0;
       $total_tax = 0;
       $total_service = 0;
       $total_other = 0;
@@ -168,13 +171,23 @@ class Hot_report_receptionist extends MY_Hotel {
         $printer -> feed();
 
         //
+        if ($client->client_is_taxed == 0){
+          $after_billing_subtotal = $row->billing_subtotal;
+        }else{
+          $after_billing_subtotal = ($row->billing_subtotal) + ($row->billing_tax + $row->billing_service + $row->billing_other) + ($row->billing_discount);
+        }
+
         $sub_total_left = "Sub Total";
-        $sub_total_right = num_to_price($row->billing_subtotal);
+        $sub_total_right = num_to_price($after_billing_subtotal);
         $printer -> text(print_justify($sub_total_left, $sub_total_right, 16, 13, 3));
         //
         $diskon_left = "Diskon";
-        $diskon_right = "0";
+        $diskon_right = num_to_price($row->billing_discount);
         $printer -> text(print_justify($diskon_left, $diskon_right, 16, 13, 3));
+        //
+        $denda_left = "Denda";
+        $denda_right = num_to_price($row->billing_denda);
+        $printer -> text(print_justify($denda_left, $denda_right, 16, 13, 3));
         //
         $grand_total_tax = 0;
         foreach ($charge_type as $data){
@@ -245,6 +258,7 @@ class Hot_report_receptionist extends MY_Hotel {
     $data['user_id'] = $user_id;
 
     $data['monthly'] = $this->m_hot_report_receptionist->monthly($month,$user_id);
+    $data['client'] = $this->m_hot_client->get_all();
     $data['charge_type'] = $this->m_hot_charge_type->list_data_except_tax_hotel();
     //
     $this->view('monthly', $data);
@@ -319,6 +333,8 @@ class Hot_report_receptionist extends MY_Hotel {
       $billing_tax = 0;
       $billing_service = 0;
       $billing_other = 0;
+      $billing_discount = 0;
+      $billing_denda = 0;
       $total_tax = 0;
       $total_service = 0;
       $total_other = 0;
@@ -332,13 +348,23 @@ class Hot_report_receptionist extends MY_Hotel {
         $printer -> feed();
 
         //
+        if ($client->client_is_taxed == 0){
+          $after_billing_subtotal = $row->billing_subtotal;
+        }else{
+          $after_billing_subtotal = ($row->billing_subtotal) + ($row->billing_tax + $row->billing_service + $row->billing_other) + ($row->billing_discount);
+        }
+
         $sub_total_left = "Sub Total";
-        $sub_total_right = num_to_price($row->billing_subtotal);
+        $sub_total_right = num_to_price($after_billing_subtotal);
         $printer -> text(print_justify($sub_total_left, $sub_total_right, 16, 13, 3));
         //
         $diskon_left = "Diskon";
-        $diskon_right = "0";
+        $diskon_right = num_to_price($row->billing_discount);
         $printer -> text(print_justify($diskon_left, $diskon_right, 16, 13, 3));
+        //
+        $denda_left = "Denda";
+        $denda_right = num_to_price($row->billing_denda);
+        $printer -> text(print_justify($denda_left, $denda_right, 16, 13, 3));
         //
         $grand_total_tax = 0;
         foreach ($charge_type as $data){
@@ -405,6 +431,7 @@ class Hot_report_receptionist extends MY_Hotel {
     $data['user_id'] = $user_id;
 
     $data['weekly'] = $this->m_hot_report_receptionist->weekly(ind_to_date($date_start),ind_to_date($date_end),$user_id);
+    $data['client'] = $this->m_hot_client->get_all();
     $data['charge_type'] = $this->m_hot_charge_type->list_data_except_tax_hotel();
     //
     $this->view('weekly', $data);
@@ -473,6 +500,8 @@ class Hot_report_receptionist extends MY_Hotel {
       $billing_tax = 0;
       $billing_service = 0;
       $billing_other = 0;
+      $billing_discount = 0;
+      $billing_denda = 0;
       $total_tax = 0;
       $total_service = 0;
       $total_other = 0;
@@ -486,13 +515,23 @@ class Hot_report_receptionist extends MY_Hotel {
         $printer -> feed();
 
         //
+        if ($client->client_is_taxed == 0){
+          $after_billing_subtotal = $row->billing_subtotal;
+        }else{
+          $after_billing_subtotal = ($row->billing_subtotal) + ($row->billing_tax + $row->billing_service + $row->billing_other) + ($row->billing_discount);
+        }
+
         $sub_total_left = "Sub Total";
-        $sub_total_right = num_to_price($row->billing_subtotal);
+        $sub_total_right = num_to_price($after_billing_subtotal);
         $printer -> text(print_justify($sub_total_left, $sub_total_right, 16, 13, 3));
         //
         $diskon_left = "Diskon";
-        $diskon_right = "0";
+        $diskon_right = num_to_price($row->billing_discount);
         $printer -> text(print_justify($diskon_left, $diskon_right, 16, 13, 3));
+        //
+        $denda_left = "Denda";
+        $denda_right = num_to_price($row->billing_denda);
+        $printer -> text(print_justify($denda_left, $denda_right, 16, 13, 3));
         //
         $grand_total_tax = 0;
         foreach ($charge_type as $data){
@@ -560,6 +599,7 @@ class Hot_report_receptionist extends MY_Hotel {
     $data['month'] = $raw[0].'-'.$raw[1];
 
     $data['daily'] = $this->m_hot_report_receptionist->daily($date, $user_id);
+    $data['client'] = $this->m_hot_client->get_all();
     $data['charge_type'] = $this->m_hot_charge_type->list_data_except_tax_hotel();
     //
     $this->view('daily', $data);
@@ -628,6 +668,8 @@ class Hot_report_receptionist extends MY_Hotel {
       $billing_tax = 0;
       $billing_service = 0;
       $billing_other = 0;
+      $billing_discount = 0;
+      $billing_denda = 0;
       $total_tax = 0;
       $total_service = 0;
       $total_other = 0;
@@ -661,13 +703,23 @@ class Hot_report_receptionist extends MY_Hotel {
         }
         $printer -> text(print_justify($status_left, $status_right, 16, 13, 3));
         //
+        if ($client->client_is_taxed == 0){
+          $after_billing_subtotal = $row->billing_subtotal;
+        }else{
+          $after_billing_subtotal = ($row->billing_subtotal) + ($row->billing_tax + $row->billing_service + $row->billing_other) + ($row->billing_discount);
+        }
+
         $sub_total_left = "Sub Total";
-        $sub_total_right = num_to_price($row->billing_subtotal);
+        $sub_total_right = num_to_price($after_billing_subtotal);
         $printer -> text(print_justify($sub_total_left, $sub_total_right, 16, 13, 3));
         //
         $diskon_left = "Diskon";
-        $diskon_right = "0";
+        $diskon_right = num_to_price($row->billing_discount);
         $printer -> text(print_justify($diskon_left, $diskon_right, 16, 13, 3));
+        //
+        $denda_left = "Denda";
+        $denda_right = num_to_price($row->billing_denda);
+        $printer -> text(print_justify($denda_left, $denda_right, 16, 13, 3));
         //
         $grand_total_tax = 0;
         foreach ($charge_type as $data){
@@ -734,6 +786,7 @@ class Hot_report_receptionist extends MY_Hotel {
     $data['user_id'] = $user_id;
 
     $data['range'] = $this->m_hot_report_receptionist->range(ind_to_date($date_start),ind_to_date($date_end),$user_id);
+    $data['client'] = $this->m_hot_client->get_all();
     $data['charge_type'] = $this->m_hot_charge_type->list_data_except_tax_hotel();
     //
     $this->view('range', $data);
@@ -814,6 +867,8 @@ class Hot_report_receptionist extends MY_Hotel {
       $billing_tax = 0;
       $billing_service = 0;
       $billing_other = 0;
+      $billing_discount = 0;
+      $billing_denda = 0;
       $total_tax = 0;
       $total_service = 0;
       $total_other = 0;
@@ -827,13 +882,23 @@ class Hot_report_receptionist extends MY_Hotel {
         $printer -> feed();
 
         //
+        if ($client->client_is_taxed == 0){
+          $after_billing_subtotal = $row->billing_subtotal;
+        }else{
+          $after_billing_subtotal = ($row->billing_subtotal) + ($row->billing_tax + $row->billing_service + $row->billing_other) + ($row->billing_discount);
+        }
+
         $sub_total_left = "Sub Total";
-        $sub_total_right = num_to_price($row->billing_subtotal);
+        $sub_total_right = num_to_price($after_billing_subtotal);
         $printer -> text(print_justify($sub_total_left, $sub_total_right, 16, 13, 3));
         //
         $diskon_left = "Diskon";
-        $diskon_right = "0";
+        $diskon_right = num_to_price($row->billing_discount);
         $printer -> text(print_justify($diskon_left, $diskon_right, 16, 13, 3));
+        //
+        $denda_left = "Denda";
+        $denda_right = num_to_price($row->billing_denda);
+        $printer -> text(print_justify($denda_left, $denda_right, 16, 13, 3));
         //
         $grand_total_tax = 0;
         foreach ($charge_type as $data){

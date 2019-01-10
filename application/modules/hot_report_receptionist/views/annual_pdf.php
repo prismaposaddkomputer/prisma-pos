@@ -68,6 +68,7 @@
             <th class="text-center" width="80">Bulan</th>
             <th class="text-center">Sub Total</th>
             <th class="text-center">Diskon</th>
+            <th class="text-center">Denda</th>
 
             <?php 
             foreach ($charge_type as $data): 
@@ -75,11 +76,11 @@
             <th class="text-center"><?=$data['charge_type_name']?></th>
             <?php endforeach ?>
 
-            <th class="text-center">Total<br><small>(3 - 4 
+            <th class="text-center">Total<br><small>(3 - 4 + 5 
             <?php 
-            $no_awal = 5;
+            $no_awal = 6;
             $no_akhir = $no_awal+count($charge_type);
-            for ($i=5; $i < $no_akhir ; $i++): 
+            for ($i=6; $i < $no_akhir ; $i++): 
             ?>
             + <?=$i?>
             <?php endfor; ?>
@@ -90,11 +91,12 @@
             <td class="text-center" style="padding:0px;">2</td>
             <td class="text-center" style="padding:0px;">3</td>
             <td class="text-center" style="padding:0px;">4</td>
+            <td class="text-center" style="padding:0px;">5</td>
 
             <?php 
-            $no_awal = 5;
+            $no_awal = 6;
             $no_akhir = $no_awal+count($charge_type);
-            for ($i=5; $i < $no_akhir ; $i++): 
+            for ($i=6; $i < $no_akhir ; $i++): 
             ?>
             <td class="text-center" style="padding:0px;"><?=$i?></td>
             <?php endfor; ?>
@@ -107,6 +109,8 @@
             $billing_tax = 0;
             $billing_service = 0;
             $billing_other = 0;
+            $billing_discount = 0;
+            $billing_denda = 0;
             $total_tax = 0;
             $total_service = 0;
             $total_other = 0;
@@ -117,12 +121,28 @@
               <tr>
                 <td class="text-center"><?=$i++?></td>
                 <td class="text-center"><?=month_name_ind($row->tx_month)?></td>
-                <td><?=num_to_idr($row->billing_subtotal)?></td>
+                
+                <?php if ($client->client_is_taxed == 0): ?>
+
+                  <td><?=num_to_idr($row->billing_subtotal)?></td>
                   <?php $billing_subtotal += $row->billing_subtotal;?>
 
-                <!-- Diskon -->
-                <td>0</td>
-                <!-- End Diskon -->
+                <?php else: ?>
+
+                  <?php
+                  $after_billing_subtotal = ($row->billing_subtotal) + ($row->billing_tax + $row->billing_service + $row->billing_other) + ($row->billing_discount);
+                  ?>
+
+                  <td><?=num_to_idr($after_billing_subtotal)?></td>
+                  <?php $billing_subtotal += $after_billing_subtotal;?>
+
+                <?php endif; ?>
+
+                <td><?=num_to_idr($row->billing_discount)?></td>
+                  <?php $billing_discount += $row->billing_discount;?>
+
+                <td><?=num_to_idr($row->billing_denda)?></td>
+                  <?php $billing_denda += $row->billing_denda;?>
 
                 <!-- Charge Type -->
                 <?php 
@@ -161,7 +181,8 @@
           <tr>
             <th class="text-center" colspan="2">Total</th>
             <th><?=num_to_idr($billing_subtotal)?></th>
-            <th>0</th>
+            <th><?=num_to_idr($billing_discount)?></th>
+            <th><?=num_to_idr($billing_denda)?></th>
             <?php 
             foreach ($charge_type as $data): 
             if ($data['charge_type_id'] == '1') {
