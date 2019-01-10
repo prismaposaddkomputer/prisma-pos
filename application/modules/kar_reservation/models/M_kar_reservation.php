@@ -415,10 +415,14 @@ class M_kar_reservation extends CI_Model {
 
 		//
         $sql = "SELECT 
-        			a.room_id 
-        		FROM kar_billing_room a 
-        		LEFT JOIN kar_billing b ON a.billing_id=b.billing_id
-        		WHERE a.room_id='$room_id' AND b.billing_status='1'";
+						a.room_id 
+					FROM kar_room a 
+					JOIN (
+						SELECT b.* FROM kar_billing_room b
+						JOIN kar_billing c ON b.billing_id = c.billing_id
+						WHERE c.billing_status = 1 AND DATE_ADD(b.created, INTERVAL 60*b.room_type_duration MINUTE) > now()
+					) x ON a.room_id = x.room_id WHERE a.room_id = '$room_id'
+				";
         $query = $this->db->query($sql);
         
         if($query->num_rows() > 0) {
@@ -436,7 +440,27 @@ class M_kar_reservation extends CI_Model {
 	        	}
         	}
         }
-    }
+		}
+		
+		public function room_all()
+		{
+			return $this->db
+				->query("SELECT a.room_id,a.room_name,
+					x.billing_room_id,x.guest_name,x.created,x.room_type_duration,
+					TIMEDIFF(DATE_ADD(x.created, INTERVAL 60*x.room_type_duration MINUTE),now()) as sisa,
+					TIMESTAMPDIFF(SECOND,now(),DATE_ADD(x.created, INTERVAL 60*x.room_type_duration MINUTE)) as sisa_detik,
+					x.billing_status,x.billing_id
+				FROM kar_room a
+				LEFT JOIN (
+					SELECT b.billing_room_id,b.billing_id,b.room_id,b.room_type_duration,b.created,
+						c.guest_name,c.billing_status
+					FROM kar_billing_room b
+					JOIN kar_billing c ON b.billing_id = c.billing_id
+					WHERE c.billing_status = 1 AND
+						TIMESTAMPDIFF(SECOND,now(),DATE_ADD(b.created, INTERVAL 60*b.room_type_duration MINUTE)) > 0
+				) x on a.room_id=x.room_id")
+				->result();
+		}
 
 
 }

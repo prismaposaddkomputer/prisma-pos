@@ -10,6 +10,7 @@
 <div class="content-body">
   <div class="row">
     <div class="col-md-4">
+      <a class="btn btn-default" href="<?=base_url()?>kar_reservation/thumbnail"><i class="fa fa-th"></i></a>
       <a class="btn btn-info" href="<?=base_url()?>kar_reservation/form"><i class="fa fa-plus"></i> Tambah Pemesanan</a>
     </div>
     <div class="col-md-4 pull-right">
