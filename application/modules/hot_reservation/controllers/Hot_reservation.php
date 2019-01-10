@@ -57,21 +57,21 @@ class Hot_reservation extends MY_Hotel {
       $from = $this->uri->segment(3);
 
       // Proses Denda
-      $data['billing_get_all'] = $this->m_hot_reservation->get_all();
-      if ($data['billing_get_all'] != null) {
-        foreach ($data['billing_get_all'] as $row) {
+      // $data['billing_get_all'] = $this->m_hot_reservation->get_all();
+      // if ($data['billing_get_all'] != null) {
+      //   foreach ($data['billing_get_all'] as $row) {
 
-          if ($row->billing_date_in >= "2019-01-10") {
+      //     if ($row->billing_date_in >= "2019-01-10") {
             
-            if ($row->billing_status !='3') {
-              $this->process_denda($row->billing_id);
-              $this->update_all_billing($row->billing_id);
-            }
-            
-          }
+      //       if ($row->billing_status !='3') {
+      //         $this->process_denda($row->billing_id);
+      //         $this->update_all_billing($row->billing_id);
+      //       }
 
-        }
-      }
+      //     }
+
+      //   }
+      // }
       // End Proses Denda
 
       if($this->session->userdata('search_term') == null){
@@ -169,6 +169,17 @@ class Hot_reservation extends MY_Hotel {
         $data['action'] = 'update';
         $data['billing_room'] = $this->m_hot_reservation->get_billing_room($id);
         $data['get_billing_room'] = $this->m_hot_reservation->get_billing_room_by_id($id);
+
+        // Proses Denda
+        if ($data['billing']->billing_date_in >= "2019-01-10") {
+          
+          if ($data['billing']->billing_status !='3') {
+            $this->process_denda($id);
+            $this->update_all_billing($id);
+          }
+          
+        }
+        // End Proses Denda
 
         $this->view('hot_reservation/form', $data);
       } else {
@@ -624,6 +635,17 @@ class Hot_reservation extends MY_Hotel {
     $data['title'] = 'Pembayaran';
     $data['billing'] = $this->m_hot_reservation->get_billing($id);
     $data['charge_type'] = $this->m_hot_charge_type->get_all();
+
+    // Proses Denda
+    if ($data['billing']->billing_date_in >= "2019-01-10") {
+      
+      if ($data['billing']->billing_status !='3') {
+        $this->process_denda($id);
+        $this->update_all_billing($id);
+      }
+      
+    }
+    // End Proses Denda
 
     $this->view('hot_reservation/payment',$data);
   }

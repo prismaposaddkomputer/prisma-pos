@@ -163,7 +163,7 @@
 
   function num_to_idr($v)
   {
-    $res = num_to_price($v);
+    $res = num_to_price(ceil($v));
     return 'Rp <span class="pull-right">'.$res.'</span>';
   }
 
