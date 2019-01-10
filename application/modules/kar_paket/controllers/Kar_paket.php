@@ -82,7 +82,7 @@ class Kar_paket extends MY_Karaoke {
         $data['action'] = 'insert';
         $data['paket'] = null;
         $last = $this->m_kar_paket->get_last();
-        $data['paket_id'] = $last->paket_id+1;
+        $data['paket_id'] = ($last == null) ? 1 : $last->paket_id+1;
         $this->view('kar_paket/form', $data);
       } else {
         redirect(base_url().'app_error/error/403');

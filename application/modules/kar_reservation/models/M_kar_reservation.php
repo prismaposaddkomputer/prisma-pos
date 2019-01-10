@@ -203,11 +203,35 @@ class M_kar_reservation extends CI_Model {
 		return $data->count_service;
 	}
 
-
-
-
 	public function add_paket($data)
 	{
+		var_dump($data);
+		$paket = $this->db->where('paket_id',$data['paket_id'])->get('kar_paket')->row();
+		if ($paket != null) {
+			$paket->fnb = $this->db
+				->select('b.fnb_id,b.fnb_name,a.tx_amount as fnb_amount')
+				->join('kar_fnb b', 'a.fnb_id = b.fnb_id')
+				->where('a.paket_id',$data['paket_id'])
+				->get('kar_paket_fnb a')->result();
+
+			foreach ($paket->fnb as $row) {
+				$fnb = array();
+				$row->billing_id = $data['billing_id'];
+				$this->db->insert('kar_billing_fnb', $row);
+			}
+		}
+
+		$room_id = $data['room_id'];
+		$dt_room = $this->db->query("SELECT 
+			a.room_id,a.room_name,b.room_type_id,b.room_type_name
+			FROM kar_room a
+			JOIN kar_room_type b ON a.room_type_id = b.room_type_id
+			WHERE a.room_id = '$room_id'
+		")->row();
+		$dt_room->billing_id = $data['billing_id'];
+		$this->db->insert('kar_billing_room', $dt_room);
+
+		unset($data['room_id']);
 		$this->db->insert('kar_billing_paket', $data);
 	}
 

@@ -357,9 +357,10 @@
     $('#btn_paket').click(function () {
       $('#paket_id').val(0).trigger('change');
       $('#paket_charge').val(0);
-      $('#paket_amount').val(0);
+      $('#paket_amount').val(1);
       $('#paket_total').val(0);
       $('#modal_paket').modal('show');
+      get_room_paket(0);
       $('#modal_paket_list').modal('hide');
     });
 
@@ -502,6 +503,25 @@
           $(this).remove();
         });
         $("#room_id").select2({
+          data: data.room
+        }).trigger('change');
+        // console.log(data.room_type.room_type_charge);
+        $('#room_type_charge').val(sys_to_ind(Math.ceil(data.room_type.room_type_charge)));
+      }
+    })
+  }
+
+  function get_room_paket(room_type_id) {
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>kar_reservation/get_room',
+      data : 'room_type_id='+room_type_id,
+      dataType : 'json',
+      success : function (data) {
+        $("#room_paket_id option").each(function() {
+          $(this).remove();
+        });
+        $("#room_paket_id").select2({
           data: data.room
         }).trigger('change');
         // console.log(data.room_type.room_type_charge);
@@ -1110,6 +1130,8 @@
       dataType : 'json',
       success : function (data) {
         $('#paket_charge').val(sys_to_ind(data.paket_charge));
+        get_room_paket(data.room_type_id);
+        calc_paket();
       }
     })
   }
@@ -1131,12 +1153,13 @@
     var paket_id = $('#paket_id').val();
     var paket_amount = $('#paket_amount').val();
     var paket_charge = $('#paket_charge').val();
+    var room_id = $('#room_paket_id').val();
 
     $.ajax({
       type : 'post',
       url : '<?=base_url()?>kar_reservation/add_paket',
       data : 'billing_id='+billing_id+'&paket_id='+paket_id+'&paket_amount='+paket_amount+
-              '&paket_charge='+paket_charge,
+              '&paket_charge='+paket_charge+'&room_id='+room_id,
       success : function (data) {
         $('#modal_paket_list').modal('show');
         $('#modal_paket').modal('hide');

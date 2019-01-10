@@ -25,7 +25,7 @@
           <div class="col-md-6">
             <div class="form-group">
               <label>Harga</label>
-              <input class="form-control autonumeric num" id="room_type_charge" type="text" value="0" readonly="">
+              <input class="form-control autonumeric num" id="room_type_charge" type="text" value="0" onchange="calc_room()">
             </div>
           </div>
           <div class="col-md-6">  
@@ -40,7 +40,7 @@
         </div>
         <div class="form-group">
           <label>Total</label>
-          <input class="form-control autonumeric num" id="room_type_total" type="text" value="0" readonly="">
+          <input class="form-control autonumeric" id="room_type_total" type="text" value="0" readonly="">
         </div>
         <div class="form-group">
           <label>Diskon</label>
