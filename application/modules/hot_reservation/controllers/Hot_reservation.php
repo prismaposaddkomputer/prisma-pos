@@ -1351,7 +1351,7 @@ class Hot_reservation extends MY_Hotel {
     $validate = $this->m_hot_reservation->validate_room_id($room_id, $billing_date_in);
     //
     $result = "true";
-    // if($validate == true) $result = "false";
+    if($validate == true) $result = "false";
     //
     echo json_encode(array(
       'result' => $result
