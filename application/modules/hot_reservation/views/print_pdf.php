@@ -215,18 +215,19 @@
             ?>
             <tr>
               <td>Room : <?=$row->room_name?></td>
-              <td align="center"><?=round($row->room_type_duration,0,PHP_ROUND_HALF_UP)?> <?=($row->room_type_tarif_kamar == '1') ? 'Hari' : 'Jam' ?></td>
+              <!-- <td align="center"><?=round($row->room_type_duration,0,PHP_ROUND_HALF_UP)?> <?=($row->room_type_tarif_kamar == '1') ? 'Hari' : 'Jam' ?></td> -->
+              <td align="center"><?=duration_float($row->room_type_duration)?> <?=($row->room_type_tarif_kamar == '1') ? 'Hari' : 'Jam' ?></td>
               <td align="right"><?=$room_type_subtotal?></td>
               <td align="right"><?=$room_type_total?></td>
             </tr>
 
-            <?php if ($row->room_type_denda !='0'): ?>
+            <?php if ($row->room_type_discount !='0'): ?>
             <tr>
               <td colspan="3"></td>
-              <td align="right"><b>Denda</b> : <?=num_to_price($row->room_type_denda)?></td>
+              <td align="right"><b>Diskon</b> : (<?=num_to_price($row->room_type_discount)?>)</td>
             </tr>
             <?php endif; ?>
-            
+
             <?php if ($row->room_type_denda !='0'): ?>
             <tr>
               <td colspan="3"></td>
@@ -392,9 +393,9 @@
           </tr>
         <?php endif; ?>
         <tr>
-          <th>Diskon</th>
+          <th>Diskon Kustom</th>
           <th class="colon">:</th>
-          <th class="text-right"><?=num_to_price($billing->billing_discount)?></th>
+          <th class="text-right"><?=num_to_price($billing->billing_discount_custom)?></th>
         </tr>
         <tr>
           <?php

@@ -41,7 +41,7 @@
             <tr>
               <th class="text-center" width="5">No</th>
               <th class="text-center" width="5">Aksi</th>
-              <th class="text-center" width="90">Harga Per Jam</th>
+              <th class="text-center" width="90">Harga Denda Per Jam</th>
               <th class="text-center" width="300">Waktu Berlaku Denda Setelah Checkout</th>
               <th class="text-center" width="50">Aktif</th>
             </tr>

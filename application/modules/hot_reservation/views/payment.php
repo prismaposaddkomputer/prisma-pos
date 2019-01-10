@@ -107,7 +107,8 @@
                     }
                   ?>
                 </td>
-                <td class="text-center"><?=round($row->room_type_duration,0,PHP_ROUND_HALF_UP)?> <?=($row->room_type_tarif_kamar == '1') ? 'Hari' : 'Jam' ?></td>
+                <!-- <td class="text-center"><?=round($row->room_type_duration,0,PHP_ROUND_HALF_UP)?> <?=($row->room_type_tarif_kamar == '1') ? 'Hari' : 'Jam' ?></td> -->
+                <td class="text-center"><?=duration_float($row->room_type_duration)?> <?=($row->room_type_tarif_kamar == '1') ? 'Hari' : 'Jam' ?></td>
                 <td>
                   <?php 
                     if ($client->client_is_taxed == 0) {

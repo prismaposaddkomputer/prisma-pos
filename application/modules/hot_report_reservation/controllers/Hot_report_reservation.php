@@ -544,6 +544,7 @@ class Hot_report_reservation extends MY_Hotel {
     //
 
     $data['daily'] = $this->m_hot_report_reservation->daily($date);
+    $data['client'] = $this->m_hot_client->get_all();
     $data['charge_type'] = $this->m_hot_charge_type->list_data_except_tax_hotel();
     //
     $this->view('daily', $data);

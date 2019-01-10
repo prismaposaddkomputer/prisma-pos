@@ -39,11 +39,12 @@
         <table class="table table-striped table-bordered table-condensed">
           <thead>
             <tr>
-              <th class="text-center" width="50">No</th>
+              <th class="text-center" width="30">No</th>
               <th class="text-center" width="70">Aksi</th>
-              <th class="text-center">Nama Tipe Kamar (Kategori Kamar)</th>
-              <th class="text-center" width="150">Jumlah Kamar</th>
-              <th class="text-center" width="150">Harga</th>
+              <th class="text-center" width="250">Nama Tipe Kamar (Kategori Kamar)</th>
+              <th class="text-center" width="100">Jumlah Kamar</th>
+              <th class="text-center" width="200">Tarif Kamar Hari (Long Time)</th>
+              <th class="text-center" width="200">Tarif Kamar Jam (Short Time)</th>
               <th class="text-center" width="80">Aktif</th>
             </tr>
           </thead>
@@ -72,6 +73,7 @@
                   <td><?=$row->room_type_name?></td> 
                   <td class="text-center"><?=$number_of_room?></td> 
                   <td><?=num_to_idr(round(($tot_ratio/100)*$row->room_type_charge),0,PHP_ROUND_HALF_UP)?></td> 
+                  <td><?=num_to_idr(round(($tot_ratio/100)*$row->room_type_charge_hour),0,PHP_ROUND_HALF_UP)?></td> 
                   <td class="text-center">
                     <?php if ($row->is_active == 1): ?>
                       <i class="fa fa-check cl-success"></i>

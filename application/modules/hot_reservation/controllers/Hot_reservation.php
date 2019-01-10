@@ -344,7 +344,8 @@ class Hot_reservation extends MY_Hotel {
 
                 if ($row->room_st_denda == '1') {
                   $data_update_billing_room['room_type_denda'] = round($denda->denda_charge,0,PHP_ROUND_HALF_UP) * $selisih_jam;
-                  $data_update_billing_room['room_type_total'] = round($row->room_type_subtotal,0,PHP_ROUND_HALF_UP) + round($row->room_type_tax,0,PHP_ROUND_HALF_UP) + round($row->room_type_service,0,PHP_ROUND_HALF_UP) + round($row->room_type_other,0,PHP_ROUND_HALF_UP) + $data_update_billing_room['room_type_denda']-$row->room_type_discount;
+                  // $data_update_billing_room['room_type_total'] = round($row->room_type_subtotal,0,PHP_ROUND_HALF_UP) + round($row->room_type_tax,0,PHP_ROUND_HALF_UP) + round($row->room_type_service,0,PHP_ROUND_HALF_UP) + round($row->room_type_other,0,PHP_ROUND_HALF_UP) + $data_update_billing_room['room_type_denda']-$row->room_type_discount;
+                  $data_update_billing_room['room_type_total'] = $row->room_type_before_discount + $data_update_billing_room['room_type_denda']-$row->room_type_discount;
                   $this->m_hot_reservation->update_billing_room($row->billing_id,$row->room_id,$data_update_billing_room);
 
                   if ($jam_sekarang >= $jam_akhir_hari_berikutnya_lagi) {
@@ -420,7 +421,8 @@ class Hot_reservation extends MY_Hotel {
             }else{
               if ($row->room_st_denda == '1') {
                 $data_update_billing_room['room_type_denda'] = round($denda->denda_charge,0,PHP_ROUND_HALF_UP) * $selisih_jam;
-                $data_update_billing_room['room_type_total'] = round($row->room_type_subtotal,0,PHP_ROUND_HALF_UP) + round($row->room_type_tax,0,PHP_ROUND_HALF_UP) + round($row->room_type_service,0,PHP_ROUND_HALF_UP) + round($row->room_type_other,0,PHP_ROUND_HALF_UP) + $data_update_billing_room['room_type_denda']-$row->room_type_discount;
+                // $data_update_billing_room['room_type_total'] = round($row->room_type_subtotal,0,PHP_ROUND_HALF_UP) + round($row->room_type_tax,0,PHP_ROUND_HALF_UP) + round($row->room_type_service,0,PHP_ROUND_HALF_UP) + round($row->room_type_other,0,PHP_ROUND_HALF_UP) + $data_update_billing_room['room_type_denda']-$row->room_type_discount;
+                $data_update_billing_room['room_type_total'] = $row->room_type_before_discount + $data_update_billing_room['room_type_denda']-$row->room_type_discount;
                 $this->m_hot_reservation->update_billing_room($row->billing_id,$row->room_id,$data_update_billing_room);
               }
             }
@@ -938,7 +940,8 @@ class Hot_reservation extends MY_Hotel {
             $duration = 'Jam';
           }
           //
-          $printer -> text(round($row->room_type_duration,0,PHP_ROUND_HALF_UP)." ".$duration." X ".$room_type_subtotal." = ".$room_type_total);
+          // $printer -> text(round($row->room_type_duration,0,PHP_ROUND_HALF_UP)." ".$duration." X ".$room_type_subtotal." = ".$room_type_total);
+          $printer -> text(duration_float($row->room_type_duration)." ".$duration." X ".$room_type_subtotal." = ".$room_type_total);
           $printer -> feed();
 
           // Diskon Room
