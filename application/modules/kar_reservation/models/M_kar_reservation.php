@@ -229,6 +229,7 @@ class M_kar_reservation extends CI_Model {
 			WHERE a.room_id = '$room_id'
 		")->row();
 		$dt_room->billing_id = $data['billing_id'];
+		$dt_room->room_type_duration = $paket->tx_duration;
 		$this->db->insert('kar_billing_room', $dt_room);
 
 		unset($data['room_id']);
