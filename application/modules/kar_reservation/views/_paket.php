@@ -16,22 +16,28 @@
           </select>
         </div>
         <div class="row">
-          <div class="col-md-8">
+          <!-- <div class="col-md-8">
             <div class="form-group">
-              <label>Harga</label>
-              <input class="form-control autonumeric num" id="paket_charge" type="text" value="0" readonly>
-            </div>
-          </div>
-          <div class="col-md-4">  
-            <div class="form-group">
-              <label>Banyak</label>
-              <input class="form-control autonumeric num" id="paket_amount" type="text" value="0" onchange="calc_paket()">
-            </div>
-          </div>
+              <label>Harga</label> -->
+              <input class="form-control autonumeric num" id="paket_charge" type="hidden" value="0" readonly>
+            <!-- </div>
+          </div> -->
+          <!-- <div class="col-md-4">   -->
+            <!-- <div class="form-group"> -->
+              <!-- <label>Banyak</label> -->
+              <input class="form-control autonumeric num" id="paket_amount" type="hidden" value="0" onchange="calc_paket()">
+            <!-- </div> -->
+          <!-- </div> -->
         </div>
         <div class="form-group">
           <label>Total</label>
           <input class="form-control autonumeric num" id="paket_total" type="text" value="0" readonly>
+        </div>
+        <div class="form-group">
+          <label>Room</label>
+          <select class="form-control select2" id="room_paket_id">
+            <option value="0">-- Pilih Room --</option>
+          </select>
         </div>
         <em>
           <small>

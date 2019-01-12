@@ -1389,6 +1389,7 @@ class Kar_reservation extends MY_Karaoke {
       'paket_subtotal' => $paket_subtotal,
       'paket_tax' => $paket_tax,
       'paket_total' => $paket_total,
+      'room_id' => $data['room_id'],
       'created_by' => $this->session->userdata('user_realname')
     );
     $this->m_kar_reservation->add_paket($data_paket);

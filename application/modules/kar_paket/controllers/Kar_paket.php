@@ -20,6 +20,8 @@ class Kar_paket extends MY_Karaoke {
     $this->load->model('m_kar_paket');
     $this->load->model('kar_client/m_kar_client');
     $this->load->model('kar_charge_type/m_kar_charge_type');
+    $this->load->model('kar_room_type/m_kar_room_type');
+    $this->load->model('kar_fnb/m_kar_fnb');
   }
 
 	public function index()
@@ -71,11 +73,16 @@ class Kar_paket extends MY_Karaoke {
   public function form($id = null)
   {
     $data['access'] = $this->access;
+    $data['room_type'] = $this->m_kar_room_type->get_all();
+    $data['fnb'] = $this->m_kar_fnb->get_all();
+    
     if ($id == null) {
       if ($this->access->_create == 1) {
         $data['title'] = 'Tambah Data Paket';
         $data['action'] = 'insert';
         $data['paket'] = null;
+        $last = $this->m_kar_paket->get_last();
+        $data['paket_id'] = ($last == null) ? 1 : $last->paket_id+1;
         $this->view('kar_paket/form', $data);
       } else {
         redirect(base_url().'app_error/error/403');
@@ -89,6 +96,7 @@ class Kar_paket extends MY_Karaoke {
         if ($client->client_is_taxed == 1) {
           $data['paket']->paket_charge = ((100+$tax->charge_type_ratio)/100)*$data['paket']->paket_charge;
         }
+        $data['paket_id'] = $data['paket']->paket_id;
         $data['action'] = 'update';
         $this->view('kar_paket/form', $data);
       } else {
@@ -111,8 +119,9 @@ class Kar_paket extends MY_Karaoke {
       $data['paket_charge'] = (100/(100+$tax->charge_type_ratio))*$data['paket_charge'];
     }
     $this->m_kar_paket->insert($data);
+    $insert_id = $this->db->insert_id();
     $this->session->set_flashdata('status', '<div class="alert alert-success alert-dismissable fade in"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><span class="fa fa-check" aria-hidden="true"></span><span class="sr-only"> Sukses:</span> Data berhasil ditambahkan!</div>');
-    redirect(base_url().'kar_paket/index');
+    redirect(base_url().'kar_paket/form/'.$insert_id);
   }
 
   public function edit($id)
@@ -149,7 +158,19 @@ class Kar_paket extends MY_Karaoke {
     } else {
       redirect(base_url().'app_error/error/403');
     }
+  }
 
+  public function add_fnb()
+  {
+    $data = $_POST;
+    $this->m_kar_paket->add_fnb($data);
+    redirect(base_url().'kar_paket/form/'.$data['paket_id']);
+  }
+
+  public function del_fnb($paket_id,$id)
+  {
+    $this->m_kar_paket->del_fnb($id);
+    redirect(base_url().'kar_paket/form/'.$paket_id);
   }
 
 }

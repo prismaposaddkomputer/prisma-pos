@@ -172,6 +172,10 @@
       get_validate_room(this.value);
     });
 
+    $('#room_paket_id').on('change', function() {
+      get_validate_room(this.value);
+    });
+
     $('#btn_add_room').click(function () {
       var room_type_duration = $('#room_type_duration').val();
       var room_type_id = $('#room_type_id').val();
@@ -357,9 +361,10 @@
     $('#btn_paket').click(function () {
       $('#paket_id').val(0).trigger('change');
       $('#paket_charge').val(0);
-      $('#paket_amount').val(0);
+      $('#paket_amount').val(1);
       $('#paket_total').val(0);
       $('#modal_paket').modal('show');
+      get_room_paket(0);
       $('#modal_paket_list').modal('hide');
     });
 
@@ -502,6 +507,25 @@
           $(this).remove();
         });
         $("#room_id").select2({
+          data: data.room
+        }).trigger('change');
+        // console.log(data.room_type.room_type_charge);
+        $('#room_type_charge').val(sys_to_ind(Math.ceil(data.room_type.room_type_charge)));
+      }
+    })
+  }
+
+  function get_room_paket(room_type_id) {
+    $.ajax({
+      type : 'post',
+      url : '<?=base_url()?>kar_reservation/get_room',
+      data : 'room_type_id='+room_type_id,
+      dataType : 'json',
+      success : function (data) {
+        $("#room_paket_id option").each(function() {
+          $(this).remove();
+        });
+        $("#room_paket_id").select2({
           data: data.room
         }).trigger('change');
         // console.log(data.room_type.room_type_charge);
@@ -1110,6 +1134,8 @@
       dataType : 'json',
       success : function (data) {
         $('#paket_charge').val(sys_to_ind(data.paket_charge));
+        get_room_paket(data.room_type_id);
+        calc_paket();
       }
     })
   }
@@ -1131,12 +1157,13 @@
     var paket_id = $('#paket_id').val();
     var paket_amount = $('#paket_amount').val();
     var paket_charge = $('#paket_charge').val();
+    var room_id = $('#room_paket_id').val();
 
     $.ajax({
       type : 'post',
       url : '<?=base_url()?>kar_reservation/add_paket',
       data : 'billing_id='+billing_id+'&paket_id='+paket_id+'&paket_amount='+paket_amount+
-              '&paket_charge='+paket_charge,
+              '&paket_charge='+paket_charge+'&room_id='+room_id,
       success : function (data) {
         $('#modal_paket_list').modal('show');
         $('#modal_paket').modal('hide');
@@ -1170,7 +1197,7 @@
                 '<td class="text-center">'+Math.round(item.paket_amount)+'</td>'+
                 '<td>'+sys_to_cur(item.paket_subtotal)+'</td>'+
                 '<td class="text-center">'+
-                  '<button class="btn btn-sm btn-warning" onclick="update_paket_show('+item.billing_paket_id+')"><i class="fa fa-pencil fa-lg"></i></button> '+
+                  // '<button class="btn btn-sm btn-warning" onclick="update_paket_show('+item.billing_paket_id+')"><i class="fa fa-pencil fa-lg"></i></button> '+
                   '<button class="btn btn-sm btn-danger" onclick="delete_paket('+item.billing_paket_id+')"><i class="fa fa-trash fa-lg"></i></button>'+
                 '</td>'+
               '</tr>';
@@ -1184,7 +1211,7 @@
                 '<td class="text-center">'+Math.round(item.paket_amount)+'</td>'+
                 '<td>'+sys_to_cur(item.paket_total)+'</td>'+
                 '<td class="text-center">'+
-                  '<button class="btn btn-sm btn-warning" onclick="update_paket_show('+item.billing_paket_id+')"><i class="fa fa-pencil fa-lg"></i></button> '+
+                  // '<button class="btn btn-sm btn-warning" onclick="update_paket_show('+item.billing_paket_id+')"><i class="fa fa-pencil fa-lg"></i></button> '+
                   '<button class="btn btn-sm btn-danger" onclick="delete_paket('+item.billing_paket_id+')"><i class="fa fa-trash fa-lg"></i></button>'+
                 '</td>'+
               '</tr>';
