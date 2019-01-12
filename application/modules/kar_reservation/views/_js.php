@@ -172,6 +172,10 @@
       get_validate_room(this.value);
     });
 
+    $('#room_paket_id').on('change', function() {
+      get_validate_room(this.value);
+    });
+
     $('#btn_add_room').click(function () {
       var room_type_duration = $('#room_type_duration').val();
       var room_type_id = $('#room_type_id').val();
@@ -1193,7 +1197,7 @@
                 '<td class="text-center">'+Math.round(item.paket_amount)+'</td>'+
                 '<td>'+sys_to_cur(item.paket_subtotal)+'</td>'+
                 '<td class="text-center">'+
-                  '<button class="btn btn-sm btn-warning" onclick="update_paket_show('+item.billing_paket_id+')"><i class="fa fa-pencil fa-lg"></i></button> '+
+                  // '<button class="btn btn-sm btn-warning" onclick="update_paket_show('+item.billing_paket_id+')"><i class="fa fa-pencil fa-lg"></i></button> '+
                   '<button class="btn btn-sm btn-danger" onclick="delete_paket('+item.billing_paket_id+')"><i class="fa fa-trash fa-lg"></i></button>'+
                 '</td>'+
               '</tr>';
@@ -1207,7 +1211,7 @@
                 '<td class="text-center">'+Math.round(item.paket_amount)+'</td>'+
                 '<td>'+sys_to_cur(item.paket_total)+'</td>'+
                 '<td class="text-center">'+
-                  '<button class="btn btn-sm btn-warning" onclick="update_paket_show('+item.billing_paket_id+')"><i class="fa fa-pencil fa-lg"></i></button> '+
+                  // '<button class="btn btn-sm btn-warning" onclick="update_paket_show('+item.billing_paket_id+')"><i class="fa fa-pencil fa-lg"></i></button> '+
                   '<button class="btn btn-sm btn-danger" onclick="delete_paket('+item.billing_paket_id+')"><i class="fa fa-trash fa-lg"></i></button>'+
                 '</td>'+
               '</tr>';

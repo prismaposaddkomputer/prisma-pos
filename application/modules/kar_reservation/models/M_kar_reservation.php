@@ -205,7 +205,6 @@ class M_kar_reservation extends CI_Model {
 
 	public function add_paket($data)
 	{
-		var_dump($data);
 		$paket = $this->db->where('paket_id',$data['paket_id'])->get('kar_paket')->row();
 		if ($paket != null) {
 			$paket->fnb = $this->db
