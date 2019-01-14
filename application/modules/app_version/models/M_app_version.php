@@ -1556,6 +1556,26 @@ class M_app_version extends CI_Model {
         case '2.9.13':
           $this->db->query("ALTER TABLE `hot_billing_room` CHANGE `room_st_denda` `room_st_denda` INT(1) NOT NULL DEFAULT '2'");
           break;
+
+        case '2.9.14':
+          $this->db->query("ALTER TABLE `kar_paket`
+            ADD COLUMN `room_type_id` INT NOT NULL AFTER `paket_charge`");
+          $this->db->query("ALTER TABLE `kar_paket`
+            ADD COLUMN `tx_duration` FLOAT NOT NULL AFTER `room_type_id`;");
+          $this->db->query("CREATE TABLE IF NOT EXISTS `kar_paket_fnb` (
+            `paket_fnb_id` int(11) NOT NULL AUTO_INCREMENT,
+            `paket_id` int(11) NOT NULL DEFAULT '0',
+            `fnb_id` int(11) NOT NULL,
+            `tx_amount` float NOT NULL,
+            `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            `created_by` varchar(50) NOT NULL DEFAULT 'System',
+            `updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+            `updated_by` varchar(20) NOT NULL DEFAULT 'System',
+            `is_active` tinyint(1) NOT NULL DEFAULT '1',
+            `is_deleted` tinyint(1) NOT NULL DEFAULT '0',
+            PRIMARY KEY (`paket_fnb_id`) USING BTREE
+          ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT");
+          break;
       }
       
     //insert new update history
@@ -1708,6 +1728,8 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"2.9.12","version_release"=>"2019-01-05 08:29:00"));
     // change room_st_denda 1 to 2
     array_push($version, array("version_now"=>"2.9.13","version_release"=>"2019-01-10 08:29:00"));
+    // add paket karaoke
+    array_push($version, array("version_now"=>"2.9.14","version_release"=>"2019-01-14 09:19:00"));
 
     foreach ($version as $key => $val) {
       //check version
