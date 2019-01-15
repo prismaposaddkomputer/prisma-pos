@@ -117,6 +117,11 @@
               <?php endif; ?>
             </tr>
             <tr>
+              <td>Durasi Transaksi Otomatis Selesai</td>
+              <td class="text-center">:</td>
+              <td><?=($client->duration_transaction_complete != '') ? $client->duration_transaction_complete." Hari" : ""?></td>
+            </tr>
+            <tr>
               <td>Keterangan Tambahan</td>
               <td class="text-center">:</td>
               <td><?=$client->client_notes?></td>

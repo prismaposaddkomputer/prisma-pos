@@ -576,10 +576,12 @@
               }
               ?>
               <?php if ($billing->billing_down_payment > $billing->billing_total || $billing->billing_down_payment == $billing->billing_total): ?>
-                <input style="width:100%; border: none; font-size: 18px; text-align: right;" type="text" name="billing_payment" value="" readonly>
+                <!-- <input style="width:100%; border: none; font-size: 18px; text-align: right;" type="text" name="billing_payment" value="" readonly> -->
+                <input id="billing_payment" name="billing_payment" style="width:100%; height: 40px; border: 2px solid green; font-size: 20px; font-weight: bold; text-align: right; padding-right: 10px;" class="autonumeric num" type="text" value="<?=$echo?>" dir="rtl" onchange="calc_change()">
               <?php else: ?>
                 <?php if (@$dp_prosen > $billing->billing_total || @$dp_prosen == $billing->billing_total): ?>
-                  <input style="width:100%; border: none; font-size: 18px; text-align: right;" type="text" name="billing_payment" value="" readonly>
+                  <!-- <input style="width:100%; border: none; font-size: 18px; text-align: right;" type="text" name="billing_payment" value="" readonly> -->
+                  <input id="billing_payment" name="billing_payment" style="width:100%; height: 40px; border: 2px solid green; font-size: 20px; font-weight: bold; text-align: right; padding-right: 10px;" class="autonumeric num" type="text" value="<?=$echo?>" dir="rtl" onchange="calc_change()">
                 <?php else: ?>
                   <input id="billing_payment" name="billing_payment" style="width:100%; height: 40px; border: 2px solid green; font-size: 20px; font-weight: bold; text-align: right; padding-right: 10px;" class="autonumeric num" type="text" value="<?=$echo?>" dir="rtl" onchange="calc_change()">
                 <?php endif; ?>
