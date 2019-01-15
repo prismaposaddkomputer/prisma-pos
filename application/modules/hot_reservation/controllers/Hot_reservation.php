@@ -56,23 +56,26 @@ class Hot_reservation extends MY_Hotel {
 
       $from = $this->uri->segment(3);
 
-      // Proses Denda
-      // $data['billing_get_all'] = $this->m_hot_reservation->get_all();
-      // if ($data['billing_get_all'] != null) {
-      //   foreach ($data['billing_get_all'] as $row) {
+      // Proses Transaksi Otomatis
+      $data['billing_get_all'] = $this->m_hot_reservation->get_all();
+      $client = $this->m_hot_client->get_all();
+      //
+      if ($data['billing_get_all'] != null) {
+        foreach ($data['billing_get_all'] as $row) {
 
-      //     if ($row->billing_date_in >= "2019-01-10") {
-            
-      //       if ($row->billing_status !='3') {
-      //         $this->process_denda($row->billing_id);
-      //         $this->update_all_billing($row->billing_id);
-      //       }
+          // Hitung Selisih Jumlah Hari
+          $start_date = new DateTime($row->billing_date_in);
+          $end_date = new DateTime(date('Y-m-d'));
+          $selisih = $start_date->diff($end_date);
+          //
 
-      //     }
+          if ($selisih->days > $client->duration_transaction_complete) {
+            $this->proses_transaksi_otomatis($row->billing_id);
+          }
 
-      //   }
-      // }
-      // End Proses Denda
+        }
+      }
+      // End Proses Transaksi Otomatis
 
       if($this->session->userdata('search_term') == null){
         $num_rows = $this->m_hot_reservation->num_rows();
@@ -95,6 +98,13 @@ class Hot_reservation extends MY_Hotel {
       redirect(base_url().'app_error/error/403');
     }
 
+  }
+
+  public function proses_transaksi_otomatis($billing_id=null)
+  {
+    $data_update_billing['billing_status'] = 3;
+    //
+    $this->m_hot_reservation->update_billing($billing_id,$data_update_billing);
   }
 
   public function reset_search()
@@ -135,7 +145,7 @@ class Hot_reservation extends MY_Hotel {
           // 0 empty
           // 1 proses
           // 2 complete          
-          // 2 transaksi selesai       
+          // 3 transaksi selesai       
           if ($last_billing->billing_status == 0) {
             $data['billing_id'] = $last_billing->billing_id;
             $data['billing_receipt_no'] = $last_billing->billing_receipt_no;

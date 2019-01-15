@@ -1576,6 +1576,10 @@ class M_app_version extends CI_Model {
             PRIMARY KEY (`paket_fnb_id`) USING BTREE
           ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT");
           break;
+
+        case '2.9.15':
+          $this->db->query("ALTER TABLE `hot_client` ADD COLUMN `duration_transaction_complete` VARCHAR(10) NOT NULL DEFAULT '14' AFTER `client_is_taxed`");
+          break;
       }
       
     //insert new update history
@@ -1730,6 +1734,8 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"2.9.13","version_release"=>"2019-01-10 08:29:00"));
     // add paket karaoke
     array_push($version, array("version_now"=>"2.9.14","version_release"=>"2019-01-14 09:19:00"));
+    // add duration_transaction_complete in hot_client
+    array_push($version, array("version_now"=>"2.9.15","version_release"=>"2019-01-15 09:19:00"));
 
     foreach ($version as $key => $val) {
       //check version
