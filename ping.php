@@ -123,7 +123,7 @@ if($app_install_status == '1') {
 				var auto_ping = setInterval(function () {
 					get_data();
 				    _ping();
-				}, 10000); // miliseconds -> 60sec
+				}, 30000); // miliseconds -> 60sec
 
 				//get data
 				
