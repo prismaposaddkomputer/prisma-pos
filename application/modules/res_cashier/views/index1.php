@@ -195,10 +195,10 @@
             <button class="btn btn-sm btn-warning" onclick="print_receipt_show()"><i class="fa fa-print"></i> Cetak Struk</button>
           </div>
         </div>
+        <input id="bill_tx_date" type="hidden" name="tx_date" value="">
+        <input id="bill_tx_time" type="hidden" name="tx_time" value="">
         <div id="bill" class="col-md-4 col-xs-12 right full-height-col">
           <div id="bill-info">
-            <input id="bill_tx_date" type="hidden" name="tx_date" value="">
-            <input id="bill_tx_time" type="hidden" name="tx_time" value="">
             <div class="col-md-2 lbl-tx" style="cursor:pointer;" onclick="change_customer_show()">
               <i class="fa fa-user-o"></i> <span id="bill_customer_name"></span>
               <input id="bill_customer_id" type="hidden" name="customer_id" value="">

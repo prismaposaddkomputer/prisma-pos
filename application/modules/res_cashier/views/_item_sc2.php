@@ -139,12 +139,16 @@
     var tx_amount = $("#edit_tx_amount").val();
     var billing_detail_id = $("#edit_billing_detail_id").val();
     var item_price = $("#edit_item_price_after_tax").val();
+    var tx_date = $("#bill_tx_date").val();
+    var tx_time = $("#bill_tx_time").val();
+    var customer_id = $("#bill_customer_id").val();
 
     $.ajax({
       type : 'post',
       url : '<?=base_url()?>res_cashier/edit_item_action',
       data : 'tx_id='+tx_id+'&item_id='+item_id+'&tx_amount='+tx_amount+
-        '&billing_detail_id='+billing_detail_id+'&item_price='+item_price,
+        '&billing_detail_id='+billing_detail_id+'&item_price='+item_price+
+        '&tx_date='+tx_date+'&tx_time='+tx_time+'&customer_id='+customer_id,
       success : function () {
         $("#modal_edit_item").modal('hide');
         get_billing_now();
