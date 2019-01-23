@@ -74,7 +74,23 @@ if($app_install_status == '1') {
 			<script type="text/javascript">
 			$(function() {
 				function _ping() {
-					$.get('<?php echo $dashboard_base_url?>');
+					$.ajax({
+						type : 'get',
+						url : '<?=$dashboard_base_url?>',
+						dataType : 'json',
+						async : false,
+						success : function (data) {
+							$("#status_ping").html(data.resp_desc);
+						},
+						error: function(xhr) { // if error occured
+							$("#status_ping").html("Error occured.please try again");
+							// $(placeholder).append(xhr.statusText + xhr.responseText);
+							// $(placeholder).removeClass('loading');
+							// $("#status_ping").html(xhr.responseText);
+							// alert(xhr.responseText);
+						}
+					})
+					// return $.getJSON('<?php echo $dashboard_base_url?>');
 				}
 				function send_dashboard(data) {
 					$.ajax({
@@ -87,10 +103,9 @@ if($app_install_status == '1') {
 							if(data.resp_code == '00'){
 								update_data(data.tx_id);
 							}
-							$("#status_ping").html('Ok Ping');
 						},
 						error: function(jqXHR, textStatus, errorThrown) { // if error occured
-							$("#status_ping").html(jqXHR.status);
+							// $("#status_ping").html(jqXHR.status);
 							console.log(jqXHR.status);
 							console.log(errorThrown);
 						}
@@ -123,10 +138,9 @@ if($app_install_status == '1') {
 				get_data();
 				_ping();
 				var auto_ping = setInterval(function () {
-					$("#status_ping").html('Proses');
+					_ping();
 					get_data();
-				    _ping();
-				}, 10000); // miliseconds -> 60sec
+				}, 5000); // miliseconds -> 60sec
 
 				//get data
 				
