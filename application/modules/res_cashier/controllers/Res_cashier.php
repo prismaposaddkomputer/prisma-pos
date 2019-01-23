@@ -98,6 +98,7 @@ class Res_cashier extends MY_Restaurant {
           $client = $this->m_res_client->get_all();
           $data['keyboard'] = $client->client_keyboard_status;
           $data['client'] = $client;
+          $data['install'] = $this->m_app_install->get_install();
 
           if ($client->client_skin == 1) {
             $this->load->view('res_cashier/index1',$data);

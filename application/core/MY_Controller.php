@@ -55,6 +55,34 @@ class MY_Auth extends MX_Controller
   }
 
   function render($content, $data = NULL){
+    $install = $this->m_app_install->get_install();
+    $data['install'] = $install;
+    switch ($install['type_id']) {
+      case 1:
+        $this->load->model('ret_client/m_ret_client');
+        $data['client'] = $client = $this->m_ret_client->get_all();
+        break;
+
+      case 2:
+        $this->load->model('res_client/m_res_client');
+        $data['client'] = $client = $this->m_res_client->get_all();
+        break;
+
+      case 3:
+        $this->load->model('hot_client/m_hot_client');
+        $data['client'] = $client = $this->m_hot_client->get_all();
+        break;
+      
+      case 4:
+        $this->load->model('kar_client/m_kar_client');
+        $data['client'] = $client = $this->m_kar_client->get_all();
+        break;
+
+      case 5:
+        $this->load->model('par_client/m_par_client');
+        $data['client'] = $client = $this->m_par_client->get_all();
+        break;
+    }
     $data['header'] = $this->load->view('app_template/auth/header', $data, TRUE);
     $data['footer'] = $this->load->view('app_template/auth/footer', $data, TRUE);
     $data['content'] = $this->load->view($content, $data, TRUE);
@@ -149,12 +177,16 @@ class MY_Restaurant extends MX_Controller{
     $this->pagination->initialize($config_pagination);
 
     $this->load->model('app_config/m_res_config');
+    $this->load->model('app_config/m_res_config');
 
     $role_id = $this->session->userdata('role_id');
     $data['sidenav'] = $this->m_res_config->get_list();
 
     $this->load->model('res_client/m_res_client');
+    $this->load->model("app_install/m_app_install");
     $client = $this->m_res_client->get_all();
+    $install = $this->m_app_install->get_install();
+    $data['install'] = $install;
     $data['keyboard'] = $client->client_keyboard_status;
     $data['client'] = $client;
     $this->load->model('app_version/m_app_version');
@@ -211,6 +243,9 @@ class MY_Hotel extends MX_Controller{
     $client = $this->m_hot_client->get_all();
     $data['keyboard'] = $client->client_keyboard_status;
     $data['client'] = $client;
+    $this->load->model('app_install/m_app_install');
+    $install = $this->m_app_install->get_install();
+    $data['install'] = $install;
     $this->load->model('app_version/m_app_version');
     $data['version'] = $this->m_app_version->get_last();
 
@@ -264,6 +299,9 @@ class MY_Karaoke extends MX_Controller{
     $client = $this->m_kar_client->get_all();
     $data['keyboard'] = $client->client_keyboard_status;
     $data['client'] = $client;
+    $this->load->model('app_install/m_app_install');
+    $install = $this->m_app_install->get_install();
+    $data['install'] = $install;
     $this->load->model('app_version/m_app_version');
     $data['version'] = $this->m_app_version->get_last();
 

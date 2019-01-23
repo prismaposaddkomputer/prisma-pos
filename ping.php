@@ -74,7 +74,42 @@ if($app_install_status == '1') {
 			<script type="text/javascript">
 			$(function() {
 				function _ping() {
-					$.get('<?php echo $dashboard_base_url?>');
+					$.ajax({
+						type : 'get',
+						url : '<?=$dashboard_base_url?>',
+						dataType : 'json',
+						async : false,
+						success : function (data) {
+							if (data.resp_desc == 'success') {
+								$("#status_info").html('Online');
+								$("#status_info").removeClass('label-danger').addClass('label-success');
+							}
+						},
+						error: function(jqXHR, exception) { // if error occured
+							if (jqXHR.status === 0) {
+								$("#status_info").html('Not connect.\n Verify Network.');
+							} else if (jqXHR.status == 404) {
+								$("#status_info").html('Requested page not found. [404]');
+							} else if (jqXHR.status == 500) {
+								$("#status_info").html('Internal Server Error [500].');
+							} else if (exception === 'parsererror') {
+								$("#status_info").html('Requested JSON parse failed.');
+							} else if (exception === 'timeout') {
+								$("#status_info").html('Time out error.');
+							} else if (exception === 'abort') {
+								$("#status_info").html('Ajax request aborted.');
+							} else {
+								$("#status_info").html('Uncaught Error.\n' + jqXHR.responseText);
+							}
+							$("#status_info").removeClass('label-success').addClass('label-danger');
+											//$("#status_ping").html("Error occured.please try again");
+											// $(placeholder).append(xhr.statusText + xhr.responseText);
+											// $(placeholder).removeClass('loading');
+											// $("#status_ping").html(xhr.responseText);
+											// alert(xhr.responseText);
+						}
+					})
+									// return $.getJSON('<?php echo $dashboard_base_url?>');
 				}
 				function send_dashboard(data) {
 					$.ajax({
@@ -89,6 +124,7 @@ if($app_install_status == '1') {
 							}
 						},
 						error: function(jqXHR, textStatus, errorThrown) { // if error occured
+							// $("#status_ping").html(jqXHR.status);
 							console.log(jqXHR.status);
 							console.log(errorThrown);
 						}
@@ -121,9 +157,9 @@ if($app_install_status == '1') {
 				get_data();
 				_ping();
 				var auto_ping = setInterval(function () {
+					_ping();
 					get_data();
-				    _ping();
-				}, 30000); // miliseconds -> 60sec
+				}, 10000); // miliseconds -> 60sec
 
 				//get data
 				
@@ -131,7 +167,7 @@ if($app_install_status == '1') {
 			</script>
 		</head>
 		<body>
-
+			<div id="status_ping">Status None</div>
 		</body>
 		</html>
 

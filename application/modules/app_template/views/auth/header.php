@@ -108,9 +108,21 @@
     </div>
     <nav class="navbar navbar-default">
       <div class="container-fluid">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="#">Prisma Point of Sales</a>
+        <div class="row">
+          <div class="col-md-3" style="width:max-content !important;">  
+            <div class="navbar-header">
+              <a class="navbar-brand" href="#">
+                Prisma Point of Sales
+              </a>
+            </div>
+          </div>
+          <div class="col-md-1" style="padding:15px;">
+            <span class="label" id="status_info"></span>
+          </div>
+          <div class="col-md-1 col-md-offset-7 pull-right">
+            <button type="button" class="btn btn-danger navbar-btn pull-right" data-toggle="modal" data-target=".modal-power"><i class="fa fa-power-off"></i></button>
+          </div>
         </div>
-        <button type="button" class="btn btn-danger navbar-btn pull-right" data-toggle="modal" data-target=".modal-power"><i class="fa fa-power-off"></i></button>
+        <!-- <div style="padding-top:0px; !Important">fasdfasd</div> -->
       </div>
     </nav>

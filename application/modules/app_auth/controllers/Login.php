@@ -8,8 +8,8 @@ class Login extends MY_Auth {
 		$this->render('login');
 	}
 
-  public function action()
-  {
+	public function action()
+	{
 		$this->load->model('app_config/m_app_config');
 		$this->load->model('m_app_auth');
 

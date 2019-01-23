@@ -4,6 +4,7 @@
       <button type="button" id="sidebarCollapse" class="btn btn-info navbar-btn">
         <i class="fa fa-bars"></i>
       </button>
+      <span class="label " id="status_info"></span>
     </div>
     <button type="button" class="btn btn-danger navbar-btn pull-right" data-toggle="modal" data-target=".modal-power"><i class="fa fa-power-off"></i></button>
   </div>
