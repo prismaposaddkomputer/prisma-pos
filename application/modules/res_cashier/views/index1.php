@@ -128,7 +128,10 @@
         </div>
         <ul class="nav navbar-nav">
           <li>
-            <a href="<?=base_url()?>res_dashboard/index" role="button">Prisma POS</a>
+            <a href="<?=base_url()?>res_dashboard/index" role="button">
+              Prisma POS 
+              <span class="label" id="status_info"></span>
+            </a>
           </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">

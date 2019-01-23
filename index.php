@@ -12,8 +12,8 @@
 		var width  = $(window).width();
 		var height = $(window).height();
 		var width_prismapos  = parseFloat(width);
-		var height_prismapos = parseFloat(height)*95/100;
-		var height_ping = parseFloat(height)*5/100;
+		var height_prismapos = parseFloat(height)*99/100;
+		var height_ping = parseFloat(height)*1/100;
 		$('#iframe_prismapos').css({
 			'width'  : width_prismapos,
 			'height' : height_prismapos,

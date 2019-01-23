@@ -80,32 +80,36 @@ if($app_install_status == '1') {
 						dataType : 'json',
 						async : false,
 						success : function (data) {
-							$("#status_ping").html(data.resp_desc);
+							if (data.resp_desc == 'success') {
+								$("#status_info").html('Online');
+								$("#status_info").removeClass('label-danger').addClass('label-success');
+							}
 						},
 						error: function(jqXHR, exception) { // if error occured
 							if (jqXHR.status === 0) {
-								alert('Not connect.\n Verify Network.');
+								$("#status_info").html('Not connect.\n Verify Network.');
 							} else if (jqXHR.status == 404) {
-								alert('Requested page not found. [404]');
+								$("#status_info").html('Requested page not found. [404]');
 							} else if (jqXHR.status == 500) {
-								alert('Internal Server Error [500].');
+								$("#status_info").html('Internal Server Error [500].');
 							} else if (exception === 'parsererror') {
-								alert('Requested JSON parse failed.');
+								$("#status_info").html('Requested JSON parse failed.');
 							} else if (exception === 'timeout') {
-								alert('Time out error.');
+								$("#status_info").html('Time out error.');
 							} else if (exception === 'abort') {
-								alert('Ajax request aborted.');
+								$("#status_info").html('Ajax request aborted.');
 							} else {
-								alert('Uncaught Error.\n' + jqXHR.responseText);
+								$("#status_info").html('Uncaught Error.\n' + jqXHR.responseText);
 							}
-							//$("#status_ping").html("Error occured.please try again");
-							// $(placeholder).append(xhr.statusText + xhr.responseText);
-							// $(placeholder).removeClass('loading');
-							// $("#status_ping").html(xhr.responseText);
-							// alert(xhr.responseText);
+							$("#status_info").removeClass('label-success').addClass('label-danger');
+											//$("#status_ping").html("Error occured.please try again");
+											// $(placeholder).append(xhr.statusText + xhr.responseText);
+											// $(placeholder).removeClass('loading');
+											// $("#status_ping").html(xhr.responseText);
+											// alert(xhr.responseText);
 						}
 					})
-					// return $.getJSON('<?php echo $dashboard_base_url?>');
+									// return $.getJSON('<?php echo $dashboard_base_url?>');
 				}
 				function send_dashboard(data) {
 					$.ajax({
@@ -155,7 +159,7 @@ if($app_install_status == '1') {
 				var auto_ping = setInterval(function () {
 					_ping();
 					get_data();
-				}, 5000); // miliseconds -> 60sec
+				}, 10000); // miliseconds -> 60sec
 
 				//get data
 				
