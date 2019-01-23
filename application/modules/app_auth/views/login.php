@@ -54,3 +54,101 @@
     });
   })
 </script>
+<?php
+  $dashboard_base_url = 'http://182.253.114.52/dashboard_pos/index.php/api/json/ping?auth=prismapos.addkomputer&apikey=69f86eadd81650164619f585bb017316';
+  $dashboard_base_url.= '&app_type_id='.$install['type_id'];
+  $dashboard_base_url.= '&client_id='.$client->client_id;
+  $dashboard_base_url.= '&name='.$client->client_name;
+  $dashboard_base_url.= '&pos_sn='.$client->client_serial_number;
+  $dashboard_base_url.= '&npwpd='.$client->client_npwpd;
+?>
+<script>
+  $(function() {
+    function _ping() {
+      $.ajax({
+        type : 'get',
+        url : '<?=$dashboard_base_url?>',
+        dataType : 'json',
+        async : false,
+        success : function (data) {
+          $("#status_ping").html(data.resp_desc);
+        },
+        error: function(jqXHR, exception) { // if error occured
+          if (jqXHR.status === 0) {
+            alert('Not connect.\n Verify Network.');
+          } else if (jqXHR.status == 404) {
+            alert('Requested page not found. [404]');
+          } else if (jqXHR.status == 500) {
+            alert('Internal Server Error [500].');
+          } else if (exception === 'parsererror') {
+            alert('Requested JSON parse failed.');
+          } else if (exception === 'timeout') {
+            alert('Time out error.');
+          } else if (exception === 'abort') {
+            alert('Ajax request aborted.');
+          } else {
+            alert('Uncaught Error.\n' + jqXHR.responseText);
+          }
+          //$("#status_ping").html("Error occured.please try again");
+          // $(placeholder).append(xhr.statusText + xhr.responseText);
+          // $(placeholder).removeClass('loading');
+          // $("#status_ping").html(xhr.responseText);
+          // alert(xhr.responseText);
+        }
+      })
+      // return $.getJSON('<?php echo $dashboard_base_url?>');
+    }
+    function send_dashboard(data) {
+      $.ajax({
+        type : 'GET',
+        // url : 'http://addkomputer.com/prismapos/index.php/api/json/store',
+        url : 'http://182.253.114.52/dashboard_pos/index.php/api/json/store',
+        data : data,
+        dataType : 'json',
+        success : function (data) {
+          if(data.resp_code == '00'){
+            update_data(data.tx_id);
+          }
+        },
+        error: function(jqXHR, textStatus, errorThrown) { // if error occured
+          // $("#status_ping").html(jqXHR.status);
+          console.log(jqXHR.status);
+          console.log(errorThrown);
+        }
+      })
+      // console.log(data);
+    }
+    function get_data() {
+      $.ajax({
+        type : 'post',
+        url : '<?=base_url();?>data_trx.php',
+        dataType : 'json',
+        success : function (data) {
+          if(data != null || data != ''){
+            send_dashboard(data);
+          }
+        }
+      })
+    }
+    function update_data(id) {
+      $.ajax({
+        type : 'post',
+        url : '<?=base_url();?>update_data.php',
+        data : 'id='+id,
+        dataType : 'json',
+        success : function (data) {
+          console.log('ok');
+        }
+      })
+    }
+    get_data();
+    _ping();
+    var auto_ping = setInterval(function () {
+      _ping();
+      get_data();
+    }, 5000); // miliseconds -> 60sec
+
+    //get data
+    
+  });
+</script>
