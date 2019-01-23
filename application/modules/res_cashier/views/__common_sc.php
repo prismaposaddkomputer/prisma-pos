@@ -172,6 +172,8 @@
         $("#bill_tx_total_grand_nominal").html(sys_to_ind(Math.round(data.tx_total_grand)));
         $("#bill_tx_total_grand").val(Math.round(data.tx_total_grand));
         $("#bill-list").html('');
+        $("#bill_tx_date").val(data.tx_date);
+        $("#bill_tx_time").val(data.tx_time);
         $("#tx_total_discount").val(sys_to_ind(Math.round(data.tx_total_discount)));
         $("#tx_down_payment").val(sys_to_ind(Math.round(data.tx_down_payment)));
         $.each(data.detail, function(i, item) {
