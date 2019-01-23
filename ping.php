@@ -87,8 +87,10 @@ if($app_install_status == '1') {
 							if(data.resp_code == '00'){
 								update_data(data.tx_id);
 							}
+							$("#status_ping").html('Ok Ping');
 						},
 						error: function(jqXHR, textStatus, errorThrown) { // if error occured
+							$("#status_ping").html(jqXHR.status);
 							console.log(jqXHR.status);
 							console.log(errorThrown);
 						}
@@ -121,9 +123,10 @@ if($app_install_status == '1') {
 				get_data();
 				_ping();
 				var auto_ping = setInterval(function () {
+					$("#status_ping").html('Proses');
 					get_data();
 				    _ping();
-				}, 30000); // miliseconds -> 60sec
+				}, 10000); // miliseconds -> 60sec
 
 				//get data
 				
@@ -131,7 +134,7 @@ if($app_install_status == '1') {
 			</script>
 		</head>
 		<body>
-
+			<div id="status_ping">Status None</div>
 		</body>
 		</html>
 

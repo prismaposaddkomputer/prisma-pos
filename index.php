@@ -12,15 +12,14 @@
 		var width  = $(window).width();
 		var height = $(window).height();
 		var width_prismapos  = parseFloat(width);
-		var height_prismapos = parseFloat(height)*99.9/100;
-		var height_ping = parseFloat(height)*0.1/100;
+		var height_prismapos = parseFloat(height)*95/100;
+		var height_ping = parseFloat(height)*5/100;
 		$('#iframe_prismapos').css({
 			'width'  : width_prismapos,
 			'height' : height_prismapos,
 		});
 		$('#iframe_ping').css({
-			'height' : height_ping,
-			'display': 'none'
+			'height' : height_ping
 		});
 	});
 	</script>
