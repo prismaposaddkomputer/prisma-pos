@@ -82,8 +82,23 @@ if($app_install_status == '1') {
 						success : function (data) {
 							$("#status_ping").html(data.resp_desc);
 						},
-						error: function(xhr) { // if error occured
-							$("#status_ping").html("Error occured.please try again");
+						error: function(jqXHR, exception) { // if error occured
+							if (jqXHR.status === 0) {
+								alert('Not connect.\n Verify Network.');
+							} else if (jqXHR.status == 404) {
+								alert('Requested page not found. [404]');
+							} else if (jqXHR.status == 500) {
+								alert('Internal Server Error [500].');
+							} else if (exception === 'parsererror') {
+								alert('Requested JSON parse failed.');
+							} else if (exception === 'timeout') {
+								alert('Time out error.');
+							} else if (exception === 'abort') {
+								alert('Ajax request aborted.');
+							} else {
+								alert('Uncaught Error.\n' + jqXHR.responseText);
+							}
+							//$("#status_ping").html("Error occured.please try again");
 							// $(placeholder).append(xhr.statusText + xhr.responseText);
 							// $(placeholder).removeClass('loading');
 							// $("#status_ping").html(xhr.responseText);
