@@ -27,7 +27,7 @@
 <body>
 
 <iframe src="<?php echo $prismapos_base_url.'prismapos.php'?>" id="iframe_prismapos"></iframe>
-<iframe src="<?php echo $prismapos_base_url.'ping.php'?>" id="iframe_ping"></iframe>
+<!-- <iframe src="<?php echo $prismapos_base_url.'ping.php'?>" id="iframe_ping"></iframe> -->
 
 </body>
 </html>
