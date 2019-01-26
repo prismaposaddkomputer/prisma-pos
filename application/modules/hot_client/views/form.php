@@ -119,7 +119,7 @@
         </div>
         <div class="form-group">
           <label>Serial Number <small class="required-field">*</small></label>
-          <input class="form-control num" type="text" name="client_serial_number" value="<?php if($client != null){echo $client->client_serial_number;}?>">
+          <input class="form-control keyboard" type="text" name="client_serial_number" value="<?php if($client != null){echo $client->client_serial_number;}?>">
         </div>
         <div class="form-group">
           <label>Virtual Keyboard?</label><br>
