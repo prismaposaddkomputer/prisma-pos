@@ -187,7 +187,7 @@
       $dashboard_base_url.= '&npwpd='.$client->client_npwpd;
     ?>
     <script>
-      $(function() {
+      $(document).ready(function() {
 				function _ping() {
 					$.ajax({
 						type : 'get',
