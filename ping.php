@@ -72,7 +72,7 @@ if($app_install_status == '1') {
 			<title>PING PRISMAPOS</title>
 			<script type="text/javascript" src="<?php echo $prismapos_base_url.'vendor/jquery/jquery-3.3.1.min.js'?>"></script>
 			<script type="text/javascript">
-			$(function() {
+			$(document).ready(function() {
 				function _ping() {
 					$.ajax({
 						type : 'get',
