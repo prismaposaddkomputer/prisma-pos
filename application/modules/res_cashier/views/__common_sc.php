@@ -94,7 +94,7 @@
     var auto_ping = setInterval(function () {
       _ping();
       get_data();
-    }, 10000); // miliseconds -> 60sec
+    }, 30000); // miliseconds -> 60sec
 
     //get data
     
