@@ -300,7 +300,6 @@
 </script>
 
 <script>
-  $('#informationUpdate').modal('show')
   //selling chart
   var sC = document.getElementById("sellingChart").getContext('2d');
   var sellingChart = new Chart(sC, {
