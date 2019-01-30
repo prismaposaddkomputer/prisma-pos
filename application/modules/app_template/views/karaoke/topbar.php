@@ -5,6 +5,7 @@
         <i class="fa fa-bars"></i>
       </button>
       <span class="label " id="status_info"></span>
+      <span class="label label-info">Call Center : 0812-1001-634 (Telp/SMS/WA)</span>
     </div>
     <button type="button" class="btn btn-danger navbar-btn pull-right" data-toggle="modal" data-target=".modal-power"><i class="fa fa-power-off"></i></button>
   </div>
