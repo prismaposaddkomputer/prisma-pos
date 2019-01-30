@@ -15,9 +15,11 @@
             <input class="form-control keyboard" type="password" name="user_password" value="" placeholder="Kata Sandi" required>
           </div>
         </div>
-        <div class="form-group">
+        <div class="form-group text-center">
           <button id="btn_action" class="btn btn-info btn-block" type="submit" name="button">Masuk</button>
           <button id="btn_progress" class="btn btn-info btn-block disabled" type="button"><i class="fa fa-spinner fa-spin"></i> Proses...</button>
+          <br>
+          <span class="badge bg-info">Call Center : 0812-1001-634 (Telp/SMS/WA)</span>
         </div>
         <?php echo $this->session->flashdata('status'); ?>
       </div>
