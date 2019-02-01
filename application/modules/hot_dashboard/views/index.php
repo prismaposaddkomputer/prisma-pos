@@ -141,7 +141,6 @@
             <?php endif; ?>
           </tbody>
         </table>
-        <?php var_dump($client); ?>
       </div>
     </div>
   </div>
