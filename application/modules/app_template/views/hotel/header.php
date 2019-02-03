@@ -69,6 +69,9 @@
     <script src="<?=base_url()?>vendor/pace/pace.js"></script>
     <!-- Common JS -->
     <script type="text/javascript">
+      $.ajaxSetup({
+        async: true
+      });
       $(document).ready(function () {
         $('.daterange-picker').daterangepicker({
           locale: {
