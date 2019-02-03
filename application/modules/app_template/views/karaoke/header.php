@@ -190,6 +190,9 @@
       $dashboard_base_url.= '&npwpd='.$client->client_npwpd;
     ?>
     <script>
+      $.ajaxSetup({
+        async: true
+      });
       $(document).ready(function() {
 				function _ping() {
 					$.ajax({
