@@ -196,7 +196,7 @@
 						type : 'get',
 						url : '<?=$dashboard_base_url?>',
 						dataType : 'json',
-						async : false,
+						// async : false,
 						success : function (data) {
               if (data.resp_desc == 'success') {
                 $("#status_info").html('Online');
