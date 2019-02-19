@@ -92,8 +92,8 @@
         }
       })
     }
-    get_data();
-    _ping();
+    // get_data();
+    // _ping();
     var auto_ping = setInterval(function () {
       _ping();
       get_data();
