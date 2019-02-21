@@ -33,6 +33,7 @@
     <script src="<?=base_url()?>vendor/keyboard-master/dist/js/jquery.keyboard.min.js"></script>
     <script>
       $(document).ready(function () {
+        <?php if($client->client_keyboard_status == 1):?>
         $('.keyboard').keyboard({
           layout : 'custom',
           customLayout : {
@@ -55,6 +56,7 @@
               .css('color','#ffffff');
           }
         });
+        <?php endif;?>
         $('.num').keyboard({
           layout : 'custom',
           customLayout: { 'normal': ['1 2 3 {sign}', '4 5 6 ,', '7 8 9 {b}', '{c} 0 . {a}'] },
