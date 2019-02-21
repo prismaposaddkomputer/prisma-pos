@@ -44,6 +44,7 @@
         };
         $('.keyboard').keyboard({
           enterNavigation : false,
+          tabNavigation : true,
           layout : 'custom',
           customLayout : {
             'normal' : ['1 2 3 4 5 6 7 8 9 0',
