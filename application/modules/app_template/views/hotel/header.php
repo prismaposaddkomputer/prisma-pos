@@ -117,7 +117,16 @@
           $('.alert').fadeOut();
         }, 1500);
         <?php if($keyboard == 1):?>
+          $.keyboard.keyaction.enter = function(base){
+            if (base.el.tagName === "INPUT") {
+              base.accept();      // accept the content
+              //$('form').submit(); // submit form on enter
+            } else {
+              base.insertText('\r\n'); // textarea
+            }
+          };
           $('.keyboard').keyboard({
+            enterNavigation : false,
             layout : 'custom',
             customLayout : {
               'normal' : ['1 2 3 4 5 6 7 8 9 0',
