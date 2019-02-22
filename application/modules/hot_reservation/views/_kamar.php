@@ -51,7 +51,7 @@
             <div class="form-group">
               <label id="label_room_type_duration">Durasi Per Hari</label>
               <div class="input-group">
-                <input class="form-control num" id="room_type_duration" type="text" value="0" onchange="calc_room()">
+                <input class="form-control num" id="room_type_duration" type="text" value="1" onchange="calc_room()">
                 <div class="input-group-addon" id="group_addon_room_type_duration"><b>Hari</b></div>
               </div>
             </div>
