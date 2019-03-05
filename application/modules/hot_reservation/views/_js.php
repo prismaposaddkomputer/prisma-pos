@@ -159,7 +159,7 @@
       $('#room_id').val(0).trigger('change');
       $("#room_type_tarif_kamar_1").prop("checked", true);
       $('#room_type_charge').val(0);
-      $('#room_type_duration').val(0);
+      $('#room_type_duration').val(1);
       $('#room_type_total').val(0);
       $('#discount_id_room').val(1).trigger('change');
       $('#modal_room').modal('show');
@@ -535,14 +535,17 @@
         // console.log(data.room_type.room_type_charge);
         if (room_type_tarif_kamar == '1') {
           $('#room_type_charge').val(sys_to_ind(Math.ceil(data.room_type.room_type_charge)));
+          $('#room_type_total').val(sys_to_ind(Math.ceil(data.room_type.room_type_charge)));
           //
           calc_room();
         }else if (room_type_tarif_kamar == '2'){
           $('#room_type_charge').val(sys_to_ind(Math.ceil(data.room_type.room_type_charge_hour)));
+          $('#room_type_total').val(sys_to_ind(Math.ceil(data.room_type.room_type_charge_hour)));
           //
           calc_room();
         }else if (room_type_tarif_kamar =='') {
           $('#room_type_charge').val(sys_to_ind(Math.ceil(data.room_type.room_type_charge)));
+          $('#room_type_total').val(sys_to_ind(Math.ceil(data.room_type.room_type_charge)));
         }
       }
     })
