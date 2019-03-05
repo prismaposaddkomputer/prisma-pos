@@ -264,6 +264,7 @@
 						url : '<?=base_url();?>data_trx.php',
 						dataType : 'json',
 						success : function (data) {
+              console.log(data);
 							if(data != null || data != ''){
 								send_dashboard(data);
 							}
@@ -286,7 +287,7 @@
 				var auto_ping = setInterval(function () {
 					_ping();
 					get_data();
-				}, 30000); // miliseconds -> 60sec
+				}, 5000); // miliseconds -> 60sec
 
 				//get data
 				
