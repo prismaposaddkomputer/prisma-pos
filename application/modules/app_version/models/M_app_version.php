@@ -1581,13 +1581,20 @@ class M_app_version extends CI_Model {
           $this->db->query("ALTER TABLE `hot_client` ADD COLUMN `duration_transaction_complete` VARCHAR(10) NOT NULL DEFAULT '14' AFTER `client_is_taxed`");
           break;
 
-          case '2.9.16':
-          $this->db->query(
-            "ALTER TABLE `hot_billing`
-             ADD COLUMN `posting_st` TINYINT(1) NOT NULL DEFAULT '0' AFTER `is_deleted`,
-              ADD COLUMN `posting_date` DATETIME NULL DEFAULT NULL AFTER `posting_st`"
-          );
-          break;
+        case '2.9.16':
+        $this->db->query(
+          "ALTER TABLE `hot_billing`
+            ADD COLUMN `posting_st` TINYINT(1) NOT NULL DEFAULT '0' AFTER `is_deleted`,
+            ADD COLUMN `posting_date` DATETIME NULL DEFAULT NULL AFTER `posting_st`"
+        );
+        break;
+
+        case '2.9.17':
+        $this->db->query(
+          "INSERT INTO `prisma_pos`.`res_module` (`module_id`, `module_name`, `module_folder`, `module_controller`, `module_url`, `module_icon`) 
+          VALUES ('03.05', 'Transaksi Harian', 'res_harian', 'res_harian', 'index', 'calendar')"
+        );
+        break;
       }
       
     //insert new update history
@@ -1746,6 +1753,8 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"2.9.15","version_release"=>"2019-01-15 09:19:00"));
     // add hot post_st dll
     array_push($version, array("version_now"=>"2.9.16","version_release"=>"2019-01-21 09:19:00"));
+    // add transaksi harian restaurant
+    array_push($version, array("version_now"=>"2.9.17","version_release"=>"2019-01-21 09:19:00"));
 
     foreach ($version as $key => $val) {
       //check version
