@@ -75,8 +75,9 @@
             <th class="text-center"><?=$data['charge_type_name']?></th>
             <?php endforeach ?>
 
-            <th class="text-center">DP</th>
             <th class="text-center">Total</th>
+            <th class="text-center">DP</th>
+            <th class="text-center">Kekurangan</th>
           </tr>
           <tr>
             <td class="text-center" style="padding:0px;">1</td>
@@ -94,6 +95,7 @@
             <?php endfor; ?>
             <td class="text-center" style="padding:0px;"><?=$i?></td>
             <td class="text-center" style="padding:0px;"><?=$i+1?></td>
+            <td class="text-center" style="padding:0px;"><?=$i+2?></td>
           </tr>
         </thead>
         <tbody>
@@ -109,17 +111,26 @@
             $total_other = 0;
             $billing_total = 0;
             $billing_down_payment = 0;
+
+            $total_discount = 0;
+            $total_billing_subtotal = 0;
+            $total_kekurangan = 0;
           ?>
           <?php if ($range != null): ?>
             <?php $i=1;foreach ($range as $row): ?>
               <tr>
                 <td class="text-center"><?=$i++?></td>
                 <td class="text-center"><?=date_to_ind($row->billing_date_in)?></td>
+
+                <?php
+                $total_discount = $row->billing_discount+$row->billing_discount_custom;
+                $total_billing_subtotal = $row->billing_subtotal+$row->billing_discount;
+                ?>
                 
                 <?php if ($client->client_is_taxed == 0): ?>
 
-                  <td><?=num_to_idr($row->billing_subtotal)?></td>
-                  <?php $billing_subtotal += $row->billing_subtotal;?>
+                  <td><?=num_to_idr($total_billing_subtotal)?></td>
+                    <?php $billing_subtotal += $total_billing_subtotal;?>
 
                 <?php else: ?>
 
@@ -127,13 +138,13 @@
                   $after_billing_subtotal = ($row->billing_subtotal) + ($row->billing_tax + $row->billing_service + $row->billing_other) + ($row->billing_discount);
                   ?>
 
-                  <td><?=num_to_idr($after_billing_subtotal)?></td>
-                  <?php $billing_subtotal += $after_billing_subtotal;?>
+                  <td><?=num_to_idr($total_billing_subtotal)?></td>
+                    <?php $billing_subtotal += $total_billing_subtotal;?>
 
                 <?php endif; ?>
 
-                <td><?=num_to_idr($row->billing_discount)?></td>
-                  <?php $billing_discount += $row->billing_discount;?>
+                <td><?=num_to_idr($total_discount)?></td>
+                    <?php $billing_discount += $total_discount;?>
 
                 <td><?=num_to_idr($row->billing_denda)?></td>
                   <?php $billing_denda += $row->billing_denda;?>
@@ -158,15 +169,20 @@
                 ?>  
                 <!-- End Charge Type -->
 
+                <!-- Grand Total -->
+                <td><?=num_to_idr($row->billing_total-$row->billing_discount_custom)?></td>
+                    <?php $billing_total += $row->billing_total-$row->billing_discount_custom;?>
+                <!-- End Grand Total -->
+
                 <!-- DP -->
                 <td><?=num_to_idr($row->billing_down_payment)?></td>
                   <?php $billing_down_payment += $row->billing_down_payment ?>
                 <!-- End DP -->
 
-                <!-- Grand Total -->
-                <td><?=num_to_idr($row->billing_total)?></td>
-                  <?php $billing_total += $row->billing_total;?>
-                <!-- End Grand Total -->
+                <!-- Kekurangan -->
+                <td><?=num_to_idr($row->billing_total-$row->billing_discount_custom-$row->billing_down_payment)?></td>
+                  <?php $total_kekurangan += $row->billing_total-$row->billing_discount_custom-$row->billing_down_payment ?>
+                <!-- End Kekurangan -->  
                   
               </tr>
             <?php endforeach; ?>
@@ -194,8 +210,9 @@
             ?>
             <th><?=num_to_idr($total_charge_type)?></th>
             <?php endforeach; ?> 
-            <th><?=num_to_idr($billing_down_payment)?></th>
             <th><?=num_to_idr($billing_total)?></th> 
+            <th><?=num_to_idr($billing_down_payment)?></th>
+            <th><?=num_to_idr($total_kekurangan)?></th>
           </tr>
         </tfoot>
       </table>
