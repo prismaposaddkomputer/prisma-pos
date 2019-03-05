@@ -15,7 +15,7 @@
         <input class="form-control" type="hidden" name="billing_id" value="<?php if($billing != null){echo $billing->tx_id;}?>">
         <div class="form-group">
           <label>Tanggal <small class="required-field">*</small></label>
-          <input class="form-control date-picker" type="text" name="tx_date" value="<?php if($billing != null){echo date_to_ind($billing->tx_date);}?>" <?php if($action == 'update'){echo 'readonly';} ?>>
+          <input class="form-control date-picker" type="text" name="tx_date" value="<?php if($billing != null){echo date_to_ind($billing->tx_date);}?>" <?php if($action == 'update'){echo 'readonly';} ?> required>
         </div>
         <div class="form-group">
           <label>Total Transaksi <small class="required-field">*</small></label>
@@ -29,7 +29,7 @@
               }
             }
           ?>
-          <input class="form-control num autonumeric" type="text" name="total_transaksi" value="<?php if($billing != null){echo $total_transaksi;}?>">
+          <input class="form-control num autonumeric" type="text" name="total_transaksi" value="<?php if($billing != null){echo $total_transaksi;}?>" required>
         </div>
         <div class="form-group pull-right">
           <a class="btn btn-default" href="<?=base_url()?>res_harian/index"><i class="fa fa-close"></i> Batal</a>
