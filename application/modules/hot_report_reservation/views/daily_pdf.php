@@ -96,6 +96,9 @@
             $total_service = 0;
             $total_other = 0;
             $billing_total = 0;
+
+            $total_discount = 0;
+            $total_billing_subtotal = 0;
           ?>
           <?php if ($daily != null): ?>
             <?php $i=1; foreach ($daily as $row): ?>
@@ -118,13 +121,19 @@
                       break;
                   } ?>
                 </td>
+
+                <?php
+                  $total_discount = $row->billing_discount+$row->billing_discount_custom;
+                  $total_billing_subtotal = $row->billing_subtotal+$row->billing_discount;
+                ?>
+                
                 <?php if ($client->client_is_taxed == 0): ?>
 
-                  <td><?=num_to_idr($row->billing_subtotal)?></td>
-                    <?php $billing_subtotal += $row->billing_subtotal;?>
+                  <td><?=num_to_idr($total_billing_subtotal)?></td>
+                    <?php $billing_subtotal += $total_billing_subtotal;?>
 
-                  <td><?=num_to_idr($row->billing_discount)?></td>
-                    <?php $billing_discount += $row->billing_discount;?>
+                  <td><?=num_to_idr($total_discount)?></td>
+                    <?php $billing_discount += $total_discount;?>
 
                   <td><?=num_to_idr($row->billing_denda)?></td>
                     <?php $billing_denda += $row->billing_denda;?>
@@ -150,21 +159,21 @@
                   <!-- End Charge Type -->
 
                   <!-- Grand Total -->
-                  <td><?=num_to_idr($row->billing_total)?></td>
-                    <?php $billing_total += $row->billing_total;?>
+                  <td><?=num_to_idr($row->billing_total-$row->billing_discount_custom)?></td>
+                    <?php $billing_total += $row->billing_total-$row->billing_discount_custom;?>
                   <!-- End Grand Total -->
 
                 <?php else: ?>
 
                   <?php
-                  $after_billing_subtotal = ($row->billing_subtotal) + ($row->billing_tax + $row->billing_service + $row->billing_other) + ($row->billing_discount);
+                  $after_billing_subtotal = ($row->billing_subtotal);// + ($row->billing_tax + $row->billing_service + $row->billing_other) + ($row->billing_discount);
                   ?>
 
-                  <td><?=num_to_idr($after_billing_subtotal)?></td>
-                    <?php $billing_subtotal += $after_billing_subtotal;?>
+                  <td><?=num_to_idr($total_billing_subtotal)?></td>
+                    <?php $billing_subtotal += $total_billing_subtotal;?>
 
-                  <td><?=num_to_idr($row->billing_discount)?></td>
-                    <?php $billing_discount += $row->billing_discount;?>
+                  <td><?=num_to_idr($total_discount)?></td>
+                    <?php $billing_discount += $total_discount;?>
 
                   <td><?=num_to_idr($row->billing_denda)?></td>
                     <?php $billing_denda += $row->billing_denda;?>
@@ -190,8 +199,8 @@
                   <!-- End Charge Type -->
 
                   <!-- Grand Total -->
-                  <td><?=num_to_idr($row->billing_total)?></td>
-                    <?php $billing_total += $row->billing_total;?>
+                  <td><?=num_to_idr($row->billing_total-$row->billing_discount_custom)?></td>
+                    <?php $billing_total += $row->billing_total-$row->billing_discount_custom;?>
                   <!-- End Grand Total -->
 
                 <?php endif; ?>

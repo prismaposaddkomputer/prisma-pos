@@ -31,6 +31,65 @@
     <script src="<?=base_url()?>vendor/jquery-validation/dist/jquery.validate.min.js" charset="utf-8"></script>
     <!-- keyboard js -->
     <script src="<?=base_url()?>vendor/keyboard-master/dist/js/jquery.keyboard.min.js"></script>
+    <style type="text/css">
+      .btn-telo {
+        color: #333;
+        background-color: #fff;
+        border-color: #ccc;
+      }
+      .btn-telo:focus,
+      .btn-telo.focus {
+        color: #fff;
+        background-color: #31b0d5;
+        border-color: #1b6d85;
+      }
+      .btn-telo:hover {
+        color: #333;
+        background-color: #e6e6e6;
+        border-color: #adadad;
+      }
+      .btn-telo:active,
+      .btn-telo.active,
+      .open > .dropdown-toggle.btn-telo {
+        color: #fff;
+        background-color: #31b0d5;
+        border-color: #269abc;
+      }
+      .btn-telo:active:hover,
+      .btn-telo.active:hover,
+      .open > .dropdown-toggle.btn-telo:hover,
+      .btn-telo:active:focus,
+      .btn-telo.active:focus,
+      .open > .dropdown-toggle.btn-telo:focus,
+      .btn-telo:active.focus,
+      .btn-telo.active.focus,
+      .open > .dropdown-toggle.btn-telo.focus {
+        color: #fff;
+        background-color: #269abc;
+        border-color: #1b6d85;
+      }
+      .btn-telo:active,
+      .btn-telo.active,
+      .open > .dropdown-toggle.btn-telo {
+        background-image: none;
+      }
+      .btn-telo.disabled:hover,
+      .btn-telo[disabled]:hover,
+      fieldset[disabled] .btn-telo:hover,
+      .btn-telo.disabled:focus,
+      .btn-telo[disabled]:focus,
+      fieldset[disabled] .btn-telo:focus,
+      .btn-telo.disabled.focus,
+      .btn-telo[disabled].focus,
+      fieldset[disabled] .btn-telo.focus {
+        background-color: #5bc0de;
+        border-color: #46b8da;
+      }
+      .btn-telo .badge {
+        color: #5bc0de;
+        background-color: #fff;
+      }
+    </style>
     <script>
       $(document).ready(function () {
         <?php if($client->client_keyboard_status == 1):?>
@@ -46,6 +105,9 @@
           enterNavigation : false,
           tabNavigation : true,
           layout : 'custom',
+          css: {
+            buttonDefault: 'btn btn-telo'
+          },
           customLayout : {
             'normal' : ['1 2 3 4 5 6 7 8 9 0',
                         'q w e r t y u i o p',
