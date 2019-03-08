@@ -106,7 +106,8 @@
           tabNavigation : true,
           layout : 'custom',
           css: {
-            buttonDefault: 'btn btn-telo'
+            buttonHover: 'btn-primary',
+            buttonDefault: 'btn btn-default'
           },
           customLayout : {
             'normal' : ['1 2 3 4 5 6 7 8 9 0',
