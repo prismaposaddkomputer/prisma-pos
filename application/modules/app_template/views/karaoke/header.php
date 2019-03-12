@@ -68,6 +68,65 @@
     <!-- Pace loader -->
     <link rel="stylesheet" href="<?=base_url()?>vendor/pace/pace-theme-loading-bar.css" />
     <script src="<?=base_url()?>vendor/pace/pace.js"></script>
+    <style type="text/css">
+      .btn-telo {
+        color: #333;
+        background-color: #fff;
+        border-color: #ccc;
+      }
+      .btn-telo:focus,
+      .btn-telo.focus {
+        color: #fff;
+        background-color: #31b0d5;
+        border-color: #1b6d85;
+      }
+      .btn-telo:hover {
+        color: #333;
+        background-color: #e6e6e6;
+        border-color: #adadad;
+      }
+      .btn-telo:active,
+      .btn-telo.active,
+      .open > .dropdown-toggle.btn-telo {
+        color: #fff;
+        background-color: #31b0d5;
+        border-color: #269abc;
+      }
+      .btn-telo:active:hover,
+      .btn-telo.active:hover,
+      .open > .dropdown-toggle.btn-telo:hover,
+      .btn-telo:active:focus,
+      .btn-telo.active:focus,
+      .open > .dropdown-toggle.btn-telo:focus,
+      .btn-telo:active.focus,
+      .btn-telo.active.focus,
+      .open > .dropdown-toggle.btn-telo.focus {
+        color: #fff;
+        background-color: #269abc;
+        border-color: #1b6d85;
+      }
+      .btn-telo:active,
+      .btn-telo.active,
+      .open > .dropdown-toggle.btn-telo {
+        background-image: none;
+      }
+      .btn-telo.disabled:hover,
+      .btn-telo[disabled]:hover,
+      fieldset[disabled] .btn-telo:hover,
+      .btn-telo.disabled:focus,
+      .btn-telo[disabled]:focus,
+      fieldset[disabled] .btn-telo:focus,
+      .btn-telo.disabled.focus,
+      .btn-telo[disabled].focus,
+      fieldset[disabled] .btn-telo.focus {
+        background-color: #5bc0de;
+        border-color: #46b8da;
+      }
+      .btn-telo .badge {
+        color: #5bc0de;
+        background-color: #fff;
+      }
+    </style>
     <!-- Common JS -->
     <script type="text/javascript">
       $(document).ready(function () {
@@ -126,6 +185,10 @@
           $('.keyboard').keyboard({
             enterNavigation : false,
             layout : 'custom',
+            css: {
+              buttonHover: 'btn-primary',
+              buttonDefault: 'btn btn-default'
+            },
             customLayout : {
               'normal' : ['1 2 3 4 5 6 7 8 9 0',
                           'q w e r t y u i o p',
@@ -148,6 +211,10 @@
           });
           $('.num').keyboard({
             layout : 'custom',
+            css: {
+              buttonHover: 'btn-primary',
+              buttonDefault: 'btn btn-default'
+            },
             customLayout: { 'normal': ['1 2 3 {sign}', '4 5 6 ,', '7 8 9 {b}', '{c} 0 . {a}'] },
             visible: function(e, keyboard, el) {
               keyboard.$keyboard.find('.ui-keyboard-bksp')
