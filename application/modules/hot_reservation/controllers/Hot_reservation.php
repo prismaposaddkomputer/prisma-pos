@@ -1454,17 +1454,26 @@ class Hot_reservation extends MY_Hotel {
       // $room_type_subtotal = price_to_num($data['room_type_total']);
       $room_type_subtotal = price_to_num($data['room_type_total']);
       // $room_type_tax += $room_type_subtotal * $tax->charge_type_ratio;
+
+      //
+      if ($discount->discount_type == '2' && $discount->discount_category == '2') {
+        $room_type_subtotal_after_discount = $room_type_subtotal - $discount->discount_amount;
+      }else{
+        $room_type_subtotal_after_discount = $room_type_subtotal;
+      }
+      //
+
       $room_type_tax = 0;
       if ($tax != null) {
-        $room_type_tax += $room_type_subtotal * ($tax->charge_type_ratio/100);
+        $room_type_tax += $room_type_subtotal_after_discount * ($tax->charge_type_ratio/100);
       }
       $room_type_service = 0;
       if ($service != null) {
-        $room_type_service += $room_type_subtotal * ($service->charge_type_ratio/100);
+        $room_type_service += $room_type_subtotal_after_discount * ($service->charge_type_ratio/100);
       }
       $room_type_other = 0;
       if ($other) {
-        $room_type_other += $room_type_subtotal * ($other->charge_type_ratio/100);
+        $room_type_other += $room_type_subtotal_after_discount * ($other->charge_type_ratio/100);
       }
 
       $room_type_before_discount = $room_type_subtotal + $room_type_tax + $room_type_service + $room_type_other;
@@ -1485,18 +1494,27 @@ class Hot_reservation extends MY_Hotel {
     } else {
       // Settingan harga setelah pajak
       $room_type_before_discount = price_to_num($data['room_type_total']);
+
+      //
+      if ($discount->discount_type == '2' && $discount->discount_category == '2') {
+        $room_type_subtotal_after_discount = $room_type_before_discount - $discount->discount_amount;
+      }else{
+        $room_type_subtotal_after_discount = $room_type_before_discount;
+      }
+      //
+      
       // hitung persen semua setelah pajak/ hitung mundur
       $room_type_tax = 0;
       if ($tax != null) {
-        $room_type_tax = ($tax->charge_type_ratio/(100 + $tax->charge_type_ratio))*$room_type_before_discount;
+        $room_type_tax = ($tax->charge_type_ratio/(100 + $tax->charge_type_ratio))*$room_type_subtotal_after_discount;
       }
       $room_type_service = 0;
       if ($service != null) {
-        $room_type_service = ($service->charge_type_ratio/(100 + $service->charge_type_ratio))*$room_type_before_discount;
+        $room_type_service = ($service->charge_type_ratio/(100 + $service->charge_type_ratio))*$room_type_subtotal_after_discount;
       }
       $room_type_other = 0;
       if ($other != null) {
-        $room_type_other = ($other->charge_type_ratio/(100 + $other->charge_type_ratio))*$room_type_before_discount;
+        $room_type_other = ($other->charge_type_ratio/(100 + $other->charge_type_ratio))*$room_type_subtotal_after_discount;
       }
 
       $room_type_subtotal = $room_type_before_discount - $room_type_tax - $room_type_service - $room_type_other;

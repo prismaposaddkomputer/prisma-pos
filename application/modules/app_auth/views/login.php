@@ -12,7 +12,7 @@
         <div class="form-group">
           <div class="input-group">
             <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-            <input class="form-control keyboard" type="password" name="user_password" value="" placeholder="Kata Sandi" required>
+            <input class="form-control keyboard" type="text" id="password" name="user_password" value="" placeholder="Kata Sandi" required>
           </div>
         </div>
         <div class="form-group text-center">
@@ -27,7 +27,17 @@
   </form>
 </div>
 <script type="text/javascript">
+  $('#password').on('change', function () {
+     $(this).attr('type', 'password'); 
+  });
+
+  $('#password').on('mousedown', function () {
+     $(this).attr('type', 'text'); 
+     // alert('bismillah');
+  });
+
   $(document).ready(function () {
+
     $("#btn_action").show();
     $("#btn_progress").hide();
 
