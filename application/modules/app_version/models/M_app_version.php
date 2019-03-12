@@ -1595,6 +1595,17 @@ class M_app_version extends CI_Model {
           VALUES ('03.05', 'Transaksi Harian', 'res_harian', 'res_harian', 'index', 'calendar')"
         );
         break;
+
+        case '2.9.18':
+          $this->db->query(
+            "ALTER TABLE `res_billing`
+	            ADD COLUMN `tx_discount_type` TINYINT(1) NOT NULL DEFAULT '0' AFTER `tx_total_tax`;"
+          );
+          $this->db->query(
+            "ALTER TABLE `res_billing`
+              ADD COLUMN `tx_discount_percent` FLOAT(10,2) NOT NULL DEFAULT '0' AFTER `tx_discount_type`;"
+          );
+        break;
       }
       
     //insert new update history
@@ -1755,6 +1766,8 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"2.9.16","version_release"=>"2019-01-21 09:19:00"));
     // add transaksi harian restaurant
     array_push($version, array("version_now"=>"2.9.17","version_release"=>"2019-01-21 09:19:00"));
+    // add discount restaurant percent
+    array_push($version, array("version_now"=>"2.9.18","version_release"=>"2019-03-12 10:53:00"));
 
     foreach ($version as $key => $val) {
       //check version
