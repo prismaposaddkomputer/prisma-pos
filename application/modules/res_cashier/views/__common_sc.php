@@ -178,20 +178,37 @@
         $("#bill_tx_date").val(data.tx_date);
         $("#bill_tx_time").val(data.tx_time);
         $("#tx_total_discount").val(sys_to_ind(Math.round(data.tx_total_discount)));
+        $("#tx_discount_percent").val(sys_to_inddec(data.tx_discount_percent));
+        $("#tx_discount_type").val(data.tx_discount_type).trigger('change');;
         $("#tx_down_payment").val(sys_to_ind(Math.round(data.tx_down_payment)));
         $.each(data.detail, function(i, item) {
-          if(data.detail[i].is_custom == 0){
+          var client_is_taxed = <?=$client->client_is_taxed?>;
+          if (client_is_taxed == 0) {
+            // Harga Sebelum Pajak
+            if(data.detail[i].is_custom == 0){
               var html = '<li onclick=edit_item_show('+data.detail[i].billing_detail_id+')>';
             }else{
               var html = '<li onclick=edit_custom_show('+data.detail[i].billing_detail_id+')>';
-          };
-          html += '<div class="amount">'+data.detail[i].tx_amount+'</div>'+
-            '<div class="name">'+data.detail[i].item_name+' <span class="price">'+sys_to_ind(Math.round(data.detail[i].tx_subtotal_after_tax))+'</span></div>'+
-            '<ul>'+
-              '<li>@ '+sys_to_ind(Math.round(data.detail[i].item_price_after_tax));
+            };
+            html += '<div class="amount">'+data.detail[i].tx_amount+'</div>'+
+              '<div class="name">'+data.detail[i].item_name+' <span class="price">'+sys_to_ind(Math.round(data.detail[i].tx_subtotal_before_tax))+'</span></div>'+
+              '<ul>'+
+                '<li>@ '+sys_to_ind(Math.round(data.detail[i].item_price_before_tax));
+          }else{
+            // Harga Sesudah Pajak
+            if(data.detail[i].is_custom == 0){
+              var html = '<li onclick=edit_item_show('+data.detail[i].billing_detail_id+')>';
+            }else{
+              var html = '<li onclick=edit_custom_show('+data.detail[i].billing_detail_id+')>';
+            };
+            html += '<div class="amount">'+data.detail[i].tx_amount+'</div>'+
+              '<div class="name">'+data.detail[i].item_name+' <span class="price">'+sys_to_ind(Math.round(data.detail[i].tx_subtotal_after_tax))+'</span></div>'+
+              '<ul>'+
+                '<li>@ '+sys_to_ind(Math.round(data.detail[i].item_price_after_tax));
+          }
 
           if(data.detail[i].tx_subtotal_discount != 0){
-            html += ' Disc ('+sys_to_ind(Math.round(data.detail[i].tx_subtotal_discount))+')</li>';
+            html += ' Disc ('+sys_to_ind(data.detail[i].tx_subtotal_discount)+')</li>';
           }
 
           html +=

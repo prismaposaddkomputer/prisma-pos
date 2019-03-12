@@ -1683,9 +1683,11 @@ class Res_cashier extends MY_Restaurant {
     $billing = $this->m_res_cashier->get_billing_by_id($data['tx_id']);
     $data_billing = array(
       'tx_total_discount' => price_to_num($data['tx_total_discount']),
+      'tx_discount_percent' => $data['tx_discount_percent'],
+      'tx_discount_type' => price_to_num($data['tx_discount_type']),
       'tx_total_grand' => $billing->tx_total_after_tax-price_to_num($data['tx_total_discount'])
     );
-    // echo json_encode($billing);
+    echo json_encode($billing);
     $this->m_res_cashier->update_billing($data['tx_id'],$data_billing);
   }
 
