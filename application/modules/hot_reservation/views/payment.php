@@ -665,10 +665,10 @@
     var billing_payment = ind_to_sys($('#billing_payment').val());
     var billing_discount_custom = ind_to_sys($('#billing_discount_custom').val());
     <?php if ($billing->billing_down_payment_type == 1): ?>
-      var total_payment = <?=$billing->billing_total-$billing->billing_down_payment?>;
+      var total_payment = <?=$billing->billing_total-$billing->billing_down_payment?>-parseInt(billing_discount_custom);
     <?php else: ?>
       <?php $dp_prosen = $billing->billing_total*($billing->billing_down_payment/100); ?>
-      var total_payment = <?=$billing->billing_total-$dp_prosen?>;
+      var total_payment = <?=$billing->billing_total-$dp_prosen?>-parseInt(billing_discount_custom);
     <?php endif; ?>
 
     if (billing_payment == "") {
