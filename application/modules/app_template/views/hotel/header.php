@@ -125,6 +125,15 @@
         color: #5bc0de;
         background-color: #fff;
       }
+
+      /* button */
+      .btn-xs,
+      .btn-group-xs > .btn {
+        padding: 5px 10px;
+        font-size: 12px;
+        line-height: 1.5;
+        border-radius: 3px;
+      }
     </style>
     <!-- Common JS -->
     <script type="text/javascript">

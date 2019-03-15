@@ -31,7 +31,7 @@
           <thead>
             <tr>
               <th class="text-center" width="100">Kode</th>
-              <th class="text-center" width="60">Aksi</th>
+              <th class="text-center" width="100">Aksi</th>
               <th class="text-center">Nama Modul</th>
               <th class="text-center">Folder</th>
               <th class="text-center">Controller</th>
@@ -43,7 +43,7 @@
               <?php foreach ($module as $row): ?>
                 <tr>
                   <td><?=$row->module_id?></td>
-                  <td>
+                  <td class="text-center">
                     <?php if ($row->module_id != '0'): ?>
                       <a class="btn btn-xs btn-warning" href="<?=base_url()?>hot_module/form/<?=$row->module_id?>"><i class="fa fa-pencil"></i></a>
                       <button class="btn btn-xs btn-danger" onclick="del('<?=$row->module_id?>');"><i class="fa fa-trash"></i></button>
