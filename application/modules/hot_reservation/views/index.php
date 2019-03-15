@@ -61,7 +61,7 @@
                         <button class="btn btn-xs btn-danger" onclick="del('<?=$row->billing_id?>')"><i class="fa fa-trash"></i></button>
                       <?php endif;?>
                       <?php if ($row->billing_status == '2'): ?>
-                        <button class="btn btn-xs btn-primary" onclick="complete('<?=$row->billing_id?>')"><i class="fa fa-check"></i></button>
+                        <button class="btn btn-xs btn-primary" onclick="complete('<?=$row->billing_id?>')" style="margin-top: 5px;"><i class="fa fa-check"></i></button>
                       <?php endif; ?>
                     <?php endif; ?>
                   </td>

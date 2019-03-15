@@ -425,7 +425,7 @@
             <th class="text-right"><?=num_to_price(0)?></th>
           <?php else: ?>
             <?php if ($billing->billing_down_payment_type == 1): ?>
-              <th class="text-right"><?=num_to_price($billing->billing_total-$billing->billing_down_payment)?></th>
+              <th class="text-right"><?=num_to_price($billing->billing_total-$billing->billing_down_payment-$billing->billing_discount_custom)?></th>
             <?php else: ?>
               <?php 
               $dp_prosen = $billing->billing_total*($billing->billing_down_payment/100);

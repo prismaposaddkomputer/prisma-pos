@@ -37,7 +37,7 @@
           <thead>
             <tr>
               <th class="text-center" width="50">No</th>
-              <th class="text-center" width="70">Aksi</th>
+              <th class="text-center" width="100">Aksi</th>
               <th class="text-center" width="500">Nama Diskon</th>
               <th class="text-center" width="150">Kategori</th>
               <th class="text-center" width="150">Tipe Diskon</th>
