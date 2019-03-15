@@ -134,6 +134,11 @@
         line-height: 1.5;
         border-radius: 3px;
       }
+
+      /* sidebar */
+      #sidebar ul li a {
+        font-weight: bold;
+      }
     </style>
     <!-- Common JS -->
     <script type="text/javascript">
