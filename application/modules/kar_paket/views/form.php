@@ -1,5 +1,8 @@
 <div class="content-header">
-  <h4><i class="fa fa-<?=$access->module_icon?>"></i> <?=$title?></h4>
+  <h4>
+    <a href="<?=base_url('kar_paket')?>" class="btn btn-success"><i class="fa fa-arrow-left"></i></a> 
+    <i class="fa fa-<?=$access->module_icon?>"></i> <?=$title?>
+  </h4>
   <small>Kolom dengan tanda <b class="required-field">*</b> wajib diisi!</small>
 </div>
 <div class="content-body">
