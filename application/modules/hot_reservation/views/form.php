@@ -1,6 +1,6 @@
 <div class="content-header">
   <h4>
-    <a href="<?=base_url('hot_reservation')?>" class="btn btn-success"><i class="fa fa-arrow-left"></i></a> 
+    <a href="<?php if($billing != null){echo base_url('hot_reservation');}else{echo base_url('hot_reservation/batal/').$billing_id;}?>" class="btn btn-success"><i class="fa fa-arrow-left"></i></a> 
     <i class="fa fa-<?=$access->module_icon?>"></i> <?=$title?>
   </h4>
   <small>Kolom dengan tanda <b class="required-field">*</b> wajib diisi!</small>
@@ -193,7 +193,7 @@
     <div class="row">
       <div class="col-md-12">
         <div class="form-group pull-right">
-          <a class="btn btn-default" href="<?=base_url()?>hot_reservation/index"><i class="fa fa-close"></i> Batal</a>
+          <a class="btn btn-default" href="<?php if($billing != null){echo base_url('hot_reservation');}else{echo base_url('hot_reservation/batal/').$billing_id;}?>"><i class="fa fa-close"></i> Batal</a>
           <button class="btn btn-primary hidden" id="cetak_struk_dp" type="submit" name="action" value="cetak_struk_dp"><i class="fa fa-print"></i> Cetak Struk DP</button>
           <button class="btn btn-warning" type="submit" name="action" value="save_temp">Simpan Sementara <i class="fa fa-save"></i></button>
           <button class="btn btn-success" type="submit" name="action" value="save_payment">Simpan & Lanjut Pembayaran <i class="fa fa-arrow-right"></i></button>

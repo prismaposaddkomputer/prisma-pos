@@ -28,6 +28,7 @@ class M_hot_reservation extends CI_Model {
 		return $this->db
 			->where('is_deleted','0')
 			->where('is_active','1')
+			->where('billing_status','!=-1')
 			->get('hot_billing')->result();
 	}
 
@@ -48,7 +49,8 @@ class M_hot_reservation extends CI_Model {
 	{
 		$data = array(
 			'billing_id' => NULL,
-			'billing_receipt_no' => $billing_receipt_no
+			'billing_receipt_no' => $billing_receipt_no,
+			'billing_status' => '0'
 		);
 		$this->db->insert('hot_billing', $data);
 	}
