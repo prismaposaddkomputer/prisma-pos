@@ -100,6 +100,14 @@ class Hot_reservation extends MY_Hotel {
 
   }
 
+  public function batal($billing_id){
+    $data_update_billing['billing_status'] = -1;
+    //
+    $this->m_hot_reservation->update_billing($billing_id,$data_update_billing);
+    //
+    redirect(base_url().'hot_reservation/index');
+  }
+
   public function proses_transaksi_otomatis($billing_id=null)
   {
     $data_update_billing['billing_status'] = 3;
