@@ -196,7 +196,7 @@
         <ul class="nav navbar-nav">
           <li>
             <a href="<?=base_url()?>res_dashboard/index" role="button">
-              Prisma POS 
+              <i class="fa fa-arrow-left"></i> Prisma POS 
               <span class="label" id="status_info"></span>
               <span class="label label-info">Call Center : 0812-1001-634 (Telp/SMS/WA)</span>
             </a>

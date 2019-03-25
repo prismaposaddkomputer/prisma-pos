@@ -241,7 +241,7 @@
         <ul class="nav navbar-nav">
           <li>
             <a href="<?=base_url()?>res_dashboard/index" role="button">
-            Prisma POS 
+            <i class="fa fa-arrow-left"></i> Prisma POS 
             <span class="label" id="status_info"></span>
             </a>
           </li>
