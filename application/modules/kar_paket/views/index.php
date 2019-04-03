@@ -40,7 +40,7 @@
           <thead>
             <tr>
               <th class="text-center" width="50">No</th>
-              <th class="text-center" width="70">Aksi</th>
+              <th class="text-center" width="100">Aksi</th>
               <th class="text-center">Nama Paket</th>
               <th class="text-center" width="150">Harga</th>
               <th class="text-center" width="80">Aktif</th>

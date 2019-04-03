@@ -91,7 +91,7 @@
           <thead>
             <tr>
               <th class="text-center" width="50">No</th>
-              <th class="text-center" width="100">Aksi</th>
+              <th class="text-center" width="120">Aksi</th>
               <th class="text-center">No. Nota</th>
               <th class="text-center cl-success"><i class="fa fa-arrow-down"></i> In (Masuk)</th>
               <th class="text-center cl-danger"><i class="fa fa-arrow-up"></i> Out (Keluar)</th>
