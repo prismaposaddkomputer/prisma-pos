@@ -31,7 +31,7 @@
           <thead>
             <tr>
               <th class="text-center" width="30">No</th>
-              <th class="text-center" width="50">Aksi</th>
+              <th class="text-center" width="70">Aksi</th>
               <th class="text-center" width="200">Nama Tamu</th>
               <th class="text-center" width="100">Jenis</th>
               <th class="text-center" width="120">Jenis Kelamin</th>

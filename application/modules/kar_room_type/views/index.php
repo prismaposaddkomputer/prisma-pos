@@ -40,7 +40,7 @@
           <thead>
             <tr>
               <th class="text-center" width="50">No</th>
-              <th class="text-center" width="70">Aksi</th>
+              <th class="text-center" width="100">Aksi</th>
               <th class="text-center">Nama Tipe Room (Kategori Room)</th>
               <th class="text-center" width="150">Jumlah Room</th>
               <th class="text-center" width="150">Harga</th>

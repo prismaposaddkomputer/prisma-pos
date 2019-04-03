@@ -34,7 +34,7 @@
           <thead>
             <tr>
               <th class="text-center" width="50">No</th>
-              <th class="text-center" width="70">Aksi</th>
+              <th class="text-center" width="100">Aksi</th>
               <th class="text-center" width="380">Nama Kamar</th>
               <th class="text-center">Tipe Kamar (Kategori Kamar)</th>
               <th class="text-center">Nomor</th>
