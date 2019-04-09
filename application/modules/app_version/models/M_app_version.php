@@ -1606,6 +1606,11 @@ class M_app_version extends CI_Model {
               ADD COLUMN `tx_discount_percent` FLOAT(10,2) NOT NULL DEFAULT '0' AFTER `tx_discount_type`;"
           );
         break;
+
+        case '2.9.19':
+        // Add menu for laporan pajak
+        $this->db->query("INSERT INTO `prisma_pos`.`hot_module` (`module_id`, `module_parent`, `module_name`, `module_folder`, `module_controller`, `module_url`) VALUES ('04.05', '04', 'Laporan Pajak', 'hot_report_tax', 'hot_report_tax', 'index')");
+        break;
       }
       
     //insert new update history
@@ -1768,6 +1773,8 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"2.9.17","version_release"=>"2019-01-21 09:19:00"));
     // add discount restaurant percent
     array_push($version, array("version_now"=>"2.9.18","version_release"=>"2019-03-12 10:53:00"));
+    // insert hot module laporan pajak
+    array_push($version, array("version_now"=>"2.9.19","version_release"=>"2019-04-09 10:41:00"));
 
     foreach ($version as $key => $val) {
       //check version
