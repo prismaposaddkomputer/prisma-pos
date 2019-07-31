@@ -1509,20 +1509,28 @@ class Hot_reservation extends MY_Hotel {
       }else{
         $room_type_subtotal_after_discount = $room_type_before_discount;
       }
+      echo $room_type_subtotal_after_discount.'</br>';;
       //
       
       // hitung persen semua setelah pajak/ hitung mundur
       $room_type_tax = 0;
+      $total_persen = 110;
+      if ($service != null) {
+        $total_persen += $service->charge_type_ratio;
+      }
+      if ($other != null) {
+        $total_persen += $other->charge_type_ratio;
+      }
       if ($tax != null) {
-        $room_type_tax = ($tax->charge_type_ratio/(100 + $tax->charge_type_ratio))*$room_type_subtotal_after_discount;
+        $room_type_tax = ($tax->charge_type_ratio/($total_persen))*$room_type_subtotal_after_discount;
       }
       $room_type_service = 0;
       if ($service != null) {
-        $room_type_service = ($service->charge_type_ratio/(100 + $service->charge_type_ratio))*$room_type_subtotal_after_discount;
+        $room_type_service = ($service->charge_type_ratio/($total_persen))*$room_type_subtotal_after_discount;
       }
       $room_type_other = 0;
       if ($other != null) {
-        $room_type_other = ($other->charge_type_ratio/(100 + $other->charge_type_ratio))*$room_type_subtotal_after_discount;
+        $room_type_other = ($other->charge_type_ratio/($total_persen))*$room_type_subtotal_after_discount;
       }
 
       $room_type_subtotal = $room_type_before_discount - $room_type_tax - $room_type_service - $room_type_other;
