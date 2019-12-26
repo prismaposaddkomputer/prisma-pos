@@ -1611,6 +1611,77 @@ class M_app_version extends CI_Model {
         // Add menu for laporan pajak
         $this->db->query("INSERT INTO `prisma_pos`.`hot_module` (`module_id`, `module_parent`, `module_name`, `module_folder`, `module_controller`, `module_url`) VALUES ('04.05', '04', 'Laporan Pajak', 'hot_report_tax', 'hot_report_tax', 'index')");
         break;
+        
+        case '2.9.20':
+          // change lenght data
+          $this->db->query(
+            "ALTER TABLE `hot_billing`
+              CHANGE COLUMN `billing_subtotal` `billing_subtotal` FLOAT(20,2) NOT NULL AFTER `billing_num_day`,
+              CHANGE COLUMN `billing_tax` `billing_tax` FLOAT(20,2) NOT NULL AFTER `billing_subtotal`,
+              CHANGE COLUMN `billing_service` `billing_service` FLOAT(20,2) NOT NULL AFTER `billing_tax`,
+              CHANGE COLUMN `billing_other` `billing_other` FLOAT(20,2) NOT NULL AFTER `billing_service`,
+              CHANGE COLUMN `billing_discount` `billing_discount` FLOAT(20,2) NOT NULL AFTER `billing_other`,
+              CHANGE COLUMN `billing_denda` `billing_denda` FLOAT(20,2) NOT NULL AFTER `billing_discount`,
+              CHANGE COLUMN `billing_total` `billing_total` FLOAT(20,2) NOT NULL AFTER `billing_denda`,
+              CHANGE COLUMN `billing_down_payment` `billing_down_payment` FLOAT(20,2) NOT NULL AFTER `billing_down_payment_type`,
+              CHANGE COLUMN `billing_payment` `billing_payment` FLOAT(20,2) NOT NULL AFTER `billing_down_payment`,
+              CHANGE COLUMN `billing_change` `billing_change` FLOAT(20,2) NOT NULL AFTER `billing_payment`;"
+          );
+          $this->db->query(
+            "ALTER TABLE `hot_billing_custom`
+              CHANGE COLUMN `custom_charge` `custom_charge` FLOAT(20,2) NOT NULL AFTER `custom_name`,
+              CHANGE COLUMN `custom_amount` `custom_amount` FLOAT(20,2) NOT NULL AFTER `custom_charge`,
+              CHANGE COLUMN `custom_subtotal` `custom_subtotal` FLOAT(20,2) NOT NULL AFTER `custom_amount`,
+              CHANGE COLUMN `custom_tax` `custom_tax` FLOAT(20,2) NOT NULL AFTER `custom_subtotal`,
+              CHANGE COLUMN `custom_total` `custom_total` FLOAT(20,2) NOT NULL AFTER `custom_tax`;"
+          );
+          $this->db->query(
+            "ALTER TABLE `hot_billing_extra`
+              CHANGE COLUMN `extra_charge` `extra_charge` FLOAT(20,2) NOT NULL AFTER `extra_name`,
+              CHANGE COLUMN `extra_amount` `extra_amount` FLOAT(20,2) NOT NULL AFTER `extra_charge`,
+              CHANGE COLUMN `extra_subtotal` `extra_subtotal` FLOAT(20,2) NOT NULL AFTER `extra_amount`,
+              CHANGE COLUMN `extra_tax` `extra_tax` FLOAT(20,2) NOT NULL AFTER `extra_subtotal`,
+              CHANGE COLUMN `extra_total` `extra_total` FLOAT(20,2) NOT NULL AFTER `extra_tax`;"
+          );
+          $this->db->query(
+            "ALTER TABLE `hot_billing_fnb`
+              CHANGE COLUMN `fnb_charge` `fnb_charge` FLOAT(20,2) NOT NULL AFTER `fnb_name`,
+              CHANGE COLUMN `fnb_amount` `fnb_amount` FLOAT(20,2) NOT NULL AFTER `fnb_charge`,
+              CHANGE COLUMN `fnb_subtotal` `fnb_subtotal` FLOAT(20,2) NOT NULL AFTER `fnb_amount`,
+              CHANGE COLUMN `fnb_tax` `fnb_tax` FLOAT(20,2) NOT NULL AFTER `fnb_subtotal`,
+              CHANGE COLUMN `fnb_total` `fnb_total` FLOAT(20,2) NOT NULL AFTER `fnb_tax`;"
+          );
+          $this->db->query(
+            "ALTER TABLE `hot_billing_non_tax`
+              CHANGE COLUMN `non_tax_charge` `non_tax_charge` FLOAT(20,2) NOT NULL AFTER `non_tax_name`,
+              CHANGE COLUMN `non_tax_amount` `non_tax_amount` FLOAT(20,2) NOT NULL AFTER `non_tax_charge`,
+              CHANGE COLUMN `non_tax_subtotal` `non_tax_subtotal` FLOAT(20,2) NOT NULL AFTER `non_tax_amount`,
+              CHANGE COLUMN `non_tax_tax` `non_tax_tax` FLOAT(20,2) NOT NULL AFTER `non_tax_subtotal`,
+              CHANGE COLUMN `non_tax_total` `non_tax_total` FLOAT(20,2) NOT NULL AFTER `non_tax_tax`;"
+          );
+          $this->db->query(
+            "ALTER TABLE `hot_billing_service`
+              CHANGE COLUMN `service_charge` `service_charge` FLOAT(20,2) NOT NULL AFTER `service_name`,
+              CHANGE COLUMN `service_amount` `service_amount` FLOAT(20,2) NOT NULL AFTER `service_charge`,
+              CHANGE COLUMN `service_subtotal` `service_subtotal` FLOAT(20,2) NOT NULL AFTER `service_amount`,
+              CHANGE COLUMN `service_tax` `service_tax` FLOAT(20,2) NOT NULL AFTER `service_subtotal`,
+              CHANGE COLUMN `service_total` `service_total` FLOAT(20,2) NOT NULL AFTER `service_tax`;"
+          );
+          $this->db->query(
+            "ALTER TABLE `hot_billing_room`
+              CHANGE COLUMN `discount_amount` `discount_amount` FLOAT(20,2) NOT NULL AFTER `discount_type`,
+              CHANGE COLUMN `room_type_charge` `room_type_charge` FLOAT(20,2) NOT NULL AFTER `room_type_tarif_kamar`,
+              CHANGE COLUMN `room_type_duration` `room_type_duration` FLOAT(20,2) NOT NULL AFTER `room_type_charge`,
+              CHANGE COLUMN `room_type_subtotal` `room_type_subtotal` FLOAT(20,2) NOT NULL AFTER `room_type_duration`,
+              CHANGE COLUMN `room_type_tax` `room_type_tax` FLOAT(20,2) NOT NULL AFTER `room_type_subtotal`,
+              CHANGE COLUMN `room_type_service` `room_type_service` FLOAT(20,2) NOT NULL AFTER `room_type_tax`,
+              CHANGE COLUMN `room_type_other` `room_type_other` FLOAT(20,2) NOT NULL AFTER `room_type_service`,
+              CHANGE COLUMN `room_type_denda` `room_type_denda` FLOAT(20,2) NOT NULL AFTER `room_type_other`,
+              CHANGE COLUMN `room_type_before_discount` `room_type_before_discount` FLOAT(20,2) NOT NULL AFTER `room_st_denda`,
+              CHANGE COLUMN `room_type_discount` `room_type_discount` FLOAT(20,2) NOT NULL AFTER `room_type_before_discount`,
+              CHANGE COLUMN `room_type_total` `room_type_total` FLOAT(20,2) NOT NULL AFTER `room_type_discount`;"
+          );
+          break;
       }
       
     //insert new update history
@@ -1775,6 +1846,8 @@ class M_app_version extends CI_Model {
     array_push($version, array("version_now"=>"2.9.18","version_release"=>"2019-03-12 10:53:00"));
     // insert hot module laporan pajak
     array_push($version, array("version_now"=>"2.9.19","version_release"=>"2019-04-09 10:41:00"));
+    // update table hot_billing float to 20,2
+    array_push($version, array("version_now"=>"2.9.20","version_release"=>"2019-04-09 10:41:00"));
 
     foreach ($version as $key => $val) {
       //check version
